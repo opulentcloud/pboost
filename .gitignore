@@ -1,0 +1,14 @@
+.DS_Store
+config/database.yml
+config/email.yml
+config/action_mailer.yml
+config/development.sphinx.conf
+db/*.sqlite3
+db/sphinx
+doc
+log
+tmp
+*.log
+*.*~
+*~
+
