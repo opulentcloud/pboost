@@ -19,11 +19,13 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-	config.gem 'formtastic'
+	config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
+	config.gem 'authlogic'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+	config.plugins = ['validation_reflection','validatious-on-rails']
 
   # Skip frameworks you're not going to use. To use Rails without a database,
   # you must remove the Active Record framework.

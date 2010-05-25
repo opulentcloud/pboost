@@ -1,0 +1,29 @@
+<%=title 'Signup' %>
+<%=javascript 'jquery-1.4.2', 'jquery.history', 'jquery.form', 'jquery.validate', 'jquery.form.wizard-2.0.0-RC4' %>
+
+<div id="ajax_errors" class="error"></div>
+
+<% form_for @user, :url => {:controller => 'users', :action => 'signup'} do |form| %>
+	<%= render :partial => 'signup_form', :locals => { :form => form } %>
+
+<script type="text/javascript">
+		$(function() {
+			$("#new_user").formwizard({ 
+    	  //form wizard settings
+    	  historyEnabled : true, 
+    	  formPluginEnabled: true, 
+    	  validationEnabled : true,
+    	  focusFirstInput : true},
+     {
+       //validation settings
+     },
+     {
+       // form plugin settings
+     }
+    );
+   });
+</script>
+
+ <%= form.submit "Continue" %>
+<% end %>
+
