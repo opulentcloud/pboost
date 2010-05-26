@@ -8,6 +8,7 @@ db/sphinx
 doc
 log
 tmp
+*.dat
 *.log
 *.*~
 *~
