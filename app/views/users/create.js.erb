@@ -2,4 +2,4 @@ $("#new_user").before('<div id="flash_notice"><%= escape_javascript(flash.delete
 
 $("#new_user").before('<div id="flash_notice"><%= escape_javascript(flash.delete(:error)) %></div>')
 
-$("#content_body").html("<%= escape_javascript(render(:partial => 'thanks')) %>");
+$("#new_user").html("<%= escape_javascript(render(:partial => 'thanks')) %>");
