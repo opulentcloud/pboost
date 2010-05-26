@@ -1,37 +1,40 @@
 <div id="step_2" class="step">
 
 <h1>Step 2: &nbsp;Enter your Personal information:</h1>
-<p><strong><%= form.label :first_name, 'First Name:' %></strong><br />
+
+<i>* required fields</i>
+
+<p><strong><%= form.label :first_name, '*First Name:' %></strong><br />
     <%= form.text_field :first_name, :size => 40, :class => 'required' %>
 </p>
 
-<p><strong><%= form.label :last_name, 'Last Name:' %></strong><br />
+<p><strong><%= form.label :last_name, '*Last Name:' %></strong><br />
     <%= form.text_field :last_name, :size => 40, :class => 'required' %>
 </p>
 
-<p><strong><%= form.label :phone, 'Phone:' %></strong><br />
-	<%= form.text_field :phone_area_code, { :maxlength => '3', :class => 'required', :size => '3' } %> -
-  <%= form.text_field :phone_prefix, { :maxlength => '3', :class => 'required', :size => '3' } %> -
+<p><strong><%= form.label :phone, '*Phone:' %></strong><br />
+	<%= form.text_field :phone_area_code, { :maxlength => '3', :class => '', :size => '3' } %> -
+  <%= form.text_field :phone_prefix, { :maxlength => '3', :class => '', :size => '3' } %> -
 	<%= form.text_field :phone_suffix, { :maxlength => '4', :class => 'required', :size => '4' } %>
 </p>
 
-<p><strong><%= form.label :email, 'Email:' %></strong><br />
+<p><strong><%= form.label :email, '*Email:' %></strong><br />
     <%= form.text_field :email, :size => 50, :class => 'required' %>
 </p>
 	    
-<p><strong><%= form.label :login, 'Login:' %></strong><br />
+<p><strong><%= form.label :login, '*Login:' %></strong><br />
     <%= form.text_field :login, :size => 50, :class => 'required' %>
 </p>
 
-<p><strong><%= form.label :password, 'Password:' %></strong><br />
+<p><strong><%= form.label :password, '*Password:' %></strong><br />
   <%= form.password_field :password, :size => 40, :class => 'required' %>
 </p>
 
-<p><strong><%= form.label :password_confirmation, 'Retype Password:' %></strong><br />
+<p><strong><%= form.label :password_confirmation, '*Retype Password:' %></strong><br />
   <%= form.password_field :password_confirmation, :size => 40, :class => 'required' %>
 </p>
 
-<p><strong><%= form.label :time_zone_id, 'Choose Your Local Time Zone:' %></strong><br />
+<p><strong><%= form.label :time_zone_id, '*Choose Your Local Time Zone:' %></strong><br />
 <%= form.collection_select(:time_zone_id, TimeZone.all, :id, :zone, { :prompt => true }, { :class => 'required' }) %>    
 </p>
 
