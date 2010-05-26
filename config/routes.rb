@@ -1,7 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 	map.with_options(:controller => 'users') do |site|
-		site.signup 'signup', :action => 'index'
+		site.signup 'signup', :action => 'new'
+		site.thanks 'thanks', :action => 'thanks'
 	end
 
   # Sample of regular route:
