@@ -1,6 +1,6 @@
-$("#flash_notice").remove();
 $("#flash_error").remove();
 
-$("#new_user").before('<div id="flash_error"><%= escape_javascript("#{flash[:error]}") %></div>')
+$("#new_user").before('<div id="flash_error"><%= escape_javascript("#{flash.now[:error]}") %></div>');
 
-alert('<%="#{flash[:error]}".gsub('<br />', '\r\n') %>');
+alert('<%= escape_javascript("#{flash.delete(:error)}").gsub('<br />', '\r\n') %>');
+

@@ -24,6 +24,7 @@ class UsersController < ApplicationController
       	format.html { render :action => 'new' }
 				format.js { 
 					flash.now[:error] = @user.errors.each_full { |m| puts "#{m}" }.join('<br />')
+					logger.debug(flash[:error])
 					render :action => 'new' 
 				}
     	end
