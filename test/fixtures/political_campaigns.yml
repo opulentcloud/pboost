@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  candidate_name: MyString
+  seat_sought: MyString
+  state_abbrev: MyString
+  type: MyString
+  seat_type: MyString
+  cd: MyString
+  sd: MyString
+  hd: MyString
+  county: MyString
+  countywide: false
+  comm_dist_code: MyString
+  municipality: MyString
+  muniwide: false
+
+two:
+  candidate_name: MyString
+  seat_sought: MyString
+  state_abbrev: MyString
+  type: MyString
+  seat_type: MyString
+  cd: MyString
+  sd: MyString
+  hd: MyString
+  county: MyString
+  countywide: false
+  comm_dist_code: MyString
+  municipality: MyString
+  muniwide: false

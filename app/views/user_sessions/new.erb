@@ -1,0 +1,10 @@
+<%=title 'Login' %>
+
+<% form_for @user_session, :url => login_path do |f| %>
+		<%= f.error_messages :header_message => 'The following issues have prevented us from logging you in', :message => '' %>
+
+		<%= render :partial => 'form', :object => f %>
+   	<p><%= submit_tag('Login') %></p>
+
+<% end %>
+

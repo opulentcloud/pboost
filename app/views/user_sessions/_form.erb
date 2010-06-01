@@ -1,0 +1,14 @@
+<p>
+
+<p><strong><%= form.label :login, 'username:' %></strong><br />
+<%= form.text_field :login, :value => cookies[:email] %>    
+</p>
+
+<p><strong><%= form.label :password, 'password:' %></strong><br />
+<%= form.password_field :password %>    
+</p>
+
+<p><strong><%= form.check_box :remember_me, :checked => !cookies[:login].nil? %><%= form.label :remember_me %></strong>
+</p>
+		
+</p>

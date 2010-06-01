@@ -70,6 +70,16 @@ margin-bottom: 5px;
 list-style: url(../images/check.png) ;
 }
 
+div#contentAppMain div ul {
+margin: 15px 40px 20px 65px;
+color:#333333;
+}
+
+div#contentAppMain div ul li {
+margin-bottom: 5px;
+list-style: url(../images/check.png) ;
+}
+
 a:link, a:hover, a:visited {
 color:#CC0000;
 }
@@ -149,7 +159,7 @@ width: 300px;
 
 div#header #navMain {
 margin: 25px 0 0;
-width: 600px;
+width: 650px;
 float: right;
 }
 
@@ -211,6 +221,17 @@ background: url(../images/boxmain_top.gif) top no-repeat;
 div#contentMain div {
 background: url(../images/boxmain_bottom.gif) #fff bottom no-repeat;
 padding-bottom: 20px;
+}
+
+div#contentAppMain {
+width: 700px;
+float: left;
+background: url(../images/boxmain_top.gif) top no-repeat;
+}
+
+div#contentAppMain div {
+background: #fff bottom no-repeat;
+padding-bottom: 0px;
 }
 
 /* sidebar */
@@ -322,6 +343,11 @@ padding-left: 5px;
   border: solid 1px #C66;
 }
 
+.fieldWithErrors input {
+	margin-left: 30px;
+  display: inline;
+}
+
 .fieldWithErrors {
   display: inline;
 }
@@ -329,6 +355,7 @@ padding-left: 5px;
 #errorExplanation {
   width: 400px;
   border: 2px solid #CF0000;
+  margin: 30px;
   padding: 0px;
   padding-bottom: 12px;
   margin-bottom: 20px;
