@@ -19,10 +19,10 @@
 </p>
 
 <p><strong><%= c_form.label :type, '*Position/Seat level:' %></strong><br />
-	<%= c_form.select(:type, PoliticalCampaign::POLITICAL_CAMPAIGN_TYPES, { :prompt => true }, { :class => 'required', :onchange => "$('div#fed_seats').hide(); if (this.value == 'FederalCampaign') { $('div#fed_seats').css('display','inline'); }" }) %> 	
+	<%= c_form.select(:type, PoliticalCampaign::POLITICAL_CAMPAIGN_TYPES, { :prompt => true }, { :class => 'required' }) %> 	
 </p>
 
-<div id="fed_seats" style="display: none;">	
+<div id="seattype" style="display: none;">	
 	<p><strong><%= c_form.label :seat_type, '*Please choose:' %></strong><br />
 	<%= c_form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => 'required') -%>
 </p>	
