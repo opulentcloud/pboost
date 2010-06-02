@@ -6,7 +6,12 @@ class Organization < ActiveRecord::Base
 	belongs_to :account_type
 	belongs_to :organization_type
 	has_many :users
+	has_many :political_campaigns
+	accepts_nested_attributes_for :political_campaigns
 
+	has_many :federal_campaigns
+	accepts_nested_attributes_for :federal_campaigns	
+	
 	#===== CLASS VALIDATIONS =====
 validates_presence_of :organization_type_id, :name, :account_type_id
 	validates_length_of :phone, :fax, :is => 10, :allow_nil => true, :allow_blank => true

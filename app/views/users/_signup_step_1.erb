@@ -6,7 +6,7 @@
 
 <% form.fields_for :organization do |org_form| %>
 
-<p><strong><%= org_form.label :organization_type_id, '*Your Organization Type:' %></strong><br />
+<p><strong><%= org_form.label :organization_type_id, '*Organization Type:' %></strong><br />
 <%= org_form.collection_select(:organization_type_id, OrganizationType.all, :id, :name, { :prompt => true }, { :class => 'required' }) %>    
 </p>
 

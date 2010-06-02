@@ -1,7 +1,7 @@
 //JQuery.ajaxSetup({
 //	'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
 //});
-
+	
 $(document).ready(function() {
 
 	$("#new_user").formwizard({ 
@@ -23,5 +23,13 @@ $(document).ready(function() {
  }
 );
 });
+
+//	function SeatChangeReset() {
+//			$('div#fed_seats').hide();
+
+//			if (this.value == 'FederalCampaign') { 
+//				$('div#fed_seats').css('display','inline'); 
+//			}			
+//		}
 
 

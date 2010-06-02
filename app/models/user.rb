@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
 
 	belongs_to :time_zone
 
+	has_many :political_campaigns, :through => :organization
+
 	#===== PROPERTIES ======
 	attr_accessor :phone_area_code, :phone_prefix, :phone_suffix
 

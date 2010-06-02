@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100525223449) do
+ActiveRecord::Schema.define(:version => 20100601183327) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
@@ -40,6 +40,25 @@ ActiveRecord::Schema.define(:version => 20100525223449) do
     t.datetime "updated_at"
   end
 
+  create_table "political_campaigns", :force => true do |t|
+    t.string   "candidate_name",  :limit => 64
+    t.string   "seat_sought",     :limit => 128
+    t.string   "state_abbrev",    :limit => 2
+    t.string   "type",            :limit => 20
+    t.string   "seat_type",       :limit => 15
+    t.string   "cd",              :limit => 3
+    t.string   "sd",              :limit => 3
+    t.string   "hd",              :limit => 3
+    t.string   "county",          :limit => 32
+    t.boolean  "countywide",                     :null => false
+    t.string   "comm_dist_code",  :limit => 2
+    t.string   "municipality",    :limit => 32
+    t.boolean  "muniwide",                       :null => false
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "roles", :force => true do |t|
     t.string   "name",       :limit => 50
     t.datetime "created_at"
@@ -57,6 +76,17 @@ ActiveRecord::Schema.define(:version => 20100525223449) do
 
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
+
+  create_table "states", :force => true do |t|
+    t.string   "abbrev",     :limit => 2,                     :null => false
+    t.string   "name",       :limit => 100,                   :null => false
+    t.boolean  "active",                    :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "states", ["abbrev"], :name => "index_states_on_abbrev", :unique => true
+  add_index "states", ["name"], :name => "index_states_on_name", :unique => true
 
   create_table "time_zones", :force => true do |t|
     t.string   "zone",       :limit => 64, :null => false

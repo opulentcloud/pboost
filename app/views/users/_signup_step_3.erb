@@ -1,0 +1,34 @@
+<div id="step_3" class="step">
+
+<h1>Step 3: &nbsp;Enter your Political Campaign information:</h1>
+
+<p><i>* required fields</i></p>
+<% form.fields_for :organization do |o_form| %>
+<% o_form.fields_for :political_campaigns do |c_form| %>
+
+<p><strong><%= c_form.label :candidate_name, '*Candidate Name:' %></strong><br />
+    <%= c_form.text_field :candidate_name, :class => 'required' %>
+</p>
+
+<p><strong><%= c_form.label :seat_sought, '*Position/Seat Sought:' %></strong><br />
+    <%= c_form.text_field :seat_sought, :class => 'required' %>
+</p>
+
+<p><strong><%= c_form.label :state_abbrev, '*State Campaign is being run in:' %></strong><br />
+<%= c_form.collection_select(:state_abbrev, State.active, :abbrev, :name, {:prompt => true }, :class => 'required' ) %>
+</p>
+
+<p><strong><%= c_form.label :type, '*Position/Seat level:' %></strong><br />
+	<%= c_form.select(:type, PoliticalCampaign::POLITICAL_CAMPAIGN_TYPES, { :prompt => true }, { :class => 'required', :onchange => "$('div#fed_seats').hide(); if (this.value == 'FederalCampaign') { $('div#fed_seats').css('display','inline'); }" }) %> 	
+</p>
+
+<div id="fed_seats" style="display: none;">	
+	<p><strong><%= c_form.label :seat_type, '*Please choose:' %></strong><br />
+	<%= c_form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => 'required') -%>
+</p>	
+</div>
+
+<% end %>
+<% end %>
+
+</div>

@@ -4,7 +4,7 @@ class CreatePoliticalCampaigns < ActiveRecord::Migration
       t.string :candidate_name, :limit => 64
       t.string :seat_sought, :limit => 128
       t.string :state_abbrev, :limit => 2
-      t.string :type, :limit => 9
+      t.string :type, :limit => 20
       t.string :seat_type, :limit => 15
       t.string :cd, :limit => 3
       t.string :sd, :limit => 3
