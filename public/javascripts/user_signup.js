@@ -4,6 +4,8 @@
 	
 $(document).ready(function() {
 
+	var haveSeat = false;
+
 	$("#new_user").formwizard({ 
 	  //form wizard settings
 	  historyEnabled : true, 
@@ -31,31 +33,28 @@ $('#user_organization_attributes_political_campaigns_attributes_0_cd').ajaxAddOp
 
 $('#user_organization_attributes_political_campaigns_attributes_0_sd').ajaxAddOption('/sd_populate/'+this.value+'.json', {}, false);
 
+$('#user_organization_attributes_political_campaigns_attributes_0_hd').ajaxAddOption('/hd_populate/'+this.value+'.json', {}, false);
+
 	}
 
 	function StateOptionsShowHide() {
 		$('div#condist').hide();
 		$('div#sendist').hide();
+		$('div#hosdist').hide();
 
 		if (this.value == "U.S. Congress") {
 			$('div#condist').css('display','inline');
-		} else {
-			if (this.value == "State Senate") {
+		} else if (this.value == "State Senate") {
 				$('div#sendist').css('display','inline');
-			}
+		} else if (this.value == "State House") {
+				$('div#hosdist').css('display','inline');
 		}
 		
 	}
 
-	function SeatChange() {
-			$('div#fed_seats').hide();
-
-			if (this.value == 'FederalCampaign') { 
-				$('div#fed_seats').css('display','inline'); 
-			}			
-		}
-
 	function SeatPopulate() {
+		if (haveSeat) StateOptionsShowHide();
+		haveSeat = true;
 		$('div#seattype').hide();
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').children().remove();
 

@@ -14,8 +14,10 @@ class StateCampaign < PoliticalCampaign
 
 	#===== EVENTS ======
 	def before_validation
-		self.countywide = true
-		self.muniwide = true
+		self.sd = nil if self.sd.blank?
+		self.hd = nil if self.hd.blank?
+		self.countywide = false
+		self.muniwide = false
 	end
 	
 	#===== CLASS METHODS =====

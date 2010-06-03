@@ -21,6 +21,8 @@ validates_presence_of :organization_type_id, :name, :account_type_id
 	validates_numericality_of :phone, :fax, :integer => true, :message => 'is not valid', :allow_nil => true, :allow_blank => true
 	validates_associated :organization_type
 	validates_associated :account_type
+	validates_associated :federal_campaigns, :message => 'is missing some required information.'
+	validates_associated :state_campaigns, :message => 'is missing some required information.'
 
 	#====== CLASS PROPERTIES ======
 	attr_accessor :phone_area_code, :phone_prefix, :phone_suffix

@@ -24,25 +24,25 @@
 
 <div id="seattype" style="display: none;">	
 	<p><strong><%= c_form.label :seat_type, '*Please choose:' %></strong><br />
-	<%= c_form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => 'required') -%>
+	<%= c_form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => '') -%>
 </p>	
 </div>
 
 <div id="condist" style="display: none;">	
 	<p><strong><%= c_form.label :cd, '*Congressional District:' %></strong><br />
-	<%= c_form.select(:cd, [], {}, :class => 'required') -%>
+	<%= c_form.select(:cd, [], {}, :class => '') -%>
 </p>	
 </div>
 
 <div id="sendist" style="display: none;">	
 	<p><strong><%= c_form.label :sd, '*State Senate District:' %></strong><br />
-	<%= c_form.select(:sd, [], {}, :class => 'required') -%>
+	<%= c_form.select(:sd, [], {}, :class => '') -%>
 </p>	
 </div>
 
 <div id="hosdist" style="display: none;">	
 	<p><strong><%= c_form.label :hd, '*State House District:' %></strong><br />
-	<%= c_form.select(:hd, [], {}, :class => 'required') -%>
+	<%= c_form.select(:hd, [], {}, :class => '') -%>
 </p>	
 </div>
 

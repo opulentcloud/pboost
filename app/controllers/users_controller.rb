@@ -35,14 +35,17 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 		@user.organization.account_type = AccountType.find_by_name('Pre-Pay')
 		@user.roles << Role.find_by_name('Customer')
-		@political_campaign = @user.organization.political_campaigns.first
-		case params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]	
-		when 'FederalCampaign' then 
-			@user.organization.federal_campaigns << FederalCampaign.create_from_political_campaign(@political_campaign)
-		end
+		@user.organization.political_campaigns.first.type = params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]
+		#@political_campaign = @user.organization.political_campaigns.first
+		#case params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]	
+		#when 'FederalCampaign' then 
+		#	@user.organization.federal_campaigns << FederalCampaign.create_from_political_campaign(@political_campaign)
+		#when 'StateCampaign' then 
+		#	@user.organization.state_campaigns << StateCampaign.create_from_political_campaign(@political_campaign)
+		#end
 
-		@user.organization.political_campaigns.first.destroy
-			
+		#@user.organization.political_campaigns.first.destroy
+
 		if @user.save
 			flash.now[:notice] = 'Congratulations, your account has been created. We will notify you shortly when your account has been verified!'
 			respond_to do |format|
