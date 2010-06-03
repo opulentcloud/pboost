@@ -14,8 +14,8 @@
     <%= c_form.text_field :seat_sought, :class => 'required' %>
 </p>
 
-<p><strong><%= c_form.label :state_abbrev, '*State Campaign is being run in:' %></strong><br />
-<%= c_form.collection_select(:state_abbrev, State.active, :abbrev, :name, {:prompt => true }, :class => 'required' ) %>
+<p><strong><%= c_form.label :state_id, '*State Campaign is being run in:' %></strong><br />
+<%= c_form.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
 </p>
 
 <p><strong><%= c_form.label :type, '*Position/Seat level:' %></strong><br />
@@ -29,20 +29,20 @@
 </div>
 
 <div id="condist" style="display: none;">	
-	<p><strong><%= c_form.label :cd, '*Congressional District:' %></strong><br />
-	<%= c_form.select(:cd, [], {}, :class => '') -%>
+	<p><strong><%= c_form.label :congressional_district_id, '*Congressional District:' %></strong><br />
+	<%= c_form.select(:congressional_district_id, [], {}, :class => '') -%>
 </p>	
 </div>
 
 <div id="sendist" style="display: none;">	
-	<p><strong><%= c_form.label :sd, '*State Senate District:' %></strong><br />
-	<%= c_form.select(:sd, [], {}, :class => '') -%>
+	<p><strong><%= c_form.label :senate_district_id, '*State Senate District:' %></strong><br />
+	<%= c_form.select(:senate_district_id, [], {}, :class => '') -%>
 </p>	
 </div>
 
 <div id="hosdist" style="display: none;">	
-	<p><strong><%= c_form.label :hd, '*State House District:' %></strong><br />
-	<%= c_form.select(:hd, [], {}, :class => '') -%>
+	<p><strong><%= c_form.label :house_district_id, '*State House District:' %></strong><br />
+	<%= c_form.select(:house_district_id, [], {}, :class => '') -%>
 </p>	
 </div>
 

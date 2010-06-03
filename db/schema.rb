@@ -97,23 +97,31 @@ ActiveRecord::Schema.define(:version => 20100602235536) do
   end
 
   create_table "political_campaigns", :force => true do |t|
-    t.string   "candidate_name",  :limit => 64
-    t.string   "seat_sought",     :limit => 128
-    t.string   "state_abbrev",    :limit => 2
-    t.string   "type",            :limit => 20
-    t.string   "seat_type",       :limit => 15
-    t.string   "cd",              :limit => 3
-    t.string   "sd",              :limit => 3
-    t.string   "hd",              :limit => 3
-    t.string   "county",          :limit => 32
-    t.boolean  "countywide",                     :null => false
-    t.string   "comm_dist_code",  :limit => 2
-    t.string   "municipality",    :limit => 32
-    t.boolean  "muniwide",                       :null => false
+    t.string   "candidate_name",            :limit => 64
+    t.string   "seat_sought",               :limit => 128
+    t.integer  "state_id",                                 :null => false
+    t.string   "type",                      :limit => 20
+    t.string   "seat_type",                 :limit => 15
+    t.integer  "congressional_district_id"
+    t.integer  "senate_district_id"
+    t.integer  "house_district_id"
+    t.integer  "county_id"
+    t.boolean  "countywide",                               :null => false
+    t.integer  "council_district_id"
+    t.integer  "city_id"
+    t.boolean  "muniwide",                                 :null => false
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "political_campaigns", ["city_id"], :name => "index_political_campaigns_on_city_id"
+  add_index "political_campaigns", ["congressional_district_id"], :name => "index_political_campaigns_on_congressional_district_id"
+  add_index "political_campaigns", ["council_district_id"], :name => "index_political_campaigns_on_council_district_id"
+  add_index "political_campaigns", ["county_id"], :name => "index_political_campaigns_on_county_id"
+  add_index "political_campaigns", ["house_district_id"], :name => "index_political_campaigns_on_house_district_id"
+  add_index "political_campaigns", ["organization_id"], :name => "index_political_campaigns_on_organization_id"
+  add_index "political_campaigns", ["senate_district_id"], :name => "index_political_campaigns_on_senate_district_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name",       :limit => 50

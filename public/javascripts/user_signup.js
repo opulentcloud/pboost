@@ -26,14 +26,15 @@ $(document).ready(function() {
 );
 
 	function StateOptionsPopulate() {
-$('#user_organization_attributes_political_campaigns_attributes_0_cd').children().remove();
-$('#user_organization_attributes_political_campaigns_attributes_0_sd').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_congressional_district_id').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_senate_district_id').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_house_district_id').children().remove();
 
-$('#user_organization_attributes_political_campaigns_attributes_0_cd').ajaxAddOption('/cd_populate/'+this.value+'.json', {}, false);
+$('#user_organization_attributes_political_campaigns_attributes_0_congressional_district_id').ajaxAddOption('/cd_populate/'+this.value+'.json', {}, false);
 
-$('#user_organization_attributes_political_campaigns_attributes_0_sd').ajaxAddOption('/sd_populate/'+this.value+'.json', {}, false);
+$('#user_organization_attributes_political_campaigns_attributes_0_senate_district_id').ajaxAddOption('/sd_populate/'+this.value+'.json', {}, false);
 
-$('#user_organization_attributes_political_campaigns_attributes_0_hd').ajaxAddOption('/hd_populate/'+this.value+'.json', {}, false);
+$('#user_organization_attributes_political_campaigns_attributes_0_house_district_id').ajaxAddOption('/hd_populate/'+this.value+'.json', {}, false);
 
 	}
 
@@ -86,7 +87,7 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ad
 	
 	}
 
-$('#user_organization_attributes_political_campaigns_attributes_0_state_abbrev').bind("change", StateOptionsPopulate);
+$('#user_organization_attributes_political_campaigns_attributes_0_state_id').bind("change", StateOptionsPopulate);
 	$('#user_organization_attributes_political_campaigns_attributes_0_type').bind("change", SeatPopulate);
 
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').bind("change", StateOptionsShowHide);

@@ -10,7 +10,7 @@ class HouseDistrict < ActiveRecord::Base
 	def self.to_json(hds)
 		s = "{\"\" : \"Please choose\",\n"
 		hds.each do |hd|
-			s += "\"#{hd.hd}\" : \"#{hd.hd}\",\n"
+			s += "\"#{hd.id}\" : \"#{hd.hd}\",\n"
 		end
 		s = s[0,s.length-2]
 		s += "}"

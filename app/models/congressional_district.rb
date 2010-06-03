@@ -10,7 +10,7 @@ class CongressionalDistrict < ActiveRecord::Base
 	def self.to_json(cds)
 		s = "{\"\" : \"Please choose\",\n"
 		cds.each do |cd|
-			s += "\"#{cd.cd}\" : \"#{cd.cd}\",\n"
+			s += "\"#{cd.id}\" : \"#{cd.cd}\",\n"
 		end
 		s = s[0,s.length-2]
 		s += "}"
