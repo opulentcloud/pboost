@@ -18,6 +18,7 @@ class StateCampaign < PoliticalCampaign
 		self.hd = nil if self.hd.blank?
 		self.countywide = false
 		self.muniwide = false
+		true
 	end
 	
 	#===== CLASS METHODS =====
