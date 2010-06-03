@@ -41,6 +41,7 @@ class PoliticalCampaign < ActiveRecord::Base
 		self.hd = nil if self.hd.blank?
 		self.countywide = false if ['FederalCampaign', 'StateCampaign'].include?(self.type)
 		self.muniwide = false if ['FederalCampaign', 'StateCampaign'].include?(self.type)
+		true
 	end
 
 end

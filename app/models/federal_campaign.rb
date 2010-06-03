@@ -16,6 +16,7 @@ class FederalCampaign < PoliticalCampaign
 		self.cd == nil if self.cd.blank?
 		self.countywide = false
 		self.muniwide = false
+		true
 	end
 	
 	#===== CLASS METHODS =====
