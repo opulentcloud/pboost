@@ -1,5 +1,12 @@
 class UsersController < ApplicationController
-	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select]
+	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select]
+
+	def populate_counties_select
+		@counties = @state.counties
+		respond_to do |format|
+			format.json { render :text => County.to_json(@counties) }
+		end
+	end	
 
 	def populate_sd_select
 		@sds = @state.senate_districts
@@ -43,6 +50,8 @@ class UsersController < ApplicationController
 			@user.organization.federal_campaigns << FederalCampaign.create_from_political_campaign(@political_campaign)
 		when 'StateCampaign' then 
 			@user.organization.state_campaigns << StateCampaign.create_from_political_campaign(@political_campaign)
+		when 'CountyCampaign' then 
+			@user.organization.county_campaigns << CountyCampaign.create_from_political_campaign(@political_campaign)
 		end
 
 		@user.organization.political_campaigns.first.destroy
@@ -58,6 +67,9 @@ class UsersController < ApplicationController
       	format.html { render :action => 'new' }
 				format.js { 
 					flash.now[:error] = @user.errors.each_full { |m| puts "#{m}" }.join('<br />')
+					if flash[:error].blank?
+						flash[:error] = "Your account could not be created at this time."
+					end
 					logger.debug(flash[:error])
 					render :action => 'new' 
 				}

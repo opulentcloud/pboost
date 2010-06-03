@@ -13,14 +13,6 @@ class FederalCampaign < PoliticalCampaign
 	validates_presence_of :seat_type
 	validates_inclusion_of :seat_type, :in => SEAT_TYPES.map {|disp, value| value}
 	validates_presence_of :congressional_district_id, :if => Proc.new { |c| c.seat_type == 'U.S. Congress' }
-
-	#===== EVENTS ======
-	def before_validation
-		self.congressional_district_id == nil if self.congressional_district_id.blank?
-		self.countywide = false
-		self.muniwide = false
-		true
-	end
 	
 	#===== CLASS METHODS =====
 	def self.create_from_political_campaign(political_campaign)

@@ -46,6 +46,15 @@
 </p>	
 </div>
 
+<div id="countyseat" style="display: none;">	
+	<p><strong><%= c_form.label :county_id, '*County:' %></strong><br />
+	<%= c_form.select(:county_id, [], {}, :class => '') -%>
+	&nbsp;<strong><%= c_form.label :countywide, '*Is this a countywide race?:' -%></strong>	<%= c_form.radio_button(:countywide, 'true', :class => '') -%> Yes &nbsp;
+	<%= c_form.radio_button(:countywide, 'false', :class => '') -%> No
+</p>	
+
+</div>
+
 <% end %>
 <% end %>
 

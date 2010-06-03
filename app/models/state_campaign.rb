@@ -15,15 +15,6 @@ class StateCampaign < PoliticalCampaign
 	validates_inclusion_of :seat_type, :in => SEAT_TYPES.map {|disp, value| value}
 	validates_presence_of :senate_district_id, :if => Proc.new { |c| c.seat_type == 'State Senate' }
 	validates_presence_of :house_district_id, :if => Proc.new { |c| c.seat_type == 'State House' }
-
-	#===== EVENTS ======
-	def before_validation
-		self.senate_district_id = nil if self.senate_district.blank?
-		self.house_district_id = nil if self.house_district.blank?
-		self.countywide = false
-		self.muniwide = false
-		true
-	end
 	
 	#===== CLASS METHODS =====
 	def self.create_from_political_campaign(political_campaign)

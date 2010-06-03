@@ -36,6 +36,8 @@ $('#user_organization_attributes_political_campaigns_attributes_0_senate_distric
 
 $('#user_organization_attributes_political_campaigns_attributes_0_house_district_id').ajaxAddOption('/hd_populate/'+this.value+'.json', {}, false);
 
+$('#user_organization_attributes_political_campaigns_attributes_0_county_id').ajaxAddOption('/counties_populate/'+this.value+'.json', {}, false);
+
 	}
 
 	function StateOptionsShowHide() {
@@ -50,13 +52,14 @@ $('#user_organization_attributes_political_campaigns_attributes_0_house_district
 		} else if (this.value == "State House") {
 				$('div#hosdist').css('display','inline');
 		}
-		
 	}
 
 	function SeatPopulate() {
 		if (haveSeat) StateOptionsShowHide();
 		haveSeat = true;
 		$('div#seattype').hide();
+		$('div#countyseat').hide();
+		
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').children().remove();
 
 		var fedOptions = { 
@@ -74,11 +77,11 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ch
 		if (this.value == "FederalCampaign") {
 	$('#user_organization_attributes_political_campaigns_attributes_0_seat_type').addOption(fedOptions, false);
 		askSeat = true;
-	} else {
-		if (this.value == "StateCampaign") {
+	} else if (this.value == "StateCampaign") {
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').addOption(stOptions, false);
 		askSeat = true;
-		}
+	} else if (this.value == "CountyCampaign") {
+		$('div#countyseat').css('display','inline');
 	}
 	
 	if (askSeat) {

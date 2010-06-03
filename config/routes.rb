@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
 		site.cd_populate 'cd_populate/:state_id.:format', :action => 'populate_cd_select', :conditions => { :method => :get }
 		site.sd_populate 'sd_populate/:state_id.:format', :action => 'populate_sd_select', :conditions => { :method => :get }
 		site.hd_populate 'hd_populate/:state_id.:format', :action => 'populate_hd_select', :conditions => { :method => :get }
+		site.counties_populate 'counties_populate/:state_id.:format', :action => 'populate_counties_select', :conditions => { :method => :get }
 	end
 	map.resources :users
 

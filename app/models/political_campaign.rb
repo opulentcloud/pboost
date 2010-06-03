@@ -18,5 +18,14 @@ class PoliticalCampaign < ActiveRecord::Base
 	validates_presence_of :candidate_name, :seat_sought, :state_id, :type
 
 	#===== EVENTS ======
+	def before_validation
+		self.congressional_district_id == nil if self.congressional_district_id.blank?
+		self.senate_district_id = nil if self.senate_district_id.blank?
+		self.house_district_id = nil if self.house_district_id.blank?
+		self.council_district_id = nil if self.council_district_id.blank?
+		self.countywide = false if self.type != 'CountyCampaign'
+		self.muniwide = false if self.type != 'MunicipalCampaign'
+		true
+	end
 
 end
