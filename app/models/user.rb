@@ -54,6 +54,10 @@ class User < ActiveRecord::Base
 		end	
 	end	
 
+	def after_destroy
+		self.roles.destroy_all
+	end
+
 	#===== METHODS =====
 	def active?
 		active

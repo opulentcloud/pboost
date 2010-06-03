@@ -28,6 +28,24 @@
 </p>	
 </div>
 
+<div id="condist" style="display: none;">	
+	<p><strong><%= c_form.label :cd, '*Congressional District:' %></strong><br />
+	<%= c_form.select(:cd, [], {}, :class => 'required') -%>
+</p>	
+</div>
+
+<div id="sendist" style="display: none;">	
+	<p><strong><%= c_form.label :sd, '*State Senate District:' %></strong><br />
+	<%= c_form.select(:sd, [], {}, :class => 'required') -%>
+</p>	
+</div>
+
+<div id="hosdist" style="display: none;">	
+	<p><strong><%= c_form.label :hd, '*State House District:' %></strong><br />
+	<%= c_form.select(:hd, [], {}, :class => 'required') -%>
+</p>	
+</div>
+
 <% end %>
 <% end %>
 

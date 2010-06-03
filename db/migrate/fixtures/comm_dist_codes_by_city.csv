@@ -1,0 +1,688 @@
+state_abbrev,county_name,city,comm_dist_code
+MD,Allegany,Barton,
+MD,Allegany,Corriganville,
+MD,Allegany,Cresaptown,
+MD,Allegany,Cumberland,
+MD,Allegany,Ellerslie,
+MD,Allegany,Flintstone,
+MD,Allegany,Frostburg,
+MD,Allegany,Hancock,
+MD,Allegany,Lavale,
+MD,Allegany,Little Orleans,
+MD,Allegany,Lonaconing,
+MD,Allegany,Luke,
+MD,Allegany,Midland,
+MD,Allegany,Midlothian,
+MD,Allegany,Mount Savage,
+MD,Allegany,Oldtown,
+MD,Allegany,Rawlings,
+MD,Allegany,Westernport,
+MD,Anne Arundel,Annapolis,
+MD,Anne Arundel,Annapolis,5
+MD,Anne Arundel,Annapolis,6
+MD,Anne Arundel,Annapolis Jct,1
+MD,Anne Arundel,Arnold,5
+MD,Anne Arundel,Baltimore,1
+MD,Anne Arundel,Baltimore,3
+MD,Anne Arundel,Churchton,7
+MD,Anne Arundel,Crofton,4
+MD,Anne Arundel,Crofton,7
+MD,Anne Arundel,Crownsville,4
+MD,Anne Arundel,Crownsville,6
+MD,Anne Arundel,Davidsonville,7
+MD,Anne Arundel,Deale,7
+MD,Anne Arundel,Dunkirk,7
+MD,Anne Arundel,Edgewater,6
+MD,Anne Arundel,Edgewater,7
+MD,Anne Arundel,Fort Meade,4
+MD,Anne Arundel,Friendship,7
+MD,Anne Arundel,Galesville,7
+MD,Anne Arundel,Gambrills,4
+MD,Anne Arundel,Gambrills,7
+MD,Anne Arundel,Gibson Island,3
+MD,Anne Arundel,Glen Burnie,1
+MD,Anne Arundel,Glen Burnie,2
+MD,Anne Arundel,Glen Burnie,3
+MD,Anne Arundel,Hanover,1
+MD,Anne Arundel,Hanover,2
+MD,Anne Arundel,Harmans,1
+MD,Anne Arundel,Harmans,2
+MD,Anne Arundel,Harwood,7
+MD,Anne Arundel,Jessup,1
+MD,Anne Arundel,Laurel,1
+MD,Anne Arundel,Laurel,4
+MD,Anne Arundel,Linthicum,1
+MD,Anne Arundel,Lothian,7
+MD,Anne Arundel,Mayo,7
+MD,Anne Arundel,Millersville,2
+MD,Anne Arundel,Millersville,3
+MD,Anne Arundel,Millersville,4
+MD,Anne Arundel,Millersville,5
+MD,Anne Arundel,North Beach,7
+MD,Anne Arundel,Odenton,2
+MD,Anne Arundel,Odenton,4
+MD,Anne Arundel,Owings,7
+MD,Anne Arundel,Pasadena,2
+MD,Anne Arundel,Pasadena,3
+MD,Anne Arundel,Pasadena,5
+MD,Anne Arundel,Riva,7
+MD,Anne Arundel,Severn,1
+MD,Anne Arundel,Severn,2
+MD,Anne Arundel,Severn,4
+MD,Anne Arundel,Severna Park,3
+MD,Anne Arundel,Severna Park,5
+MD,Anne Arundel,Shady Side,7
+MD,Anne Arundel,Tracys Landing,7
+MD,Anne Arundel,West River,7
+MD,Baltimore,Baldwin,3
+MD,Baltimore,Baltimore,1
+MD,Baltimore,Baltimore,2
+MD,Baltimore,Baltimore,3
+MD,Baltimore,Baltimore,4
+MD,Baltimore,Baltimore,5
+MD,Baltimore,Baltimore,6
+MD,Baltimore,Baltimore,7
+MD,Baltimore,Boring,3
+MD,Baltimore,Bradshaw,3
+MD,Baltimore,Bradshaw,5
+MD,Baltimore,Brooklandville,2
+MD,Baltimore,Butler,3
+MD,Baltimore,Chase,6
+MD,Baltimore,Cockeysville,2
+MD,Baltimore,Cockeysville,3
+MD,Baltimore,Dundalk,7
+MD,Baltimore,Ellicott City,1
+MD,Baltimore,Fork,3
+MD,Baltimore,Fort Howard,7
+MD,Baltimore,Freeland,3
+MD,Baltimore,Garrison,2
+MD,Baltimore,Glen Arm,3
+MD,Baltimore,Glen Arm,5
+MD,Baltimore,Glyndon,2
+MD,Baltimore,Glyndon,3
+MD,Baltimore,Halethorpe,1
+MD,Baltimore,Hampstead,3
+MD,Baltimore,Hydes,3
+MD,Baltimore,Joppa,5
+MD,Baltimore,Kingsville,3
+MD,Baltimore,Kingsville,5
+MD,Baltimore,Long Green,3
+MD,Baltimore,Lutherville Timonium,2
+MD,Baltimore,Lutherville Timonium,3
+MD,Baltimore,Manchester,3
+MD,Baltimore,Marriottsville,4
+MD,Baltimore,Maryland Line,3
+MD,Baltimore,Middle River,6
+MD,Baltimore,Monkton,3
+MD,Baltimore,Owings Mills,2
+MD,Baltimore,Owings Mills,4
+MD,Baltimore,Parkton,3
+MD,Baltimore,Parkville,5
+MD,Baltimore,Perry Hall,5
+MD,Baltimore,Perry Hall,6
+MD,Baltimore,Phoenix,3
+MD,Baltimore,Randallstown,2
+MD,Baltimore,Randallstown,4
+MD,Baltimore,Reisterstown,2
+MD,Baltimore,Reisterstown,3
+MD,Baltimore,Reisterstown,4
+MD,Baltimore,Riderwood,2
+MD,Baltimore,Sparks Glencoe,3
+MD,Baltimore,Stevenson,2
+MD,Baltimore,Timonium,3
+MD,Baltimore,Towson,5
+MD,Baltimore,Upper Falls,3
+MD,Baltimore,Upperco,3
+MD,Baltimore,White Hall,3
+MD,Baltimore,White Marsh,5
+MD,Baltimore,White Marsh,6
+MD,Baltimore,Woodstock,4
+MD,Baltimore City,Baltimore,1
+MD,Baltimore City,Baltimore,10
+MD,Baltimore City,Baltimore,11
+MD,Baltimore City,Baltimore,12
+MD,Baltimore City,Baltimore,13
+MD,Baltimore City,Baltimore,14
+MD,Baltimore City,Baltimore,2
+MD,Baltimore City,Baltimore,3
+MD,Baltimore City,Baltimore,4
+MD,Baltimore City,Baltimore,5
+MD,Baltimore City,Baltimore,6
+MD,Baltimore City,Baltimore,7
+MD,Baltimore City,Baltimore,8
+MD,Baltimore City,Baltimore,9
+MD,Baltimore City,Dundalk,1
+MD,Baltimore City,Gwynn Oak,8
+MD,Calvert,Broomes Island,
+MD,Calvert,Chesapeake Beach,
+MD,Calvert,Dowell,
+MD,Calvert,Dunkirk,
+MD,Calvert,Huntingtown,
+MD,Calvert,Lusby,
+MD,Calvert,North Beach,
+MD,Calvert,Owings,
+MD,Calvert,Port Republic,
+MD,Calvert,Prince Frederick,
+MD,Calvert,Saint Leonard,
+MD,Calvert,Solomons,
+MD,Calvert,St Leonard,
+MD,Calvert,Sunderland,
+MD,Caroline,Barclay,
+MD,Caroline,Denton,
+MD,Caroline,Federalsburg,
+MD,Caroline,Goldsboro,
+MD,Caroline,Greensboro,
+MD,Caroline,Henderson,
+MD,Caroline,Hillsboro,
+MD,Caroline,Marydel,
+MD,Caroline,Preston,
+MD,Caroline,Queen Anne,
+MD,Caroline,Ridgely,
+MD,Caroline,Templeville,
+MD,Carroll,Finksburg,
+MD,Carroll,Hampstead,
+MD,Carroll,Keymar,
+MD,Carroll,Manchester,
+MD,Carroll,Marriottsville,
+MD,Carroll,Mount Airy,
+MD,Carroll,New Windsor,
+MD,Carroll,Reisterstown,
+MD,Carroll,Sykesville,
+MD,Carroll,Taneytown,
+MD,Carroll,Union Bridge,
+MD,Carroll,Upperco,
+MD,Carroll,Westminster,
+MD,Carroll,Woodbine,
+MD,Cecil,Cecilton,
+MD,Cecil,Charlestown,
+MD,Cecil,Chesapeake City,
+MD,Cecil,Childs,
+MD,Cecil,Colora,
+MD,Cecil,Conowingo,
+MD,Cecil,Earleville,
+MD,Cecil,Elk Mills,
+MD,Cecil,Elkton,
+MD,Cecil,Georgetown,
+MD,Cecil,North East,
+MD,Cecil,Perry Point,
+MD,Cecil,Perryville,
+MD,Cecil,Port Deposit,
+MD,Cecil,Rising Sun,
+MD,Cecil,Warwick,
+MD,Charles,Accokeek,
+MD,Charles,Bel Alton,
+MD,Charles,Benedict,
+MD,Charles,Brandywine,
+MD,Charles,Bryans Road,
+MD,Charles,Bryantown,
+MD,Charles,Charlotte Hall,
+MD,Charles,Cobb Island,
+MD,Charles,Faulkner,
+MD,Charles,Hughesville,
+MD,Charles,Indian Head,
+MD,Charles,Issue,
+MD,Charles,La Plata,
+MD,Charles,Marbury,
+MD,Charles,Mechanicsville,
+MD,Charles,Mt Victoria,
+MD,Charles,Nanjemoy,
+MD,Charles,Newburg,
+MD,Charles,Pomfret,
+MD,Charles,Port Tobacco,
+MD,Charles,Waldorf,
+MD,Charles,Welcome,
+MD,Charles,White Plains,
+MD,Dorchester,Cambridge,1
+MD,Dorchester,Cambridge,2
+MD,Dorchester,Cambridge,3
+MD,Dorchester,Cambridge,5
+MD,Dorchester,Church Creek,1
+MD,Dorchester,Crapo,1
+MD,Dorchester,Crocheron,1
+MD,Dorchester,East New Market,4
+MD,Dorchester,East New Market,5
+MD,Dorchester,Federalsburg,5
+MD,Dorchester,Fishing Creek,1
+MD,Dorchester,Hurlock,4
+MD,Dorchester,Hurlock,5
+MD,Dorchester,Linkwood,1
+MD,Dorchester,Linkwood,5
+MD,Dorchester,Madison,1
+MD,Dorchester,Preston,4
+MD,Dorchester,Rhodesdale,1
+MD,Dorchester,Rhodesdale,4
+MD,Dorchester,Rhodesdale,5
+MD,Dorchester,Secretary,4
+MD,Dorchester,Taylors Island,1
+MD,Dorchester,Toddville,1
+MD,Dorchester,Vienna,1
+MD,Dorchester,Vienna,5
+MD,Dorchester,Wingate,1
+MD,Dorchester,Woolford,1
+MD,Frederick,Adamstown,
+MD,Frederick,Boonsboro,
+MD,Frederick,Brunswick,
+MD,Frederick,Buckeystown,
+MD,Frederick,Burkittsville,
+MD,Frederick,Cascade,
+MD,Frederick,Clarksburg,
+MD,Frederick,Damascus,
+MD,Frederick,Detour,
+MD,Frederick,Dickerson,
+MD,Frederick,Emmitsburg,
+MD,Frederick,Frederick,
+MD,Frederick,Ijamsville,
+MD,Frederick,Jefferson,
+MD,Frederick,Keymar,
+MD,Frederick,Knoxville,
+MD,Frederick,Libertytown,
+MD,Frederick,Middletown,
+MD,Frederick,Monrovia,
+MD,Frederick,Mount Airy,
+MD,Frederick,Myersville,
+MD,Frederick,New Market,
+MD,Frederick,New Windsor,
+MD,Frederick,Point Of Rocks,
+MD,Frederick,Rocky Ridge,
+MD,Frederick,Sabillasville,
+MD,Frederick,Smithsburg,
+MD,Frederick,Taneytown,
+MD,Frederick,Thurmont,
+MD,Frederick,Tuscarora,
+MD,Frederick,Union Bridge,
+MD,Frederick,Walkersville,
+MD,Frederick,Woodsboro,
+MD,Garrett,Accident,
+MD,Garrett,Barton,
+MD,Garrett,Bittinger,
+MD,Garrett,Bloomington,
+MD,Garrett,Deer Park,
+MD,Garrett,Friendsville,
+MD,Garrett,Frostburg,
+MD,Garrett,Grantsville,
+MD,Garrett,Kitzmiller,
+MD,Garrett,Lonaconing,
+MD,Garrett,Mc Henry,
+MD,Garrett,Mt Lake Park,
+MD,Garrett,Oakland,
+MD,Garrett,Swanton,
+MD,Garrett,Westernport,
+MD,Harford,Aberdeen,D
+MD,Harford,Aberdeen,E
+MD,Harford,Aberdeen,F
+MD,Harford,Aberdeen Proving Ground,F
+MD,Harford,Abingdon,B
+MD,Harford,Abingdon,F
+MD,Harford,Apg,F
+MD,Harford,Baldwin,B
+MD,Harford,Bel Air,B
+MD,Harford,Bel Air,C
+MD,Harford,Bel Air,D
+MD,Harford,Bel Air,E
+MD,Harford,Bel Air,F
+MD,Harford,Belcamp,F
+MD,Harford,Benson,B
+MD,Harford,Churchville,D
+MD,Harford,Churchville,E
+MD,Harford,Darlington,D
+MD,Harford,Darlington,E
+MD,Harford,Edgewood,A
+MD,Harford,Edgewood,F
+MD,Harford,Fallston,B
+MD,Harford,Fallston,C
+MD,Harford,Fallston,D
+MD,Harford,Forest Hill,B
+MD,Harford,Forest Hill,C
+MD,Harford,Forest Hill,D
+MD,Harford,Gunpowder,A
+MD,Harford,Havre De Grace,D
+MD,Harford,Havre De Grace,E
+MD,Harford,Havre De Grace,F
+MD,Harford,Hydes,B
+MD,Harford,Jarrettsville,B
+MD,Harford,Jarrettsville,D
+MD,Harford,Joppa,A
+MD,Harford,Joppa,B
+MD,Harford,Kingsville,A
+MD,Harford,Kingsville,B
+MD,Harford,Monkton,B
+MD,Harford,Monkton,D
+MD,Harford,Perryman,F
+MD,Harford,Pylesville,D
+MD,Harford,Street,D
+MD,Harford,White Hall,D
+MD,Harford,Whiteford,D
+MD,Howard,Brookeville,5
+MD,Howard,Clarksville,4
+MD,Howard,Clarksville,5
+MD,Howard,Columbia,2
+MD,Howard,Columbia,3
+MD,Howard,Columbia,4
+MD,Howard,Cooksville,5
+MD,Howard,Dayton,5
+MD,Howard,Elkridge,1
+MD,Howard,Elkridge,2
+MD,Howard,Ellicott City,1
+MD,Howard,Ellicott City,2
+MD,Howard,Ellicott City,4
+MD,Howard,Ellicott City,5
+MD,Howard,Fulton,4
+MD,Howard,Fulton,5
+MD,Howard,Glenelg,5
+MD,Howard,Glenwood,5
+MD,Howard,Hanover,1
+MD,Howard,Hanover,2
+MD,Howard,Highland,4
+MD,Howard,Highland,5
+MD,Howard,Jessup,2
+MD,Howard,Jessup,3
+MD,Howard,Laurel,3
+MD,Howard,Laurel,4
+MD,Howard,Laurel,5
+MD,Howard,Lisbon,5
+MD,Howard,Marriottsville,5
+MD,Howard,Mount Airy,5
+MD,Howard,Savage,3
+MD,Howard,Sykesville,5
+MD,Howard,West Friendship,5
+MD,Howard,Woodbine,5
+MD,Howard,Woodstock,5
+MD,Kent,Betterton,
+MD,Kent,Chestertown,
+MD,Kent,Galena,
+MD,Kent,Georgetown,
+MD,Kent,Kennedyville,
+MD,Kent,Lynch,
+MD,Kent,Massey,
+MD,Kent,Millington,
+MD,Kent,Rock Hall,
+MD,Kent,Still Pond,
+MD,Kent,Worton,
+MD,Montgomery,Adelphi,5
+MD,Montgomery,Ashton,4
+MD,Montgomery,Barnesville,2
+MD,Montgomery,Beallsville,2
+MD,Montgomery,Beltsville,5
+MD,Montgomery,Bethesda,1
+MD,Montgomery,Bethesda,5
+MD,Montgomery,Boyds,2
+MD,Montgomery,Brinklow,2
+MD,Montgomery,Brinklow,4
+MD,Montgomery,Brookeville,2
+MD,Montgomery,Brookeville,4
+MD,Montgomery,Burtonsville,4
+MD,Montgomery,Cabin John,1
+MD,Montgomery,Chevy Chase,1
+MD,Montgomery,Chevy Chase,5
+MD,Montgomery,Clarksburg,2
+MD,Montgomery,Damascus,2
+MD,Montgomery,Dickerson,1
+MD,Montgomery,Dickerson,2
+MD,Montgomery,Gaithersburg,1
+MD,Montgomery,Gaithersburg,2
+MD,Montgomery,Gaithersburg,3
+MD,Montgomery,Garrett Park,1
+MD,Montgomery,Germantown,2
+MD,Montgomery,Glen Echo,1
+MD,Montgomery,Highland,4
+MD,Montgomery,Kensington,1
+MD,Montgomery,Kensington,5
+MD,Montgomery,Laurel,4
+MD,Montgomery,Monrovia,2
+MD,Montgomery,Montgomery Village,2
+MD,Montgomery,Mount Airy,2
+MD,Montgomery,Olney,2
+MD,Montgomery,Olney,4
+MD,Montgomery,Poolesville,2
+MD,Montgomery,Potomac,1
+MD,Montgomery,Potomac,2
+MD,Montgomery,Potomac,3
+MD,Montgomery,Rockville,1
+MD,Montgomery,Rockville,2
+MD,Montgomery,Rockville,3
+MD,Montgomery,Rockville,4
+MD,Montgomery,Rockville,5
+MD,Montgomery,Sandy Spring,2
+MD,Montgomery,Sandy Spring,4
+MD,Montgomery,Silver Spring,4
+MD,Montgomery,Silver Spring,5
+MD,Montgomery,Spencerville,4
+MD,Montgomery,Takoma Park,5
+MD,Montgomery,Washington Grove,3
+MD,Montgomery,Woodbine,2
+MD,Prince George's,Accokeek,9
+MD,Prince George's,Adelphi,1
+MD,Prince George's,Adelphi,2
+MD,Prince George's,Adelphi,3
+MD,Prince George's,Andrews Afb,9
+MD,Prince George's,Aquasco,9
+MD,Prince George's,Beltsville,1
+MD,Prince George's,Beltsville,4
+MD,Prince George's,Berwyn Heights,3
+MD,Prince George's,Bladensburg,5
+MD,Prince George's,Bowie,4
+MD,Prince George's,Bowie,5
+MD,Prince George's,Bowie,6
+MD,Prince George's,Brandywine,9
+MD,Prince George's,Brentwood,2
+MD,Prince George's,Camp Springs,8
+MD,Prince George's,Camp Springs,9
+MD,Prince George's,Capitol Heights,5
+MD,Prince George's,Capitol Heights,6
+MD,Prince George's,Capitol Heights,7
+MD,Prince George's,Cheltenham,9
+MD,Prince George's,Cheverly,5
+MD,Prince George's,Chillum,2
+MD,Prince George's,Clinton,8
+MD,Prince George's,Clinton,9
+MD,Prince George's,College Park,1
+MD,Prince George's,College Park,3
+MD,Prince George's,College Park,4
+MD,Prince George's,Colmar Manor,5
+MD,Prince George's,Cottage City,5
+MD,Prince George's,District Heights,6
+MD,Prince George's,District Heights,7
+MD,Prince George's,Edmonston,5
+MD,Prince George's,Fairmount Heights,5
+MD,Prince George's,Fairmount Heights,7
+MD,Prince George's,Forest Heights,8
+MD,Prince George's,Forestville,6
+MD,Prince George's,Forestville,7
+MD,Prince George's,Forestville,9
+MD,Prince George's,Fort Washington,8
+MD,Prince George's,Fort Washington,9
+MD,Prince George's,Ft Washington,8
+MD,Prince George's,Glenarden,5
+MD,Prince George's,Glenn Dale,3
+MD,Prince George's,Glenn Dale,4
+MD,Prince George's,Glenn Dale,5
+MD,Prince George's,Greenbelt,3
+MD,Prince George's,Greenbelt,4
+MD,Prince George's,Hillcrest Heights,7
+MD,Prince George's,Hyattsville,1
+MD,Prince George's,Hyattsville,2
+MD,Prince George's,Hyattsville,3
+MD,Prince George's,Hyattsville,5
+MD,Prince George's,Landover,5
+MD,Prince George's,Landover,6
+MD,Prince George's,Landover,7
+MD,Prince George's,Landover Hills,3
+MD,Prince George's,Landover Hills,5
+MD,Prince George's,Lanham,3
+MD,Prince George's,Lanham,4
+MD,Prince George's,Lanham,5
+MD,Prince George's,Largo,5
+MD,Prince George's,Largo,6
+MD,Prince George's,Laurel,1
+MD,Prince George's,Laurel,4
+MD,Prince George's,Marlow Heights,7
+MD,Prince George's,Marlow Heights,8
+MD,Prince George's,Mitchellville,4
+MD,Prince George's,Mitchellville,5
+MD,Prince George's,Mitchellville,6
+MD,Prince George's,Mount Rainier,2
+MD,Prince George's,New Carrollton,3
+MD,Prince George's,North Brentwood,2
+MD,Prince George's,Oxon Hill,7
+MD,Prince George's,Oxon Hill,8
+MD,Prince George's,Riverdale,3
+MD,Prince George's,Riverdale,4
+MD,Prince George's,Riverdale,5
+MD,Prince George's,Seabrook,3
+MD,Prince George's,Seabrook,4
+MD,Prince George's,Seabrook,5
+MD,Prince George's,Seat Pleasant,5
+MD,Prince George's,Seat Pleasant,7
+MD,Prince George's,Silver Spring,1
+MD,Prince George's,Silver Spring,2
+MD,Prince George's,Suitland,7
+MD,Prince George's,Suitland,9
+MD,Prince George's,Takoma Park,2
+MD,Prince George's,Temple Hills,7
+MD,Prince George's,Temple Hills,8
+MD,Prince George's,Temple Hills,9
+MD,Prince George's,University Park,3
+MD,Prince George's,Upper Marlboro,4
+MD,Prince George's,Upper Marlboro,5
+MD,Prince George's,Upper Marlboro,6
+MD,Prince George's,Upper Marlboro,9
+MD,Prince George's,Waldorf,9
+MD,Prince George's,West Hyattsville,2
+MD,Queen Anne's,Barclay,
+MD,Queen Anne's,Centreville,
+MD,Queen Anne's,Chester,
+MD,Queen Anne's,Chestertown,
+MD,Queen Anne's,Church Hill,
+MD,Queen Anne's,Crumpton,
+MD,Queen Anne's,Grasonville,
+MD,Queen Anne's,Henderson,
+MD,Queen Anne's,Ingleside,
+MD,Queen Anne's,Marydel,
+MD,Queen Anne's,Millington,
+MD,Queen Anne's,Queen Anne,
+MD,Queen Anne's,Queenstown,
+MD,Queen Anne's,Stevensville,
+MD,Queen Anne's,Sudlersville,
+MD,Queen Anne's,Wye Mills,
+MD,Somerset,Chance,
+MD,Somerset,Crisfield,
+MD,Somerset,Dames Quarter,
+MD,Somerset,Deal Island,
+MD,Somerset,Eden,
+MD,Somerset,Ewell,
+MD,Somerset,Fairmount,
+MD,Somerset,Manokin,
+MD,Somerset,Marion Station,
+MD,Somerset,Pocomoke City,
+MD,Somerset,Princess Anne,
+MD,Somerset,Tylerton,
+MD,Somerset,Upper Fairmount,
+MD,Somerset,Upper Hill,
+MD,Somerset,Wenona,
+MD,Somerset,Westover,
+MD,St. Mary's,Abell,
+MD,St. Mary's,Avenue,
+MD,St. Mary's,Bushwood,
+MD,St. Mary's,California,
+MD,St. Mary's,Callaway,
+MD,St. Mary's,Chaptico,
+MD,St. Mary's,Charlotte Hall,
+MD,St. Mary's,Clements,
+MD,St. Mary's,Coltons Point,
+MD,St. Mary's,Dameron,
+MD,St. Mary's,Drayden,
+MD,St. Mary's,Great Mills,
+MD,St. Mary's,Helen,
+MD,St. Mary's,Hollywood,
+MD,St. Mary's,Leonardtown,
+MD,St. Mary's,Lexington Park,
+MD,St. Mary's,Loveville,
+MD,St. Mary's,Mechanicsville,
+MD,St. Mary's,Morganza,
+MD,St. Mary's,Park Hall,
+MD,St. Mary's,Patuxent River,
+MD,St. Mary's,Piney Point,
+MD,St. Mary's,Ridge,
+MD,St. Mary's,Saint Inigoes,
+MD,St. Mary's,Scotland,
+MD,St. Mary's,St Inigoes,
+MD,St. Mary's,Tall Timbers,
+MD,St. Mary's,Valley Lee,
+MD,Talbot,Bozman,
+MD,Talbot,Claiborne,
+MD,Talbot,Cordova,
+MD,Talbot,Easton,
+MD,Talbot,McDaniel,
+MD,Talbot,Neavitt,
+MD,Talbot,Newcomb,
+MD,Talbot,Oxford,
+MD,Talbot,Queen Anne,
+MD,Talbot,Royal Oak,
+MD,Talbot,Saint Michaels,
+MD,Talbot,Sherwood,
+MD,Talbot,St Michaels,
+MD,Talbot,Tilghman,
+MD,Talbot,Trappe,
+MD,Talbot,Wittman,
+MD,Talbot,Wye Mills,
+MD,Washington,Big Pool,
+MD,Washington,Boonsboro,
+MD,Washington,Brownsville,
+MD,Washington,Cascade,
+MD,Washington,Cavetown,
+MD,Washington,Chewsville,
+MD,Washington,Clear Spring,
+MD,Washington,Fairplay,
+MD,Washington,Funkstown,
+MD,Washington,Gapland,
+MD,Washington,Hagerstown,
+MD,Washington,Hancock,
+MD,Washington,Keedysville,
+MD,Washington,Knoxville,
+MD,Washington,Maugansville,
+MD,Washington,Middletown,
+MD,Washington,Rohrersville,
+MD,Washington,Sabillasville,
+MD,Washington,Saint James,
+MD,Washington,Sharpsburg,
+MD,Washington,Smithsburg,
+MD,Washington,Williamsport,
+MD,Wicomico,Bivalve,2
+MD,Wicomico,Delmar,1
+MD,Wicomico,Delmar,2
+MD,Wicomico,Delmar,3
+MD,Wicomico,Delmar,5
+MD,Wicomico,Eden,2
+MD,Wicomico,Fruitland,2
+MD,Wicomico,Hebron,1
+MD,Wicomico,Hebron,2
+MD,Wicomico,Mardela Springs,1
+MD,Wicomico,Mardela Springs,2
+MD,Wicomico,Nanticoke,2
+MD,Wicomico,Parsonsburg,3
+MD,Wicomico,Parsonsburg,5
+MD,Wicomico,Pittsville,3
+MD,Wicomico,Quantico,2
+MD,Wicomico,Salisbury,1
+MD,Wicomico,Salisbury,2
+MD,Wicomico,Salisbury,3
+MD,Wicomico,Salisbury,4
+MD,Wicomico,Salisbury,5
+MD,Wicomico,Sharptown,1
+MD,Wicomico,Sharptown,2
+MD,Wicomico,Tyaskin,2
+MD,Wicomico,Willards,3
+MD,Worcester,Berlin,
+MD,Worcester,Bishopville,
+MD,Worcester,Eden,
+MD,Worcester,Fruitland,
+MD,Worcester,Girdletree,
+MD,Worcester,Newark,
+MD,Worcester,Ocean City,
+MD,Worcester,Ocean Pines,
+MD,Worcester,Pocomoke City,
+MD,Worcester,Salisbury,
+MD,Worcester,Showell,
+MD,Worcester,Snow Hill,
+MD,Worcester,Stockton,
+MD,Worcester,Whaleyville,

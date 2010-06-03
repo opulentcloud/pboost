@@ -1,4 +1,26 @@
 class UsersController < ApplicationController
+	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select]
+
+	def populate_sd_select
+		@sds = @state.senate_districts
+		respond_to do |format|
+			format.json { render :text => SenateDistrict.to_json(@sds) }
+		end
+	end
+
+	def populate_hd_select
+		@hds = @state.house_districts
+		respond_to do |format|
+			format.json { render :text => HouseDistrict.to_json(@hds) }
+		end
+	end
+
+	def populate_cd_select
+		@cds = @state.congressional_districts
+		respond_to do |format|
+			format.json { render :text => CongressionalDistrict.to_json(@cds) }
+		end
+	end
 
 	def thanks
 	end
@@ -41,6 +63,11 @@ class UsersController < ApplicationController
 	end
 	
 	def signup
+	end
+
+private
+	def get_state
+		@state = State.find_by_abbrev(params[:state_abbrev].upcase)
 	end
 
 end

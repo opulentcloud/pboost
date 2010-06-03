@@ -93,3 +93,53 @@
 	end
 	#==== end populate states table data ====
 
+	#===== populate congressional_districts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/congressional_districts.csv", :headers => true)
+	data.each do |row|
+		s = State.find_by_abbrev(row[0])
+		CongressionalDistrict.find_or_create_by_cd_and_state_id(row[1], s.id)	
+	end
+	#===== end populate congressional_districts table data =====
+
+	#===== populate senate_districts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/senate_districts.csv", :headers => true)
+	data.each do |row|
+		s = State.find_by_abbrev(row[0])
+		SenateDistrict.find_or_create_by_sd_and_state_id(row[1], s.id)	
+	end
+	#===== end populate senate_districts table data =====
+
+	#===== populate house_districts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/house_districts.csv", :headers => true)
+	data.each do |row|
+		s = State.find_by_abbrev(row[0])
+		HouseDistrict.find_or_create_by_hd_and_state_id(row[1], s.id)	
+	end
+	#===== end populate house_districts table data =====
+
+	#===== populate council_districts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes.csv", :headers => true)
+	data.each do |row|
+		CouncilDistrict.find_or_create_by_code(row[2])
+	end
+	#===== end populate council_districts table data =====
+	
+	#===== populate counties table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes.csv", :headers => true)
+	data.each do |row|
+		s = State.find_by_abbrev(row[0])
+		County.find_or_create_by_name_and_state_id(row[1], s.id)	
+	end
+	#===== end populate counties table data =====
+	
+	#===== populate cities table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes_by_city.csv", :headers => true)
+	data.each do |row|
+		s = State.find_by_abbrev(row[0])
+		c = County.find_by_name_and_state_id(row[1],s.id)
+		cy = City.find_or_create_by_name_and_county_id(row[2], c.id)
+		cd = CouncilDistrict.find_by_code(row[3])
+		cy.council_districts << cd
+	end
+	#===== end populate counties table data =====
+	

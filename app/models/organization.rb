@@ -5,12 +5,15 @@ class Organization < ActiveRecord::Base
 	#===== CLASS ASSOCIATIONS ======
 	belongs_to :account_type
 	belongs_to :organization_type
-	has_many :users
-	has_many :political_campaigns
+	has_many :users, :dependent => :destroy
+	has_many :political_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :political_campaigns
 
 	has_many :federal_campaigns
 	accepts_nested_attributes_for :federal_campaigns	
+
+	has_many :state_campaigns
+	accepts_nested_attributes_for :state_campaigns	
 	
 	#===== CLASS VALIDATIONS =====
 validates_presence_of :organization_type_id, :name, :account_type_id

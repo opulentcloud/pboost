@@ -23,6 +23,30 @@ $(document).ready(function() {
  }
 );
 
+	function StateOptionsPopulate() {
+$('#user_organization_attributes_political_campaigns_attributes_0_cd').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_sd').children().remove();
+
+$('#user_organization_attributes_political_campaigns_attributes_0_cd').ajaxAddOption('/cd_populate/'+this.value+'.json', {}, false);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_sd').ajaxAddOption('/sd_populate/'+this.value+'.json', {}, false);
+
+	}
+
+	function StateOptionsShowHide() {
+		$('div#condist').hide();
+		$('div#sendist').hide();
+
+		if (this.value == "U.S. Congress") {
+			$('div#condist').css('display','inline');
+		} else {
+			if (this.value == "State Senate") {
+				$('div#sendist').css('display','inline');
+			}
+		}
+		
+	}
+
 	function SeatChange() {
 			$('div#fed_seats').hide();
 
@@ -62,7 +86,11 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ad
 	}
 	
 	}
+
+$('#user_organization_attributes_political_campaigns_attributes_0_state_abbrev').bind("change", StateOptionsPopulate);
 	$('#user_organization_attributes_political_campaigns_attributes_0_type').bind("change", SeatPopulate);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_seat_type').bind("change", StateOptionsShowHide);
 
 });
 

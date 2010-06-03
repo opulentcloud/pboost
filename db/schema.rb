@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100601183327) do
+ActiveRecord::Schema.define(:version => 20100602235536) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
@@ -18,6 +18,62 @@ ActiveRecord::Schema.define(:version => 20100601183327) do
   end
 
   add_index "account_types", ["name"], :name => "index_account_types_on_name", :unique => true
+
+  create_table "cities", :force => true do |t|
+    t.string   "name",       :limit => 64, :null => false
+    t.integer  "county_id",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cities", ["name", "county_id"], :name => "index_cities_on_name_and_county_id", :unique => true
+  add_index "cities", ["name"], :name => "index_cities_on_name"
+
+  create_table "cities_council_districts", :id => false, :force => true do |t|
+    t.integer  "city_id",             :null => false
+    t.integer  "council_district_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cities_council_districts", ["city_id"], :name => "index_cities_council_districts_on_city_id"
+  add_index "cities_council_districts", ["council_district_id"], :name => "index_cities_council_districts_on_council_district_id"
+
+  create_table "congressional_districts", :force => true do |t|
+    t.string   "cd",         :limit => 3, :null => false
+    t.integer  "state_id",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "congressional_districts", ["state_id", "cd"], :name => "index_congressional_districts_on_state_id_and_cd", :unique => true
+
+  create_table "council_districts", :force => true do |t|
+    t.string   "code",       :limit => 3
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "council_districts", ["code"], :name => "index_council_districts_on_code", :unique => true
+
+  create_table "counties", :force => true do |t|
+    t.string   "name",       :limit => 64, :null => false
+    t.integer  "state_id",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "counties", ["name"], :name => "index_counties_on_name"
+  add_index "counties", ["state_id", "name"], :name => "index_counties_on_state_id_and_name", :unique => true
+
+  create_table "house_districts", :force => true do |t|
+    t.string   "hd",         :limit => 3, :null => false
+    t.integer  "state_id",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "house_districts", ["state_id", "hd"], :name => "index_house_districts_on_state_id_and_hd", :unique => true
 
   create_table "organization_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
@@ -76,6 +132,15 @@ ActiveRecord::Schema.define(:version => 20100601183327) do
 
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
+
+  create_table "senate_districts", :force => true do |t|
+    t.string   "sd",         :limit => 3, :null => false
+    t.integer  "state_id",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "senate_districts", ["state_id", "sd"], :name => "index_senate_districts_on_state_id_and_sd", :unique => true
 
   create_table "states", :force => true do |t|
     t.string   "abbrev",     :limit => 2,                     :null => false

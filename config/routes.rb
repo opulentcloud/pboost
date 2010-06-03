@@ -13,6 +13,9 @@ ActionController::Routing::Routes.draw do |map|
 	map.with_options(:controller => 'users') do |site|
 		site.signup 'signup', :action => 'new'
 		site.thanks 'thanks', :action => 'thanks'
+		site.cd_populate 'cd_populate/:state_abbrev.:format', :action => 'populate_cd_select', :conditions => { :method => :get }
+		site.sd_populate 'sd_populate/:state_abbrev.:format', :action => 'populate_sd_select', :conditions => { :method => :get }
+		site.hd_populate 'hd_populate/:state_abbrev.:format', :action => 'populate_hd_select', :conditions => { :method => :get }
 	end
 	map.resources :users
 
