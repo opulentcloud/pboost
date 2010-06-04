@@ -1,10 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#   
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Major.create(:name => 'Daley', :city => cities.first)
 
 	#==== populate the organization_types table data =====
 	data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/organization_types.csv", :headers => false)
@@ -60,36 +53,14 @@
 	#==== populate states table data ====
 	data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/ZIPCODEWORLD-US-STATES.CSV", :headers => true)
 	data.each do |row|
-	s = State.find_or_create_by_abbrev_and_name(row[0], row[1])	
-	@disable = false
-	case s.abbrev
-	when 'AA' then 
-		@disable = true
-	when 'AE' then
-		@disable = true
-	when 'AP' then
-		@disable = true
-	when 'AS' then
-		@disable = true
-	when 'FM' then
-		@disable = true
-	when 'GU' then
-		@disable = true
-	when 'MH' then
-		@disable = true
-	when 'MP' then
-		@disable = true
-	when 'PR' then
-		@disable = true
-	when 'PW' then
-		@disable = true
-	when 'VI' then
-		@disable = true
-	end
-	if @disable
-		s.active = false
+		s = nil
+		s = State.find_by_abbrev(row[0])	
+		if s.nil?
+			s = State.create(:abbrev => row[0].to_s.upcase, :name => row[1].to_s.capitalize, :active=> row[2])
+		else
+			s.active = row[2]
+		end
 		s.save!
-	end
 	end
 	#==== end populate states table data ====
 

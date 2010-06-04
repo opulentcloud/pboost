@@ -21,13 +21,11 @@ ActiveRecord::Schema.define(:version => 20100604004145) do
 
   create_table "cities", :force => true do |t|
     t.string   "name",       :limit => 64, :null => false
-    t.integer  "county_id",                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cities", ["name", "county_id"], :name => "index_cities_on_name_and_county_id", :unique => true
-  add_index "cities", ["name"], :name => "index_cities_on_name"
+  add_index "cities", ["name"], :name => "index_cities_on_name", :unique => true
 
   create_table "cities_counties", :id => false, :force => true do |t|
     t.integer  "city_id",    :null => false
