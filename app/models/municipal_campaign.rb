@@ -5,7 +5,7 @@ class MunicipalCampaign < PoliticalCampaign
 
 	#===== VALIDATIONS =====
 	validates_presence_of :city_id, :message => 'City is not valid'
-	validates_inclusion_of :muniwide, :in => [true, false]
+	validates_inclusion_of :muniwide, :in => [true, false], 'Please choose yes or no'
 	
 	#===== CLASS METHODS =====
 	def self.create_from_political_campaign(political_campaign)
