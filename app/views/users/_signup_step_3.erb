@@ -53,6 +53,21 @@
 	<%= c_form.radio_button(:countywide, 'false', :class => '') -%> No
 </p>	
 
+<div id="notcountywide" style="display: none;">
+	<p><strong><%= c_form.label :council_district_id, '*Council District:' %></strong><br />
+	<%= c_form.select(:council_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+</div>
+
+<div id="muniseat" style="display: none;">	
+	<p><strong><%= c_form.label :city_id, '*Municipality:' %></strong><br />
+    <%= c_form.text_field :city_text, :class => '' -%>
+	&nbsp;<strong><%= c_form.label :muniwide, '*Is this a municipalwide race?:' -%></strong>	<%= c_form.radio_button(:muniwide, 'true', :class => '') -%> Yes &nbsp;
+	<%= c_form.radio_button(:muniwide, 'false', :class => '') -%> No
+</p>	
+
 </div>
 
 <% end %>

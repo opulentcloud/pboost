@@ -5,7 +5,7 @@ class CountyCampaign < PoliticalCampaign
 
 	#===== VALIDATIONS =====
 	validates_presence_of :county_id
-	validates_presence_of :countywide
+	validates_inclusion_of :countywide, :in => [true, false]
 	validates_presence_of :council_district_id, :if => Proc.new { |c| c.countywide == false }
 	
 	#===== CLASS METHODS =====
@@ -18,5 +18,6 @@ class CountyCampaign < PoliticalCampaign
 			:countywide => political_campaign.countywide,
 			:council_district_id => political_campaign.council_district_id)
 	end
+	
 end
 

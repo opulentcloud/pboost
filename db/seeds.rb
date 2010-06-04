@@ -120,7 +120,7 @@
 	#===== populate council_districts table data =====
 		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes.csv", :headers => true)
 	data.each do |row|
-		CouncilDistrict.find_or_create_by_code(row[2])
+		CouncilDistrict.find_or_create_by_code(row[2]) unless row[2].to_s == ''
 	end
 	#===== end populate council_districts table data =====
 	
@@ -128,7 +128,9 @@
 		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes.csv", :headers => true)
 	data.each do |row|
 		s = State.find_by_abbrev(row[0])
-		County.find_or_create_by_name_and_state_id(row[1], s.id)	
+		c = County.find_or_create_by_name_and_state_id(row[1], s.id)	
+		cd = CouncilDistrict.find_by_code(row[2])
+		c.council_districts << cd unless cd.nil? | c.council_districts.exists?(cd)
 	end
 	#===== end populate counties table data =====
 	
@@ -136,10 +138,10 @@
 		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/comm_dist_codes_by_city.csv", :headers => true)
 	data.each do |row|
 		s = State.find_by_abbrev(row[0])
-		c = County.find_by_name_and_state_id(row[1],s.id)
-		cy = City.find_or_create_by_name_and_county_id(row[2], c.id)
-		cd = CouncilDistrict.find_by_code(row[3])
-		cy.council_districts << cd
+		county = County.find_by_name_and_state_id(row[1],s.id)
+		city = City.find_or_create_by_name(row[2])
+		city.states << s unless s.nil? || city.states.exists?(s)
+		city.counties << county unless county.nil? || city.counties.exists?(city)
 	end
-	#===== end populate counties table data =====
+	#===== end populate cities table data =====
 	

@@ -5,7 +5,8 @@ class County < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	belongs_to :state
-	has_many :cities
+	has_and_belongs_to_many :cities
+	has_and_belongs_to_many :council_districts
 
 	#===== CLASS METHODS ======
 	def self.to_json(counties)

@@ -17,6 +17,9 @@ class Organization < ActiveRecord::Base
 
 	has_many :county_campaigns
 	accepts_nested_attributes_for :county_campaigns	
+
+	has_many :municipal_campaigns
+	accepts_nested_attributes_for :municipal_campaigns	
 	
 	#===== CLASS VALIDATIONS =====
 validates_presence_of :organization_type_id, :name, :account_type_id

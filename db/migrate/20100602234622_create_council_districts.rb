@@ -1,7 +1,7 @@
 class CreateCouncilDistricts < ActiveRecord::Migration
   def self.up
     create_table :council_districts do |t|
-      t.string :code, :limit => 3
+      t.string :code, :limit => 3, :null => false
 
       t.timestamps
     end

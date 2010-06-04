@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100602235536) do
+ActiveRecord::Schema.define(:version => 20100604004145) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
@@ -29,15 +29,25 @@ ActiveRecord::Schema.define(:version => 20100602235536) do
   add_index "cities", ["name", "county_id"], :name => "index_cities_on_name_and_county_id", :unique => true
   add_index "cities", ["name"], :name => "index_cities_on_name"
 
-  create_table "cities_council_districts", :id => false, :force => true do |t|
-    t.integer  "city_id",             :null => false
-    t.integer  "council_district_id", :null => false
+  create_table "cities_counties", :id => false, :force => true do |t|
+    t.integer  "city_id",    :null => false
+    t.integer  "county_id",  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cities_council_districts", ["city_id"], :name => "index_cities_council_districts_on_city_id"
-  add_index "cities_council_districts", ["council_district_id"], :name => "index_cities_council_districts_on_council_district_id"
+  add_index "cities_counties", ["city_id"], :name => "index_cities_counties_on_city_id"
+  add_index "cities_counties", ["county_id"], :name => "index_cities_counties_on_county_id"
+
+  create_table "cities_states", :id => false, :force => true do |t|
+    t.integer  "city_id",    :null => false
+    t.integer  "state_id",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cities_states", ["city_id"], :name => "index_cities_states_on_city_id"
+  add_index "cities_states", ["state_id"], :name => "index_cities_states_on_state_id"
 
   create_table "congressional_districts", :force => true do |t|
     t.string   "cd",         :limit => 3, :null => false
@@ -49,12 +59,22 @@ ActiveRecord::Schema.define(:version => 20100602235536) do
   add_index "congressional_districts", ["state_id", "cd"], :name => "index_congressional_districts_on_state_id_and_cd", :unique => true
 
   create_table "council_districts", :force => true do |t|
-    t.string   "code",       :limit => 3
+    t.string   "code",       :limit => 3, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "council_districts", ["code"], :name => "index_council_districts_on_code", :unique => true
+
+  create_table "council_districts_counties", :id => false, :force => true do |t|
+    t.integer  "county_id",           :null => false
+    t.integer  "council_district_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "council_districts_counties", ["council_district_id"], :name => "index_council_districts_counties_on_council_district_id"
+  add_index "council_districts_counties", ["county_id"], :name => "index_council_districts_counties_on_county_id"
 
   create_table "counties", :force => true do |t|
     t.string   "name",       :limit => 64, :null => false

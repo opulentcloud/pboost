@@ -9,6 +9,9 @@ class PoliticalCampaign < ActiveRecord::Base
 		[ "Municipal",		"MunicipalCampaign" ]
 	]
 
+	#==== PROPERTIES =====
+	attr_accessor :city_text
+
 	#==== ASSOCIATIONS ====
 	belongs_to :organization
 	has_many :users, :through => :organization
@@ -19,12 +22,18 @@ class PoliticalCampaign < ActiveRecord::Base
 
 	#===== EVENTS ======
 	def before_validation
-		self.congressional_district_id == nil if self.congressional_district_id.blank?
-		self.senate_district_id = nil if self.senate_district_id.blank?
-		self.house_district_id = nil if self.house_district_id.blank?
-		self.council_district_id = nil if self.council_district_id.blank?
+		if !self.city_text.blank?
+			self.city_id = City.find_by_name(self.city_text)
+		end
+
+		self.congressional_district_id == nil if self.congressional_district_id.blank? || self.seat_type != 'U.S. Congress'
+		self.senate_district_id = nil if self.senate_district_id.blank? || self.seat_type != 'State Senate'
+		self.house_district_id = nil if self.house_district_id.blank? || self.seat_type != 'State House'
+		self.county_id = nil if self.county_id.blank? || self.type != 'CountyCampaign'
 		self.countywide = false if self.type != 'CountyCampaign'
+		self.council_district_id = nil if (self.council_district_id.blank? || self.type != 'CountyCampaign' || self.countywide == true)
 		self.muniwide = false if self.type != 'MunicipalCampaign'
+		self.city_id = nil if self.city_id.blank? || self.type != 'MunicipalCampaign'
 		true
 	end
 

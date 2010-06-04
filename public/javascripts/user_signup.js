@@ -25,10 +25,19 @@ $(document).ready(function() {
  }
 );
 
+	function CountyOptionsPopulate() {
+	$('#user_organization_attributes_political_campaigns_attributes_0_council_district_id').children().remove();
+
+$('#user_organization_attributes_political_campaigns_attributes_0_council_district_id').ajaxAddOption('/council_districts_populate/'+this.value+'.json', {}, false);
+	
+	}
+
 	function StateOptionsPopulate() {
 $('#user_organization_attributes_political_campaigns_attributes_0_congressional_district_id').children().remove();
 $('#user_organization_attributes_political_campaigns_attributes_0_senate_district_id').children().remove();
 $('#user_organization_attributes_political_campaigns_attributes_0_house_district_id').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_county_id').children().remove();
+$('#user_organization_attributes_political_campaigns_attributes_0_city_id').children().remove();
 
 $('#user_organization_attributes_political_campaigns_attributes_0_congressional_district_id').ajaxAddOption('/cd_populate/'+this.value+'.json', {}, false);
 
@@ -38,6 +47,18 @@ $('#user_organization_attributes_political_campaigns_attributes_0_house_district
 
 $('#user_organization_attributes_political_campaigns_attributes_0_county_id').ajaxAddOption('/counties_populate/'+this.value+'.json', {}, false);
 
+$('#user_organization_attributes_political_campaigns_attributes_0_city_id').ajaxAddOption('/cities_populate/'+this.value+'.json', {}, false);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_city_text').autocomplete({ url: '/cities_populate/'+this.value+'.js', minChars: 3});
+
+	}
+
+	function CountyOptionsShowHide() {
+		$('div#notcountywide').hide();
+
+		if (this.value == "false") {
+			$('div#notcountywide').css('display','inline');
+		}
 	}
 
 	function StateOptionsShowHide() {
@@ -59,6 +80,7 @@ $('#user_organization_attributes_political_campaigns_attributes_0_county_id').aj
 		haveSeat = true;
 		$('div#seattype').hide();
 		$('div#countyseat').hide();
+		$('div#muniseat').hide();
 		
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').children().remove();
 
@@ -82,6 +104,8 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ad
 		askSeat = true;
 	} else if (this.value == "CountyCampaign") {
 		$('div#countyseat').css('display','inline');
+	} else if (this.value == "MunicipalCampaign") {
+		$('div#muniseat').css('display','inline');
 	}
 	
 	if (askSeat) {
@@ -94,6 +118,12 @@ $('#user_organization_attributes_political_campaigns_attributes_0_state_id').bin
 	$('#user_organization_attributes_political_campaigns_attributes_0_type').bind("change", SeatPopulate);
 
 $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').bind("change", StateOptionsShowHide);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_county_id').bind("change", CountyOptionsPopulate);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_countywide_true').bind("click", CountyOptionsShowHide);
+
+$('#user_organization_attributes_political_campaigns_attributes_0_countywide_false').bind("click", CountyOptionsShowHide);
 
 });
 

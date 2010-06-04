@@ -8,4 +8,14 @@ class CouncilDistrict < ActiveRecord::Base
 	has_many :counties, :through => :cities
 	has_many :states, :through => :counties
 
+	#===== CLASS METHODS ======
+	def self.to_json(council_districts)
+		s = "{\"\" : \"Please choose\",\n"
+		council_districts.each do |c|
+			s += "\"#{c.id}\" : \"#{c.code}\",\n"
+		end
+		s = s[0,s.length-2]
+		s += "}"
+	end
+
 end

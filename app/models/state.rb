@@ -10,8 +10,7 @@ class State < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	has_many :counties
-	has_many :cities, :through => :counties
-	has_many :council_districts, :through => :cities
+	has_and_belongs_to_many :cities
 	has_many :congressional_districts
 	has_many :senate_districts
 	has_many :house_districts

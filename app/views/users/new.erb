@@ -1,5 +1,7 @@
 <%=title 'Signup' %>
-<%=javascript 'jquery-1.4.2', 'jquery.history', 'jquery.form', 'jquery.validate', 'jquery.form.wizard-2.0.0-RC4', 'jquery.selectboxes', 'user_signup' %>
+<%=javascript 'jquery-1.4.2', 'jquery.history', 'jquery.form', 'jquery.validate', 'jquery.form.wizard-2.0.0-RC4', 'jquery.selectboxes', 'jquery.autocomplete', 'user_signup' %>
+
+<%=stylesheet 'jquery.autocomplete' %>
 
 <% form_for @user, :url => {:controller => 'users', :action => 'create'} do |form| %>
 	<%= render :partial => 'signup_form', :locals => { :form => form } %>

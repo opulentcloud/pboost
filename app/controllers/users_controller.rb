@@ -1,5 +1,26 @@
 class UsersController < ApplicationController
-	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select]
+	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select]
+
+	def populate_cities_select
+		if params[:q].blank?
+			@cities = @state.cities
+		else
+			@cities = @state.cities.all(:conditions => ['name like ?', params[:q] + '%'])
+		end
+		
+		respond_to do |format|
+			format.json { render :text => City.to_json(@cities) }
+			format.js 
+		end
+	end	
+
+	def populate_council_districts_select
+		@county = County.find(params[:county_id].to_i)
+		@council_districts = @county.council_districts
+		respond_to do |format|
+			format.json { render :text => CouncilDistrict.to_json(@council_districts) }
+		end
+	end
 
 	def populate_counties_select
 		@counties = @state.counties
@@ -39,7 +60,7 @@ class UsersController < ApplicationController
 	end
 
 	def create
-	#debugger
+	debugger
     @user = User.new(params[:user])
 		@user.organization.account_type = AccountType.find_by_name('Pre-Pay')
 		@user.roles << Role.find_by_name('Customer')
@@ -52,6 +73,8 @@ class UsersController < ApplicationController
 			@user.organization.state_campaigns << StateCampaign.create_from_political_campaign(@political_campaign)
 		when 'CountyCampaign' then 
 			@user.organization.county_campaigns << CountyCampaign.create_from_political_campaign(@political_campaign)
+		when 'MunicipalCampaign' then 
+			@user.organization.municipal_campaigns << MunicipalCampaign.create_from_political_campaign(@political_campaign)
 		end
 
 		@user.organization.political_campaigns.first.destroy

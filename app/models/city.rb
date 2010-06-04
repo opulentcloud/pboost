@@ -4,8 +4,17 @@ class City < ActiveRecord::Base
 	default_scope :order => 'cities.name'
 
 	#====== ASSOCIATIONS ======
-	belongs_to :county
-	has_one :state, :through => :county
-	has_and_belongs_to_many :council_districts
+	has_and_belongs_to_many :counties
+	has_and_belongs_to_many :states
+
+	#===== CLASS METHODS ======
+	def self.to_json(cities)
+		st = "{\"\" : \"Please choose\",\n"
+		cities.each do |c|
+			st += "\"#{c.id}\" : \"#{c.name}\",\n"
+		end
+		st = st[0,st.length-2]
+		st += "}"
+	end
 
 end
