@@ -16,6 +16,7 @@ class CreateOrganizations < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :organizations, :email, :unique => true
 add_foreign_key :organizations, :organization_type_id, :organization_types, 'ON DELETE RESTRICT'
 add_foreign_key :organizations, :account_type_id, :account_types, 'ON DELETE RESTRICT'    
   end
