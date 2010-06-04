@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 	end
 
 	def create
-	debugger
+	#debugger
     @user = User.new(params[:user])
 		@user.organization.account_type = AccountType.find_by_name('Pre-Pay')
 		@user.roles << Role.find_by_name('Customer')

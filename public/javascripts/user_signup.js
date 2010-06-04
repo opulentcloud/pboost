@@ -16,27 +16,27 @@ $(document).ready(function() {
       		"step_1" : {
       			"success" : function(data,textStatus){
 							if (data == 'success'){
-								$("#flash_error").html("");
+								$("#flash_error").remove();
 								return true;
 							} else {	
-		      			$("#flash_error").html(data);
+		      			//$("#flash_error").html(data);
   	    				return false;
   	    			}
       			},
       		"dataType" : "script",
-      		"url" : "/validate/signup/1"},
+      		"url" : "/validate/signup/1.js"},
       		"step_2" : {
       			"success" : function(data,textStatus){
 							if (data == 'success'){
-								$("#flash_error").html("");
+								$("#flash_error").remove();
 								return true;
 							} else {	
-		      			$("#flash_error").html(data);
+		      			//$("#flash_error").html(data);
   	    				return false;
   	    			}
       			},
       		"dataType" : "script",
-      		"url" : "/validate/signup/2"}
+      		"url" : "/validate/signup/2.js"}
       	}
       },
  {
