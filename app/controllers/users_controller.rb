@@ -90,7 +90,7 @@ class UsersController < ApplicationController
       	format.html { render :action => 'new' }
 				format.js { 
 					flash.now[:error] = @user.errors
-					if @user.errors.size = 0
+					if @user.errors.nil?
 						flash.now[:error] = @user.errors.add_to_base('Your account could not be created at this time.')
 					end
 					logger.debug(flash[:error].each_full { |msg| msg }.join('\n'))
