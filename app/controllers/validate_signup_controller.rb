@@ -21,7 +21,7 @@ class ValidateSignupController < ApplicationController
 		@user.attributes = params[:user]
 
 		if @user.valid_for_attributes? 'first_name','last_name','phone_area_code', 'phone_prefix', 'phone_suffix','email','login','password','password_confirmation','time_zone_id'
-			session[:sstep_2] = params
+			#session[:sstep_2] = params
 			visited_steps.push(2)
 			render :text => 'success'
 		else
@@ -42,7 +42,7 @@ class ValidateSignupController < ApplicationController
 		@organization.attributes = params[:user][:organization_attributes]
 
 		if @organization.valid_for_attributes? 'organization_type_id','name','email','phone_area_code', 'phone_prefix', 'phone_suffix','fax_area_code','fax_prefix','fax_suffix', 'website'
-			session[:sstep_1] = params
+			#session[:sstep_1] = params
 			visited_steps.push(1)
 			render :text => 'success'
 		else
