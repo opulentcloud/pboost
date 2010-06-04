@@ -26,7 +26,8 @@ class ValidateSignupController < ApplicationController
 			render :text => 'success'
 		else
 			#render :text => @user.errors.each_full{ |msg| puts msg }
-			flash.now[:error] = @user.errors.each_full { |m| puts "#{m}" }.join('<br />')
+			#flash.now[:error] = @user.errors.each_full { |m| puts "#{m}" }.join('<br />')
+			flash.now[:error] = @user.errors
 			respond_to do |format|
 				format.html
 				format.js
@@ -46,7 +47,8 @@ class ValidateSignupController < ApplicationController
 			render :text => 'success'
 		else
 			#render :text => @organization.errors.each_full{ |msg| puts msg }
-			flash.now[:error] = @organization.errors.each_full { |m| puts "#{m}" }.join('<br />')
+			#flash.now[:error] = @organization.errors.each_full { |m| puts "<li>#{m}</li>" }.join()
+			flash.now[:error] = @organization.errors
 			respond_to do |format|
 				format.html
 				format.js 

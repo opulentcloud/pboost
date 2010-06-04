@@ -12,11 +12,16 @@ $(document).ready(function() {
 	  formPluginEnabled: true, 
 	  validationEnabled : true,
 	  focusFirstInput : true,
+    afterBack : function(wizardData){
+				$("#flash_error").remove();
+				$("#errorExplanation").remove();
+    	},
       	serverSideValidationUrls : {
       		"step_1" : {
       			"success" : function(data,textStatus){
 							if (data == 'success'){
 								$("#flash_error").remove();
+								$("#errorExplanation").remove();
 								return true;
 							} else {	
 		      			//$("#flash_error").html(data);
@@ -29,6 +34,7 @@ $(document).ready(function() {
       			"success" : function(data,textStatus){
 							if (data == 'success'){
 								$("#flash_error").remove();
+								$("#errorExplanation").remove();								
 								return true;
 							} else {	
 		      			//$("#flash_error").html(data);
