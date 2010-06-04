@@ -13,13 +13,13 @@
 </p>
 
 <p><strong><%= form.label :phone, '*Phone:' %></strong><br />
-	<%= form.text_field :phone_area_code, { :maxlength => '3', :class => '', :size => '3' } %> -
-  <%= form.text_field :phone_prefix, { :maxlength => '3', :class => '', :size => '3' } %> -
-	<%= form.text_field :phone_suffix, { :maxlength => '4', :class => 'required', :size => '4' } %>
+	<%= form.text_field :phone_area_code, { :maxlength => '3', :class => 'required', :size => '3', :minlength => '3' } %> -
+  <%= form.text_field :phone_prefix, { :maxlength => '3', :class => 'required', :size => '3', :minlength => '3' } %> -
+	<%= form.text_field :phone_suffix, { :maxlength => '4', :class => 'required', :size => '4', :minlength => '4' } %>
 </p>
 
 <p><strong><%= form.label :email, '*Email:' %></strong><br />
-    <%= form.text_field :email, :size => 50, :class => 'required' %>
+    <%= form.text_field :email, :size => 50, :class => 'required email' %>
 </p>
 	    
 <p><strong><%= form.label :login, '*Login:' %></strong><br />
@@ -31,7 +31,7 @@
 </p>
 
 <p><strong><%= form.label :password_confirmation, '*Retype Password:' %></strong><br />
-  <%= form.password_field :password_confirmation, :size => 40, :class => 'required' %>
+  <%= form.password_field :password_confirmation, :size => 40, :class => 'required', :equalTo => '#user_password' %>
 </p>
 
 <p><strong><%= form.label :time_zone_id, '*Choose Your Local Time Zone:' %></strong><br />

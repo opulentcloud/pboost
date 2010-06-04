@@ -1,4 +1,4 @@
-$("#flash_error").remove();
+$("#flash_error").html('');
 
 $("#new_user").before('<div id="flash_notice"><%= escape_javascript(flash.delete(:notice)) %></div>')
 

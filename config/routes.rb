@@ -2,6 +2,10 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.root :controller => 'site'
 
+	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
+		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
+	end
+
 	# User Session URLs
 	map.with_options(:controller => 'user_sessions') do |site|
 		site.login 'login', :action => 'new', :url => '/login', :conditions => {:method => :get}

@@ -11,9 +11,42 @@ $(document).ready(function() {
 	  historyEnabled : true, 
 	  formPluginEnabled: true, 
 	  validationEnabled : true,
-	  focusFirstInput : true},
+	  focusFirstInput : true,
+      	serverSideValidationUrls : {
+      		"step_1" : {
+      			"success" : function(data,textStatus){
+							if (data == 'success'){
+								$("#flash_error").html("");
+								return true;
+							} else {	
+		      			$("#flash_error").html(data);
+  	    				return false;
+  	    			}
+      			},
+      		"dataType" : "script",
+      		"url" : "/validate/signup/1"},
+      		"step_2" : {
+      			"success" : function(data,textStatus){
+							if (data == 'success'){
+								$("#flash_error").html("");
+								return true;
+							} else {	
+		      			$("#flash_error").html(data);
+  	    				return false;
+  	    			}
+      			},
+      		"dataType" : "script",
+      		"url" : "/validate/signup/2"}
+      	}
+      },
  {
    //validation settings
+   rules: {
+   	user_organization_attributes_phone_area_code: {
+   		required: true,
+   		minlength: 3
+   	}
+   }
  },
  {
    // form plugin settings

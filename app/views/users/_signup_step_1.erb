@@ -15,23 +15,23 @@
 </p>
 
 <p><strong><%= org_form.label :email, '*Organization Email:' %></strong><br />
-	<%= org_form.text_field :email, :size => 50, :class => 'required' %>
+	<%= org_form.text_field :email, :size => 50, :class => 'required email' %>
 </p>
 
 <p><strong><%= org_form.label :phone, '*Phone:' %></strong><br />
-	<%= org_form.text_field :phone_area_code, { :maxlength => '3', :class => '', :size => '3' } %> -
-  <%= org_form.text_field :phone_prefix, { :maxlength => '3', :class => '', :size => '3' } %> -
-	<%= org_form.text_field :phone_suffix, { :maxlength => '4', :class => 'required', :size => '4' } %>
+	<%= org_form.text_field :phone_area_code, { :maxlength => '3', :class => 'required', :size => '3', :minlength => '3' } %> -
+  <%= org_form.text_field :phone_prefix, { :maxlength => '3', :class => 'required', :size => '3', :minlength => '3' } %> -
+	<%= org_form.text_field :phone_suffix, { :maxlength => '4', :class => 'required', :size => '4', :minlength => 4 } %>
 </p>
 
 <p><strong><%= org_form.label :fax, 'Fax:' %></strong><br />
-	<%= org_form.text_field :fax_area_code, { :maxlength => '3', :class => '', :size => '3' } %> -
-  <%= org_form.text_field :fax_prefix, { :maxlength => '3', :class => '', :size => '3' } %> -
-	<%= org_form.text_field :fax_suffix, { :maxlength => '4', :class => '', :size => '4' } %>
+	<%= org_form.text_field :fax_area_code, { :maxlength => '3', :class => '', :size => '3', :minlength => '3' } %> -
+  <%= org_form.text_field :fax_prefix, { :maxlength => '3', :class => '', :size => '3', :minlength => 3 } %> -
+	<%= org_form.text_field :fax_suffix, { :maxlength => '4', :class => '', :size => '4', :minlength => '4' } %>
 </p>
 
 <p><strong><%= org_form.label :website, 'Website:' %></strong><br />
-	<%= org_form.text_field :website, :size => 40, :class => '' %>
+	<%= org_form.text_field :website, :size => 40, :class => 'url' %>
 </p>
 
 <% end %>
