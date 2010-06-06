@@ -1,5 +1,62 @@
 class UsersController < ApplicationController
+	before_filter :require_user, :only => [:index, :show, :update, :destroy]
+	before_filter :get_user, :only => [:show, :edit, :update, :destroy]
 	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select]
+
+  # PUT /users/1
+  # PUT /users/1.xml
+  def update
+
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        flash[:notice] = 'User was successfully updated.'
+        format.html { redirect_to(@user) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /users/1
+  # DELETE /users/1.xml
+  def destroy
+    @user.destroy
+
+    respond_to do |format|
+      flash[:notice] = 'User was successfully deleted.'
+      format.html { redirect_to(users_url) }
+      format.xml  { head :ok }
+    end
+  end
+
+	def edit
+		render :edit, :layout => 'admin'
+	end
+
+  # GET /users/1
+  # GET /users/1.xml
+  def show
+
+    respond_to do |format|
+      format.html { render :show, :layout => 'admin' }
+      format.xml  { render :xml => @user }
+    end
+  end
+
+  # GET /users
+  # GET /users.xml
+  def index
+  	pg = params[:page] ||= 1
+    @users = User.paginate :page => pg, :per_page => 10
+
+    respond_to do |format|
+      format.html { render :index, :layout => 'admin' }
+      format.xml  { render :xml => @users }
+    end
+  end
+
 
 	def populate_municipal_districts_select
 		@city = @state.cities.find_by_name(params[:city])
@@ -117,5 +174,14 @@ private
 	def get_state
 		@state = State.find(params[:state_id].to_i)
 	end
+
+	def get_user
+		begin
+	    @user = User.find(params[:id])
+	  rescue ActiveRecord::RecordNotFound
+	  	flash.now[:error] = 'User record was not found.'
+	  	@user = User.new
+	  end   
+	end 
 
 end

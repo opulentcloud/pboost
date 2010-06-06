@@ -234,6 +234,16 @@ background: #fff bottom no-repeat;
 padding-bottom: 0px;
 }
 
+div#contentAdminMain {
+width: width 100%;
+float: left;
+}
+
+div#contentAdminMain div {
+background: #fff bottom no-repeat;
+padding-bottom: 0px;
+}
+
 /* sidebar */
 
 div#sidebar {

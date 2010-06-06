@@ -15,16 +15,8 @@
 <!-- end logoMain -->
 <div id="navMain">
 <ul> 
-<li><a href="/index.html">Home</a></li>
-<li><a href="/aboutus.html">About</a></li>
-<li><a href="/services.html">Services</a></li>
-<li><a href="/requestquote.html">Quote</a></li>
-<li><a href="/contactus.html">Contact</a></li>
-<% if current_user.nil? %>
-<%= li_navigation_tag('users', 'new') %><%=link_to 'Signup', signup_url -%></li>
-<% else %>
-<%= li_navigation_tag('customer|admin', 'index') %><%=link_to 'Control Panel', which_control_panel -%></li>
-<% end %>
+<%= li_navigation_tag('users', 'index') %><%=link_to 'Manage Users', users_url -%></li>
+<%= li_navigation_tag('admin', 'index') %><%=link_to 'Control Panel', admin_control_panel_url -%></li>
 <%= li_navigation_tag('user_sessions', 'new') %>
 	<% if current_user.nil? %>
 		<%= link_to('Login', login_url) -%>
@@ -39,7 +31,7 @@
 
 <div id="contentWrapper">
 
-<div id="contentAppMain">
+<div id="contentAdminMain">
 <div id="content_body">
     <%- flash.each do |name, msg| -%>
       <%= content_tag :div, msg, :id => "flash_#{name}" %>

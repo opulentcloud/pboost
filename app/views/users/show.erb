@@ -1,0 +1,90 @@
+<%=title 'User: '+@user.full_name %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="7" align="center">
+
+	<tr>
+		<td width="200" align="right">
+			&nbsp;
+		</td>
+    <td width="400">
+    	<% if @user.active? %>
+    		<span style="color: green">Activated</span>
+    	<% else %>	
+	    	<span style="color: red">Disabled</span>
+    	<% end %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+			Organization:
+		</td>
+    <td width="400">
+	    <%=link_to @user.organization.name, organization_path(@user.organization.id) rescue nil %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+	    Login:
+		</td>
+    <td width="400">
+	    <%=h @user.login %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+	    Email:
+		</td>
+    <td width="400">
+	    <%=h @user.email %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+	    Phone:
+		</td>
+    <td width="400">
+				<%=format_phone_number @user.phone %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+			Roles:
+		</td>
+    <td width="400">
+		  <%=h @user.roles.map(&:name).join(', ') %>
+		</td>
+	</tr>
+	<tr>
+		<td width="600" colspan="2" align="left">
+			<hr />
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+			Last Logged In:
+		</td>
+    <td width="400">
+		  <%=h format_date_time @user.current_login_at %> from ip <%= @user.current_login_ip %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+			Login Count:
+		</td>
+    <td width="400">
+		  <%=h @user.login_count %>
+		</td>
+	</tr>
+	<tr>
+		<td width="200" align="right">
+			Failed Login Count:
+		</td>
+    <td width="400">
+		  <%=h @user.failed_login_count %>
+		</td>
+	</tr>
+</table>
+
+

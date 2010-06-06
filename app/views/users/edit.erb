@@ -1,0 +1,20 @@
+<%=title 'Edit User' %>
+<%= render :partial => 'nav_menu' %>
+<% form_for(@user) do |f| %>
+
+<table width="600" border="0" cellspacing="0" cellpadding="7" align="center">
+	<%= render :partial => 'form', :locals => { :f => f } %>
+
+	<tr>
+		<td width="200" align="right">
+			&nbsp;
+		</td>
+    <td width="400">
+			<%= f.submit 'Update User' %> 
+		</td>
+	</tr>
+
+</table>
+
+<% end %>
+

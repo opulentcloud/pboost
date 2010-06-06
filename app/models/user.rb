@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
 		phone[6,4]
 	end
 
+	def full_name
+		"#{first_name} #{last_name}".strip
+	end
+
 	#====== EVENTS ======
 	def before_validation
 		begin

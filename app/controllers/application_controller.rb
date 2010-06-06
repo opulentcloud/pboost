@@ -77,18 +77,13 @@ private
 		@user = User.find_by_login(login)
 		#save users name for display upon return to login screen
 		cookies[:first_name] = { :value => ", #{@user.first_name}", :expires => 6.months.from_now }
-		retval = customer_control_panel_url
-		#retval = case @user.user_type
-		#	when 'Admin' then control_panel_url
-		#	when 'Employee' then control_panel_url
-		#	when 'Customer' then 
-		#		if @user.organization.pboost?
-		#			customer_voters_url
-		#		else	
-		#			customer_campaigns_url
-		#		end
-		#	else root_url
-		#end
+
+		if @user.roles.map(&:name).include?('Administrator')
+			retval = admin_control_panel_url
+		elsif @user.roles.map(&:name).include?('Customer')
+			retval = customer_control_panel_url
+		end
+
 		redirect_back_or_default retval
 	end
 

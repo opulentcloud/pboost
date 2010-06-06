@@ -1,0 +1,31 @@
+	<table border='0' cellpadding='6' cellspacing='0' width="100%">
+			<tr><td align=left colspan='8'><b><%=pluralize(@users.total_entries, "Record Found") %></b></td></tr>
+			<tr align='left'>
+			<th align="center">UserId</th>
+			<% if current_controller == 'users' %>
+			<th align="center">Organization</th>
+			<% end %>
+			<th align="center">Name</th>
+      <th align="center">Login</th>
+      <th v>Email</th>
+      <th align="center">Phone</th>
+      <th align="center">Activated</th>
+      <th align="center">&nbsp;</th>
+		</tr>
+		<% @users.each do |user| %>
+		<tr>
+			<td align="center"><%= user.id %></td>
+			<% if current_controller == 'users' %>
+			<td align="center"><%=link_to user.organization.name, organization_path(user.organization.id) rescue nil %></td>
+			<% end %>
+			<td align="center"><%=link_to user.full_name, user %></td>
+			<td align="center"><%=h user.login %></td>
+			<td align="center"><%=h user.email %></td>
+			<td align="center"><%=format_phone_number user.phone %></td>
+			<td align="center"><%=h user.active? ? 'Yes' : 'No' %></td>
+			<td align="center"><%= link_to 'Edit', edit_user_path(user) %></td>
+		</tr>
+		<% end %>
+	</table>
+	<%= will_paginate @users %>
+

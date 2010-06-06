@@ -2,6 +2,8 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.root :controller => 'site'
 
+	map.admin_control_panel 'control_panel', :controller => 'admin', :action => 'index', :path_prefix => '/admin'
+
 	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
@@ -12,6 +14,8 @@ ActionController::Routing::Routes.draw do |map|
 		site.login 'login', :action => 'create', :url => '/login', :conditions => {:method => :post}
 		site.logout 'logout', :action => 'destroy', :url => '/logout'
 	end
+
+	map.resources :organizations, :path_prefix => '/admin'
 
 	#user signups and users resources
 	map.with_options(:controller => 'users') do |site|
@@ -25,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
 		site.cities_populate 'cities_populate/:state_id.:format', :action => 'populate_cities_select', :conditions => { :method => :get }
 		site.municipal_districts_populate 'municipal_districts_populate/:state_id/:city.:format', :action => 'populate_municipal_districts_select', :conditions => { :method => :get }
 	end
-	map.resources :users
+	map.resources :users, :path_prefix => '/admin'
 
 	map.customer_control_panel 'control_panel', :controller => 'customer', :action => 'index', :path_prefix => '/customer'
 
