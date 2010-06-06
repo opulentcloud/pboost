@@ -5,7 +5,7 @@ class CreatePoliticalCampaigns < ActiveRecord::Migration
       t.string :seat_sought, :limit => 128
       t.references :state, :null => false
       t.string :type, :limit => 20
-      t.string :seat_type, :limit => 15
+      t.string :seat_type, :limit => 20
       t.references :congressional_district
       t.references :senate_district
       t.references :house_district

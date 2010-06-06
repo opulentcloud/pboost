@@ -2,8 +2,12 @@ class StateCampaign < PoliticalCampaign
 
 	SEAT_TYPES = [
 		#Displayed				stored in db
-		[ "State Senate",					"State Senate" ],
-		[ "State House",					"State House" ]
+		[ "Attorney General",			"Attorney General" ],
+		[ "Comptroller",					"Comptroller" ],
+		[ "Governor",							"Governor" ],
+		[ "Lt. Governor",					"Lt. Governor" ],
+		[ "State House",					"State House" ],
+		[ "State Senate",					"State Senate" ]
 	]
 
 	#===== ASSOCIATIONS =====

@@ -22,6 +22,12 @@ class PoliticalCampaign < ActiveRecord::Base
 
 	#===== EVENTS ======
 	def before_validation
+		if self.type == 'FederalCampaign'
+			self.seat_sought = self.seat_type
+		elsif self.type == 'StateCampaign'
+			self.seat_sought = "#{self.state.name} #{self.seat_type}"
+		end
+	
 		if !self.city_text.blank?
 			self.city_id = City.find_by_name(self.city_text)
 		end

@@ -118,6 +118,7 @@ $('#user_organization_attributes_political_campaigns_attributes_0_city_text').au
 		if (haveSeat) StateOptionsShowHide();
 		haveSeat = true;
 		$('div#seattype').hide();
+		$('div#seattype2').hide();
 		$('div#countyseat').hide();
 		$('div#muniseat').hide();
 		
@@ -125,14 +126,20 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ch
 
 		var fedOptions = { 
 "" : "Please select",		
-"U.S. Senate" : "U.S. Senate",
-"U.S. Congress" : "U.S. Congress" }
+"U.S. Congress" : "U.S. Congress",
+"U.S. Senate" : "U.S. Senate"
+ }
 
 		var stOptions = {
 			"" : "Please select",
-			"State Senate" : "State Senate",
-			"State House" : "State House"
+			"Attorney General" : "Attorney General",
+			"Comptroller" : "Comptroller",
+			"Governor" : "Governor",
+			"Lt. Governor" : "Lt. Governor",
+			"State House" :	"State House",
+			"State Senate" : "State Senate"
 		}
+
 		var askSeat = false;
 
 		if (this.value == "FederalCampaign") {
@@ -149,6 +156,8 @@ $('#user_organization_attributes_political_campaigns_attributes_0_seat_type').ad
 	
 	if (askSeat) {
 		$('div#seattype').css('display','inline');
+	} else {
+		$('div#seattype2').css('display','inline');
 	}
 	
 	}

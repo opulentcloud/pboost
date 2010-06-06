@@ -10,10 +10,6 @@
     <%= c_form.text_field :candidate_name, :class => 'required' %>
 </p>
 
-<p><strong><%= c_form.label :seat_sought, '*Position/Seat Sought:' %></strong><br />
-    <%= c_form.text_field :seat_sought, :class => 'required' %>
-</p>
-
 <p><strong><%= c_form.label :state_id, '*State Campaign is being run in:' %></strong><br />
 <%= c_form.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
 </p>
@@ -26,6 +22,12 @@
 	<p><strong><%= c_form.label :seat_type, '*Please choose:' %></strong><br />
 	<%= c_form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => '') -%>
 </p>	
+</div>
+
+<div id="seattype2" style="display: none;">
+<p><strong><%= c_form.label :seat_sought, '*Position/Seat Sought:' %></strong><br />
+    <%= c_form.text_field :seat_sought, :class => 'required' %>
+</p>
 </div>
 
 <div id="condist" style="display: none;">	
