@@ -15,6 +15,7 @@ class CreatePoliticalCampaigns < ActiveRecord::Migration
       t.references :city
       t.boolean :muniwide, :null => false
       t.references :organization
+			t.references :municipal_district
 
       t.timestamps
     end
@@ -25,6 +26,7 @@ class CreatePoliticalCampaigns < ActiveRecord::Migration
 		add_index :political_campaigns, :county_id
 		add_index :political_campaigns, :city_id
     add_index :political_campaigns, :council_district_id
+    add_index :political_campaigns, :municipal_district_id
   end
 
   def self.down

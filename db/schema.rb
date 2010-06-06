@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100604210953) do
+ActiveRecord::Schema.define(:version => 20100606174820) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
@@ -21,11 +21,14 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
 
   create_table "cities", :force => true do |t|
     t.string   "name",       :limit => 64, :null => false
+    t.integer  "state_id",                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cities", ["name"], :name => "index_cities_on_name", :unique => true
+  add_index "cities", ["name", "state_id"], :name => "index_cities_on_name_and_state_id", :unique => true
+  add_index "cities", ["name"], :name => "index_cities_on_name"
+  add_index "cities", ["state_id"], :name => "index_cities_on_state_id"
 
   create_table "cities_counties", :id => false, :force => true do |t|
     t.integer  "city_id",    :null => false
@@ -37,15 +40,15 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
   add_index "cities_counties", ["city_id"], :name => "index_cities_counties_on_city_id"
   add_index "cities_counties", ["county_id"], :name => "index_cities_counties_on_county_id"
 
-  create_table "cities_states", :id => false, :force => true do |t|
-    t.integer  "city_id",    :null => false
-    t.integer  "state_id",   :null => false
+  create_table "cities_municipal_districts", :id => false, :force => true do |t|
+    t.integer  "city_id",               :null => false
+    t.integer  "municipal_district_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cities_states", ["city_id"], :name => "index_cities_states_on_city_id"
-  add_index "cities_states", ["state_id"], :name => "index_cities_states_on_state_id"
+  add_index "cities_municipal_districts", ["city_id"], :name => "index_cities_municipal_districts_on_city_id"
+  add_index "cities_municipal_districts", ["municipal_district_id"], :name => "index_cities_municipal_districts_on_municipal_district_id"
 
   create_table "congressional_districts", :force => true do |t|
     t.string   "cd",         :limit => 3, :null => false
@@ -93,6 +96,14 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
 
   add_index "house_districts", ["state_id", "hd"], :name => "index_house_districts_on_state_id_and_hd", :unique => true
 
+  create_table "municipal_districts", :force => true do |t|
+    t.string   "code",       :limit => 3, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "municipal_districts", ["code"], :name => "index_municipal_districts_on_code", :unique => true
+
   create_table "organization_types", :force => true do |t|
     t.string   "name",       :limit => 100, :null => false
     t.datetime "created_at"
@@ -121,7 +132,7 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
     t.string   "seat_sought",               :limit => 128
     t.integer  "state_id",                                 :null => false
     t.string   "type",                      :limit => 20
-    t.string   "seat_type",                 :limit => 15
+    t.string   "seat_type",                 :limit => 20
     t.integer  "congressional_district_id"
     t.integer  "senate_district_id"
     t.integer  "house_district_id"
@@ -131,6 +142,7 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
     t.integer  "city_id"
     t.boolean  "muniwide",                                 :null => false
     t.integer  "organization_id"
+    t.integer  "municipal_district_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -140,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20100604210953) do
   add_index "political_campaigns", ["council_district_id"], :name => "index_political_campaigns_on_council_district_id"
   add_index "political_campaigns", ["county_id"], :name => "index_political_campaigns_on_county_id"
   add_index "political_campaigns", ["house_district_id"], :name => "index_political_campaigns_on_house_district_id"
+  add_index "political_campaigns", ["municipal_district_id"], :name => "index_political_campaigns_on_municipal_district_id"
   add_index "political_campaigns", ["organization_id"], :name => "index_political_campaigns_on_organization_id"
   add_index "political_campaigns", ["senate_district_id"], :name => "index_political_campaigns_on_senate_district_id"
 

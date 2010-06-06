@@ -40,6 +40,7 @@ class PoliticalCampaign < ActiveRecord::Base
 		self.council_district_id = nil if (self.council_district_id.blank? || self.type != 'CountyCampaign' || self.countywide == true)
 		self.muniwide = false if self.type != 'MunicipalCampaign'
 		self.city_id = nil if self.city_id.blank? || self.type != 'MunicipalCampaign'
+		self.municipal_district_id = nil if (self.municipal_district_id.blank? || self.type != 'MunicipalCampaign' || self.muniwide == true)
 		true
 	end
 

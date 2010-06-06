@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
 		site.counties_populate 'counties_populate/:state_id.:format', :action => 'populate_counties_select', :conditions => { :method => :get }
 		site.council_districts_populate 'council_districts_populate/:county_id.:format', :action => 'populate_council_districts_select', :conditions => { :method => :get }
 		site.cities_populate 'cities_populate/:state_id.:format', :action => 'populate_cities_select', :conditions => { :method => :get }
+		site.municipal_districts_populate 'municipal_districts_populate/:state_id/:city.:format', :action => 'populate_municipal_districts_select', :conditions => { :method => :get }
 	end
 	map.resources :users
 

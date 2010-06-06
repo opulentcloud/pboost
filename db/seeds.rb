@@ -110,9 +110,22 @@
 	data.each do |row|
 		s = State.find_by_abbrev(row[0])
 		county = County.find_by_name_and_state_id(row[1],s.id)
-		city = City.find_or_create_by_name(row[2])
-		city.states << s unless s.nil? || city.states.exists?(s)
-		city.counties << county unless county.nil? || city.counties.exists?(city)
+		city = City.find_or_create_by_name_and_state_id(row[2], s.id)
+		city.counties << county unless county.nil? || city.counties.exists?(county)
 	end
 	#===== end populate cities table data =====
+
+	#===== populate municipal_districts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/municipal_districts.csv", :headers => true)
+	data.each do |row|
+		md = nil
+		md = MunicipalDistrict.find_or_create_by_code(row[3]) unless row[3].to_s == ''
+		if !md.nil?
+			s = State.find_by_abbrev(row[0])
+			city = City.find_by_name_and_state_id(row[2], s.id)
+			md.cities << city unless city.nil? || md.cities.exists?(city)
+		end
+	end
+	#===== end populate council_districts table data =====
+
 	

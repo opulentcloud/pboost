@@ -1,5 +1,14 @@
 class UsersController < ApplicationController
-	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select]
+	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select]
+
+	def populate_municipal_districts_select
+		@city = @state.cities.find_by_name(params[:city])
+		@municipal_districts = @city.municipal_districts rescue nil
+		@municipal_districts = MunicipalDistrict.all(:conditions => '1=0') if @municipal_districts.nil?
+		respond_to do |format|
+			format.json { render :text => MunicipalDistrict.to_json(@municipal_districts) }
+		end
+	end
 
 	def populate_cities_select
 		if params[:q].blank?

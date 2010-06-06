@@ -70,7 +70,11 @@
 	<%= c_form.radio_button(:muniwide, 'false', :class => '') -%> No
 </p>	
 
-<div id="acResults" style="display: none"></div>
+<div id="notmuniwide" style="display: none;">
+	<p><strong><%= c_form.label :municipal_district_id, '*Council District:' %></strong><i>(if applicable)</i><br />
+	<%= c_form.select(:municipal_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
 
 </div>
 

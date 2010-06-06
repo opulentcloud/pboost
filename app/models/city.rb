@@ -5,7 +5,8 @@ class City < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	has_and_belongs_to_many :counties
-	has_and_belongs_to_many :states
+	belongs_to :state
+	has_and_belongs_to_many :municipal_districts
 
 	#===== CLASS METHODS ======
 	def self.to_json(cities)
