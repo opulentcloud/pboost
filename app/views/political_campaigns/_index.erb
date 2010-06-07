@@ -10,7 +10,7 @@
       <td><%= link_to h(political_campaign.campaign_description), political_campaign %></td>
       <td><%=h political_campaign.state.abbrev %></td>
       <td><%=link_to political_campaign.organization.name, organization_path(political_campaign.organization.id) %></td>
-      <td><%= link_to "Edit", edit_political_campaign_path(political_campaign) %></td>
+      <td><%= link_to "Edit", get_edit_political_campaign_path(political_campaign) %></td>
     </tr>
   <% end %>
 </table>
