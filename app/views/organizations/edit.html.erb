@@ -1,4 +1,12 @@
 <% title "Edit Organization" %>
+
 <%= render :partial => 'nav_menu' %>
-<%= render :partial => 'form' %>
+
+<% form_for @organization do |f| %>
+
+<%= render :partial => 'form', :locals => { :f => f } %>
+
+<p><%= f.submit 'Update Organization' %></p>
+
+<% end %>
 

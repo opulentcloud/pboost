@@ -1,4 +1,3 @@
-<% form_for @organization do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :organization_type_id %><br />
@@ -35,5 +34,4 @@
   <p>
     <%= f.check_box :enabled %> <%= f.label :enabled %>
   </p>
-  <p><%= f.submit 'Add New Organization' %></p>
-<% end %>
+

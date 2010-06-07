@@ -2,6 +2,8 @@ class Organization < ActiveRecord::Base
 	default_scope :order => 'organizations.name',
 		:include => [:organization_type, :account_type]
 	
+	named_scope :active, :conditions => ['enabled = true']
+	
 	#===== CLASS ASSOCIATIONS ======
 	belongs_to :account_type
 	belongs_to :organization_type
@@ -9,16 +11,16 @@ class Organization < ActiveRecord::Base
 	has_many :political_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :political_campaigns
 
-	has_many :federal_campaigns
+	has_many :federal_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :federal_campaigns	
 
-	has_many :state_campaigns
+	has_many :state_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :state_campaigns	
 
-	has_many :county_campaigns
+	has_many :county_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :county_campaigns	
 
-	has_many :municipal_campaigns
+	has_many :municipal_campaigns, :dependent => :destroy
 	accepts_nested_attributes_for :municipal_campaigns	
 	
 	#===== CLASS VALIDATIONS =====
@@ -66,6 +68,12 @@ validates_presence_of :organization_type_id, :name, :account_type_id
 	end
 	
 	#====== CLASS EVENTS ======
+	def before_create
+		if self.enabled.nil?
+			self.enabled = true
+		end
+	end
+
 	def before_validation
 		begin
 			self.phone = @phone_area_code + @phone_prefix + @phone_suffix

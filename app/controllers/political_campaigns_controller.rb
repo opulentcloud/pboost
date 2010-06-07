@@ -19,9 +19,23 @@ class PoliticalCampaignsController < ApplicationController
   
   def create
     @political_campaign = PoliticalCampaign.new(params[:political_campaign])
-    if @political_campaign.save
+    
+		case params[:political_campaign][:type]	
+		when 'FederalCampaign' then 
+			@new_political_campaign =  FederalCampaign.create_from_political_campaign(@political_campaign)
+		when 'StateCampaign' then 
+			@new_political_campaign =  StateCampaign.create_from_political_campaign(@political_campaign)
+		when 'CountyCampaign' then 
+			@new_political_campaign =  CountyCampaign.create_from_political_campaign(@political_campaign)
+		when 'MunicipalCampaign' then 
+			@new_political_campaign =  MunicipalCampaign.create_from_political_campaign(@political_campaign)
+		end
+
+    @new_political_campaign.organization_id = @political_campaign.organization_id
+    
+    if @new_political_campaign.save
       flash[:notice] = "Successfully created political campaign."
-      redirect_to @political_campaign
+      redirect_to @new_political_campaign
     else
       render :action => 'new'
     end

@@ -1,63 +1,76 @@
 
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :candidate_name %><br />
-    <%= f.text_field :candidate_name %>
-  </p>
-  <p>
-    <%= f.label :seat_sought %><br />
-    <%= f.text_field :seat_sought %>
-  </p>
-  <p>
-    <%= f.label :state_id %><br />
-    <%= f.text_field :state_id %>
-  </p>
-  <p>
-    <%= f.label :type %><br />
-    <%= f.text_field :type %>
-  </p>
-  <p>
-    <%= f.label :seat_type %><br />
-    <%= f.text_field :seat_type %>
-  </p>
-  <p>
-    <%= f.label :congressional_district_id %><br />
-    <%= f.text_field :congressional_district_id %>
-  </p>
-  <p>
-    <%= f.label :senate_district_id %><br />
-    <%= f.text_field :senate_district_id %>
-  </p>
-  <p>
-    <%= f.label :house_district_id %><br />
-    <%= f.text_field :house_district_id %>
-  </p>
-  <p>
-    <%= f.label :county_id %><br />
-    <%= f.text_field :county_id %>
-  </p>
-  <p>
-    <%= f.label :countywide %><br />
-    <%= f.check_box :countywide %>
-  </p>
-  <p>
-    <%= f.label :council_district_id %><br />
-    <%= f.text_field :council_district_id %>
-  </p>
-  <p>
-    <%= f.label :city_id %><br />
-    <%= f.text_field :city_id %>
-  </p>
-  <p>
-    <%= f.label :muniwide %><br />
-    <%= f.check_box :muniwide %>
-  </p>
-  <p>
-    <%= f.label :organization_id %><br />
-    <%= f.text_field :organization_id %>
-  </p>
-  <p>
-    <%= f.label :municipal_district_id %><br />
-    <%= f.text_field :municipal_district_id %>
-  </p>
+<%= form.error_messages %>
+<p><i>* required fields</i></p>
+
+<p><strong><%= form.label :candidate_name, '*Candidate Name:' %></strong><br />
+    <%= form.text_field :candidate_name, :class => 'required' %>
+</p>
+
+<p><strong><%= form.label :state_id, '*State Campaign is being run in:' %></strong><br />
+<%= form.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
+</p>
+
+<p><strong><%= form.label :type, '*Position/Seat level:' %></strong><br />
+	<%= form.select(:type, PoliticalCampaign::POLITICAL_CAMPAIGN_TYPES, { :prompt => true }, { :class => 'required' }) %> 	
+</p>
+
+<div id="seattype" style="display: none;">	
+	<p><strong><%= form.label :seat_type, '*Please choose:' %></strong><br />
+	<%= form.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => '') -%>
+</p>	
+</div>
+
+<div id="seattype2" style="display: none;">
+<p><strong><%= form.label :seat_sought, '*Position/Seat Sought:' %></strong><br />
+    <%= form.text_field :seat_sought, :class => '' %>
+</p>
+</div>
+
+<div id="condist" style="display: none;">	
+	<p><strong><%= form.label :congressional_district_id, '*Congressional District:' %></strong><br />
+	<%= form.select(:congressional_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+<div id="sendist" style="display: none;">	
+	<p><strong><%= form.label :senate_district_id, '*State Senate District:' %></strong><br />
+	<%= form.select(:senate_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+<div id="hosdist" style="display: none;">	
+	<p><strong><%= form.label :house_district_id, '*State House District:' %></strong><br />
+	<%= form.select(:house_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+<div id="countyseat" style="display: none;">	
+	<p><strong><%= form.label :county_id, '*County:' %></strong><br />
+	<%= form.select(:county_id, [], {}, :class => '') -%>
+	&nbsp;<strong><%= form.label :countywide, '*Is this a countywide race?:' -%></strong>	<%= form.radio_button(:countywide, 'true', :class => '') -%> Yes &nbsp;
+	<%= form.radio_button(:countywide, 'false', :class => '') -%> No
+</p>	
+
+<div id="notcountywide" style="display: none;">
+	<p><strong><%= form.label :council_district_id, '*Council District:' %></strong><i>(if applicable)</i><br />
+	<%= form.select(:council_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+</div>
+
+<div id="muniseat" style="display: none;">	
+	<p><strong><%= form.label :city_id, '*Municipality:' %></strong><br />
+    <%= form.text_field :city_text, :class => '' -%>
+	&nbsp;<strong><%= form.label :muniwide, '*Is this a municipalwide race?:' -%></strong>	<%= form.radio_button(:muniwide, 'true', :class => '') -%> Yes &nbsp;
+	<%= form.radio_button(:muniwide, 'false', :class => '') -%> No
+</p>	
+
+<div id="notmuniwide" style="display: none;">
+	<p><strong><%= form.label :municipal_district_id, '*Council District:' %></strong><i>(if applicable)</i><br />
+	<%= form.select(:municipal_district_id, [], {}, :class => '') -%>
+</p>	
+</div>
+
+</div>
 

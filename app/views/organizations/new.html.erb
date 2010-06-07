@@ -1,4 +1,10 @@
 <% title "New Organization" %>
 
-<%= render :partial => 'form' %>
+<% form_for @organization do |f| %>
+
+<%= render :partial => 'form', :locals => { :f => f } %>
+
+<p><%= f.submit 'Add New Organization' %></p>
+
+<% end %>
 

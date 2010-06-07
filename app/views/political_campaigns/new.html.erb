@@ -1,9 +1,17 @@
-<% title "New Political Campaign" %>
+<%=title 'New Political Campaign' %>
+<%=javascript 'jquery-1.4.2', 'jquery.history', 'jquery.form', 'jquery.validate', 'jquery.selectboxes', 'jquery.autocomplete', 'new_political_campaign' %>
 
-<%=render :partial => 'nav_menu' %>
+<%=stylesheet 'jquery.autocomplete' %>
 
-<% form_for @political_campaign do |f| %>
-<%= render :partial => 'form', :locals => { :f => f } %>
-  <p><%= f.submit 'Add New Political Campaign' %></p>
+<% form_for @political_campaign, :url => {:controller => 'political_campaigns', :action => 'create'} do |form| %>
+
+	<p>
+		<b>Organization:</b><br />
+		<%=form.collection_select(:organization_id, Organization.active, :id, :name, { :prompt => true }, :class => 'required') %>
+	</p>
+	
+	<%= render :partial => 'form', :locals => { :form => form } %>
+
+ <%= form.submit "Create New Campaign" %>
 <% end %>
 
