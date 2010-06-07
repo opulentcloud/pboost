@@ -1,0 +1,25 @@
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :candidate_name %><br />
+    <%= f.text_field :candidate_name %>
+  </p>
+  <p>
+    <%= f.label :seat_sought %><br />
+    <%= f.text_field :seat_sought %>
+  </p>
+  <p>
+    <%= f.label :state_id %><br />
+    <%= f.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
+  </p>
+  <p>
+    <%= f.label :city_id %><br />
+    <%= f.collection_select(:city_id, City.all(:state_id), :id, :name, {:prompt => true }, :class => 'required' ) %>
+  </p>
+  <p>
+  	<%= f.check_box :muniwide %> <%= f.label :muniwide, 'Municipalwide race?' %>
+  </p>
+  <p>
+    <%= f.label :municipal_district_id %><br />
+    <%= f.collection_select(:municipal_district_id, @municipal_campaign.city.municipal_districts, :id, :name, {:prompt => true }, :class => 'required' ) %>
+  </p>
+

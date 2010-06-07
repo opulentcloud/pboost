@@ -19,6 +19,28 @@ class StateCampaign < PoliticalCampaign
 	validates_inclusion_of :seat_type, :in => SEAT_TYPES.map {|disp, value| value}
 	validates_presence_of :senate_district_id, :if => Proc.new { |c| c.seat_type == 'State Senate' }
 	validates_presence_of :house_district_id, :if => Proc.new { |c| c.seat_type == 'State House' }
+
+	#===== PROPERTIES ======
+	def campaign_description
+
+		if !house_district_id.blank?
+			begin
+				i = Integer(house_district.hd.gsub(/^0+/,''))
+				"#{candidate_name} for #{seat_sought} #{house_district.hd.to_i.ordinalize} District".strip
+			rescue
+				"#{candidate_name} for #{seat_sought} District #{house_district.hd}".strip
+			end
+		elsif !senate_district_id.blank?
+			begin
+				i = Integer(senate_district.sd.gsub(/^0+/,''))
+				"#{candidate_name} for #{seat_sought} #{senate_district.sd.to_i.ordinalize} District".strip
+			rescue
+				"#{candidate_name} for #{seat_sought} District #{senate_district.sd}".strip
+			end
+		else
+			"#{candidate_name} for #{seat_sought}".strip
+		end
+	end
 	
 	#===== CLASS METHODS =====
 	def self.create_from_political_campaign(political_campaign)

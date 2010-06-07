@@ -1,0 +1,2 @@
+module PoliticalCampaignsHelper
+end

@@ -1,0 +1,12 @@
+<p align="center">
+<table width="600" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+		<td><%=link_to 'Add New Political Campaign', new_political_campaign_path %></td>
+	<% if @political_campaign && !@political_campaign.new_record? %>
+		<td><%= link_to 'View Political Campaign', @political_campaign %></td>
+		<td><%= link_to 'Edit Political Campaign', edit_political_campaign_path(@political_campaign) %></td>
+		<td><%= link_to 'Delete Political Campaign', @political_campaign, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

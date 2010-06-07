@@ -1,0 +1,68 @@
+<% title "Political Campaign" %>
+<%= render :partial => 'nav_menu' %>
+<p>
+  <strong>Candidate Name:</strong>
+  <%=h @political_campaign.candidate_name %>
+</p>
+<p>
+  <strong>Seat Sought:</strong>
+  <%=h @political_campaign.seat_sought %>
+</p>
+<p>
+  <strong>State:</strong>
+  <%=h @political_campaign.state_id %>
+</p>
+<p>
+  <strong>Type:</strong>
+  <%=h @political_campaign.type %>
+</p>
+<p>
+  <strong>Seat Type:</strong>
+  <%=h @political_campaign.seat_type %>
+</p>
+<p>
+  <strong>Congressional District:</strong>
+  <%=h @political_campaign.congressional_district_id %>
+</p>
+<p>
+  <strong>Senate District:</strong>
+  <%=h @political_campaign.senate_district_id %>
+</p>
+<p>
+  <strong>House District:</strong>
+  <%=h @political_campaign.house_district_id %>
+</p>
+<p>
+  <strong>County:</strong>
+  <%=h @political_campaign.county_id %>
+</p>
+<p>
+  <strong>Countywide:</strong>
+  <%=h @political_campaign.countywide %>
+</p>
+<p>
+  <strong>Council District:</strong>
+  <%=h @political_campaign.council_district_id %>
+</p>
+<p>
+  <strong>City:</strong>
+  <%=h @political_campaign.city_id %>
+</p>
+<p>
+  <strong>Muniwide:</strong>
+  <%=h @political_campaign.muniwide %>
+</p>
+<p>
+  <strong>Organization:</strong>
+  <%=h @political_campaign.organization_id %>
+</p>
+<p>
+  <strong>Municipal District:</strong>
+  <%=h @political_campaign.municipal_district_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_political_campaign_path(@political_campaign) %> |
+  <%= link_to "Destroy", @political_campaign, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", political_campaigns_path %>
+</p>

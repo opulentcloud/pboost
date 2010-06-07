@@ -5,7 +5,7 @@ class CouncilDistrict < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	has_and_belongs_to_many :cities
-	has_many :counties, :through => :cities
+	has_and_belongs_to_many :counties
 	has_many :states, :through => :counties
 
 	#===== CLASS METHODS ======

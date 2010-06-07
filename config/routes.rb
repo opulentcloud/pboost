@@ -4,6 +4,10 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.admin_control_panel 'control_panel', :controller => 'admin', :action => 'index', :path_prefix => '/admin'
 
+  map.resources :county_campaigns, :path_prefix => '/admin'
+
+  map.resources :federal_campaigns, :path_prefix => '/admin'
+
 	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
@@ -15,7 +19,13 @@ ActionController::Routing::Routes.draw do |map|
 		site.logout 'logout', :action => 'destroy', :url => '/logout'
 	end
 
+  map.resources :municipal_campaigns, :path_prefix => '/admin'
+
 	map.resources :organizations, :path_prefix => '/admin'
+
+  map.resources :political_campaigns, :path_prefix => '/admin'
+
+  map.resources :state_campaigns, :path_prefix => '/admin'
 
 	#user signups and users resources
 	map.with_options(:controller => 'users') do |site|

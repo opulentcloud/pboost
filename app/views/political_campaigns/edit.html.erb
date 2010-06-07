@@ -1,0 +1,7 @@
+<% title "Edit Political Campaign" %>
+<% form_for @political_campaign do |f| %>
+<%= render :partial => 'form', :locals => { :f => f } %>
+  <p><%= f.submit, 'Update Political Campaign' %></p>
+<% end %>
+
+

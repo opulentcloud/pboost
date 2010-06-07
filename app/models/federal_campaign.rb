@@ -13,6 +13,21 @@ class FederalCampaign < PoliticalCampaign
 	validates_presence_of :seat_type
 	validates_inclusion_of :seat_type, :in => SEAT_TYPES.map {|disp, value| value}
 	validates_presence_of :congressional_district_id, :if => Proc.new { |c| c.seat_type == 'U.S. Congress' }
+
+	#===== PROPERTIES ======
+	def campaign_description
+
+		if !congressional_district_id.blank?
+			begin
+				i = Integer(congressional_district.cd.gsub(/^0+/,''))
+				"#{candidate_name} for #{seat_sought} #{congressional_district.cd.to_i.ordinalize} Congressional District State of #{state.name}".strip
+			rescue
+				"#{candidate_name} for #{seat_sought} Congressional District #{house_district.hd} State of #{state.name}".strip
+			end
+		else
+			"#{candidate_name} for #{seat_sought} State of #{state.name}".strip
+		end
+	end
 	
 	#===== CLASS METHODS =====
 	def self.create_from_political_campaign(political_campaign)

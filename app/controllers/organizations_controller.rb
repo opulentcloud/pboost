@@ -13,6 +13,7 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     @users = @organization.users.paginate :page => 1, :per_page => 99999
+    @political_campaigns = @organization.political_campaigns
   end
   
   def new

@@ -1,12 +1,27 @@
 class MunicipalCampaign < PoliticalCampaign
 
 	#===== ASSOCIATONS =====
-	has_one :city
+	belongs_to :city
+	belongs_to :municipal_district
 
 	#===== VALIDATIONS =====
 	validates_presence_of :city_id, :message => 'City is not valid'
 	validates_inclusion_of :muniwide, :in => [true, false], :message => 'Please choose yes or no'
 	validates_presence_of :municipal_district_id, :if => :require_municipal_district?
+
+	#===== PROPERTIES ======
+	def campaign_description
+		if municipal_district_id.blank?
+			"#{candidate_name} for #{seat_sought} #{city.name}".strip
+		else
+			begin
+				i = Integer(council_district.code.gsub(/^0+/,''))
+				"#{candidate_name} for #{seat_sought} City of #{city.name} #{municipal_district.code.to_i.ordinalize} District".strip
+			rescue
+				"#{candidate_name} for #{seat_sought} City of #{city.name} District #{municipal_district.code}".strip
+			end
+		end
+	end
 
 	#===== INSTANCE METHODS =====	
 	def require_municipal_district?

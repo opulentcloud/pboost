@@ -1,0 +1,5 @@
+<% title "Political Campaigns" %>
+<%= render :partial => 'nav_menu' %>
+<p><b><%=pluralize(@political_campaigns.total_entries, "Record Found") %></b></p>
+<%= render :partial => 'index' %>
+<%= will_paginate @political_campaigns %>

@@ -1,13 +1,28 @@
 class CountyCampaign < PoliticalCampaign
 
 	#===== ASSOCIATONS =====
-	has_one :county
+	belongs_to :county
+	belongs_to :council_district
 
 	#===== VALIDATIONS =====
 	validates_presence_of :county_id
 	validates_inclusion_of :countywide, :in => [true, false], :message => 'Please choose yes or no'
 	validates_presence_of :council_district_id, :if => :require_council_district?
 	#validates_presence_of :council_district_id, :if => Proc.new { |c| c.countywide == false }
+
+	#===== PROPERTIES ======
+	def campaign_description
+		if council_district_id.blank?
+			"#{candidate_name} for #{seat_sought} #{county.name}".strip
+		else
+			begin
+				i = Integer(council_district.code.gsub(/^0+/,''))
+				"#{candidate_name} for #{seat_sought} #{county.name} County #{council_district.code.to_i.ordinalize} District".strip
+			rescue
+				"#{candidate_name} for #{seat_sought} #{county.name} County District #{council_district.code}".strip
+			end
+		end
+	end
 
 	#===== INSTANCE METHODS =====	
 	def require_council_district?

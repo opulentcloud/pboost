@@ -1,12 +1,8 @@
-<% title "Organization" %>
+<% title "Organization: #{@organization.name}" %>
 <%= render :partial => 'nav_menu' %>
 <p>
   <strong>Organization Type:</strong>
   <%=h @organization.organization_type.name %>
-</p>
-<p>
-  <strong>Name:</strong>
-  <%=h @organization.name %>
 </p>
 <p>
   <strong>Email:</strong>
@@ -32,6 +28,12 @@
   <strong>Enabled:</strong>
   <%=h @organization.enabled %>
 </p>
+
+<hr />
+
+<h1>Organization Political Camaigns</h1>
+
+<%= render :partial => 'political_campaigns/index' %>
 
 <hr />
 

@@ -15,8 +15,9 @@
 <!-- end logoMain -->
 <div id="navMain">
 <ul> 
-<%= li_navigation_tag('users', 'index') %><%=link_to 'Manage Users', users_url -%></li>
-<%= li_navigation_tag('users', 'index') %><%=link_to 'Manage Organizations', organizations_url -%></li>
+<%= li_navigation_tag('users', 'index') %><%=link_to 'Users', users_url -%></li>
+<%= li_navigation_tag('organizations', 'index') %><%=link_to 'Organizations', organizations_url -%></li>
+<%= li_navigation_tag('political_campaigns', 'index') %><%=link_to 'Campaigns', political_campaigns_url -%></li>
 <%= li_navigation_tag('admin', 'index') %><%=link_to 'Control Panel', admin_control_panel_url -%></li>
 <%= li_navigation_tag('user_sessions', 'new') %>
 	<% if current_user.nil? %>

@@ -1,0 +1,31 @@
+<% title "Municipal Campaign: #{@municipal_campaign.campaign_description}" %>
+<%= render :partial => 'nav_menu' %>
+<p>
+  <strong>Candidate Name:</strong>
+  <%=h @municipal_campaign.candidate_name %>
+</p>
+<p>
+  <strong>Seat Sought:</strong>
+  <%=h @municipal_campaign.seat_sought %>
+</p>
+<p>
+  <strong>State:</strong>
+  <%=h @municipal_campaign.state.name %>
+</p>
+<p>
+  <strong>Municipality:</strong>
+  <%=h @municipal_campaign.city.name %>
+</p>
+<p>
+  <strong>Municipalwide:</strong>
+  <%=h @municipal_campaign.muniwide %>
+</p>
+<p>
+  <strong>Municipal District:</strong>
+  <%=h @municipal_campaign.municipal_district.code rescue nil %>
+</p>
+<p>
+  <strong>Organization:</strong>
+  <%=link_to h(@municipal_campaign.organization.name), @municipal_campaign.organization %>
+</p>
+

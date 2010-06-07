@@ -1,0 +1,19 @@
+    <tr>
+      <td><%=h municipal_campaign.candidate_name %></td>
+      <td><%=h municipal_campaign.seat_sought %></td>
+      <td><%=h municipal_campaign.state.abbrev %></td>
+      <td>Municipal</td>
+      <td><%=h municipal_campaign.seat_type %></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><%=h municipal_campaign.county_id %></td>
+      <td><%=h municipal_campaign.countywide %></td>
+      <td><%=h municipal_campaign.council_district_id %></td>
+      <td><%=h municipal_campaign.city.name unless municipal.city_id.blank? %></td>
+      <td><%=h municipal_campaign.muniwide %></td>
+      <td><%=h municipal_campaign.organization.name %></td>
+      <td><%=h municipal_campaign.municipal_district_id %></td>
+      <td><%= link_to "Edit", edit_municipal_campaign_path(municipal_campaign) %></td>
+    </tr>
+
