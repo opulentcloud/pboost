@@ -1,0 +1,23 @@
+
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :candidate_name %><br />
+    <%= f.text_field :candidate_name %>
+  </p>
+  <p>
+    <%= f.label :state_id %><br />
+    <%= f.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
+  </p>
+  <p>
+    <%= f.label :seat_type %><br />
+    <%= f.select(:seat_type, StateCampaign::SEAT_TYPES, :prompt => true, :class => 'required') %>
+  </p>
+  <p>
+    <%= f.label :senate_district_id %><br />
+		<%= f.collection_select(:senate_district_id, @state_campaign.state.senate_districts, :id, :sd, {:prompt => true}, :class => '') %>
+  </p>
+  <p>
+    <%= f.label :house_district_id %><br />
+		<%= f.collection_select(:senate_district_id, @state_campaign.state.house_districts, :id, :hd, {:prompt => true}, :class => '') %>
+  </p>
+

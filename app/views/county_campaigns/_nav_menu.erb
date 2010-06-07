@@ -1,0 +1,12 @@
+<p align="center">
+<table width="800" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+		<td><%=link_to 'Add New County Campaign', new_county_campaign_path %></td>
+	<% if @county_campaign && !@county_campaign.new_record? %>
+		<td><%= link_to 'View County Campaign', @county_campaign %></td>
+		<td><%= link_to 'Edit County Campaign', edit_county_campaign_path(@county_campaign) %></td>
+		<td><%= link_to 'Delete County Campaign', @county_campaign, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

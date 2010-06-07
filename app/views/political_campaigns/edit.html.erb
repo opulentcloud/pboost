@@ -1,7 +1,10 @@
 <% title "Edit Political Campaign" %>
+
+<%= render :partial => 'nav_menu' %>
+
 <% form_for @political_campaign do |f| %>
 <%= render :partial => 'form', :locals => { :f => f } %>
-  <p><%= f.submit, 'Update Political Campaign' %></p>
+  <p><%= f.submit 'Update Political Campaign' %></p>
 <% end %>
 
 

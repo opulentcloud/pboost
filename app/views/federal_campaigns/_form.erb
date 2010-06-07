@@ -1,0 +1,19 @@
+
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :candidate_name %><br />
+    <%= f.text_field :candidate_name %>
+  </p>
+  <p>
+    <%= f.label :state_id %><br />
+    <%= f.collection_select(:state_id, State.active, :id, :name, {:prompt => true }, :class => 'required' ) %>
+  </p>
+  <p>
+    <%= f.label :seat_type %><br />
+    <%= f.select(:seat_type, FederalCampaign::SEAT_TYPES, :prompt => true, :class => 'required') %>
+  </p>
+  <p>
+    <%= f.label :congressional_district_id %><br />
+		<%= f.collection_select(:congressional_district_id, @federal_campaign.state.congressional_districts, :id, :cd, {:prompt => true}, :class => '') %>
+  </p>
+

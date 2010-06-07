@@ -1,0 +1,10 @@
+<% title "Edit State Campaign" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<% form_for @state_campaign do |f| %>
+<%= render :partial => 'form', :locals => { :f => f } %>
+  <p><%= f.submit 'Update State Campaign' %></p>
+<% end %>
+
+

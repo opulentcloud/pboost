@@ -1,0 +1,25 @@
+<% title "Federal Campaign: #{@federal_campaign.campaign_description}" %>
+
+<%= render :partial => 'nav_menu' %><p>
+
+<p>
+  <strong>Candidate Name:</strong>
+  <%=h @federal_campaign.candidate_name %>
+</p>
+<p>
+  <strong>State:</strong>
+  <%=h @federal_campaign.state.name %>
+</p>
+<p>
+  <strong>Seat Type:</strong>
+  <%=h @federal_campaign.seat_type %>
+</p>
+<p>
+  <strong>Congressional District:</strong>
+  <%=h @federal_campaign.congressional_district.cd rescue nil %>
+</p>
+<p>
+  <strong>Organization:</strong>
+  <%=link_to h(@federal_campaign.organization.name), @federal_campaign.organization %>
+</p>
+

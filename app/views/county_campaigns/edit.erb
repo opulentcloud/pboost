@@ -1,0 +1,10 @@
+<% title "Edit County Campaign" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<% form_for @county_campaign do |f| %>
+<%= render :partial => 'form', :locals => { :f => f } %>
+  <p><%= f.submit 'Update County Campaign' %></p>
+<% end %>
+
+

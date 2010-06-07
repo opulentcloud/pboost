@@ -1,0 +1,12 @@
+<p align="center">
+<table width="800" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+		<td><%=link_to 'Add New State Campaign', new_state_campaign_path %></td>
+	<% if @state_campaign && !@state_campaign.new_record? %>
+		<td><%= link_to 'View State Campaign', @state_campaign %></td>
+		<td><%= link_to 'Edit State Campaign', edit_state_campaign_path(@state_campaign) %></td>
+		<td><%= link_to 'Delete State Campaign', @state_campaign, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

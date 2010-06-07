@@ -1,5 +1,9 @@
 <% title "New Political Campaign" %>
 
-<%= render :partial => 'form' %>
+<%=render :partial => 'nav_menu' %>
 
-<p><%= link_to "Back to List", political_campaigns_path %></p>
+<% form_for @political_campaign do |f| %>
+<%= render :partial => 'form', :locals => { :f => f } %>
+  <p><%= f.submit 'Add New Political Campaign' %></p>
+<% end %>
+
