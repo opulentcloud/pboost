@@ -16,6 +16,7 @@
 <div id="navMain">
 <ul> 
 <%= li_navigation_tag('users', 'index') %><%=link_to 'Manage Users', users_url -%></li>
+<%= li_navigation_tag('users', 'index') %><%=link_to 'Manage Organizations', organizations_url -%></li>
 <%= li_navigation_tag('admin', 'index') %><%=link_to 'Control Panel', admin_control_panel_url -%></li>
 <%= li_navigation_tag('user_sessions', 'new') %>
 	<% if current_user.nil? %>

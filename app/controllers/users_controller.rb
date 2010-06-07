@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 	before_filter :require_user, :only => [:index, :show, :update, :destroy]
 	before_filter :get_user, :only => [:show, :edit, :update, :destroy]
 	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select]
+	filter_access_to [:show, :update, :index, :destroy, :edit]
 
   # PUT /users/1
   # PUT /users/1.xml
@@ -13,7 +14,7 @@ class UsersController < ApplicationController
         format.html { redirect_to(@user) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "edit", :layout => 'admin' }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end

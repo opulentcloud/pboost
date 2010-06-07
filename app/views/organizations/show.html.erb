@@ -1,0 +1,41 @@
+<% title "Organization" %>
+<%= render :partial => 'nav_menu' %>
+<p>
+  <strong>Organization Type:</strong>
+  <%=h @organization.organization_type.name %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%=h @organization.name %>
+</p>
+<p>
+  <strong>Email:</strong>
+  <%=h @organization.email %>
+</p>
+<p>
+  <strong>Phone:</strong>
+  <%=h @organization.phone %>
+</p>
+<p>
+  <strong>Fax:</strong>
+  <%=h @organization.fax %>
+</p>
+<p>
+  <strong>Website:</strong>
+  <%=h @organization.website %>
+</p>
+<p>
+  <strong>Account Type:</strong>
+  <%=h @organization.account_type.name %>
+</p>
+<p>
+  <strong>Enabled:</strong>
+  <%=h @organization.enabled %>
+</p>
+
+<hr />
+
+<h1>Organization Users</h1>
+
+<%= render :partial => 'users/index' %>
+

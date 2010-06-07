@@ -1,0 +1,12 @@
+<p align="center">
+<table width="600" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+		<td><%=link_to 'Add New Organization', new_organization_path %></td>
+	<% if @organization && !@organization.new_record? %>
+		<td><%= link_to 'View Organization', @organization %></td>
+		<td><%= link_to 'Edit Organization', edit_organization_path(@organization) %></td>
+		<td><%= link_to 'Delete Organization', @organization, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

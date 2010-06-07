@@ -1,0 +1,39 @@
+<% form_for @organization do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :organization_type_id %><br />
+    <%= f.collection_select(:organization_type_id, OrganizationType.all, :id, :name, { :prompt => true }) %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone_area_code, { :maxlength => '3', :size => '3' } %>-
+	    <%= f.text_field :phone_prefix, { :maxlength => '3', :size => '3' } %>-
+	    <%= f.text_field :phone_suffix, { :maxlength => '4', :size => '4' } %>
+  </p>
+  <p>
+    <%= f.label :fax %><br />
+    <%= f.text_field :fax_area_code, { :maxlength => '3', :size => '3' } %>-
+	    <%= f.text_field :fax_prefix, { :maxlength => '3', :size => '3' } %>-
+	    <%= f.text_field :fax_suffix, { :maxlength => '4', :size => '4' } %>
+  </p>
+  <p>
+    <%= f.label :website %><br />
+    <%= f.text_field :website %>
+  </p>
+  <p>
+    <%= f.label :account_type_id %><br />
+    <%= f.collection_select(:account_type_id, AccountType.all, :id, :name, { :prompt => true }) %>
+  </p>
+  <p>
+    <%= f.check_box :enabled %> <%= f.label :enabled %>
+  </p>
+  <p><%= f.submit 'Add New Organization' %></p>
+<% end %>

@@ -1,92 +1,59 @@
-	<tr>
-		<td width="600" colspan="2">
-		  <%= f.error_messages %>
-		</td>  
-	</tr>
-	<tr>
-		<td width="200" align="right">
-			<%= f.label :organization_id, 'Organization:' %>
-		</td>
-    <td width="400">
-			<%= f.collection_select(:organization_id, Organization.all, :id, :name, { :prompt => true }) %>    
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :first_name, 'User/s Name (First/Last):' %>
-		</td>
-    <td width="400">
-	    <%= f.text_field :first_name, { :style => 'width: 170px;'} %> 
-	    <%= f.text_field :last_name, { :style => 'width: 170px;'} %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :login, 'Login:' %>
-		</td>
-    <td width="400">
-	    <%= f.text_field :login %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :password, 'Password:' %>
-		</td>
-    <td width="400">
-	    <%= f.password_field :password %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :password_confirmation, 'Retype Password:' %>
-		</td>
-    <td width="400">
-	    <%= f.password_field :password_confirmation %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :email, 'Email:' %>
-		</td>
-    <td width="400">
-	    <%= f.text_field :email %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-	    <%= f.label :phone, 'Phone:' %>
-		</td>
-    <td width="400">
-	    <%= f.text_field :phone_area_code, { :maxlength => '3', :size => '3' } %>-
-	    <%= f.text_field :phone_prefix, { :maxlength => '3', :size => '3' } %>-
-	    <%= f.text_field :phone_suffix, { :maxlength => '4', :size => '4' } %>
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-			<%= f.label :time_zone_id, 'User\'s Local Time Zone:' %>
-		</td>
-    <td width="400">
-			<%= f.collection_select(:time_zone_id, TimeZone.all, :id, :zone, { :prompt => true }) %>    
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right">
-			&nbsp;
-		</td>
-    <td width="400">
-			<%= f.label :active, 'Activated' -%> <%= f.check_box :active %>    
-		</td>
-	</tr>
-	<tr>
-		<td width="200" align="right" valign="top">
-			User Roles:
-		</td>
-		<td>
-			<% Role.all.each do |role| %>
-				<%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %>
-				<%=h role.name %>	<br /><br />
-			<% end %>
-		</td>
-	</tr>
+<p>
+	<%= f.error_messages %>
+</p>
+
+<p>
+	<%= f.label :organization_id, 'Organization:' %><br />
+	<%= f.collection_select(:organization_id, Organization.all, :id, :name, { :prompt => true }) %>    
+</p>
+
+<p>
+	<%= f.label :first_name, 'User/s Name (First/Last):' %><br />
+  <%= f.text_field :first_name, { :style => 'width: 170px;'} %> 
+  <%= f.text_field :last_name, { :style => 'width: 170px;'} %>
+</p>
+
+<p>
+	<%= f.label :login, 'Login:' %><br />
+  <%= f.text_field :login %>
+</p>
+
+<p>
+	<%= f.label :password, 'Password:' %><br />
+  <%= f.password_field :password %>
+</p>
+
+<p>
+  <%= f.label :password_confirmation, 'Retype Password:' %><br />
+  <%= f.password_field :password_confirmation %>
+</p>
+
+<p>
+  <%= f.label :email, 'Email:' %><br />
+  <%= f.text_field :email %>
+</p>
+
+<p>
+  <%= f.label :phone, 'Phone:' %><br />
+  <%= f.text_field :phone_area_code, { :maxlength => '3', :size => '3' } %>-
+  <%= f.text_field :phone_prefix, { :maxlength => '3', :size => '3' } %>-
+  <%= f.text_field :phone_suffix, { :maxlength => '4', :size => '4' } %>
+</p>
+
+<p>
+	<%= f.label :time_zone_id, 'User\'s Local Time Zone:' %><br />
+	<%= f.collection_select(:time_zone_id, TimeZone.all, :id, :zone, { :prompt => true }) %>    
+</p>
+
+<p>
+	<%= f.label :active, 'Activated' -%> <%= f.check_box :active %>
+</p>
+
+<p>
+	User Roles:<br />
+	<% Role.all.each do |role| %>
+		<%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %>
+		<%=h role.name %>	<br /><br />
+	<% end %>
+</p>
 

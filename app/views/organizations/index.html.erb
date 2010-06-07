@@ -1,0 +1,29 @@
+<% title "Organizations" %>
+<%= render :partial => 'nav_menu' %>
+<p><b><%=pluralize(@organizations.total_entries, "Record Found") %></b></p>
+<table>
+  <tr>
+    <th align="center">Org Type</th>
+    <th align="center">Name</th>
+    <th align="center">Email</th>
+    <th align="center">Phone</th>
+    <th align="center">Fax</th>
+    <th align="center">Website</th>
+    <th align="center">Account Type</th>
+    <th align="center">Enabled</th>
+  </tr>
+  <% for organization in @organizations %>
+    <tr>
+      <td align="center"><%=h organization.organization_type.name %></td>
+      <td align="center"><%= link_to h(organization.name), organization %></td>
+      <td align="center"><%=h organization.email %></td>
+      <td align="center"><%=h organization.phone %></td>
+      <td align="center"><%=h organization.fax %></td>
+      <td align="center"><%=h organization.website %></td>
+      <td align="center"><%=h organization.account_type.name %></td>
+      <td align="center"><%=h organization.enabled %></td>
+      <td align="center"><%= link_to "Edit", edit_organization_path(organization) %></td>
+    </tr>
+  <% end %>
+</table>
+	<%= will_paginate @organizations %>
