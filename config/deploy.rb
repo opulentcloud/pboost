@@ -60,6 +60,7 @@ deploy.task :restart, :roles => :app do
 	run "touch #{current_path}/tmp/restart.txt"
 end
 
-after :deploy, "config:link"
+after :update_code, "config:link"
+after :deploy, "restart"
 
 
