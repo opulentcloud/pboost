@@ -55,15 +55,11 @@ namespace :config do
 	end
 end
 
+after :deploy, "config:link"
+
 deploy.task :restart, :roles => :app do
 	desc "Restart application"
 	run "touch #{current_path}/tmp/restart.txt"
 end
-
-task :after_update_code, :roles => [:app] do
-	config.link
-end
-
-after :deploy, "restart"
 
 
