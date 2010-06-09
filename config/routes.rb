@@ -6,17 +6,16 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :county_campaigns, :path_prefix => '/admin'
 
+	map.customer_control_panel 'control_panel', :controller => 'customer', :action => 'index', :path_prefix => '/customer'
+
   map.resources :federal_campaigns, :path_prefix => '/admin'
 
-	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
-		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
-	end
+	map.add_gis_region 'add_gis_region', :controller => 'map', :action => 'add_gis_region', :conditions => { :method => :post }
 
-	# User Session URLs
-	map.with_options(:controller => 'user_sessions') do |site|
-		site.login 'login', :action => 'new', :url => '/login', :conditions => {:method => :get}
-		site.login 'login', :action => 'create', :url => '/login', :conditions => {:method => :post}
-		site.logout 'logout', :action => 'destroy', :url => '/logout'
+	map.add_polygon 'add_polygon', :controller => 'map', :action => 'add_polygon', :conditions => { :method => :post }
+
+	map.map 'map', :controller => 'map', :action => 'index'
+	map.with_options(:controller => 'map') do |site|
 	end
 
   map.resources :municipal_campaigns, :path_prefix => '/admin'
@@ -41,7 +40,16 @@ ActionController::Routing::Routes.draw do |map|
 	end
 	map.resources :users, :path_prefix => '/admin'
 
-	map.customer_control_panel 'control_panel', :controller => 'customer', :action => 'index', :path_prefix => '/customer'
+	# User Session URLs
+	map.with_options(:controller => 'user_sessions') do |site|
+		site.login 'login', :action => 'new', :url => '/login', :conditions => {:method => :get}
+		site.login 'login', :action => 'create', :url => '/login', :conditions => {:method => :post}
+		site.logout 'logout', :action => 'destroy', :url => '/logout'
+	end
+
+	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
+		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
+	end
 
 #  map.connect ':controller/:action/:id'
 #  map.connect ':controller/:action/:id.:format'

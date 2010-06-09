@@ -1,0 +1,10 @@
+<h3>Add a Marker</h3>
+<% info_window_form :url => { :action => :add_marker} do %>
+	<p>
+		<%= label_tag :name %>
+		<%= text_field_tag :name %>
+	</p>
+	
+	<%= submit_tag 'Add marker' %>
+	
+<% end %>

@@ -1,0 +1,13 @@
+track_bounds = new GLatLngBounds();
+map_lines = new Array();
+map = new GMap2(document.getElementById('map'));
+map.setCenter(new GLatLng(-35.0, 19.0));
+last_mouse_location = map.getCenter();
+function map_mousemove(map){
+return GEvent.addListener(map, "mousemove", function(location) {
+last_mouse_location = location;
+});
+}
+map_mousemove_event = map_mousemove(map);
+map.addControl(new GLargeMapControl3D());
+map.addControl(new GMapTypeControl());
