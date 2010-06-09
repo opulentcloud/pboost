@@ -10,12 +10,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :federal_campaigns, :path_prefix => '/admin'
 
-	map.add_gis_region 'add_gis_region', :controller => 'map', :action => 'add_gis_region', :conditions => { :method => :post }
-
-	map.add_polygon 'add_polygon', :controller => 'map', :action => 'add_polygon', :conditions => { :method => :post }
-
-	map.map 'map', :controller => 'map', :action => 'index'
 	map.with_options(:controller => 'map') do |site|
+		site.map 'map', :action => 'index'
+		site.add_polygon 'add_polygon', :action => 'add_polygon', :conditions => { :method => [:post, :get] }
 	end
 
   map.resources :municipal_campaigns, :path_prefix => '/admin'

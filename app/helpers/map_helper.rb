@@ -33,11 +33,9 @@ module MapHelper
 			#map.add_control(geometryControls)
 			#map.add_control :shape
 
-#      polygon.click do |script, location|
-#      	#map.add_vertex :location => location
-#      	map.open_info_window( :url => { :action => 'add_marker' }, :location => location)
-        #map.open_info_window(:location => location, :html => "Hello #{session[:geo_location].city}")
-#      end
+	    polygon.click do |script, location|
+	    	map.open_info_window( :url => { :action => :add_polygon }, :location => :location)
+	    end
 
 			polygon.edited do |script|
 				script.post :url => { :action => :add_polygon, 

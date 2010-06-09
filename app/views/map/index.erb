@@ -1,3 +1,14 @@
 <%= include_google_javascript %>
 <%= init_map %>
-<%= google_map :fullscreen => true %>
+<p>
+	To create your new GIS Region:
+	<ol>
+		<li>Use the controls in the upper left-hand corner of the map to navigate/zoom to make your target area visible on the map. &nbsp;You may also click and hold on the map and then drag it with your mouse and double-click an area to zoom in on it (multiple double-clicks will continue to zoom in further).
+		</li>
+		<li>Once you have your target area visible in the map you need to draw a border around it by clicking a starting point and then move to the next point and click, this will begin an outline of the border. &nbsp;Consecutive clicks will continue to draw additional extended border lines until the shape of your area has been drawn completely. &nbsp;*To indicate the completion of your area click on the last point twice or click the first point after creating the last point.</li>
+		<li>
+			When you have the area drawn it will no longer show the individual points and you cannot further edit your area. &nbsp;Now, simply click inside of the new area, you will be prompted to give your new area a unique name and save it. &nbsp;At this time you may also delete the area and start again if you are not satisfied with the area you have drawn.
+		</li>
+	</ol>
+</p>
+<%= google_map :width => 1100, :height => 465 %>
