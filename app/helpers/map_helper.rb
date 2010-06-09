@@ -9,6 +9,8 @@ module MapHelper
       #map.enableScrollWheelZoom
 			map.clear_overlays
 			#map.enable_google_bar!
+			#geocoder = Google::ClientGeocoder.new()
+			#map.add_control(geocoder)
 			
 			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'green')
 			overlay = map.add_overlay(polygon)
