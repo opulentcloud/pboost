@@ -1,0 +1,16 @@
+<% form_for @gis_region do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :political_campaign_id %><br />
+    <%= f.text_field :political_campaign_id %>
+  </p>
+  <p>
+    <%= f.label :geom %><br />
+    <%= f.text_field :geom %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

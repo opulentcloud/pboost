@@ -16,6 +16,7 @@ class PoliticalCampaign < ActiveRecord::Base
 	belongs_to :organization
 	has_many :users, :through => :organization
 	belongs_to :state
+	has_many :gis_regions
 
 	#==== VALIDATIONS ====
 	validates_presence_of :candidate_name, :seat_sought, :state_id, :type

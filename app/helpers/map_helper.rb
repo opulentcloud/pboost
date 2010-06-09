@@ -6,7 +6,7 @@ module MapHelper
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => session[:geo_location].lat, :longitude => session[:geo_location].lng},
                             :zoom => 13)
-      #map.enableScrollWheelZoom
+      map.enableScrollWheelZoom
 			map.clear_overlays
 			#map.enable_google_bar!
 			#geocoder = Google::ClientGeocoder.new()
@@ -40,7 +40,7 @@ module MapHelper
 	    end
 
 			polygon.edited do |script|
-				script.post :url => { :action => :add_polygon, 
+				script.post :url => { :action => :add_vertices, 
 					:vertices => Google::UrlHelper.encode_vertices(polygon)}
 			end
 

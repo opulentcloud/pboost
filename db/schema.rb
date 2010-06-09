@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100608223430) do
+ActiveRecord::Schema.define(:version => 20100609200842) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -122,6 +122,18 @@ ActiveRecord::Schema.define(:version => 20100608223430) do
 
 # Could not dump table "geography_columns" because of following StandardError
 #   Unknown type 'name' for column 'f_table_catalog' /home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:52:in `table'/home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:50:in `each'/home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:50:in `table'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:72:in `tables'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:63:in `each'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:63:in `tables'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:25:in `dump'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:19:in `dump'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:256/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:255:in `open'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:255/usr/lib/ruby/1.8/rake.rb:636:in `call'/usr/lib/ruby/1.8/rake.rb:636:in `execute'/usr/lib/ruby/1.8/rake.rb:631:in `each'/usr/lib/ruby/1.8/rake.rb:631:in `execute'/usr/lib/ruby/1.8/rake.rb:597:in `invoke_with_call_chain'/usr/lib/ruby/1.8/monitor.rb:242:in `synchronize'/usr/lib/ruby/1.8/rake.rb:590:in `invoke_with_call_chain'/usr/lib/ruby/1.8/rake.rb:583:in `invoke'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:113/usr/lib/ruby/1.8/rake.rb:636:in `call'/usr/lib/ruby/1.8/rake.rb:636:in `execute'/usr/lib/ruby/1.8/rake.rb:631:in `each'/usr/lib/ruby/1.8/rake.rb:631:in `execute'/usr/lib/ruby/1.8/rake.rb:597:in `invoke_with_call_chain'/usr/lib/ruby/1.8/monitor.rb:242:in `synchronize'/usr/lib/ruby/1.8/rake.rb:590:in `invoke_with_call_chain'/usr/lib/ruby/1.8/rake.rb:583:in `invoke'/usr/lib/ruby/1.8/rake.rb:2051:in `invoke_task'/usr/lib/ruby/1.8/rake.rb:2029:in `top_level'/usr/lib/ruby/1.8/rake.rb:2029:in `each'/usr/lib/ruby/1.8/rake.rb:2029:in `top_level'/usr/lib/ruby/1.8/rake.rb:2068:in `standard_exception_handling'/usr/lib/ruby/1.8/rake.rb:2023:in `top_level'/usr/lib/ruby/1.8/rake.rb:2001:in `run'/usr/lib/ruby/1.8/rake.rb:2068:in `standard_exception_handling'/usr/lib/ruby/1.8/rake.rb:1998:in `run'/usr/bin/rake:28
+
+  create_table "gis_regions", :force => true do |t|
+    t.column "name", :string, :limit => 128, :null => false
+    t.column "political_campaign_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+    t.column "geom", :polygon, :srid => 4326, :null => false
+  end
+
+  add_index "gis_regions", ["geom"], :name => "index_gis_regions_on_geom", :spatial=> true 
+  add_index "gis_regions", ["name", "political_campaign_id"], :name => "index_gis_regions_on_name_and_political_campaign_id", :unique => true
+  add_index "gis_regions", ["political_campaign_id"], :name => "index_gis_regions_on_political_campaign_id"
 
   create_table "house_districts", :force => true do |t|
     t.column "hd", :string, :limit => 3, :null => false
