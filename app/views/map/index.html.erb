@@ -2,11 +2,5 @@
 
 <%= init_map %>
 
-<form action="#" onsubmit="showLocation(this.address.value); return false;" >
-	<p>
-		<input type="text" size="40" name="address" />&nbsp;
-		<input type="submit" value="Go to location" />
-</form>
-
 <%= google_map :width => 980, :height => 465 %>
 
