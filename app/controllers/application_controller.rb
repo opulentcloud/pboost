@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 	end
 
   helper :all # include all helpers, all the time
-	helper_method :current_user, :current_user_session, :redirect_back_or_default, :current_controller
+	helper_method :current_user, :current_user_session, :redirect_back_or_default, :current_controller, :current_political_campaign
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
@@ -70,6 +70,10 @@ private
 		current_url = session[:return_to] ||= default
 		session[:return_to] = nil
 		redirect_to(current_url)
+	end
+
+	def current_political_campaign
+		session[:current_political_campaign] ||= current_user.political_campaigns.first
 	end
 
 	def route_initial_login(login, default)

@@ -11,8 +11,7 @@
       <td><%=h gis_region.name %></td>
       <td><%=h gis_region.political_campaign.campaign_description %></td>
       <td><%= link_to "Show", gis_region %></td>
-      <td><%= link_to "Edit", edit_gis_region_path(gis_region) %></td>
-      <td><%= link_to "Destroy", gis_region, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td>&nbsp;<%= link_to "Destroy", gis_region, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>

@@ -131,7 +131,6 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 		@user.organization.account_type = AccountType.find_by_name('Pre-Pay')
 		@user.roles << Role.find_by_name('Customer')
-		#@user.organization.political_campaigns.first.type = params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]
 		@political_campaign = @user.organization.political_campaigns.first
 		case params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]	
 		when 'FederalCampaign' then 

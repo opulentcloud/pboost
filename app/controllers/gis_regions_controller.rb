@@ -9,7 +9,7 @@ class GisRegionsController < ApplicationController
 
   def index
   	pg = params[:page] ||= 1
-    @gis_regions = current_user.political_campaigns.first.gis_regions.paginate :page => pg, :per_page => 10
+    @gis_regions = current_political_campaign.gis_regions.paginate :page => pg, :per_page => 10
 
     respond_to do |format|
       format.html { render :index }
@@ -23,7 +23,7 @@ class GisRegionsController < ApplicationController
   end
   
   def new
-    @gis_region = current_user.political_campaigns.first.gis_regions.build
+    @gis_region = current_political_campaign.gis_regions.build
   end
   
   def create
@@ -32,7 +32,7 @@ class GisRegionsController < ApplicationController
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
-				:geom => poly, :political_campaign_id => current_user.political_campaigns.first.id)
+				:geom => poly, :political_campaign_id => current_political_campaign.id)
 			
 			if @gis_region.save
 				#send javascript back to update the map
@@ -75,7 +75,7 @@ private
 	#get the gis_region for the current user
 	def get_gis_region
 		begin
-    @gis_region = current_user.political_campaigns.first.gis_regions.find(params[:id])
+    @gis_region = current_political_campaign.gis_regions.find(params[:id])
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requsted GIS Region was not found."
     	redirect_back_or_default customer_control_panel_url

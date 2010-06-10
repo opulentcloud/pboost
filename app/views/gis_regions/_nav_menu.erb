@@ -4,7 +4,7 @@
 	<% if @gis_regions %>
 		<td><%=link_to 'Add New GIS Region', new_gis_region_path %></td>	
 	<% end %>
-	<% if @gis_region && !@gis_region.new_record? %>
+	<% if @gis_region %>
 		<td><%= link_to 'List GIS Regions', gis_regions_path %></td>
 		<% if !@gis_region.new_record? %>
 			<td><%= link_to 'View GIS Region', @gis_region %></td>
