@@ -5,6 +5,7 @@ module ApplicationHelper
 		return case current_controller
 			when 'admin' then admin_control_panel_url
 			when 'customer' then customer_control_panel_url
+			when 'gis_regions' then customer_control_panel_url
 		end
 	end
 

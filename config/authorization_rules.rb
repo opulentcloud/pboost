@@ -3,6 +3,7 @@ authorization do
 		has_permission_on [:admin], :to => [:index]
 		has_permission_on [:county_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:federal_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
+		has_permission_on [:gis_regions], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:municipal_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:political_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:state_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
@@ -12,6 +13,7 @@ authorization do
 
 	role :customer do
 		has_permission_on :customer, :to => [:index]
+		has_permission_on [:gis_regions], :to => [:add_vertices, :index, :show, :new, :create, :edit, :update, :destroy]
 	end
 	
 	role :guest do

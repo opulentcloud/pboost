@@ -1,18 +1,11 @@
 <% title "GIS Region: #{@gis_region.name}" %>
 <%= javascript :defaults %>
 <%= include_google_javascript %>
-
 <%= gis_show_init_map %>
-
+<%= render :partial => 'nav_menu' %>
 <p>
   <strong>Political Campaign:</strong>
   <%=h @gis_region.political_campaign.campaign_description %>
-</p>
-
-<p>
-  <%= link_to "Edit", edit_gis_region_path(@gis_region) %> |
-  <%= link_to "Destroy", @gis_region, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", gis_regions_path %>
 </p>
 
 <%= google_map :width => 940, :height => 465 %>

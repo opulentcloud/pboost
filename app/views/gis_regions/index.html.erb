@@ -1,6 +1,7 @@
 <% title "GIS Regions" %>
-
+<%= render :partial => 'nav_menu' %>
 <table>
+	<tr><td align=left colspan='8'><b><%=pluralize(@gis_regions.total_entries, "Record Found") %></b></td></tr>
   <tr>
     <th>Name</th>
     <th>Political Campaign</th>
@@ -15,5 +16,5 @@
     </tr>
   <% end %>
 </table>
+<%= will_paginate @gis_regions %>
 
-<p><%= link_to "New Gis Region", new_gis_region_path %></p>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100609200842) do
+ActiveRecord::Schema.define(:version => 20100610211142) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -288,5 +288,45 @@ ActiveRecord::Schema.define(:version => 20100609200842) do
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
   add_index "users", ["organization_id"], :name => "index_users_on_organization_id"
   add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token", :unique => true
+
+  create_table "voters", :force => true do |t|
+    t.column "vote_builder_id", :integer, :limit => 8
+    t.column "last_name", :string, :limit => 32
+    t.column "first_name", :string, :limit => 32
+    t.column "middle_name", :string, :limit => 32
+    t.column "suffix", :string, :limit => 4
+    t.column "salutation", :string, :limit => 32
+    t.column "phone", :string, :limit => 10
+    t.column "home_phone", :string, :limit => 10
+    t.column "work_phone", :string, :limit => 10
+    t.column "work_phone_ext", :string, :limit => 10
+    t.column "cell_phone", :string, :limit => 10
+    t.column "email", :string, :limit => 50
+    t.column "party", :string, :limit => 1
+    t.column "sex", :string, :limit => 1
+    t.column "age", :integer, :limit => 2
+    t.column "dob", :date
+    t.column "dor", :date
+    t.column "state_file_id", :string, :limit => 10
+    t.column "address_id", :integer
+    t.column "search_index", :string, :limit => 13
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
+  add_index "voters", ["vote_builder_id"], :name => "index_voters_on_vote_builder_id", :unique => true
+
+  create_table "voting_history_voters", :force => true do |t|
+    t.column "election_year", :integer
+    t.column "election_month", :integer
+    t.column "election_type", :string, :limit => 2
+    t.column "voter_type", :string, :limit => 1
+    t.column "voter_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "voting_history_voters", ["voter_id"], :name => "index_voting_history_voters_on_voter_id"
 
 end

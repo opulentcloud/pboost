@@ -1,0 +1,10 @@
+<h3>Add a GIS Region</h3>
+<% info_window_form :url => { :action => :create } do %>
+	<p>
+		<%= label_tag :name %>
+		<%= text_field_tag :name %>
+	</p>
+	
+	<%= submit_tag 'Save New GIS Region' %>
+	
+<% end %>

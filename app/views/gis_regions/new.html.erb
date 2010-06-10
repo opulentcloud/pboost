@@ -1,5 +1,13 @@
-<% title "New Gis Region" %>
+<% title 'New GIS Region' %>
+<%= javascript :defaults %>
+<%= include_google_javascript %>
+<%= gis_new_init_map %>
+<%= render :partial => 'nav_menu' %>
+<p>
+  <strong>Political Campaign:</strong>
+  <%=h @gis_region.political_campaign.campaign_description %>
+</p>
 
-<%= render :partial => 'form' %>
+<%= google_map :width => 940, :height => 465 %>
 
-<p><%= link_to "Back to List", gis_regions_path %></p>
+

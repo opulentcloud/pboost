@@ -14,4 +14,31 @@ module GisRegionsHelper
 
     end
   end
+  
+  def gis_new_init_map
+    run_map_script do
+			
+      map = Google::Map.new(:controls => [:small_map, :map_type],
+                            :center => {:latitude => session[:geo_location].lat, :longitude => session[:geo_location].lng},
+                            :zoom => 13)
+      map.enableScrollWheelZoom
+			map.clear_overlays
+			
+			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'green')
+			overlay = map.add_overlay(polygon)
+			polygon.enable_drawing
+			polygon.enable_editing
+
+	    polygon.click do |script, location|
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create }, :location => :location)
+	    end
+
+			polygon.edited do |script|
+				script.post :url => { :controller => :gis_regions, :action => :add_vertices, 
+					:vertices => Google::UrlHelper.encode_vertices(polygon)}
+			end
+
+    end
+  end
+    
 end
