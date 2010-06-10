@@ -12,7 +12,7 @@ class GisRegionsController < ApplicationController
     @gis_regions = current_user.political_campaigns.first.gis_regions.paginate :page => pg, :per_page => 10
 
     respond_to do |format|
-      format.html { render :index, :layout => 'admin' }
+      format.html { render :index }
       format.xml  { render :xml => @gis_regions }
     end
   end
@@ -53,11 +53,9 @@ class GisRegionsController < ApplicationController
   end
   
   def edit
-    @gis_region = GisRegion.find(params[:id])
   end
   
   def update
-    @gis_region = GisRegion.find(params[:id])
     if @gis_region.update_attributes(params[:gis_region])
       flash[:notice] = "Successfully updated gis region."
       redirect_to @gis_region
@@ -67,7 +65,6 @@ class GisRegionsController < ApplicationController
   end
   
   def destroy
-    @gis_region = GisRegion.find(params[:id])
     @gis_region.destroy
     flash[:notice] = "Successfully destroyed gis region."
     redirect_to gis_regions_url
