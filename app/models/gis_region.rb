@@ -1,5 +1,8 @@
 class GisRegion < ActiveRecord::Base
 	acts_as_geom :geom => :polygon
+
+	#===== SCOPES ======
+	default_scope :order => 'gis_regions.name'
 		
 	#===== VALIDATIONS ======
 	validates_presence_of :name, :geom, :political_campaign_id
