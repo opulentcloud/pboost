@@ -234,6 +234,17 @@ background: #fff bottom no-repeat;
 padding-bottom: 0px;
 }
 
+div#contentMapMain {
+background: #fff bottom no-repeat; 
+padding-bottom: 0px;
+}
+
+div#map {
+background: none;
+padding-bottom: 0px;
+}
+
+
 div#contentAdminMain {
 width: width 100%;
 float: left;
