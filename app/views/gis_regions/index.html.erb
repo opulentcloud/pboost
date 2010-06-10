@@ -9,7 +9,7 @@
     <tr>
       <td><%=h gis_region.name %></td>
       <td><%= link_to "Show", gis_region %></td>
-      <td>&nbsp;<%= link_to "Destroy", gis_region, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td>&nbsp;<%= link_to "Delete", gis_region, :confirm => 'Are you sure you want to permanently delete this GIS Region?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>
