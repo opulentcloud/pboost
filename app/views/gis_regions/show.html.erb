@@ -3,10 +3,6 @@
 <%= include_google_javascript %>
 <%= gis_show_init_map %>
 <%= render :partial => 'nav_menu' %>
-<p>
-  <strong>Political Campaign:</strong>
-  <%=h @gis_region.political_campaign.campaign_description %>
-</p>
 
 <%= google_map :width => 940, :height => 465 %>
 
