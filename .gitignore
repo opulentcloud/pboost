@@ -4,6 +4,7 @@ config/email.yml
 config/action_mailer.yml
 config/development.sphinx.conf
 db/*.sqlite3
+db/migrate/fixtures/*.zip
 db/sphinx
 doc
 log
