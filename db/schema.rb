@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100611191219) do
+ActiveRecord::Schema.define(:version => 20100611223137) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -154,6 +154,16 @@ ActiveRecord::Schema.define(:version => 20100611191219) do
   add_index "gis_regions", ["geom"], :name => "index_gis_regions_on_geom", :spatial=> true 
   add_index "gis_regions", ["name", "political_campaign_id"], :name => "index_gis_regions_on_name_and_political_campaign_id", :unique => true
   add_index "gis_regions", ["political_campaign_id"], :name => "index_gis_regions_on_political_campaign_id"
+
+  create_table "gis_regions_voters", :id => false, :force => true do |t|
+    t.column "gis_region_id", :integer, :null => false
+    t.column "voter_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "gis_regions_voters", ["gis_region_id"], :name => "index_gis_regions_voters_on_gis_region_id"
+  add_index "gis_regions_voters", ["voter_id"], :name => "index_gis_regions_voters_on_voter_id"
 
   create_table "house_districts", :force => true do |t|
     t.column "hd", :string, :limit => 3, :null => false
@@ -334,6 +344,7 @@ ActiveRecord::Schema.define(:version => 20100611191219) do
     t.column "updated_at", :datetime
   end
 
+  add_index "voters", ["address_id"], :name => "index_voters_on_address_id"
   add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
   add_index "voters", ["vote_builder_id"], :name => "index_voters_on_vote_builder_id", :unique => true
 

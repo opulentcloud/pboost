@@ -1,7 +1,7 @@
 require 'migration_helpers'
 
 class CreateGisRegionsVoters < ActiveRecord::Migration
-	extend Migration Helpers
+	extend MigrationHelpers
 	
   def self.up
     create_table :gis_regions_voters, :id => false do |t|
