@@ -9,7 +9,7 @@ class GisRegionsController < ApplicationController
 
   def index
   	pg = params[:page] ||= 1
-    @gis_regions = current_user.political_campaigns.first.gis_regions.paginate :page => pg, :per_page => 10
+    @gis_regions = current_political_campaign.gis_regions.paginate :page => pg, :per_page => 10
 
     respond_to do |format|
       format.html { render :index }
@@ -23,7 +23,7 @@ class GisRegionsController < ApplicationController
   end
   
   def new
-    @gis_region = current_user.political_campaigns.first.gis_regions.build
+    @gis_region = current_political_campaign.gis_regions.build
   end
   
   def create
@@ -32,13 +32,13 @@ class GisRegionsController < ApplicationController
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
-				:geom => poly, :political_campaign_id => current_user.political_campaigns.first.id)
+				:geom => poly, :political_campaign_id => current_political_campaign.id)
 			
 			if @gis_region.save
 				#send javascript back to update the map
 				run_javascript do |script|
 					map = script.map
-					map.update_info_window :html => "GIS Region #{params[:name]} saved!"
+					map.update_info_window :html => "GIS Region #{params[:name]} has been saved!"
 				end
 			else
 					map.update_info_window :html => "Ooops, we were not able to save your GIS Region!  Please click on it to try again."
@@ -57,7 +57,7 @@ class GisRegionsController < ApplicationController
   
   def update
     if @gis_region.update_attributes(params[:gis_region])
-      flash[:notice] = "Successfully updated gis region."
+      flash[:notice] = "Successfully updated GIS Region."
       redirect_to @gis_region
     else
       render :action => 'edit'
@@ -65,8 +65,9 @@ class GisRegionsController < ApplicationController
   end
   
   def destroy
+		@name = @gis_region.name
     @gis_region.destroy
-    flash[:notice] = "Successfully destroyed gis region."
+    flash[:notice] = "Successfully deleted GIS Region: #{@name}."
     redirect_to gis_regions_url
   end
   
@@ -75,9 +76,9 @@ private
 	#get the gis_region for the current user
 	def get_gis_region
 		begin
-    @gis_region = current_user.political_campaigns.first.gis_regions.find(params[:id])
+    @gis_region = current_political_campaign.gis_regions.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-    	flash[:error] = "The requsted GIS Region was not found."
+    	flash[:error] = "The requested GIS Region was not found."
     	redirect_back_or_default customer_control_panel_url
     end
 	end

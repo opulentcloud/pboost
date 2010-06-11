@@ -4,15 +4,12 @@
 	<tr><td align=left colspan='8'><b><%=pluralize(@gis_regions.total_entries, "Record Found") %></b></td></tr>
   <tr>
     <th>Name</th>
-    <th>Political Campaign</th>
   </tr>
   <% for gis_region in @gis_regions %>
     <tr>
       <td><%=h gis_region.name %></td>
-      <td><%=h gis_region.political_campaign.campaign_description %></td>
       <td><%= link_to "Show", gis_region %></td>
-      <td><%= link_to "Edit", edit_gis_region_path(gis_region) %></td>
-      <td><%= link_to "Destroy", gis_region, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td>&nbsp;<%= link_to "Delete", gis_region, :confirm => 'Are you sure you want to permanently delete this GIS Region?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>

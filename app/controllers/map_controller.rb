@@ -20,7 +20,7 @@ class MapController < ApplicationController
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
-				:geom => poly, :political_campaign_id => current_user.political_campaigns.first.id)
+				:geom => poly, :political_campaign_id => current_political_campaign.id)
 			
 			if @gis_region.save
 				#send javascript back to update the map

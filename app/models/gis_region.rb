@@ -9,6 +9,7 @@ class GisRegion < ActiveRecord::Base
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
+	has_and_belongs_to_many :addresses
 
 	#===== INSTANCE METHODS ======
 	def to_vertices_array
@@ -20,6 +21,18 @@ class GisRegion < ActiveRecord::Base
 		r
 	end
 
+	def populate_all_addresses_within
+		#find all the addresses within the bbox of this polygon
+		addresses = Address.find_all_by_geom(self.geom)
+		#now we must ask each address by point if it is inside the polygon
+		addresses.each do |address|
+			self.addresses << address if self.contains?(address.geom)
+		end
+		puts self.addresses.count
+	end
+
+
+	#===== CLASS METHODS ======
 	def self.coordinates_from_text(text_coords)
 		r = []
 		ary = text_coords.to_s.split(',')

@@ -3,9 +3,13 @@
 <%= include_google_javascript %>
 <%= gis_new_init_map %>
 <%= render :partial => 'nav_menu' %>
+
 <p>
-  <strong>Political Campaign:</strong>
-  <%=h @gis_region.political_campaign.campaign_description %>
+	<ol>
+		<li>Outline your new region on the map below by clicking the points that outline the border of the region.</li>
+		<li>Click on the last point twice to complete drawing your region.</li>
+		<li><b><u>*YOU MUST CLICK ON YOUR COMPLETED REGION TO SAVE IT*</u></b></li>
+	</ol>
 </p>
 
 <%= google_map :width => 940, :height => 465 %>

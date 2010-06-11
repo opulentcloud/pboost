@@ -1,14 +1,21 @@
 class Address < ActiveRecord::Base
   include Geokit::Geocoders     
-  
-  #only enable this go get lat, lng, and geom point saved
-  #into the database
-  validate :valid_address
-	before_save :hash_full_address
-  
   acts_as_mappable
   acts_as_geom :geom => :point
 
+	#===== ASSOCIATIONS ======
+	has_and_belongs_to_many :gis_regions
+	has_many :voters
+
+	#===== VALIDATIONS ======
+  #only enable this go get lat, lng, and geom point saved
+  #into the database
+  validate :valid_address
+
+	#====== EVENTS ======
+	before_save :hash_full_address
+  
+	#===== INSTANCE METHODS ======
 	def hash_full_address
 		self.address_hash = Digest::MD5.hexdigest(self.full_address.downcase)
 	end
@@ -53,11 +60,12 @@ class Address < ActiveRecord::Base
 	  end
   end
 
+	#====== CLASS METHODS ======
 	def self.do_geocoding(done_cnt=0)
 		cnt = 0
 		the_limit = 15000 - done_cnt
 		
-		ads = Address.all(:conditions => "(county_name = 'Baltimore') AND (comm_dist_code = '2' or comm_dist_code = '4') geom IS NULL AND geo_failed IS NULL", :limit => the_limit)
+		ads = Address.all(:conditions => "(county_name = 'Baltimore') AND (comm_dist_code = '2' or comm_dist_code = '4') AND geom IS NULL AND geo_failed IS NULL", :limit => the_limit)
 		
 		ads.each do |a|
 			a.save! if a.valid?

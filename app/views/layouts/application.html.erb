@@ -41,6 +41,12 @@
 
 <div id="contentAppMain">
 <div id="content_body">
+	<% if current_political_campaign %>
+		<p>
+			<strong>Political Campaign:</strong>
+			<%=h current_political_campaign.campaign_description %>
+		</p>
+	<% end %>
     <%- flash.each do |name, msg| -%>
       <%= content_tag :div, msg, :id => "flash_#{name}" %>
     <%- end -%>

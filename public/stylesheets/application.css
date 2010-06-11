@@ -75,6 +75,11 @@ margin: 15px 40px 20px 65px;
 color:#333333;
 }
 
+div#contentMapMain div ol {
+margin: 15px 40px 20px 65px;
+color:#333333;
+}
+
 div#contentAppMain div ul li {
 margin-bottom: 5px;
 list-style: url(../images/check.png) ;
