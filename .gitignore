@@ -4,6 +4,8 @@ config/email.yml
 config/action_mailer.yml
 config/development.sphinx.conf
 db/*.sqlite3
+db/migrate/fixtures/unlinked_voters.csv
+db/migrate/fixtures/voters_maryland.csv
 db/migrate/fixtures/*.zip
 db/sphinx
 doc
