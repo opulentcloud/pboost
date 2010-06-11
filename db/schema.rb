@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(:version => 20100611191219) do
 
   add_index "account_types", ["name"], :name => "index_account_types_on_name", :unique => true
 
+  create_table "address_assignments", :id => false, :force => true do |t|
+    t.column "address_id", :integer, :null => false
+    t.column "gis_region_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "address_assignments", ["address_id"], :name => "index_address_assignments_on_address_id"
+  add_index "address_assignments", ["gis_region_id"], :name => "index_address_assignments_on_gis_region_id"
+
   create_table "addresses", :force => true do |t|
     t.column "street_no", :string, :limit => 5
     t.column "street_no_half", :string, :limit => 3
