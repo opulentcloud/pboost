@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100610211142) do
+ActiveRecord::Schema.define(:version => 20100611191219) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(:version => 20100610211142) do
   add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash", :unique => true
   add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial=> true 
   add_index "addresses", ["lat", "lng"], :name => "index_addresses_on_lat_and_lng"
+
+  create_table "addresses_gis_regions", :id => false, :force => true do |t|
+    t.column "address_id", :integer, :null => false
+    t.column "gis_region_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "addresses_gis_regions", ["address_id"], :name => "index_addresses_gis_regions_on_address_id"
+  add_index "addresses_gis_regions", ["gis_region_id"], :name => "index_addresses_gis_regions_on_gis_region_id"
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false

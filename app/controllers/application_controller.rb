@@ -73,7 +73,7 @@ private
 	end
 
 	def current_political_campaign
-		session[:current_political_campaign] ||= current_user.political_campaigns.first
+		session[:current_political_campaign] ||= current_user.political_campaigns.first rescue nil
 	end
 
 	def route_initial_login(login, default)
