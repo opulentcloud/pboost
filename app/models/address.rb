@@ -57,7 +57,7 @@ class Address < ActiveRecord::Base
 		cnt = 0
 		the_limit = 15000 - done_cnt
 		
-		ads = Address.all(:conditions => "(county_name = 'Baltimore') AND (comm_dist_code = '2' or comm_dist_code = '4') geom IS NULL AND geo_failed IS NULL", :limit => the_limit)
+		ads = Address.all(:conditions => "(county_name = 'Baltimore') AND (comm_dist_code = '2' or comm_dist_code = '4') AND geom IS NULL AND geo_failed IS NULL", :limit => the_limit)
 		
 		ads.each do |a|
 			a.save! if a.valid?
