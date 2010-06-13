@@ -1,5 +1,6 @@
 class GisRegion < ActiveRecord::Base
 	acts_as_geom :geom => :polygon
+	acts_as_reportable
 
 	#===== SCOPES ======
 	default_scope :order => 'gis_regions.name'
@@ -13,6 +14,10 @@ class GisRegion < ActiveRecord::Base
 	has_and_belongs_to_many :voters
 
 	#===== INSTANCE METHODS ======
+	def print_report
+		self.addresses.report_table(:all, :only => [:id], :methods => :full_address, :order => 'state, city, street_name, street_prefix, street_no, street_suffix, apt_type, apt_no')
+	end
+
 	def to_vertices_array
 		r = []
 		a = self.geom.text_representation.gsub(')','').gsub('(','').split(',')

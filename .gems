@@ -6,3 +6,5 @@ will_paginate --version '>= 2.3.11' --source http://gemcutter.org
 geokit
 postgis_adapter
 uuidtools
+pdf-writer --version '>=1.1.8'
+ruport --version '>=1.6.3'
