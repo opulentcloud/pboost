@@ -3,6 +3,7 @@ class Voter < ActiveRecord::Base
 	#===== ASSOCIATIONS ======
 	belongs_to :address
 	has_many :voting_history_voters, :dependent => :destroy
+	has_and_belongs_to_many :gis_regions
 
 	#====== INSTANCE METHODS ======
 	def build_search

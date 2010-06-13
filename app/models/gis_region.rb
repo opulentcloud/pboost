@@ -10,6 +10,7 @@ class GisRegion < ActiveRecord::Base
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
 	has_and_belongs_to_many :addresses
+	has_and_belongs_to_many :voters
 
 	#===== INSTANCE METHODS ======
 	def to_vertices_array
@@ -26,7 +27,10 @@ class GisRegion < ActiveRecord::Base
 		addresses = Address.find_all_by_geom(self.geom)
 		#now we must ask each address by point if it is inside the polygon
 		addresses.each do |address|
-			self.addresses << address if self.contains?(address.geom)
+			if self.contains?(address.geom)
+				self.addresses << address 
+				self.voters << address.voters
+			end
 		end
 		puts self.addresses.count
 	end
