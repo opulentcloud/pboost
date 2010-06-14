@@ -1,4 +1,6 @@
 class WalkSheetsController < ApplicationController
+	before_filter :require_user
+	before_filter :get_gis_region, :only => [:show, :printable_list, :csv_list]
 
 	def index
 		@walk_sheet = render_walk_sheet_list_as :html		
@@ -28,7 +30,16 @@ class WalkSheetsController < ApplicationController
 
 protected
 	def render_walk_sheet_list_as(format)
-		WalkSheetReport.render(format, :gis_region => params[:id])
+		WalkSheetReport.render(format, :gis_region => @gis_region.id)
+	end
+
+	def get_gis_region
+		begin
+    @gis_region = current_political_campaign.gis_regions.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+    	flash[:error] = "The requested GIS Region was not found."
+    	redirect_back_or_default customer_control_panel_url
+    end
 	end
 
 end
