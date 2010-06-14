@@ -23,7 +23,7 @@ Rails::Initializer.run do |config|
 	config.gem "declarative_authorization", :source => 'http://gemcutter.org'
 	config.gem 'fastercsv'
 	config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
-	config.gem "geokit"
+	config.gem 'geokit'
 	config.gem 'postgis_adapter'
 	config.gem 'uuidtools'
 	config.gem 'acts_as_reportable'
