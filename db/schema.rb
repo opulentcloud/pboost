@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100611223137) do
+ActiveRecord::Schema.define(:version => 20100614214858) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(:version => 20100611223137) do
     t.column "state_id", :integer, :null => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "lat", :decimal, :precision => 15, :scale => 10
+    t.column "lng", :decimal, :precision => 15, :scale => 10
   end
 
   add_index "cities", ["name"], :name => "index_cities_on_name"
@@ -136,6 +138,8 @@ ActiveRecord::Schema.define(:version => 20100611223137) do
     t.column "state_id", :integer, :null => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "lat", :decimal, :precision => 15, :scale => 10
+    t.column "lng", :decimal, :precision => 15, :scale => 10
   end
 
   add_index "counties", ["name"], :name => "index_counties_on_name"
@@ -279,6 +283,8 @@ ActiveRecord::Schema.define(:version => 20100611223137) do
     t.column "active", :boolean, :default => true
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "lat", :decimal, :precision => 15, :scale => 10
+    t.column "lng", :decimal, :precision => 15, :scale => 10
   end
 
   add_index "states", ["abbrev"], :name => "index_states_on_abbrev", :unique => true

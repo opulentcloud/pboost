@@ -1,5 +1,4 @@
 class Address < ActiveRecord::Base
-  include Geokit::Geocoders     
   acts_as_reportable
   acts_as_mappable
   acts_as_geom :geom => :point

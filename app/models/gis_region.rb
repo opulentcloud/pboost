@@ -30,10 +30,13 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	def populate_all_addresses_within
-		#remove all addresses that may exist
-		self.addresses.destroy_all
-		#remove all voters that may exist
-		self.voters.destroy_all
+		#unlink any addresses from this region
+		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{self.id}"
+		ActiveRecord::Base.connection.execute(sql)
+				
+		#unlink any voters from this region
+		sql = "DELETE FROM gis_regions_voters WHERE gis_region_id = #{self.id}"
+		ActiveRecord::Base.connection.execute(sql)
 
 		#find all the addresses within the bbox of this polygon
 		addresses = Address.find_all_by_geom(self.geom)
@@ -57,6 +60,7 @@ class GisRegion < ActiveRecord::Base
 			end
 		end
 		puts self.addresses.count
+		puts self.voters.count
 	end
 
 
