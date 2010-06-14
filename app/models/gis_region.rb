@@ -30,13 +30,30 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	def populate_all_addresses_within
+		#remove all addresses that may exist
+		self.addresses.destroy_all
+		#remove all voters that may exist
+		self.voters.destroy_all
+
 		#find all the addresses within the bbox of this polygon
 		addresses = Address.find_all_by_geom(self.geom)
 		#now we must ask each address by point if it is inside the polygon
 		addresses.each do |address|
 			if self.contains?(address.geom)
-				self.addresses << address 
-				self.voters << address.voters
+				begin
+					self.addresses << address 
+				rescue ActiveRecord::StatementInvalid => err
+					if !err.message =~ /duplicate/
+						err.raise
+					end
+				end
+				begin
+					self.voters << address.voters
+				rescue ActiveRecord::StatementInvalid => err
+					if !err.message =~ /duplicate/
+						err.raise
+					end
+				end
 			end
 		end
 		puts self.addresses.count

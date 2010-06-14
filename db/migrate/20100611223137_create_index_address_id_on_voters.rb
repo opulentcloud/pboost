@@ -4,6 +4,6 @@ class CreateIndexAddressIdOnVoters < ActiveRecord::Migration
   end
 
   def self.down
-		drop_index :voters, :address_id
+		remove_index :voters, :address_id
   end
 end

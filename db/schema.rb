@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20100611223137) do
   end
 
   add_index "addresses_gis_regions", ["address_id"], :name => "index_addresses_gis_regions_on_address_id"
+  add_index "addresses_gis_regions", ["address_id", "gis_region_id"], :name => "index_addresses_gis_regions_on_address_id_and_gis_region_id", :unique => true
   add_index "addresses_gis_regions", ["gis_region_id"], :name => "index_addresses_gis_regions_on_gis_region_id"
 
   create_table "cities", :force => true do |t|
@@ -163,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20100611223137) do
   end
 
   add_index "gis_regions_voters", ["gis_region_id"], :name => "index_gis_regions_voters_on_gis_region_id"
+  add_index "gis_regions_voters", ["gis_region_id", "voter_id"], :name => "index_gis_regions_voters_on_gis_region_id_and_voter_id", :unique => true
   add_index "gis_regions_voters", ["voter_id"], :name => "index_gis_regions_voters_on_voter_id"
 
   create_table "house_districts", :force => true do |t|

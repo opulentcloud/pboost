@@ -10,10 +10,11 @@ class CreateAddressesGisRegions < ActiveRecord::Migration
 
       t.timestamps
     end
+		add_index :addresses_gis_regions,[:address_id, :gis_region_id], :unique => true
     add_index :addresses_gis_regions, :address_id
     add_index :addresses_gis_regions, :gis_region_id
-add_foreign_key :addresses_gis_regions, :address_id, :addresses, 'ON DELETE CASCADE'
-add_foreign_key :addresses_gis_regions, :gis_region_id, :gis_regions, 'ON DELETE CASCADE'
+add_foreign_key :addresses_gis_regions, :address_id, :addresses, 'ON DELETE RESTRICT'
+add_foreign_key :addresses_gis_regions, :gis_region_id, :gis_regions, 'ON DELETE RESTRICT'
 
   end
 
