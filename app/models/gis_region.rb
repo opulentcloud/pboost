@@ -15,7 +15,9 @@ class GisRegion < ActiveRecord::Base
 
 	#===== INSTANCE METHODS ======
 	def print_report
-		self.addresses.report_table(:all, :only => [:id], :methods => :full_address, :order => 'state, city, street_name, street_prefix, street_no, street_suffix, apt_type, apt_no')
+		self.addresses.report_table(:all, :only => [:state, :city], :methods => :full_street_address, :order => 'state, city, street_name, street_prefix, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no',
+		:include => { :voters => { :only => [:last_name, :first_name, :sex, :age, :party], :order => 'last_name, first_name' } },
+		:group => 'id, state, city, street_name, street_prefix, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no, zip5, zip4, county_name, precinct_name, precinct_code, cd, sd, hd, comm_dist_code, lat, lng, geom, geo_failed, address_hash, addresses.created_at, addresses.updated_at')
 	end
 
 	def to_vertices_array

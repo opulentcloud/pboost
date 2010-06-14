@@ -55,6 +55,12 @@ ActionController::Routing::Routes.draw do |map|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
 
+	map.with_options(:controller => 'walk_sheets', :path_prefix => '/customer') do |site|
+		site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
+		site.pdf 'pdf/:id', :action => 'printable_list', :conditions => { :method => :get }
+	end
+	map.resources :walk_sheets, :path_prefix => '/customer'
+
 #  map.connect ':controller/:action/:id'
 #  map.connect ':controller/:action/:id.:format'
 end
