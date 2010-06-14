@@ -9,6 +9,7 @@
 		<% if !@gis_region.new_record? %>
 			<td><%= link_to 'View GIS Region', @gis_region %></td>
 			<td><%= link_to 'Delete GIS Region', @gis_region, :confirm => 'Are you sure you want to permanently delete this GIS Region?', :method => :delete %></td>
+			<td><%= link_to 'Print Walksheet', walk_sheet_path(@gis_region.id)+'.pdf' %>
 		<% end %>
 	</tr>
 	<tr>
