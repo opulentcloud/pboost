@@ -5,7 +5,7 @@ class WalkSheetReport < Ruport::Controller
 	def setup
 		options.paper_orientation = :landscape
 		conditions = ["gis_region.id = ?", options.gis_region]
-		data = GisRegion.find(options.gis_region).addresses.report_table(:all, 
+		self.data = GisRegion.find(options.gis_region).addresses.report_table(:all, 
  :methods => :full_street_address, 
 	:include => { :voters => { :only => [:last_name, :first_name, :sex, :age, :party], :order => 'last_name, first_name' } },		
  :only => ['full_street_address', 'voters.last_name', 'voters.first_name', 'voters.age', 'voters.sex', 'voters.party'], 
