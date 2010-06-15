@@ -6,6 +6,7 @@ module ApplicationHelper
 			when 'admin' then admin_control_panel_url
 			when 'customer' then customer_control_panel_url
 			when 'gis_regions' then customer_control_panel_url
+			when 'walk_sheets' then customer_control_panel_url
 		end
 	end
 

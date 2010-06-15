@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100614214858) do
+ActiveRecord::Schema.define(:version => 20100615195529) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -18,16 +18,6 @@ ActiveRecord::Schema.define(:version => 20100614214858) do
   end
 
   add_index "account_types", ["name"], :name => "index_account_types_on_name", :unique => true
-
-  create_table "address_assignments", :id => false, :force => true do |t|
-    t.column "address_id", :integer, :null => false
-    t.column "gis_region_id", :integer, :null => false
-    t.column "created_at", :datetime
-    t.column "updated_at", :datetime
-  end
-
-  add_index "address_assignments", ["address_id"], :name => "index_address_assignments_on_address_id"
-  add_index "address_assignments", ["gis_region_id"], :name => "index_address_assignments_on_gis_region_id"
 
   create_table "addresses", :force => true do |t|
     t.column "street_no", :string, :limit => 5
@@ -145,6 +135,21 @@ ActiveRecord::Schema.define(:version => 20100614214858) do
   add_index "counties", ["name"], :name => "index_counties_on_name"
   add_index "counties", ["name", "state_id"], :name => "index_counties_on_state_id_and_name", :unique => true
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.column "priority", :integer, :default => 0
+    t.column "attempts", :integer, :default => 0
+    t.column "handler", :text
+    t.column "last_error", :text
+    t.column "run_at", :datetime
+    t.column "locked_at", :datetime
+    t.column "failed_at", :datetime
+    t.column "locked_by", :string
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
 # Could not dump table "geography_columns" because of following StandardError
 #   Unknown type 'name' for column 'f_table_catalog' /home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:52:in `table'/home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:50:in `each'/home/mark/Work/pboost/vendor/gems/postgis_adapter-0.7.8/lib/postgis_adapter/common_spatial_adapter.rb:50:in `table'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:72:in `tables'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:63:in `each'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:63:in `tables'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:25:in `dump'/usr/lib/ruby/gems/1.8/gems/activerecord-2.3.8/lib/active_record/schema_dumper.rb:19:in `dump'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:256/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:255:in `open'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:255/usr/lib/ruby/1.8/rake.rb:636:in `call'/usr/lib/ruby/1.8/rake.rb:636:in `execute'/usr/lib/ruby/1.8/rake.rb:631:in `each'/usr/lib/ruby/1.8/rake.rb:631:in `execute'/usr/lib/ruby/1.8/rake.rb:597:in `invoke_with_call_chain'/usr/lib/ruby/1.8/monitor.rb:242:in `synchronize'/usr/lib/ruby/1.8/rake.rb:590:in `invoke_with_call_chain'/usr/lib/ruby/1.8/rake.rb:583:in `invoke'/usr/lib/ruby/gems/1.8/gems/rails-2.3.8/lib/tasks/databases.rake:113/usr/lib/ruby/1.8/rake.rb:636:in `call'/usr/lib/ruby/1.8/rake.rb:636:in `execute'/usr/lib/ruby/1.8/rake.rb:631:in `each'/usr/lib/ruby/1.8/rake.rb:631:in `execute'/usr/lib/ruby/1.8/rake.rb:597:in `invoke_with_call_chain'/usr/lib/ruby/1.8/monitor.rb:242:in `synchronize'/usr/lib/ruby/1.8/rake.rb:590:in `invoke_with_call_chain'/usr/lib/ruby/1.8/rake.rb:583:in `invoke'/usr/lib/ruby/1.8/rake.rb:2051:in `invoke_task'/usr/lib/ruby/1.8/rake.rb:2029:in `top_level'/usr/lib/ruby/1.8/rake.rb:2029:in `each'/usr/lib/ruby/1.8/rake.rb:2029:in `top_level'/usr/lib/ruby/1.8/rake.rb:2068:in `standard_exception_handling'/usr/lib/ruby/1.8/rake.rb:2023:in `top_level'/usr/lib/ruby/1.8/rake.rb:2001:in `run'/usr/lib/ruby/1.8/rake.rb:2068:in `standard_exception_handling'/usr/lib/ruby/1.8/rake.rb:1998:in `run'/usr/bin/rake:28
 
@@ -154,6 +159,8 @@ ActiveRecord::Schema.define(:version => 20100614214858) do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "geom", :polygon, :srid => 4326, :null => false
+    t.column "voter_count", :integer, :default => 0
+    t.column "populated", :boolean, :default => false
   end
 
   add_index "gis_regions", ["geom"], :name => "index_gis_regions_on_geom", :spatial=> true 

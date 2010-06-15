@@ -39,9 +39,8 @@ class GisRegion < ActiveRecord::Base
 		ActiveRecord::Base.connection.execute(sql)
 
 		#find all the addresses within the bbox of this polygon
-		addresses = Address.find_all_by_geom(self.geom)
 		#now we must ask each address by point if it is inside the polygon
-		addresses.each do |address|
+		Address.find_all_by_geom(self.geom).each do |address|
 			if self.contains?(address.geom)
 				begin
 					self.addresses << address 
@@ -59,8 +58,11 @@ class GisRegion < ActiveRecord::Base
 				end
 			end
 		end
-		puts self.addresses.count
-		puts self.voters.count
+		self.voter_count = self.voters.count
+		self.populated = true
+		self.save!
+		logger.debug(self.addresses.count)
+		logger.debug(self.voters.count)
 	end
 
 

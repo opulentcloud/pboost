@@ -3,6 +3,7 @@
 	<tr>
 	<% if @gis_regions %>
 		<td><%=link_to 'Add New GIS Region', new_gis_region_path %></td>	
+		<td><%=link_to 'Refresh List', gis_regions_path %></td>	
 	<% end %>
 	<% if @gis_region %>
 		<td><%= link_to 'List GIS Regions', gis_regions_path %></td>
