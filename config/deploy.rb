@@ -75,6 +75,7 @@ end
 
 after :deploy, "config:link"
 after :deploy, "delayed_job:stop"
+after :deploy, "delayed_job:start"
 
 deploy.task :restart, :roles => :app do
 	desc "Restart application"
