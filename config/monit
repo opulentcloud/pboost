@@ -1,6 +1,6 @@
 check process delayed_job 
 	with pidfile /var/www/pboost/shared/pids/delayed_job.pid
-	start program  = "/bin/bash -c 'HOME=/var/www/pboost/current RAILS_ENV=production /usr/local/bin/ruby var/www/pboost/current/script/delayed_job start'"
-	stop program = "/bin/bash -c /usr/local/bin/ruby /var/www/pboost/current/script/delayed_job stop"
+	start program  = "/bin/bash -c 'HOME=/var/www/pboost/current RAILS_ENV=production /usr/bin/ruby var/www/pboost/current/script/delayed_job start'"
+	stop program = "/bin/bash -c /usr/bin/ruby /var/www/pboost/current/script/delayed_job stop"
 	if 3 restarts within 5 cycles then timeout
 
