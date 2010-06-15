@@ -40,7 +40,9 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== CLASS METHODS ======
-	def self.populate_all_addresses_within(gis_region)
+	def self.populate_all_addresses_within(gis_region_id)
+		gis_region = GisRegion.find!(gis_region_id)
+	
 		#unlink any addresses from this region
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{gis_region.id}"
 		ActiveRecord::Base.connection.execute(sql)
