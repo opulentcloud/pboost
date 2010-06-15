@@ -1,4 +1,4 @@
-class MemberObserver < ActiveRecord::Observer
+class GisRegionObserver < ActiveRecord::Observer
 	@@delayed_job = true
 
 	def after_create(gis_region)
