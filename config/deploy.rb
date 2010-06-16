@@ -2,7 +2,7 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
 set :application, "pboost"
-set :repository, "git@heroku.com:pboost.git"
+set :repository, "git@github.com:dstinnie/pboost.git"
 set :user, "netadm"
 set :sudo_password, "sudo password: "
 
@@ -41,7 +41,7 @@ set :deploy_to, "/var/www/#{application}"
 set :scm, :git
 set :scm_username, "mark@wilsonsdev.com"
 set :deploy_via, :remote_cache
-set :branch, "master"
+set :branch, "idx"
 # see a full list by running "gem contents capistrano | grep 'scm/'"
 
 #role :web, "your web-server here"
