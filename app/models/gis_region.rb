@@ -57,7 +57,7 @@ class GisRegion < ActiveRecord::Base
 
 		#find all the addresses within the bbox of this polygon
 		#now we must ask each address by point if it is inside the polygon
-		Address.find_all_by_state(gis_region.state.abbrev).find_all_by_geom(gis_region.geom).each do |address|
+		Address.find_all_by_state(gis_region.political_campaign.state.abbrev).find_all_by_geom(gis_region.geom).each do |address|
 			if gis_region.contains?(address.geom)
 				begin
 					gis_region.addresses << address 

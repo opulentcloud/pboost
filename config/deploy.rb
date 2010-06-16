@@ -2,7 +2,7 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
 set :application, "pboost"
-set :repository, "git@github.com:dstinnie/pboost.git"
+set :repository, "git@heroku.com:pboost.git"
 set :user, "netadm"
 set :sudo_password, "sudo password: "
 

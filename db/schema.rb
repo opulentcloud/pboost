@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100615195529) do
+ActiveRecord::Schema.define(:version => 20100616012635) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -49,8 +49,16 @@ ActiveRecord::Schema.define(:version => 20100615195529) do
   end
 
   add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash", :unique => true
+  add_index "addresses", ["cd"], :name => "index_addresses_on_cd"
+  add_index "addresses", ["city"], :name => "index_addresses_on_city"
+  add_index "addresses", ["comm_dist_code"], :name => "index_addresses_on_comm_dist_code"
+  add_index "addresses", ["county_name"], :name => "index_addresses_on_county_name"
   add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial=> true 
+  add_index "addresses", ["hd"], :name => "index_addresses_on_hd"
   add_index "addresses", ["lat", "lng"], :name => "index_addresses_on_lat_and_lng"
+  add_index "addresses", ["precinct_code"], :name => "index_addresses_on_precinct_code"
+  add_index "addresses", ["sd"], :name => "index_addresses_on_sd"
+  add_index "addresses", ["state"], :name => "index_addresses_on_state"
 
   create_table "addresses_gis_regions", :id => false, :force => true do |t|
     t.column "address_id", :integer, :null => false
