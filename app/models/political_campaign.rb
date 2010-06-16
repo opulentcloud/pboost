@@ -12,6 +12,22 @@ class PoliticalCampaign < ActiveRecord::Base
 	#==== PROPERTIES =====
 	attr_accessor :city_text
 
+	def lat
+		case self.type
+		when 'FederalCampaign' then FederalCampaign.find(self.id).lat
+		when 'StateCampaign' then StateCampaign.find(self.id).lat
+		when 'CountyCampaign' then CountyCampaign.find(self.id).lat
+		when 'MunicipalCampaign' then MunicipalCampagin.find(self.id).lat
+	end
+
+	def lng
+		case self.type
+		when 'FederalCampaign' then FederalCampaign.find(self.id).lng
+		when 'StateCampaign' then StateCampaign.find(self.id).lng
+		when 'CountyCampaign' then CountyCampaign.find(self.id).lng
+		when 'MunicipalCampaign' then MunicipalCampagin.find(self.id).lng
+	end
+
 	#==== ASSOCIATIONS ====
 	belongs_to :organization
 	has_many :users, :through => :organization
