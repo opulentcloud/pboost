@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100616012635) do
+ActiveRecord::Schema.define(:version => 20100616214753) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20100616012635) do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "geom", :point, :srid => 4326
+    t.column "mcomm_dist_code", :string, :limit => 2
   end
 
   add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash", :unique => true

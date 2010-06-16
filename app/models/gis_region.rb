@@ -46,6 +46,8 @@ class GisRegion < ActiveRecord::Base
 		if gis_region.nil?
 			raise ActiveRecord::RecordNotFound
 		end
+
+		political_campaign = gis_region.political_campaign
 	
 		#unlink any addresses from this region
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{gis_region.id}"
@@ -55,9 +57,9 @@ class GisRegion < ActiveRecord::Base
 		sql = "DELETE FROM gis_regions_voters WHERE gis_region_id = #{gis_region.id}"
 		ActiveRecord::Base.connection.execute(sql)
 
-		#find all the addresses within the bbox of this polygon
-		#now we must ask each address by point if it is inside the polygon
-
+		#query using postgis db functions so we don't have
+		#to loop all addresses in ruby and ask the poly if they exist
+		#inside of it...much FASTER...
 		sql = "SELECT	\"addresses\".* \ 
 					FROM \ 
 						\"addresses\", \"gis_regions\" \ 
@@ -66,9 +68,64 @@ class GisRegion < ActiveRecord::Base
 					AND \
 						(\"addresses\".\"geom\" && '#{gis_region.geom.as_hex_ewkb}' ) \
 					AND \
-						(\"addresses\".\"state\" = '#{gis_region.political_campaign.state.abbrev}') \
-					AND \
+						(\"addresses\".\"state\" = '#{political_campaign.state.abbrev}') "
+
+			if political_campaign.type == 'FederalCampaign'
+						
+				if political_campaign.congressional_district
+					sql += " AND \
+						(\"addresses\".\"cd\" = '#{political_campaign.congressional_district.cd}') "
+				end
+
+			end
+
+			if political_campaign.type == 'StateCampaign'
+
+				if political_campaign.senate_district
+					sql += " AND \
+						(\"addresses\".\"sd\" = '#{political_campaign.senate_district.sd}') "
+				end
+
+				if political_campaign.house_district
+					sql += " AND \
+						(\"addresses\".\"hd\" = '#{political_campaign.house_district.hd}') "
+				end
+
+			end
+
+			if political_campaign.type == 'CountyCampaign'
+			
+				if political_campaign.county
+					sql += " AND \
+						(\"addresses\".\"county_name\" = '#{political_campaign.county.name}') "
+
+					if political_campaign.council_district
+						sql += " AND \
+							(\"addresses\".\"comm_dist_code\" = '#{political_campaign.council_district.code}') "
+					end
+
+				end
+
+			end
+
+			if political_campaign.type == 'MunicipalCampaign'
+
+				if political_campaign.city
+					sql += " AND \
+						(\"addresses\".\"city\" = '#{political_campaign.city.name}') "
+
+					if political_campaign.municipal_district
+						sql += " AND \
+							(\"addresses\".\"mcomm_dist_code\" = '#{political_campaign.municipal_district.code}') "
+					end
+
+				end
+
+			end
+					
+			sql += " AND \
 						ST_contains(\"gis_regions\".\"geom\", \"addresses\".\"geom\"::geometry)"
+						
 		Address.find_by_sql(sql).each do |address|
 			begin
 				gis_region.addresses << address 
@@ -88,7 +145,9 @@ class GisRegion < ActiveRecord::Base
 
 		#old code
 		if 1 == 0
+		#find all the addresses within the bbox of this polygon
 		Address.find_all_by_geom_and_state(gis_region.geom, gis_region.political_campaign.state.abbrev).each do |address|
+			#now we must ask each address by point if it is inside the polygon
 			if gis_region.contains?(address.geom)
 				begin
 					gis_region.addresses << address 
