@@ -18,6 +18,7 @@ class PoliticalCampaign < ActiveRecord::Base
 		when 'StateCampaign' then StateCampaign.find(self.id).lat
 		when 'CountyCampaign' then CountyCampaign.find(self.id).lat
 		when 'MunicipalCampaign' then MunicipalCampagin.find(self.id).lat
+		end
 	end
 
 	def lng
@@ -26,6 +27,7 @@ class PoliticalCampaign < ActiveRecord::Base
 		when 'StateCampaign' then StateCampaign.find(self.id).lng
 		when 'CountyCampaign' then CountyCampaign.find(self.id).lng
 		when 'MunicipalCampaign' then MunicipalCampagin.find(self.id).lng
+		end
 	end
 
 	#==== ASSOCIATIONS ====
