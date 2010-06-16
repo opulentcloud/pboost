@@ -21,6 +21,14 @@ class StateCampaign < PoliticalCampaign
 	validates_presence_of :house_district_id, :if => Proc.new { |c| c.seat_type == 'State House' }
 
 	#===== PROPERTIES ======
+	def lat
+		self.state.lat
+	end
+	
+	def lng
+		self.state.lng
+	end
+
 	def campaign_description
 
 		if !house_district_id.blank?

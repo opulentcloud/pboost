@@ -26,7 +26,7 @@ class Address < ActiveRecord::Base
        self.send(f)}.join(',')
     
     #res= Geokit::Geocoders::GoogleGeocoder.geocode(@address_string, :bias => 'us')
-    res = MultiGeocoder.geocode(@address_string, :bias => 'us')
+    res = Geokit::Geocoders::MultiGeocoder.geocode(@address_string, :bias => 'us')
     puts res.success
     puts res.precision.to_sym
     if res.success 

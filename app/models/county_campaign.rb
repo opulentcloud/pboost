@@ -11,6 +11,14 @@ class CountyCampaign < PoliticalCampaign
 	#validates_presence_of :council_district_id, :if => Proc.new { |c| c.countywide == false }
 
 	#===== PROPERTIES ======
+	def lat
+		self.county.lat
+	end
+	
+	def lng
+		self.county.lng
+	end
+
 	def campaign_description
 		if council_district_id.blank?
 			"#{candidate_name} for #{seat_sought} #{county.name}".strip
