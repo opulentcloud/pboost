@@ -12,14 +12,6 @@ class County < ActiveRecord::Base
 	validate :valid_county
 
 	#===== INSTANCE METHODS ======
-	def lat
-		self.county.lat
-	end
-	
-	def lng
-		self.county.lng
-	end
-	
   def valid_county
   	return true unless (self.lat.blank? && self.lng.blank?)
     @county_string ||= "#{self.name} County, #{self.state.abbrev}"
