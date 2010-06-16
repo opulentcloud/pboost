@@ -57,7 +57,38 @@ class GisRegion < ActiveRecord::Base
 
 		#find all the addresses within the bbox of this polygon
 		#now we must ask each address by point if it is inside the polygon
-		Address.find_all_by_state(gis_region.political_campaign.state.abbrev).find_all_by_geom(gis_region.geom).each do |address|
+
+		sql = "SELECT	\"addresses\".* \ 
+					FROM \ 
+						\"addresses\", \"gis_regions\" \ 
+					WHERE \
+						(\"gis_regions\".\"id\" = #{gis_region.id}) \
+					AND \
+						(\"addresses\".\"geom\" && '#{gis_region.geom.as_hex_ewkb}' ) \
+					AND \
+						(\"addresses\".\"state\" = '#{gis_region.political_campaign.state.abbrev}') \
+					AND \
+						ST_contains(\"gis_regions\".\"geom\", \"addresses\".\"geom\"::geometry)"
+		Address.find_by_sql(sql).each do |address|
+			begin
+				gis_region.addresses << address 
+			rescue ActiveRecord::StatementInvalid => err
+				if !err.message =~ /duplicate/
+					err.raise
+				end
+			end
+			begin
+				gis_region.voters << address.voters
+			rescue ActiveRecord::StatementInvalid => err
+				if !err.message =~ /duplicate/
+					err.raise
+				end
+			end
+		end
+
+		#old code
+		if 1 == 0
+		Address.find_all_by_geom_and_state(gis_region.geom, gis_region.political_campaign.state.abbrev).each do |address|
 			if gis_region.contains?(address.geom)
 				begin
 					gis_region.addresses << address 
@@ -75,6 +106,8 @@ class GisRegion < ActiveRecord::Base
 				end
 			end
 		end
+		end #old code
+		
 		gis_region.voter_count = gis_region.voters.count
 		gis_region.populated = true
 		gis_region.save!
