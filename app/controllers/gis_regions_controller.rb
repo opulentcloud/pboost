@@ -4,8 +4,8 @@ class GisRegionsController < ApplicationController
 	filter_access_to :all
 	#this automatically populates session[:geo_location]
 	#with a GeoLoc object based on visitors ip address
-	geocode_ip_address
-	before_filter :check_geo_location
+#	geocode_ip_address
+#	before_filter :check_geo_location
 
   def index
   	pg = params[:page] ||= 1

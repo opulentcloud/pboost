@@ -19,7 +19,7 @@ module GisRegionsHelper
     run_map_script do
 			
       map = Google::Map.new(:controls => [:small_map, :map_type],
-                            :center => {:latitude => session[:geo_location].lat, :longitude => session[:geo_location].lng},
+                            :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays

@@ -10,6 +10,14 @@ class MunicipalCampaign < PoliticalCampaign
 	validates_presence_of :municipal_district_id, :if => :require_municipal_district?
 
 	#===== PROPERTIES ======
+	def lat
+		self.city.lat
+	end
+	
+	def lng
+		self.city.lng
+	end
+	
 	def campaign_description
 		if municipal_district_id.blank?
 			"#{candidate_name} for #{seat_sought} #{city.name}".strip

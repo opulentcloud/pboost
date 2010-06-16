@@ -15,6 +15,14 @@ class FederalCampaign < PoliticalCampaign
 	validates_presence_of :congressional_district_id, :if => Proc.new { |c| c.seat_type == 'U.S. Congress' }
 
 	#===== PROPERTIES ======
+	def lat
+		self.state.lat
+	end
+	
+	def lng
+		self.state.lng
+	end
+
 	def campaign_description
 
 		if !congressional_district_id.blank?
