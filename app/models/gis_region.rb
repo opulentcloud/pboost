@@ -60,21 +60,25 @@ class GisRegion < ActiveRecord::Base
 		#query using postgis db functions so we don't have
 		#to loop all addresses in ruby and ask the poly if they exist
 		#inside of it...much FASTER...
-		sql = "SELECT	\"addresses\".* \ 
-					FROM \ 
-						\"addresses\", \"gis_regions\" \ 
-					WHERE \
-						(\"gis_regions\".\"id\" = #{gis_region.id}) \
-					AND \
-						(\"addresses\".\"geom\" && '#{gis_region.geom.as_hex_ewkb}' ) \
-					AND \
-						(\"addresses\".\"state\" = '#{political_campaign.state.abbrev}') "
+		sql = <<-eot
+					SELECT	"addresses".* 
+					FROM  
+						"addresses", "gis_regions" 
+					WHERE 
+						("gis_regions"."id" = #{gis_region.id}) 
+					AND 
+						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
+					AND 
+						("addresses"."state" = '#{political_campaign.state.abbrev}')
+				eot
 
 			if political_campaign.type == 'FederalCampaign'
 						
 				if political_campaign.congressional_district
-					sql += " AND \
-						(\"addresses\".\"cd\" = '#{political_campaign.congressional_district.cd}') "
+					sql += <<-eot
+						AND 
+							("addresses"."cd" = '#{political_campaign.congressional_district.cd}') 
+					eot
 				end
 
 			end
@@ -82,13 +86,17 @@ class GisRegion < ActiveRecord::Base
 			if political_campaign.type == 'StateCampaign'
 
 				if political_campaign.senate_district
-					sql += " AND \
-						(\"addresses\".\"sd\" = '#{political_campaign.senate_district.sd}') "
+					sql += <<-eot
+						 AND 
+						("addresses"."sd" = '#{political_campaign.senate_district.sd}') 
+					eot
 				end
 
 				if political_campaign.house_district
-					sql += " AND \
-						(\"addresses\".\"hd\" = '#{political_campaign.house_district.hd}') "
+					sql += <<-eot
+						 AND 
+							("addresses"."hd" = '#{political_campaign.house_district.hd}') 
+					eot
 				end
 
 			end
@@ -96,12 +104,16 @@ class GisRegion < ActiveRecord::Base
 			if political_campaign.type == 'CountyCampaign'
 			
 				if political_campaign.county
-					sql += " AND \
-						(\"addresses\".\"county_name\" = '#{political_campaign.county.name}') "
+					sql += <<-eot
+						 AND 
+							("addresses"."county_name" = '#{political_campaign.county.name}') 
+					eot
 
 					if political_campaign.council_district
-						sql += " AND \
-							(\"addresses\".\"comm_dist_code\" = '#{political_campaign.council_district.code}') "
+						sql += <<-eot 
+							AND 
+								("addresses"."comm_dist_code" = '#{political_campaign.council_district.code}') 
+						eot
 					end
 
 				end
@@ -111,20 +123,26 @@ class GisRegion < ActiveRecord::Base
 			if political_campaign.type == 'MunicipalCampaign'
 
 				if political_campaign.city
-					sql += " AND \
-						(\"addresses\".\"city\" = '#{political_campaign.city.name}') "
+					sql += <<-eot
+						 AND 
+							("addresses"."city" = '#{political_campaign.city.name}') 
+					eot
 
 					if political_campaign.municipal_district
-						sql += " AND \
-							(\"addresses\".\"mcomm_dist_code\" = '#{political_campaign.municipal_district.code}') "
+						sql += <<-eot
+							 AND 
+								("addresses"."mcomm_dist_code" = '#{political_campaign.municipal_district.code}') 
+						eot
 					end
 
 				end
 
 			end
 					
-			sql += " AND \
-						ST_contains(\"gis_regions\".\"geom\", \"addresses\".\"geom\"::geometry)"
+			sql += <<-eot
+				 AND 
+						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
+			eot
 						
 		Address.find_by_sql(sql).each do |address|
 			begin
