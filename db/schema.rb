@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100616214753) do
+ActiveRecord::Schema.define(:version => 20100617185156) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -256,6 +256,32 @@ ActiveRecord::Schema.define(:version => 20100616214753) do
   add_index "political_campaigns", ["organization_id"], :name => "index_political_campaigns_on_organization_id"
   add_index "political_campaigns", ["senate_district_id"], :name => "index_political_campaigns_on_senate_district_id"
 
+  create_table "precincts", :force => true do |t|
+    t.column "name", :string, :limit => 32, :null => false
+    t.column "code", :string, :limit => 32, :null => false
+    t.column "county_id", :integer
+    t.column "congressional_district_id", :integer
+    t.column "senate_district_id", :integer
+    t.column "house_district_id", :integer
+    t.column "council_district_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "precincts", ["code"], :name => "index_precincts_on_code"
+  add_index "precincts", ["code", "congressional_district_id"], :name => "index_precincts_on_code_and_congressional_district_id", :unique => true
+  add_index "precincts", ["council_district_id", "code"], :name => "index_precincts_on_code_and_council_district_id", :unique => true
+  add_index "precincts", ["code", "county_id"], :name => "index_precincts_on_code_and_county_id", :unique => true
+  add_index "precincts", ["house_district_id", "code"], :name => "index_precincts_on_code_and_house_district_id", :unique => true
+  add_index "precincts", ["senate_district_id", "code"], :name => "index_precincts_on_code_and_senate_district_id", :unique => true
+  add_index "precincts", ["congressional_district_id"], :name => "index_precincts_on_congressional_district_id"
+  add_index "precincts", ["council_district_id"], :name => "index_precincts_on_council_district_id"
+  add_index "precincts", ["county_id"], :name => "index_precincts_on_county_id"
+  add_index "precincts", ["house_district_id"], :name => "index_precincts_on_house_district_id"
+  add_index "precincts", ["name"], :name => "index_precincts_on_name"
+  add_index "precincts", ["code", "name"], :name => "index_precincts_on_name_and_code", :unique => true
+  add_index "precincts", ["senate_district_id"], :name => "index_precincts_on_senate_district_id"
+
   create_table "roles", :force => true do |t|
     t.column "name", :string, :limit => 50
     t.column "created_at", :datetime
@@ -369,7 +395,10 @@ ActiveRecord::Schema.define(:version => 20100616214753) do
   end
 
   add_index "voters", ["address_id"], :name => "index_voters_on_address_id"
+  add_index "voters", ["age"], :name => "index_voters_on_age"
+  add_index "voters", ["party"], :name => "index_voters_on_party"
   add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
+  add_index "voters", ["sex"], :name => "index_voters_on_sex"
   add_index "voters", ["vote_builder_id"], :name => "index_voters_on_vote_builder_id", :unique => true
 
   create_table "voting_history_voters", :force => true do |t|

@@ -1,3 +1,4 @@
+require 'ruby-debug'
 
 	#==== populate the organization_types table data =====
 	data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/organization_types.csv", :headers => false)
@@ -60,7 +61,7 @@
 		else
 			s.active = row[2]
 		end
-		s.save!
+		s.save! if s.changed?
 	end
 	#==== end populate states table data ====
 
@@ -101,7 +102,7 @@
 		s = State.find_by_abbrev(row[0])
 		c = County.find_or_create_by_name_and_state_id(row[1], s.id)	
 		cd = CouncilDistrict.find_by_code(row[2])
-		c.council_districts << cd unless cd.nil? | c.council_districts.exists?(cd)
+		c.council_districts << cd unless cd.nil? || c.council_districts.exists?(cd)
 	end
 	#===== end populate counties table data =====
 	
@@ -128,4 +129,44 @@
 	end
 	#===== end populate council_districts table data =====
 
-	
+	#===== populate precincts table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/precincts.csv", :headers => true)
+	data.each do |row|
+		next if row[2] != 'MD'
+		p = nil
+		p = Precinct.find_or_create_by_name_and_code(row[0], row[1]) unless row[1].to_s == ''
+		if !p.nil?
+			s = State.find_by_abbrev(row[2])
+			#relate to county
+			county = County.find_by_name_and_state_id(row[3],s.id)
+			if county.nil?
+				debugger
+			end
+			p.county = county if p.county.nil?
+			raise "County does not match precinct" if p.county_id != county.id
+			#relate to congressional district
+			cd = CongressionalDistrict.find_by_cd_and_state_id(row[4], s.id)
+			p.congressional_district = cd if p.congressional_district.nil?
+			raise "CD does not match precinct" if p.congressional_district_id != cd.id
+			
+			#relate to senate district
+			sd = SenateDistrict.find_by_sd_and_state_id(row[5], s.id)
+			p.senate_district = sd if p.senate_district.nil?
+			raise "SD does not match precinct" if p.senate_district_id != sd.id
+
+			#relate to house district
+			hd = HouseDistrict.find_by_hd_and_state_id(row[6], s.id)
+			p.house_district = hd if p.house_district.nil?
+			raise "HD does not match precinct" if p.house_district_id != hd.id
+			
+			#relate to council district
+			comm_dist = CouncilDistrict.find_by_code(row[7])
+			p.council_district = comm_dist if p.council_district.nil? && comm_dist
+			raise "CommDistCode does not match precinct" if comm_dist &&  p.council_district_id != comm_dist.id 
+			
+			p.save! if p.changed?
+			
+		end
+	end
+	#===== end populate council_districts table data =====
+

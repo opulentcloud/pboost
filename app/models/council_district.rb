@@ -7,7 +7,8 @@ class CouncilDistrict < ActiveRecord::Base
 	has_and_belongs_to_many :cities
 	has_and_belongs_to_many :counties
 	has_many :states, :through => :counties
-
+	has_many :precincts
+	
 	#===== CLASS METHODS ======
 	def self.to_json(council_districts)
 		s = "{\"\" : \"Please choose\",\n"

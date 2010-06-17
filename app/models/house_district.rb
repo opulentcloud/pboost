@@ -5,7 +5,8 @@ class HouseDistrict < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	belongs_to :state
-
+	has_many :precincts
+	
 	#===== CLASS METHODS ======
 	def self.to_json(hds)
 		s = "{\"\" : \"Please choose\",\n"

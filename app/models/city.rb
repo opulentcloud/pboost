@@ -7,6 +7,7 @@ class City < ActiveRecord::Base
 	has_and_belongs_to_many :counties
 	belongs_to :state
 	has_and_belongs_to_many :municipal_districts
+	has_and_belongs_to_many :precincts
 
 	#===== VALIDATIONS ======
 	validate :valid_city

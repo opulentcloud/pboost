@@ -3,6 +3,8 @@ class MunicipalCampaign < PoliticalCampaign
 	#===== ASSOCIATONS =====
 	belongs_to :city
 	belongs_to :municipal_district
+	#has_many :constituents
+	#has_many :voters, :through => :constituents
 
 	#===== VALIDATIONS =====
 	validates_presence_of :city_id, :message => 'City is not valid'
