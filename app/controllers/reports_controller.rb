@@ -1,9 +1,9 @@
-class WalkSheetsController < ApplicationController
+class ReportsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_gis_region, :only => [:show, :printable_list, :csv_list]
 
 	def index
-		@walk_sheet = render_walk_sheet_list_as :html		
+		@report = render_walk_sheet_list_as :html		
 	end
 
 	def show
@@ -11,7 +11,7 @@ class WalkSheetsController < ApplicationController
 			format.csv { csv_list }
 			format.pdf { printable_list }
 			format.html { 
-				@walk_sheet = render_walk_sheet_list_as :html	
+				@report = render_walk_sheet_list_as :html	
 			}
 		end
 	end

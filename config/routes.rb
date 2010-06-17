@@ -28,6 +28,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :political_campaigns, :path_prefix => '/admin'
 
+	map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|
+		site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
+		site.pdf 'pdf/:id', :action => 'printable_list', :conditions => { :method => :get }
+	end
+	map.resources :reports, :path_prefix => '/customer'
+
   map.resources :state_campaigns, :path_prefix => '/admin'
 
 	#user signups and users resources
@@ -54,12 +60,6 @@ ActionController::Routing::Routes.draw do |map|
 	map.with_options(:controller => 'validate_signup', :path_prefix => '/validate') do |site|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
-
-	map.with_options(:controller => 'walk_sheets', :path_prefix => '/customer') do |site|
-		site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
-		site.pdf 'pdf/:id', :action => 'printable_list', :conditions => { :method => :get }
-	end
-	map.resources :walk_sheets, :path_prefix => '/customer'
 
 #  map.connect ':controller/:action/:id'
 #  map.connect ':controller/:action/:id.:format'
