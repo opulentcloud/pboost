@@ -14,7 +14,7 @@ class GisRegion < ActiveRecord::Base
 	has_and_belongs_to_many :voters
 
 	#===== EVENTS =====
-	def after_destroy
+	def before_destroy
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
 				
