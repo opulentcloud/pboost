@@ -41,7 +41,7 @@ set :deploy_to, "/var/www/#{application}"
 set :scm, :git
 set :scm_username, "mark@wilsonsdev.com"
 set :deploy_via, :remote_cache
-set :branch, "idx"
+set :branch, "master"
 # see a full list by running "gem contents capistrano | grep 'scm/'"
 
 #role :web, "your web-server here"
