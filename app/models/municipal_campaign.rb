@@ -33,6 +33,7 @@ class MunicipalCampaign < PoliticalCampaign
 
 	#===== INSTANCE METHODS =====	
 	def require_municipal_district?
+		return false unless self.muniwide == false
 		begin
 			c = City.find(self.city_id)
 		rescue ActiveRecord::RecordNotFound

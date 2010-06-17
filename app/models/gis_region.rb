@@ -42,7 +42,7 @@ class GisRegion < ActiveRecord::Base
 	#===== CLASS METHODS ======
 	def self.populate_all_addresses_within(gis_region_id)
 		gis_region = GisRegion.find(gis_region_id)
-	
+
 		if gis_region.nil?
 			raise ActiveRecord::RecordNotFound
 		end
@@ -51,17 +51,18 @@ class GisRegion < ActiveRecord::Base
 	
 		#unlink any addresses from this region
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{gis_region.id}"
-		ActiveRecord::Base.connection.execute(sql)
+		sql_result = ActiveRecord::Base.connection.execute(sql)
 				
 		#unlink any voters from this region
 		sql = "DELETE FROM gis_regions_voters WHERE gis_region_id = #{gis_region.id}"
-		ActiveRecord::Base.connection.execute(sql)
+		sql_result = ActiveRecord::Base.connection.execute(sql)
 
 		#query using postgis db functions so we don't have
 		#to loop all addresses in ruby and ask the poly if they exist
 		#inside of it...much FASTER...
-		sql = <<-eot
-					SELECT	"addresses".* 
+		sql1_header = <<-eot
+					INSERT INTO addresses_gis_regions
+					SELECT	"addresses"."id", "gis_regions"."id", now() as created_at, now() as updated_at 
 					FROM  
 						"addresses", "gis_regions" 
 					WHERE 
@@ -72,7 +73,22 @@ class GisRegion < ActiveRecord::Base
 						("addresses"."state" = '#{political_campaign.state.abbrev}')
 				eot
 
-			if political_campaign.type == 'FederalCampaign'
+		sql2_header = <<-eot
+					INSERT INTO gis_regions_voters
+					SELECT	"gis_regions"."id", "voters"."id", now() as created_at, now() as updated_at 
+					FROM  
+						"addresses", "gis_regions", "voters" 
+					WHERE 
+						("gis_regions"."id" = #{gis_region.id}) 
+					AND 
+						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
+					AND 
+						("addresses"."state" = '#{political_campaign.state.abbrev}')
+				eot
+
+			sql = ''
+
+			if political_campaign.class.to_s == 'FederalCampaign'
 						
 				if political_campaign.congressional_district
 					sql += <<-eot
@@ -83,7 +99,7 @@ class GisRegion < ActiveRecord::Base
 
 			end
 
-			if political_campaign.type == 'StateCampaign'
+			if political_campaign.class.to_s == 'StateCampaign'
 
 				if political_campaign.senate_district
 					sql += <<-eot
@@ -101,7 +117,7 @@ class GisRegion < ActiveRecord::Base
 
 			end
 
-			if political_campaign.type == 'CountyCampaign'
+			if political_campaign.class.to_s == 'CountyCampaign'
 			
 				if political_campaign.county
 					sql += <<-eot
@@ -120,7 +136,7 @@ class GisRegion < ActiveRecord::Base
 
 			end
 
-			if political_campaign.type == 'MunicipalCampaign'
+			if political_campaign.class.to_s == 'MunicipalCampaign'
 
 				if political_campaign.city
 					sql += <<-eot
@@ -138,25 +154,40 @@ class GisRegion < ActiveRecord::Base
 				end
 
 			end
-					
+
 			sql += <<-eot
 				 AND 
 						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
 			eot
-						
-		Address.find_by_sql(sql).each do |address|
-			begin
-				gis_region.addresses << address 
-			rescue ActiveRecord::StatementInvalid => err
-				if !err.message =~ /duplicate/
-					err.raise
+
+		sql1 = sql1_header + sql
+		sql_result = ActiveRecord::Base.connection.execute(sql1)
+
+		sql += <<-eot
+			AND
+				"voters"."address_id" = "addresses"."id"
+		eot
+
+		sql2 = sql2_header + sql
+		
+		sql_result = ActiveRecord::Base.connection.execute(sql2)
+
+		#more old code
+		if 1 == 0						
+			Address.find_by_sql(sql).each do |address|
+				begin
+					gis_region.addresses << address 
+				rescue ActiveRecord::StatementInvalid => err
+					if !err.message =~ /duplicate/
+						err.raise
+					end
 				end
-			end
-			begin
-				gis_region.voters << address.voters
-			rescue ActiveRecord::StatementInvalid => err
-				if !err.message =~ /duplicate/
-					err.raise
+				begin
+					gis_region.voters << address.voters
+				rescue ActiveRecord::StatementInvalid => err
+					if !err.message =~ /duplicate/
+						err.raise
+					end
 				end
 			end
 		end

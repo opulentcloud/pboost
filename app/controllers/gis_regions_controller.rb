@@ -65,6 +65,7 @@ class GisRegionsController < ApplicationController
   end
   
   def destroy
+  debugger
 		@name = @gis_region.name
     @gis_region.destroy
     flash[:notice] = "Successfully deleted GIS Region: #{@name}."
