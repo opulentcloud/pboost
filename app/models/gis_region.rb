@@ -65,112 +65,31 @@ class GisRegion < ActiveRecord::Base
 					INSERT INTO addresses_gis_regions
 					SELECT	"addresses"."id", "gis_regions"."id", now() as created_at, now() as updated_at 
 					FROM  
-						"addresses", "gis_regions" 
+						"constituent_addresses", "addresses", "gis_regions" 
 					WHERE 
-						("gis_regions"."id" = #{gis_region.id}) 
+						("constituent_addresses"."political_campaign_id" = #{political_campaign.id}) 
+						AND "addresses"."id" = "constituent_addresses"."address_id"
+						AND ("gis_regions"."id" = #{gis_region.id}) 
 					AND 
 						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
-					AND 
-						("addresses"."state" = '#{political_campaign.state.abbrev}')
+				 AND 
+						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
 				eot
 
 		sql2_header = <<-eot
 					INSERT INTO gis_regions_voters
-					SELECT	"gis_regions"."id", "voters"."id", now() as created_at, now() as updated_at 
+					SELECT	#{gis_region.id} AS gis_region_id, "voters"."id", now() as created_at, now() as updated_at 
 					FROM  
-						"addresses", "gis_regions", "voters" 
+						"addresses_gis_regions", "voters" 
 					WHERE 
-						("gis_regions"."id" = #{gis_region.id}) 
-					AND 
-						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
-					AND 
-						("addresses"."state" = '#{political_campaign.state.abbrev}')
+						"addresses_gis_regions"."gis_region_id" = #{gis_region.id}
+						AND "voters"."address_id" = "addresses_gis_regions"."address_id"
 				eot
 
-			sql = ''
-
-			if political_campaign.class.to_s == 'FederalCampaign'
-						
-				if political_campaign.congressional_district
-					sql += <<-eot
-						AND 
-							("addresses"."cd" = '#{political_campaign.congressional_district.cd}') 
-					eot
-				end
-
-			end
-
-			if political_campaign.class.to_s == 'StateCampaign'
-
-				if political_campaign.senate_district
-					sql += <<-eot
-						 AND 
-						("addresses"."sd" = '#{political_campaign.senate_district.sd}') 
-					eot
-				end
-
-				if political_campaign.house_district
-					sql += <<-eot
-						 AND 
-							("addresses"."hd" = '#{political_campaign.house_district.hd}') 
-					eot
-				end
-
-			end
-
-			if political_campaign.class.to_s == 'CountyCampaign'
-			
-				if political_campaign.county
-					sql += <<-eot
-						 AND 
-							("addresses"."county_name" = '#{political_campaign.county.name}') 
-					eot
-
-					if political_campaign.council_district
-						sql += <<-eot 
-							AND 
-								("addresses"."comm_dist_code" = '#{political_campaign.council_district.code}') 
-						eot
-					end
-
-				end
-
-			end
-
-			if political_campaign.class.to_s == 'MunicipalCampaign'
-
-				if political_campaign.city
-					sql += <<-eot
-						 AND 
-							("addresses"."city" = '#{political_campaign.city.name}') 
-					eot
-
-					if political_campaign.municipal_district
-						sql += <<-eot
-							 AND 
-								("addresses"."mcomm_dist_code" = '#{political_campaign.municipal_district.code}') 
-						eot
-					end
-
-				end
-
-			end
-
-			sql += <<-eot
-				 AND 
-						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
-			eot
-
-		sql1 = sql1_header + sql
+		sql1 = sql1_header
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
-		sql += <<-eot
-			AND
-				"voters"."address_id" = "addresses"."id"
-		eot
-
-		sql2 = sql2_header + sql
-		
+		sql2 = sql2_header
 		sql_result = ActiveRecord::Base.connection.execute(sql2)
 
 		#more old code
