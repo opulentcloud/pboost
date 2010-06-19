@@ -1,0 +1,3 @@
+class StateCampaignObserver < PoliticalCampaignObserver
+end
+

@@ -1,0 +1,16 @@
+<% form_for @walksheet do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :consituent_count %><br />
+    <%= f.text_field :consituent_count %>
+  </p>
+  <p>
+    <%= f.label :populated %><br />
+    <%= f.check_box :populated %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

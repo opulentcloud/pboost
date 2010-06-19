@@ -1,0 +1,3 @@
+class CountyCampaignObserver < PoliticalCampaignObserver
+end
+

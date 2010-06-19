@@ -61,6 +61,8 @@ ActionController::Routing::Routes.draw do |map|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
 
+  map.resources :walksheets, :path_prefix => '/customer'
+
 #  map.connect ':controller/:action/:id'
 #  map.connect ':controller/:action/:id.:format'
 end

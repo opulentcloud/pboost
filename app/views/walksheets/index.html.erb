@@ -1,0 +1,21 @@
+<% title "Walksheets" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Consituent Count</th>
+    <th>Populated</th>
+  </tr>
+  <% for walksheet in @walksheets %>
+    <tr>
+      <td><%=h walksheet.name %></td>
+      <td><%=h walksheet.consituent_count %></td>
+      <td><%=h walksheet.populated %></td>
+      <td><%= link_to "Show", walksheet %></td>
+      <td><%= link_to "Edit", edit_walksheet_path(walksheet) %></td>
+      <td><%= link_to "Destroy", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Walksheet", new_walksheet_path %></p>

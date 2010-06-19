@@ -1,0 +1,3 @@
+class MunicipalCampaignObserver < PoliticalCampaignObserver
+end
+

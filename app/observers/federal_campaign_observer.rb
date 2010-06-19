@@ -1,0 +1,3 @@
+class FederalCampaignObserver < PoliticalCampaignObserver
+end
+

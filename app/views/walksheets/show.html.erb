@@ -1,0 +1,20 @@
+<% title "Walksheet" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @walksheet.name %>
+</p>
+<p>
+  <strong>Consituent Count:</strong>
+  <%=h @walksheet.consituent_count %>
+</p>
+<p>
+  <strong>Populated:</strong>
+  <%=h @walksheet.populated %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_walksheet_path(@walksheet) %> |
+  <%= link_to "Destroy", @walksheet, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", walksheets_path %>
+</p>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100617185156) do
+ActiveRecord::Schema.define(:version => 20100618175930) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20100617185156) do
   add_index "addresses", ["county_name"], :name => "index_addresses_on_county_name"
   add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial=> true 
   add_index "addresses", ["hd"], :name => "index_addresses_on_hd"
+  add_index "addresses", ["id"], :name => "index_addresses_on_id"
   add_index "addresses", ["lat", "lng"], :name => "index_addresses_on_lat_and_lng"
   add_index "addresses", ["precinct_code"], :name => "index_addresses_on_precinct_code"
   add_index "addresses", ["sd"], :name => "index_addresses_on_sd"
@@ -113,6 +114,27 @@ ActiveRecord::Schema.define(:version => 20100617185156) do
   end
 
   add_index "congressional_districts", ["cd", "state_id"], :name => "index_congressional_districts_on_state_id_and_cd", :unique => true
+
+  create_table "constituent_addresses", :force => true do |t|
+    t.column "political_campaign_id", :integer
+    t.column "address_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "constituent_addresses", ["address_id"], :name => "index_constituent_addresses_on_address_id"
+  add_index "constituent_addresses", ["political_campaign_id"], :name => "index_constituent_addresses_on_political_campaign_id"
+
+  create_table "constituents", :force => true do |t|
+    t.column "political_campaign_id", :integer, :null => false
+    t.column "voter_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "constituents", ["political_campaign_id"], :name => "index_constituents_on_political_campaign_id"
+  add_index "constituents", ["political_campaign_id", "voter_id"], :name => "index_constituents_on_political_campaign_id_and_voter_id", :unique => true
+  add_index "constituents", ["voter_id"], :name => "index_constituents_on_voter_id"
 
   create_table "council_districts", :force => true do |t|
     t.column "code", :string, :limit => 3, :null => false
@@ -245,6 +267,8 @@ ActiveRecord::Schema.define(:version => 20100617185156) do
     t.column "municipal_district_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "constituent_count", :integer, :default => 0
+    t.column "populated", :boolean, :default => false
   end
 
   add_index "political_campaigns", ["city_id"], :name => "index_political_campaigns_on_city_id"
@@ -396,6 +420,7 @@ ActiveRecord::Schema.define(:version => 20100617185156) do
 
   add_index "voters", ["address_id"], :name => "index_voters_on_address_id"
   add_index "voters", ["age"], :name => "index_voters_on_age"
+  add_index "voters", ["id"], :name => "index_voters_on_id"
   add_index "voters", ["party"], :name => "index_voters_on_party"
   add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
   add_index "voters", ["sex"], :name => "index_voters_on_sex"
@@ -412,5 +437,17 @@ ActiveRecord::Schema.define(:version => 20100617185156) do
   end
 
   add_index "voting_history_voters", ["voter_id"], :name => "index_voting_history_voters_on_voter_id"
+
+  create_table "walksheets", :force => true do |t|
+    t.column "name", :string, :limit => 100, :null => false
+    t.column "consituent_count", :integer
+    t.column "populated", :boolean, :default => false
+    t.column "political_campaign_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "walksheets", ["name"], :name => "index_walksheets_on_name"
+  add_index "walksheets", ["name", "political_campaign_id"], :name => "index_walksheets_on_political_campaign_id_and_name", :unique => true
 
 end

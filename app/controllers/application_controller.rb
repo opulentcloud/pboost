@@ -74,7 +74,12 @@ private
 
 	def current_political_campaign
 		if current_user
-			session[:current_political_campaign] ||= current_user.political_campaigns.first rescue nil
+			session[:current_political_campaign] ||= current_user.political_campaigns.first.id rescue nil
+			begin
+				PoliticalCampaign.find(session[:current_political_campaign])
+			rescue ActiveRecord::RecordNotFound
+				nil
+			end
 		end
 	end
 

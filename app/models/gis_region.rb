@@ -15,6 +15,7 @@ class GisRegion < ActiveRecord::Base
 
 	#===== EVENTS =====
 	def before_destroy
+		return if self.new_record?
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
 				
