@@ -1,7 +1,4 @@
 class Walksheet < ActiveRecord::Base
-	#===== PROPERTIES ======
-  attr_accessible :name, :consituent_count, :populated
-
 	#===== SCOPES ======
 	default_scope :order => 'walksheets.name'
 
@@ -12,6 +9,8 @@ class Walksheet < ActiveRecord::Base
 	has_one :sex_filter, :dependent => :destroy
 	accepts_nested_attributes_for :sex_filter
 	has_many :party_filters, :dependent => :destroy
+	accepts_nested_attributes_for :party_filters
+	has_many :parties, :through => :party_filters
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -35,6 +34,10 @@ class Walksheet < ActiveRecord::Base
 	end
 
 	#===== METHODS =====
-	
+	def party_filter_symbols
+		party_filters.map do |party|
+			party.name.downcase.underscore.to_sym
+		end	
+	end
 
 end

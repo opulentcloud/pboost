@@ -1,0 +1,6 @@
+		<% fields_for "walksheet[age_filter_attributes]", age_filter do |f| %>
+			<%= f.label :int_val, 'Age Range:' %><br />
+		<%= f.select :int_val, AgeFilter::AGE_RANGE %>
+		to <%= f.select :max_int_val, AgeFilter::AGE_RANGE %>
+		<% end %>
+

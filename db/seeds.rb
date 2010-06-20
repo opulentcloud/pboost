@@ -170,3 +170,10 @@ require 'ruby-debug'
 	end
 	#===== end populate council_districts table data =====
 
+	#===== populate parties table data =====
+		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/parties.csv", :headers => true)
+	data.each do |row|
+		Party.find_or_create_by_name_and_code(row[0], row[1])
+	end
+	#===== end populate parties table data =====
+

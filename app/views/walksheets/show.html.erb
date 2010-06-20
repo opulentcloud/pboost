@@ -31,7 +31,13 @@
 
 <p>
 	<strong>Party:</strong>
-	<%=h @walksheet.party_filters.map(&:string_val).join(', ') %>
+	<% if @walksheet.party_filters.size > 0 %>
+		<% @walksheet.party_filters.each do |party| %>
+			<%=h party.party.name %>, 
+		<% end %>
+	<% else %>
+		All
+	<% end %>
 </p>
 
 <p>

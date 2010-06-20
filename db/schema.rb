@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100619195557) do
+ActiveRecord::Schema.define(:version => 20100620180028) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -261,6 +261,16 @@ ActiveRecord::Schema.define(:version => 20100619195557) do
   end
 
   add_index "organizations", ["email"], :name => "index_organizations_on_email", :unique => true
+
+  create_table "parties", :force => true do |t|
+    t.column "code", :string, :limit => 1, :null => false
+    t.column "name", :string, :limit => 32, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "parties", ["code"], :name => "index_parties_on_code", :unique => true
+  add_index "parties", ["name"], :name => "index_parties_on_name", :unique => true
 
   create_table "political_campaigns", :force => true do |t|
     t.column "candidate_name", :string, :limit => 64
