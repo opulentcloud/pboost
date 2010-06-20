@@ -11,12 +11,32 @@ class WalksheetsController < ApplicationController
   end
   
   def new
-    @walksheet = Walksheet.new
+    @walksheet = current_political_campaign.walksheets.build
+    @walksheet.build_age_filter
+    @walksheet.build_sex_filter
+    PartyFilter::PARTY_TYPES.size.times do
+	   	@walksheet.party_filters.build
+	  end
   end
   
   def create
     @walksheet = Walksheet.new(params[:walksheet])
-    if @walksheet.save
+
+		@age_filter = AgeFilter.new(params[:walksheet][:age_filter_attributes])
+		@walksheet.age_filter = @age_filter
+		
+		@sex_filter = SexFilter.new(params[:walksheet][:sex_filter_attributes])
+		@walksheet.sex_filter = @sex_filter
+
+    params[:walksheet][:party_filter_attributes].each do |pf|
+    	party_filter = PartyFilter.new(pf)
+    	party_filter.int_val = params["pf_#{party_filter.string_val}"].to_i
+   		@walksheet.party_filters << party_filter
+    end
+    
+    @walksheet.political_campaign_id = current_political_campaign.id
+    
+    if @walksheet.save!
       flash[:notice] = "Successfully created walksheet."
       redirect_to @walksheet
     else
@@ -25,6 +45,8 @@ class WalksheetsController < ApplicationController
   end
   
   def edit
+    @walksheet.build_age_filter if @walksheet.age_filter.nil?
+    @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
   end
   
   def update

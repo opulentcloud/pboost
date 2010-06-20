@@ -1,16 +1,14 @@
-<% title "Walksheets" %>
+<% title "Walk Sheets" %>
 
-<table>
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
   <tr>
-    <th>Name</th>
-    <th>Consituent Count</th>
-    <th>Populated</th>
+    <th align="center">Walk Sheet Name</th>
+    <th align="center">Consituent Count</th>
   </tr>
   <% for walksheet in @walksheets %>
     <tr>
-      <td><%=h walksheet.name %></td>
-      <td><%=h walksheet.consituent_count %></td>
-      <td><%=h walksheet.populated %></td>
+      <td align="center"><%=h walksheet.name %></td>
+      <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.consituent_count) : '*Populating' %></td>
       <td><%= link_to "Show", walksheet %></td>
       <td><%= link_to "Edit", edit_walksheet_path(walksheet) %></td>
       <td><%= link_to "Destroy", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>

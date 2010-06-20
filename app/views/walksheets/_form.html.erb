@@ -4,13 +4,46 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
-  <p>
-    <%= f.label :consituent_count %><br />
-    <%= f.text_field :consituent_count %>
-  </p>
-  <p>
-    <%= f.label :populated %><br />
-    <%= f.check_box :populated %>
-  </p>
+
+	<p>
+		<% f.fields_for :age_filter do |af| %>
+			<%= af.label :int_val, 'Age Range:' %><br />
+		<%= af.select :int_val, AgeFilter::AGE_RANGE %>
+		to <%= af.select(:max_int_val, AgeFilter::AGE_RANGE) %>
+		<% end %>
+	</p>
+
+	<p>
+		<% f.fields_for :sex_filter do |sf| %>
+			<%= sf.label :string_val, 'Sex:' %><br />
+			
+			<% SexFilter::SEX_TYPES.map {|disp,value| [disp,value]}.each do |st| %>
+			
+				<%= sf.radio_button :string_val, st[1] %> <%= "#{st[0]}" %> &nbsp;
+			<% end %>
+		<% end %>
+	</p>
+
+	<p>
+		Party: <i>(leave blank for all)</i><br />
+		<% recs = [] %>
+		<%= render :partial => 'party_filter', :collection => @walksheet.party_filters, :locals => { :recs => recs } %>
+		<% f.fields_for "walksheet[party_filter_attributes][]" do |pf| %>
+		<% recs.each do |rec| %>
+			<% found = false %>
+			<% PartyFilter::PARTY_TYPES.map {|disp,value| [disp,value]}.each_with_index do |pt, index| %>
+				<% if rec == index %>
+					<% found = true %>
+					<% break %>
+				<% end %>
+			<% end %>
+			<% if found == false %>
+					<%= pf.check_box :string_val, {}, pt[1] %> <%= "#{pt[0]}" %> &nbsp;
+					<%= hidden_field_tag "pf_#{pt[1]}", index %>
+			<% end %>
+		<% end %>
+		<% end %>
+	</p>
+
   <p><%= f.submit %></p>
 <% end %>

@@ -1,0 +1,13 @@
+		<% fields_for "walksheet[party_filter_attributes][]", party_filter do |f| %>
+			<% PartyFilter::PARTY_TYPES.map {|disp,value| [disp,value]}.each_with_index do |pt, index| %>
+				<% if party_filter.new_record? && party_filter_counter == index %>
+					<%= f.check_box :string_val, {}, pt[1] %> <%= "#{pt[0]}" %> &nbsp;
+					<%= hidden_field_tag "pf_#{pt[1]}", index %>
+					<% recs.push(index) %>
+				<% elsif party_filter.int_val == index %>
+					<%= f.check_box :string_val, {}, pt[1] %> <%= "#{pt[0]}" %> &nbsp;
+					<%= hidden_field_tag "pf_#{pt[1]}", index %>
+					<% recs.push(index) %>
+				<% end %>
+			<% end %>
+		<% end %>

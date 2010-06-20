@@ -6,11 +6,32 @@
 </p>
 <p>
   <strong>Consituent Count:</strong>
-  <%=h @walksheet.consituent_count %>
+  <%=@walksheet.populated? ? number_with_delimiter(@walksheet.consituent_count) : '*Populating' %>
 </p>
+
+<h2>FILTERS:</h2>
+
 <p>
-  <strong>Populated:</strong>
-  <%=h @walksheet.populated %>
+  <strong>Age Range:</strong>
+  <% if @walksheet.age_filter %>
+	  <%= @walksheet.age_filter.int_val %> to <%= @walksheet.age_filter.max_int_val %>
+	<% else %>
+		All  
+	<% end %>
+</p>
+
+<p>
+  <strong>Sex:</strong>
+  <% if @walksheet.sex_filter %>
+	  <%=h @walksheet.sex_filter.string_val %>
+	<% else %>
+		All  
+	<% end %>
+</p>
+
+<p>
+	<strong>Party:</strong>
+	<%=h @walksheet.party_filters.map(&:string_val).join(', ') %>
 </p>
 
 <p>
