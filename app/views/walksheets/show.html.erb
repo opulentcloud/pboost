@@ -9,36 +9,32 @@
   <%=@walksheet.populated? ? number_with_delimiter(@walksheet.consituent_count) : '*Populating' %>
 </p>
 
-<h2>FILTERS:</h2>
+<h3>DEMOGRAPHIC FILTERS:</h3>
 
+<% if @walksheet.age_filter %>
 <p>
   <strong>Age Range:</strong>
-  <% if @walksheet.age_filter %>
 	  <%= @walksheet.age_filter.int_val %> to <%= @walksheet.age_filter.max_int_val %>
-	<% else %>
-		All  
-	<% end %>
 </p>
+<% end %>
 
+<% if @walksheet.sex_filter %>
 <p>
   <strong>Sex:</strong>
-  <% if @walksheet.sex_filter %>
 	  <%=h @walksheet.sex_filter.string_val %>
-	<% else %>
-		All  
-	<% end %>
 </p>
+<% end %>
 
+<% if @walksheet.party_filters.size > 0 %>
 <p>
 	<strong>Party:</strong>
-	<% if @walksheet.party_filters.size > 0 %>
-		<% @walksheet.party_filters.each do |party| %>
-			<%=h party.party.name %>, 
-		<% end %>
-	<% else %>
-		All
+	<% @walksheet.party_filters.each do |party| %>
+		<%=h party.party.name %>, 
 	<% end %>
 </p>
+<% end %>
+
+<hr />
 
 <p>
   <%= link_to "Edit", edit_walksheet_path(@walksheet) %> |

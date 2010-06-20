@@ -5,6 +5,8 @@
     <%= f.text_field :name %>
   </p>
 
+	<h3>DEMOGRAPHIC FILTERS:</h3>
+
 	<p>
 		<%= render :partial => 'age_filter', :locals =>  { :age_filter => @walksheet.age_filter } %>
 	</p>
@@ -20,6 +22,8 @@
 			<%=h party.name %> &nbsp;
 		<% end %>
 	</p>
+
+	</hr />
 
   <p><%= f.submit %></p>
 <% end %>
