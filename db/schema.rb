@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100621171611) do
+ActiveRecord::Schema.define(:version => 20100621185033) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -462,6 +462,28 @@ ActiveRecord::Schema.define(:version => 20100621171611) do
   end
 
   add_index "voting_history_voters", ["voter_id"], :name => "index_voting_history_voters_on_voter_id"
+
+  create_table "walksheet_addresses", :force => true do |t|
+    t.column "walksheet_id", :integer
+    t.column "address_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "walksheet_addresses", ["address_id"], :name => "index_walksheet_addresses_on_address_id"
+  add_index "walksheet_addresses", ["walksheet_id"], :name => "index_walksheet_addresses_on_walksheet_id"
+  add_index "walksheet_addresses", ["walksheet_id", "address_id"], :name => "index_walksheet_addresses_on_walksheet_id_and_address_id", :unique => true
+
+  create_table "walksheet_voters", :force => true do |t|
+    t.column "walksheet_id", :integer
+    t.column "voter_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "walksheet_voters", ["voter_id"], :name => "index_walksheet_voters_on_voter_id"
+  add_index "walksheet_voters", ["walksheet_id"], :name => "index_walksheet_voters_on_walksheet_id"
+  add_index "walksheet_voters", ["walksheet_id", "voter_id"], :name => "index_walksheet_voters_on_walksheet_id_and_voter_id", :unique => true
 
   create_table "walksheets", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false

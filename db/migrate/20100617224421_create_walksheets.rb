@@ -2,7 +2,7 @@ class CreateWalksheets < ActiveRecord::Migration
   def self.up
     create_table :walksheets do |t|
       t.string :name, :limit => 100, :null => false
-      t.integer :consituent_count
+      t.integer :constituent_count
       t.boolean :populated, :default => false
       t.references :political_campaign, :null => false
       

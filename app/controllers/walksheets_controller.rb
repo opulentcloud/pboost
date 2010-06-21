@@ -29,6 +29,10 @@ class WalksheetsController < ApplicationController
   end
   
   def edit
+  	if !@walksheet.is_editable?
+  		flash[:notice] = 'You can not edit this Walk Sheet while it is being populated.'
+  		redirect_to @walksheet
+  	end
     @walksheet.build_age_filter if @walksheet.age_filter.nil?
     @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
   end
@@ -47,6 +51,10 @@ class WalksheetsController < ApplicationController
   end
   
   def destroy
+  	if !@walksheet.is_editable?
+  		flash[:notice] = 'You can not delete this Walk Sheet while it is being populated.'
+  		redirect_to @walksheet
+  	end
     @walksheet.destroy
     flash[:notice] = "Successfully destroyed walksheet."
     redirect_to walksheets_url

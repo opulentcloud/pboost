@@ -1,19 +1,20 @@
 <% title "Walk Sheets" %>
 
+<%= render :partial => 'nav_menu' %>
+
 <table border='0' cellpadding='6' cellspacing='0' width="100%">
   <tr>
     <th align="center">Walk Sheet Name</th>
-    <th align="center">Consituent Count</th>
+    <th align="right">Constituent Count</th>
   </tr>
   <% for walksheet in @walksheets %>
     <tr>
       <td align="center"><%=h walksheet.name %></td>
-      <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.consituent_count) : '*Populating' %></td>
-      <td><%= link_to "Show", walksheet %></td>
-      <td><%= link_to "Edit", edit_walksheet_path(walksheet) %></td>
-      <td><%= link_to "Destroy", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.constituent_count) : '*Populating' %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", walksheet %></td>
+      <td> &nbsp;<%= link_to "Edit", edit_walksheet_path(walksheet) %></td>
+      <td> &nbsp;<%= link_to "Delete", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>
 
-<p><%= link_to "New Walksheet", new_walksheet_path %></p>

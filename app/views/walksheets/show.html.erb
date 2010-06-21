@@ -1,12 +1,10 @@
-<% title "Walksheet" %>
+<% title "Walk Sheet: #{h(@walksheet.name)}" %>
+
+<%= render :partial => 'nav_menu' %>
 
 <p>
-  <strong>Name:</strong>
-  <%=h @walksheet.name %>
-</p>
-<p>
-  <strong>Consituent Count:</strong>
-  <%=@walksheet.populated? ? number_with_delimiter(@walksheet.consituent_count) : '*Populating' %>
+  <strong>Constituent Count:</strong>
+  <%=@walksheet.populated? ? number_with_delimiter(@walksheet.constituent_count) : '*Populating' %>
 </p>
 
 <h3>DEMOGRAPHIC FILTERS:</h3>
@@ -28,16 +26,7 @@
 <% if @walksheet.party_filters.size > 0 %>
 <p>
 	<strong>Party:</strong>
-	<% @walksheet.party_filters.each do |party| %>
-		<%=h party.party.name %>, 
-	<% end %>
+	<%= @walksheet.party_filters.map { |f| Party.find(f.int_val).name }.join(',') %>
 </p>
 <% end %>
 
-<hr />
-
-<p>
-  <%= link_to "Edit", edit_walksheet_path(@walksheet) %> |
-  <%= link_to "Destroy", @walksheet, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", walksheets_path %>
-</p>
