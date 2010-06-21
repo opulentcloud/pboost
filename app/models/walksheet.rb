@@ -64,7 +64,6 @@ class Walksheet < ActiveRecord::Base
 	end
 
 	def populate
-		political_campaign = self.political_campaign
 
 		#unlink any addresses from this walksheet
 		sql = "DELETE FROM walksheet_addresses WHERE walksheet_id = #{self.id}"
@@ -152,7 +151,7 @@ class Walksheet < ActiveRecord::Base
 		walksheet = Walksheet.find(walksheet_id)
 		
 		if walksheet.nil?
-			rails ActiveRecord::RecordNotFound
+			raise ActiveRecord::RecordNotFound
 		end
 		walksheet.populate
 	end
