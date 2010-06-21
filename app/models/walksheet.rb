@@ -13,6 +13,8 @@ class Walksheet < ActiveRecord::Base
 	has_many :parties, :through => :party_filters
 	has_many :walksheet_voters
 	has_many :voters, :through => :walksheet_voters
+	has_many :walksheet_addresses
+	has_many :addresses, :through => :walksheet_addresses
 	has_one :gis_region_filter, :dependent => :destroy
 	accepts_nested_attributes_for :gis_region_filter
 
@@ -120,7 +122,23 @@ class Walksheet < ActiveRecord::Base
 				eot
 			end
 
-		sql1 = sql1_header + sql
+		sql2_header = <<-eot
+			INSERT INTO walksheet_addresses
+			SELECT
+				nextval('walksheet_addresses_id_seq') AS id, 
+				r.*
+			FROM
+			(SELECT 
+				"walksheet_voters"."walksheet_id", "voters"."address_id", now() AS created_at, now() AS updated_at 
+			FROM 
+				"walksheet_voters", "voters"
+			WHERE
+				("walksheet_voters"."walksheet_id" = #{self.id})
+			AND
+				"voters"."id" = "walksheet_voters"."voter_id") AS r;		
+			eot
+
+		sql1 = sql1_header + sql + '; ' + sql2_header
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
 		self.constituent_count = self.voters.count

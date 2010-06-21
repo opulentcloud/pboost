@@ -1,5 +1,5 @@
 		<% fields_for "walksheet[gis_region_filter_attributes]", gis_region_filter do |f| %>
 			<%= f.label :int_val, 'GIS Region:' %><br />
-			<%= f.collection_select(:int_val, @walksheet.political_campaign.gis_regions, :id, :name, {:prompt => true}, :class => '') %>
+			<%= f.collection_select(:int_val, @walksheet.political_campaign.gis_regions.populated, :id, :name, {:prompt => true}, :class => '') %>
 		<% end %>
 

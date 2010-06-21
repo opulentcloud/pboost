@@ -11,6 +11,11 @@ class WalksheetsController < ApplicationController
   end
   
   def new
+		if current_political_campaign.populated == false
+			flash[:error] = 'You can not add Walk Sheets until we have finished populating your Political Campaign Constituents'
+			redirect_to walksheets_path
+		end
+  
     @walksheet = current_political_campaign.walksheets.build
     @walksheet.build_age_filter
     @walksheet.build_sex_filter

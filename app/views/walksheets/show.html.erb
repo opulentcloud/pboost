@@ -1,10 +1,13 @@
-<% title "Walk Sheet: #{h(@walksheet.name)}" %>
+<% title "Walk Sheet: #{@walksheet.name}" %>
 
 <%= render :partial => 'nav_menu' %>
 
 <p>
   <strong>Constituent Count:</strong>
   <%=@walksheet.populated? ? number_with_delimiter(@walksheet.constituent_count) : '*Populating' %>
+	<% if @walksheet.populated? %>
+		<%=link_to 'Print Walk Sheet', report_path(@walksheet.id)+'.pdf' %>
+	<% end %>
 </p>
 
 <h3>DEMOGRAPHIC FILTERS:</h3>

@@ -4,6 +4,7 @@ class GisRegion < ActiveRecord::Base
 
 	#===== SCOPES ======
 	default_scope :order => 'gis_regions.name'
+	named_scope :populated, :conditions => 'gis_regions.populated = true'
 		
 	#===== VALIDATIONS ======
 	validates_presence_of :name, :geom, :political_campaign_id
