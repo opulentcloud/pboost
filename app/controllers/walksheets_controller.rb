@@ -14,6 +14,7 @@ class WalksheetsController < ApplicationController
 		if current_political_campaign.populated == false
 			flash[:error] = 'You can not add Walk Sheets until we have finished populating your Political Campaign Constituents'
 			redirect_to walksheets_path
+			return
 		end
   
     @walksheet = current_political_campaign.walksheets.build
@@ -60,6 +61,7 @@ class WalksheetsController < ApplicationController
   	if !@walksheet.is_editable?
   		flash[:notice] = 'You can not delete this Walk Sheet while it is being populated.'
   		redirect_to @walksheet
+  		return
   	end
     @walksheet.destroy
     flash[:notice] = "Successfully destroyed walksheet."
