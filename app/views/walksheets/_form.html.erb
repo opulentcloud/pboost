@@ -5,6 +5,15 @@
     <%= f.text_field :name %>
   </p>
 
+	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
+		<h3>GEOGRAPHIC FILTERS:</h3>	
+
+		<p>
+			<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>
+		</p>
+		
+	<% end %>
+
 	<h3>DEMOGRAPHIC FILTERS:</h3>
 
 	<p>

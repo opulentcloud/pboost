@@ -14,6 +14,7 @@ class WalksheetsController < ApplicationController
     @walksheet = current_political_campaign.walksheets.build
     @walksheet.build_age_filter
     @walksheet.build_sex_filter
+    @walksheet.build_gis_region_filter
   end
   
   def create

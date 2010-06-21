@@ -13,6 +13,8 @@ class Walksheet < ActiveRecord::Base
 	has_many :parties, :through => :party_filters
 	has_many :walksheet_voters
 	has_many :voters, :through => :walksheet_voters
+	has_one :gis_region_filter, :dependent => :destroy
+	accepts_nested_attributes_for :gis_region_filter
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -21,6 +23,10 @@ class Walksheet < ActiveRecord::Base
 	
 	#===== EVENTS =====
 	def before_save
+		if self.gis_region_filter
+			self.gis_region_filter = nil if self.gis_region_filter.int_val == nil
+		end
+
 		if self.sex_filter
 			self.sex_filter = nil if self.sex_filter.string_val == 'A'
 		end
@@ -82,6 +88,15 @@ class Walksheet < ActiveRecord::Base
 		eot
 			
 			sql = ''
+
+			if self.gis_region_filter
+				sql += <<-eot
+					AND EXISTS (
+					SELECT * FROM "gis_regions_voters" WHERE
+					"gis_regions_voters"."gis_region_id" = #{self.gis_region_filter.int_val}
+					AND "gis_regions_voters"."voter_id" = "voters"."id") 
+				eot
+			end
 			
 			if self.age_filter
 				sql += <<-eot
