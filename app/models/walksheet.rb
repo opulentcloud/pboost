@@ -125,10 +125,10 @@ class Walksheet < ActiveRecord::Base
 			INSERT INTO walksheet_addresses
 			SELECT
 				nextval('walksheet_addresses_id_seq') AS id, 
-				r.*
+				r.*, now() AS created_at, now() AS updated_at
 			FROM
 			(SELECT 
-				"walksheet_voters"."walksheet_id", "voters"."address_id", now() AS created_at, now() AS updated_at 
+				DISTINCT "walksheet_voters"."walksheet_id", "voters"."address_id" 
 			FROM 
 				"walksheet_voters", "voters"
 			WHERE
