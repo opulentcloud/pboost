@@ -10,12 +10,18 @@ class Address < ActiveRecord::Base
 	#===== VALIDATIONS ======
   #only enable this go get lat, lng, and geom point saved
   #into the database
-  validate :valid_address
+  #validate :valid_address
 
 	#====== EVENTS ======
-	before_save :hash_full_address
+	#before_save :hash_full_address
+  before_save :set_odd_or_even
   
 	#===== INSTANCE METHODS ======
+	def set_odd_or_even
+		self.is_odd = self.street_no.to_i.odd?
+		true
+	end
+
 	def hash_full_address
 		self.address_hash = Digest::MD5.hexdigest(self.full_address.downcase)
 	end
@@ -61,6 +67,19 @@ class Address < ActiveRecord::Base
   end
 
 	#====== CLASS METHODS ======
+	def self.do_odd_or_even
+		the_limit = 15000
+		cnt = 0
+		while 1==1
+			@addresses = Address.all(:conditions => "is_odd IS NULL", :limit => the_limit)
+			break if @addresses.size == 0
+			@addresses.each do |a|	
+				a.save!
+			end
+			cnt += the_limit
+		end
+	end
+	
 	def self.do_geocoding(done_cnt=0)
 		cnt = 0
 		the_limit = 15000 - done_cnt
@@ -68,7 +87,7 @@ class Address < ActiveRecord::Base
 		ads = Address.all(:conditions => "(county_name = 'Baltimore')  AND geom IS NULL AND geo_failed IS NULL", :limit => the_limit)
 		
 		ads.each do |a|
-			a.save! if a.valid?
+			a.save! if a.valid_address?
 			sleep 0.10
 			cnt += 1
 			puts cnt
@@ -77,11 +96,13 @@ class Address < ActiveRecord::Base
 	end
 
 	def self.create_address_hashes
-		#Address.transaction do
-			Address.all(:conditions => 'address_hash is null', :limit => 50000).each do |a|
+		while 1==1
+			@addresses = Address.all(:conditions => 'address_hash is null', :limit => 50000)
+			break if @addresses.size == 0
+			@addresses.each do |a|
 				a.save!
 			end
-		#end
+		end
 	end
 
 end

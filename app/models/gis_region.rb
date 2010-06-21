@@ -32,12 +32,13 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	def to_vertices_array
-		r = []
-		a = self.geom.text_representation.gsub(')','').gsub('(','').split(',')
-		a.each do |s|
-			r.push(s.split(' '))
-		end
-		r
+		self.geom.first.map { |g| [g.x, g.y]}
+		#r = []
+		#a = self.geom.text_representation.gsub(')','').gsub('(','').split(',')
+		#a.each do |s|
+		#	r.push(s.split(' '))
+		#end
+		#r
 	end
 
 	#===== CLASS METHODS ======
@@ -143,16 +144,19 @@ class GisRegion < ActiveRecord::Base
 		logger.debug(gis_region.voters.count)
 	end
 
-	def self.coordinates_from_text(text_coords)
-		r = []
-		ary = text_coords.to_s.split(',')
 
-		for x in 0.step(ary.size-1,2)
-			a1 = ary[x].to_s.gsub(/\[|\]/, '').to_f
-			a2 = ary[x+1].to_s.gsub(/\[|\]/, '').to_f
-			r.push([a1, a2])
-		end
-		r
+	def self.coordinates_from_text(text_coords)
+ 		text_coords.scan(/[\d\-\.]+/ ).map{|v| v.to_f }.in_groups_of(2)
+		
+#		r = []
+#		ary = text_coords.to_s.split(',')
+
+#		for x in 0.step(ary.size-1,2)
+#			a1 = ary[x].to_s.gsub(/\[|\]/, '').to_f
+#			a2 = ary[x+1].to_s.gsub(/\[|\]/, '').to_f
+#			r.push([a1, a2])
+#		end
+#		r
 	end
 
 end

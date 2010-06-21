@@ -25,5 +25,5 @@
 
 	</hr />
 
-  <p><%= f.submit %></p>
+  <p><%= f.submit @walksheet.new_record? ? 'Create Walk Sheet' : 'Save Changes' %></p>
 <% end %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100620180028) do
+ActiveRecord::Schema.define(:version => 20100621171611) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20100620180028) do
     t.column "updated_at", :datetime
     t.column "geom", :point, :srid => 4326
     t.column "mcomm_dist_code", :string, :limit => 2
+    t.column "is_odd", :boolean
   end
 
   add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash", :unique => true
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20100620180028) do
   add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial=> true 
   add_index "addresses", ["hd"], :name => "index_addresses_on_hd"
   add_index "addresses", ["id"], :name => "index_addresses_on_id"
+  add_index "addresses", ["is_odd"], :name => "index_addresses_on_is_odd"
   add_index "addresses", ["lat", "lng"], :name => "index_addresses_on_lat_and_lng"
   add_index "addresses", ["precinct_code"], :name => "index_addresses_on_precinct_code"
   add_index "addresses", ["sd"], :name => "index_addresses_on_sd"
