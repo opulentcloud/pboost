@@ -26,7 +26,7 @@ class Address < ActiveRecord::Base
 		self.address_hash = Digest::MD5.hexdigest(self.full_address.downcase)
 	end
    
-  def valid_address
+  def valid_address?
   	return true unless (self.lat.blank? && self.lng.blank? && self.geom.blank?)
     @address_string ||= [:full_street_address, :city, :state, :zip5].map{|f|
        self.send(f)}.join(',')
