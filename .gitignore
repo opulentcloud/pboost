@@ -10,6 +10,7 @@ db/migrate/fixtures/*.gz
 db/migrate/fixtures/*.out
 db/migrate/fixtures/*.zip
 db/sphinx
+vendor/prawn
 doc
 log
 tmp
