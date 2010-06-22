@@ -55,6 +55,13 @@ namespace :config do
 	end
 end
 
+namespace :prawn do
+	desk "Link in prawn"
+	task :link do
+		run "rm -f #{current_path}/vendor/prawn && ln -nfs #{deploy_to}/#{shared_dir}/vendor/prawn #{current_path}/vendor/prawn"
+	end
+end
+
 namespace :delayed_job do
 	desc "Start delayed_job process"
 	task :start, :roles => :app do
@@ -74,6 +81,7 @@ namespace :delayed_job do
 end
 
 after :deploy, "config:link"
+after :deploy, "prawn:link"
 after :deploy, "delayed_job:stop"
 after :deploy, "delayed_job:start"
 
