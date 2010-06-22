@@ -40,7 +40,7 @@ class Walksheet < ActiveRecord::Base
 		self.party_filters.each do |pf|
 			pf.destroy if pf.string_val == "0"
 		end
-		
+		true
 	end
 
 	def before_destroy
@@ -50,6 +50,7 @@ class Walksheet < ActiveRecord::Base
 				
 		sql = "DELETE FROM walksheet_voters WHERE walksheet_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
+		true
 	end
 
 	#===== INSTANCE METHODS =====
