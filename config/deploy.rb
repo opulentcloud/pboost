@@ -56,7 +56,7 @@ namespace :config do
 end
 
 namespace :prawn do
-	desk "Link in prawn"
+	desc "Link in prawn"
 	task :link do
 		run "rm -f #{current_path}/vendor/prawn && ln -nfs #{deploy_to}/#{shared_dir}/vendor/prawn #{current_path}/vendor/prawn"
 	end
