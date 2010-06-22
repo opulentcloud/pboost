@@ -1,5 +1,4 @@
 class Voter < ActiveRecord::Base
-	acts_as_reportable
 
 	#===== ASSOCIATIONS ======
 	belongs_to :address
@@ -7,6 +6,10 @@ class Voter < ActiveRecord::Base
 	has_and_belongs_to_many :gis_regions
 
 	#====== INSTANCE METHODS ======
+	def printable_name
+		"#{last_name}, #{first_name} #{middle_name}"
+	end
+	
 	def build_search
 		first_four = self.first_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
 		second_four = self.last_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''

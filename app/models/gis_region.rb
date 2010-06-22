@@ -1,6 +1,5 @@
 class GisRegion < ActiveRecord::Base
 	acts_as_geom :geom => :polygon
-	acts_as_reportable
 
 	#===== SCOPES ======
 	default_scope :order => 'gis_regions.name'

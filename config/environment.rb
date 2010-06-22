@@ -15,6 +15,7 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   config.load_paths += %W( #{RAILS_ROOT}/app/reports )
   config.load_paths += %W( #{RAILS_ROOT}/app/observers )
+	config.load_paths << "#{RAILS_ROOT}/vendor/prawn/lib"
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -25,7 +26,7 @@ Rails::Initializer.run do |config|
 	config.gem "declarative_authorization", :source => 'http://gemcutter.org'
 	config.gem 'fastercsv'
 	config.gem 'uuidtools'
-	config.gem 'ruport'
+	config.gem 'pdf-reader'
 	config.gem 'daemons'
 	config.gem 'delayed_job'
 	config.gem 'geokit'

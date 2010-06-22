@@ -2,14 +2,24 @@ class ReportsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_walksheet, :only => [:show, :printable_list, :csv_list]
 
+	layout nil
+
 	def index
-		@report = render_walk_sheet_list_as :html		
+		output = HelloReport.new(:page_layout => :landscape).to_pdf
+		respond_to do |format|
+			format.pdf do
+				send_data output, :filename => 'hello.pdf',
+					:type => 'application/pdf'
+			end
+		end	
 	end
 
 	def show
+		@lines_per_page = 28
+		
 		respond_to do |format|
 			format.csv { csv_list }
-			format.pdf { printable_list }
+			format.pdf { prawnto :prawn => {:page_layout => :landscape}, :inline => false, :skip_page_creation => true }
 			format.html { 
 				@report = render_walk_sheet_list_as :html	
 			}
@@ -17,7 +27,7 @@ class ReportsController < ApplicationController
 	end
 
 	def printable_list
-		pdf = render_walk_sheet_list_as :pdf
+		pdf = WalksheetReport.new(:walksheet => walksheet, :page_layout => :landscape).to_pdf
 		send_data pdf, :type => 'application/pdf',
 									:filename => 'walksheet.pdf'
 	end

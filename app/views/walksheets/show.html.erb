@@ -6,7 +6,7 @@
   <strong>Constituent Count:</strong>
   <%=@walksheet.populated? ? number_with_delimiter(@walksheet.constituent_count) : '*Populating' %>
 	<% if @walksheet.populated? %>
-		<%=link_to 'Print Walk Sheet', report_path(@walksheet.id)+'.pdf' %>
+		<%=link_to 'Print Walk Sheet', report_path(@walksheet.id, :format => 'pdf') %>
 	<% end %>
 </p>
 
