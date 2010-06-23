@@ -30,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|
 		site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
-		site.pdf 'pdf/:id', :action => 'printable_list', :conditions => { :method => :get }
+		site.pdf 'pdf/:id', :action => 'send_pdf_file', :conditions => { :method => :get }
 	end
 	map.resources :reports, :path_prefix => '/customer'
 

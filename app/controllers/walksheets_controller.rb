@@ -26,7 +26,7 @@ class WalksheetsController < ApplicationController
   def create
     @walksheet = Walksheet.new(params[:walksheet])
 		@walksheet.political_campaign_id = current_political_campaign.id
-	  if @walksheet.save!
+	  if @walksheet.save
 
 	    flash[:notice] = "Successfully created walksheet."
 	    redirect_to @walksheet

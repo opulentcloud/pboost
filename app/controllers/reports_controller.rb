@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_walksheet, :only => [:show, :printable_list, :csv_list]
+	before_filter :get_walksheet, :only => [:show, :printable_list, :csv_list, :send_pdf_file]
 
 	layout nil
 
@@ -24,6 +24,10 @@ class ReportsController < ApplicationController
 				@report = render_walk_sheet_list_as :html	
 			}
 		end
+	end
+
+	def send_pdf_file
+		send_file "#{RAILS_ROOT}/docs/multi_page_table.pdf", :type => "application/pdf", :x_sendfile => true
 	end
 
 	def printable_list
