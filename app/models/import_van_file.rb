@@ -266,6 +266,17 @@ class ImportVanFile
 		end
 	end
 
+	def self.show_file_headers
+		cnt = 0
+		FasterCSV.foreach("#{RAILS_ROOT}/db/migrate/fixtures/voters_maryland.csv", :headers => false, :col_sep => "\t") do |row|
+			row.each do |c|
+				puts c
+			end
+			break
+		end
+	
+	end
+
 	def self.add_missing_voters
 		cnt = 0
 		FasterCSV.foreach("#{RAILS_ROOT}/db/migrate/fixtures/voters_maryland.csv", :headers => true, :col_sep => "\t") do |row|

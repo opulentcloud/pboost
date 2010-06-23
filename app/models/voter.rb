@@ -6,6 +6,39 @@ class Voter < ActiveRecord::Base
 	has_and_belongs_to_many :gis_regions
 
 	#====== INSTANCE METHODS ======
+	def of_6_to_word(elec_type)
+		r = self.of_6(elec_type)
+		p = (r.to_f/6.to_f*100.to_f).to_int
+		"#{r}/6 = #{p}%"
+	end
+
+	def of_6(elec_type)
+		d = case elec_type
+				when 'P' then 2
+				when 'G' then 2
+				else 3 end
+		y = Date.today - ((d * 6).years)
+		self.voting_history_voters.all(:conditions => "election_year >= #{y} AND election_type = '#{elec_type}'").count
+	end
+
+	def general_voting_history
+		primary_voting_history
+	end
+
+	def primary_voting_history
+		r = []
+		t = Date.today
+		cnt = 1
+		self.voting_history_voters.each_with_index do |h,index|
+			y =	(t - 2.years).year
+			r.push("#{index} of #{cnt}") if h.election_year == t
+			cnt += 1
+			t -= 2.years
+			break if t.year < 1994
+		end
+		r
+	end
+	
 	def printable_name
 		"#{last_name}, #{first_name} #{middle_name}"
 	end

@@ -1,4 +1,4 @@
-pdf.font 'Helvetica'
+pdf.font 'Helvetica', :size => 9
 
 #pdf.repeat(:all) do
 #	pdf.font_size 20 do
@@ -11,10 +11,10 @@ pdf.font 'Helvetica'
 #	pdf.move_down(20)
 #end
 
-ads = [['Address','Voter','Age','M/F','Party']]
+ads = [['Address','Voter','Age','M/F','Prty','D.O.R.','Vtng Hstry','Telephone','Y','N','Sign','Contrib','Comments']]
 
 ads += @walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-		[a.address.full_street_address, a.printable_name, a.age.to_s, a.sex, a.party]
+		[a.address.full_street_address, a.printable_name, a.age.to_s, a.sex, a.party, format_date(a.dor), a.of_6_to_word('MG'),number_to_phone(a.home_phone),'_','_','____','_______','___________________']
 end
 
 #subtable = Prawn::Table.new(ads, pdf) do |st|
