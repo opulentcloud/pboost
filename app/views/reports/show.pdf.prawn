@@ -1,15 +1,15 @@
 pdf.font 'Helvetica'
 
-pdf.repeat(:all) do
-	pdf.font_size 20 do
-		pdf.text "Walk Sheet - #{@walksheet.political_campaign.candidate_name}", :style => :bold
-	end
-	pdf.font('Helvetica', :style => :bold, :size => 12) do
-		pdf.text "Name of Walker:___________________________________                    Date Walked: ____________"
-	end
+#pdf.repeat(:all) do
+#	pdf.font_size 20 do
+#		pdf.text "Walk Sheet - #{@walksheet.political_campaign.candidate_name}", :style => :bold
+#	end
+#	pdf.font('Helvetica', :style => :bold, :size => 12) do
+#		pdf.text "Name of Walker:___________________________________                    Date Walked: ____________"
+#	end
 
-	pdf.move_down(20)
-end
+#	pdf.move_down(20)
+#end
 
 ads = [['Address','Voter','Age','M/F','Party']]
 
@@ -17,13 +17,13 @@ ads += @walksheet.voters.all(:joins => :address, :order => 'state, city, street_
 		[a.address.full_street_address, a.printable_name, a.age.to_s, a.sex, a.party]
 end
 
-#	subtable = Prawn::Table.new(ads, pdf) do |st|
-#		st.header = true
-#		st.cell_style = { :borders => [] }
-#		st.row(0).style(:style => :bold)
-#	end
+#subtable = Prawn::Table.new(ads, pdf) do |st|
+#	st.header = true
+#	st.cell_style = { :borders => [] }
+#	st.row(0).style(:style => :bold)
+#end
 
-#	pdf.table ([[subtable]])
+#pdf.table ([[subtable]])
 
 #	pdf.move_down(20)
 
@@ -36,6 +36,6 @@ end
 #end
 
 pdf.font('Helvetica', :style => :italic, :size => 8) do
-	pdf.number_pages "politicalboost.com <page> of <total>", [pdf.bounds.right - 80, 0]
+	pdf.number_pages "PoliticalBoost.com Walk Sheet - #{@walksheet.political_campaign.candidate_name} <page> of <total>", [pdf.bounds.right - 220, 0]
 end
 

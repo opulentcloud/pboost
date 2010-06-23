@@ -19,7 +19,7 @@ class ReportsController < ApplicationController
 		
 		respond_to do |format|
 			format.csv { csv_list }
-			format.pdf { prawnto :prawn => {:page_layout => :landscape}, :inline => false, :skip_page_creation => true }
+			format.pdf { prawnto :prawn => {:page_layout => :landscape}, :inline => false, :skip_page_creation => false }
 			format.html { 
 				@report = render_walk_sheet_list_as :html	
 			}
