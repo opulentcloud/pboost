@@ -5,7 +5,7 @@ class ReportsController < ApplicationController
 	layout nil
 
 	def index
-		output = HelloReport.new(:page_layout => :landscape).to_pdf
+		output = HelloReport.new(:page_layout => :landscape, :top_margin => 10).to_pdf
 		respond_to do |format|
 			format.pdf do
 				send_data output, :filename => 'hello.pdf',

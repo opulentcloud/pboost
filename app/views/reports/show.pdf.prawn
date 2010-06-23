@@ -5,9 +5,7 @@ pdf.repeat(:all) do
 		pdf.text "Walk Sheet - #{@walksheet.political_campaign.candidate_name}", :style => :bold
 	end
 	pdf.font('Helvetica', :style => :bold, :size => 12) do
-		pdf.text <<-eot
-	Name of Walker: ___________________________________                     Date Walked: ____________
-		eot
+		pdf.text "Name of Walker:___________________________________                    Date Walked: ____________"
 	end
 
 	pdf.move_down(20)
@@ -19,11 +17,23 @@ ads += @walksheet.voters.all(:joins => :address, :order => 'state, city, street_
 		[a.address.full_street_address, a.printable_name, a.age.to_s, a.sex, a.party]
 end
 
-pdf.table ads do |dt|
-	dt.header = true
-	dt.cell_style = { :borders => [] }
-	dt.row(0).style(:style => :bold)
-end
+#	subtable = Prawn::Table.new(ads, pdf) do |st|
+#		st.header = true
+#		st.cell_style = { :borders => [] }
+#		st.row(0).style(:style => :bold)
+#	end
+
+#	pdf.table ([[subtable]])
+
+#	pdf.move_down(20)
+
+#pdf.bounding_box([0, 0], :width => pdf.bounds.width) do
+		pdf.table ads do |dt|
+			dt.header = true
+			dt.cell_style = { :borders => [] }
+			dt.row(0).style(:style => :bold)
+		end
+#end
 
 pdf.font('Helvetica', :style => :italic, :size => 8) do
 	pdf.number_pages "politicalboost.com <page> of <total>", [pdf.bounds.right - 80, 0]
