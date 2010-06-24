@@ -2,7 +2,7 @@
 class WalksheetReport
 
 	@@Widths = [440,300,300] #portait is 540 width
-	@@Headers = ["Patient Name", "Patient Portion Due", "Balance"]
+	@@Headers = ["Address / Voter", "Sex", "Age"]
 
 	def self.build(walksheet)
  
@@ -39,15 +39,15 @@ class WalksheetReport
 
 			data = []
 
-			def row(pt, charges, portion_due, balance)
-				rows = charges.map { |c| ["", c[0], c[1]] }
+			def row(address, voter, sex, age)
+				rows = voter.map { |v| ["", v[0], v[1]] }
 
-				# Patient Name go on the first line.
-				rows[0][0] = pt
+				# Address goes on the first line.
+				rows[0][0] = address
 
 				# Due and Balance go on the last line.
-				rows[-1][1] = portion_due
-				rows[-1][2] = balance
+				rows[-1][1] = sex
+				rows[-1][2] = age
 
 				# Return a Prawn::Table object to be used as a subtable.
 				make_table(rows) do |t|
@@ -58,11 +58,15 @@ class WalksheetReport
 
 			end
 
-			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")
-			50.times do
-				data << row("John", [["Foo", "Bar"], 
-				                                 ["Foo", "Bar"]], "5.00", "0.00")
+			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
+					data << row(a.address.full_street_address, [[a.printable_name, a.age.to_s, a.sex], ['Foo', 'Bar']], '5.00', '0.00')
 			end
+
+			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")
+#			50.times do
+#				data << row("John", [["Foo", "Bar"], 
+#				                                 ["Foo", "Bar"]], "5.00", "0.00")
+#			end
 
 			bounding_box [30,cursor], :width => 1200 do
 				# Wrap head and each data element in an Array -- the outer table has only one
