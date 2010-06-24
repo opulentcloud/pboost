@@ -12,7 +12,7 @@ class WalksheetReport
 			font_size = 9
 			font 'Helvetica'
 
-			left_header = "Precinct\nXXX"
+			left_header = "Precinct XXX"
 			right_header = "# Of Voters: #{walksheet.voters.count}"
 
 			header_row = ["#{left_header}","Walk Sheet - #{walksheet.political_campaign.candidate_name}","#{right_header}"]
@@ -28,7 +28,11 @@ class WalksheetReport
 					t.column(2).align = :right
 					t.column(2).style :size => 14, :style => :bold
 				end
-				
+
+				font('Helvetica', :style => :bold, :size => 16) do
+					text "#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}", :align => :center
+				end
+								
 				move_down(5)
 			end
 
