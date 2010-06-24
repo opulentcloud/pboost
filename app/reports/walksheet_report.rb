@@ -1,12 +1,12 @@
 
 class WalksheetReport
 
-	@@Widths = [340,200,200] #portait is 540 width
+	@@Widths = [440,300,300] #portait is 540 width
 	@@Headers = ["Patient Name", "Patient Portion Due", "Balance"]
 
 	def self.build(walksheet)
  
-		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => 'A4') do 
+		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => [1000, 1200]) do 
 
 			font_size = 9
 			font 'Helvetica'
@@ -64,7 +64,7 @@ class WalksheetReport
 				                                 ["Foo", "Bar"]], "5.00", "0.00")
 			end
 
-			bounding_box [30,cursor], :width => 800 do
+			bounding_box [30,cursor], :width => 1200 do
 				# Wrap head and each data element in an Array -- the outer table has only one
 				# column.
 					table([[head], *(data.map{|d| [d]})], :header => true,
