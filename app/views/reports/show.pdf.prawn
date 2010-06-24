@@ -1,41 +1,47 @@
-pdf.font 'Helvetica', :size => 9
 
-#pdf.repeat(:all) do
-#	pdf.font_size 20 do
-#		pdf.text "Walk Sheet - #{@walksheet.political_campaign.candidate_name}", :style => :bold
-#	end
-#	pdf.font('Helvetica', :style => :bold, :size => 12) do
-#		pdf.text "Name of Walker:___________________________________                    Date Walked: ____________"
-#	end
+  pdf.font_size = 9
 
-#	pdf.move_down(20)
-#end
+  widths = [50, 90, 170, 90, 90, 50]
+  headers = ["Date", "Patient Name", "Description", "Charges / Payments", 
+             "Patient Portion Due", "Balance"]
 
-ads = [['Address','Voter','Age','M/F','Prty','D.O.R.','Vtng Hstry','Telephone','Y','N','Sign','Contrib','Comments']]
+  head = pdf.make_table([headers], :column_widths => widths)
 
-ads += @walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-		[a.address.full_street_address, a.printable_name, a.age.to_s, a.sex, a.party, format_date(a.dor), a.of_6_to_word('MG'),number_to_phone(a.home_phone),'_','_','____','_______','___________________']
-end
+  data = []
 
-#subtable = Prawn::Table.new(ads, pdf) do |st|
-#	st.header = true
-#	st.cell_style = { :borders => [] }
-#	st.row(0).style(:style => :bold)
-#end
+  def row(pdf, widths, date, pt, charges, portion_due, balance)
+    rows = charges.map { |c| ["", "", c[0], c[1], "", ""] }
 
-#pdf.table ([[subtable]])
+    # Date and Patient Name go on the first line.
+    rows[0][0] = date
+    rows[0][1] = pt
 
-#	pdf.move_down(20)
+    # Due and Balance go on the last line.
+    rows[-1][4] = portion_due
+    rows[-1][5] = balance
 
-#pdf.bounding_box([0, 0], :width => pdf.bounds.width) do
-		pdf.table ads do |dt|
-			dt.header = true
-			dt.cell_style = { :borders => [] }
-			dt.row(0).style(:style => :bold)
-		end
-#end
+    # Return a Prawn::Table object to be used as a subtable.
+    pdf.make_table(rows) do |t|
+      t.column_widths = widths
+      t.cells.style :borders => [:left, :right], :padding => 2
+      t.columns(4..5).align = :right
+    end
 
-pdf.font('Helvetica', :style => :italic, :size => 8) do
-	pdf.number_pages "PoliticalBoost.com Walk Sheet - #{@walksheet.political_campaign.candidate_name} <page> of <total>", [pdf.bounds.right - 220, 0]
-end
+  end
+
+  data << row(pdf, widths, "1/1/2010", "", [["Balance Forward", ""]], "0.00", "0.00")
+  50.times do
+    data << row(pdf, widths, "1/1/2010", "John", [["Foo", "Bar"], 
+                                     ["Foo", "Bar"]], "5.00", "0.00")
+  end
+
+
+  # Wrap head and each data element in an Array -- the outer table has only one
+  # column.
+  pdf.table([[head], *(data.map{|d| [d]})], :header => true,
+        :row_colors => %w[cccccc ffffff]) do
+    
+    row(0).style :background_color => '000000', :text_color => 'ffffff'
+    cells.style :borders => []
+  end
 

@@ -27,7 +27,7 @@ class ReportsController < ApplicationController
 	end
 
 	def send_pdf_file
-		send_file "#{RAILS_ROOT}/docs/multi_page_table.pdf", :type => "application/pdf", :x_sendfile => true
+		send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
 	end
 
 	def printable_list
