@@ -54,13 +54,17 @@ class WalksheetReport
 				make_table(rows) do |t|
 				  t.column_widths = @@Widths
 				  t.cells.style :borders => [:left, :right], :padding => 2
-				  t.columns(1..2).align = :right
+					t.rows(0).align = :left
+					t.rows(0).style :style => :bold
+					t.rows(1..rows.size).align = :center
+				  t.columns(1..3.size).align = :center
 				end
 
 			end
 
 			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-					data << row(a.address.full_street_address, [[a.printable_name, a.sex, a.age.to_s], ['Foo', 'Bar']])
+					
+					data << row(a.address.full_street_address.ljust(75,' '), [[a.printable_name, a.sex, a.age.to_s], ['Foo', 'Bar']])
 			end
 
 			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")
