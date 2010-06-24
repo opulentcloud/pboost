@@ -63,8 +63,8 @@ class WalksheetReport
 			end
 
 			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-					
-					data << row(a.address.full_street_address.ljust(75,' '), [[a.printable_name, a.sex, a.age.to_s], ['Foo', 'Bar']])
+					voter = [[a.printable_name, a.sex, a.age.to_s], ['', 'F', '25']]
+					data << row(a.address.full_street_address.rjust(50,' '), voter)
 			end
 
 			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")
