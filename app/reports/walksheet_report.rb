@@ -12,13 +12,21 @@ class WalksheetReport
 			font_size = 9
 			font 'Helvetica'
 
-			repeat(:all) do
-				font_size 20 do
-					text "Walk Sheet - #{walksheet.political_campaign.candidate_name}", :align => :center, :style => :bold
-				end
+			left_header = "Precinct\nXXX"
+			right_header = "# Of Voters: #{walksheet.voters.count}"
 
-				font_size 18 do
-					text "#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}", :align => :center, :style => :bold
+			header_row = ["#{left_header}","Walk Sheet - #{walksheet.political_campaign.candidate_name}","#{right_header}"]
+
+			repeat(:all) do
+				table([header_row])	do |t|
+					t.column_widths = [(bounds.width.to_f * 0.2),(bounds.width.to_f * 0.58), (bounds.width.to_f * 0.2)]
+					t.cells.style :borders => []
+					t.column(0).align = :left
+					t.column(0).style :size => 14, :style => :bold
+					t.column(1).align = :center
+					t.column(1).style :size => 20, :style => :bold
+					t.column(2).align = :right
+					t.column(2).style :size => 14, :style => :bold
 				end
 				
 				move_down(5)
