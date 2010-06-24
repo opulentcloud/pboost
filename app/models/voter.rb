@@ -12,6 +12,11 @@ class Voter < ActiveRecord::Base
 		"#{r}/6 = #{p}%"
 	end
 
+	def quality
+		y = Date.today - ((2 * 5).years)
+		self.voting_history_voters.all(:conditions => "election_year >= #{y} AND election_type = 'P'").count
+	end
+
 	def of_6(elec_type)
 		d = case elec_type
 				when 'P' then 2
