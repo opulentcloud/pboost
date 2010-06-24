@@ -45,3 +45,5 @@
     cells.style :borders => []
   end
 
+	pdf.render_file "docs/walksheet#{@walksheet.id}.pdf"
+	

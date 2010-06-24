@@ -17,13 +17,13 @@ class ReportsController < ApplicationController
 	def show
 		@lines_per_page = 28
 		
-		respond_to do |format|
-			format.csv { csv_list }
-			format.pdf { prawnto :prawn => {:page_size => 'A4', :page_layout => :landscape, :left_margin => 90, :right_margin => 5}, :inline => false, :skip_page_creation => false }
-			format.html { 
-				@report = render_walk_sheet_list_as :html	
-			}
-		end
+		#respond_to do |format|
+			#format.csv { csv_list }
+			#format.pdf { prawnto :prawn => {:page_size => 'A4', :page_layout => :landscape, :left_margin => 90, :right_margin => 5}, :inline => false, :skip_page_creation => false }
+			#format.html { 
+			#	@report = render_walk_sheet_list_as :html	
+			#}
+		#end
 	end
 
 	def send_pdf_file
