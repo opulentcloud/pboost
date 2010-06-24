@@ -9,7 +9,8 @@ class WalksheetReport
  
 		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => 'A4') do 
 
-			self.font_size = 9
+			font_size = 9
+			font 'Helvetica'
 
 			repeat(:all) do
 				font_size 20 do
@@ -17,6 +18,7 @@ class WalksheetReport
 				end
 				font('Helvetica', :style => :bold, :size => 12) do
 					text "Name of Walker:___________________________________                    Date Walked: ____________"
+					move_down(5)
 				end
 			end
 
@@ -50,21 +52,7 @@ class WalksheetReport
 				                                 ["Foo", "Bar"]], "5.00", "0.00")
 			end
 
-
-		if 1 == 0 #trying to nest in another header is not working
-			# Wrap head and each data element in an Array -- the outer table has only one
-			# column.
-			vdata = [make_table([[head], *(data.map{|d| [d]})], :header => true,
-				    :row_colors => %w[cccccc ffffff]) do
-					row(0).style :background_color => 'ffffff', :text_color => '000000'
-				cells.style :borders => []
-			end]
-
-			main_head = make_table([["Walksheet Header"]], :width => 540)
-
-			table([[main_head], *(vdata.map{|d| [d]})], :column_widths => [540])
-		else
-			bounding_box [20,cursor], :width => 600 do
+			bounding_box [30,cursor], :width => 600 do
 				# Wrap head and each data element in an Array -- the outer table has only one
 				# column.
 					table([[head], *(data.map{|d| [d]})], :header => true,
@@ -73,7 +61,10 @@ class WalksheetReport
 						cells.style :borders => []
 					end
 			end
-		end
+
+			font('Helvetica', :style => :italic, :size => 8) do
+				number_pages "PoliticalBoost.com Page <page> of <total>", [bounds.right - 80, 0]
+			end
 
 		end
 	end
