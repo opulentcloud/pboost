@@ -40,14 +40,15 @@ class WalksheetReport
 			data = []
 
 			def row(address, voter, sex, age)
-				rows = voter.map { |v| ["", v[0], v[1]] }
+				rows = [[address, '', '']]
+				rows += voter.map { |v| [v[0], v[1], v[2]] }
 
 				# Address goes on the first line.
-				rows[0][0] = address
+				#rows[0][0] = address
 
 				# Due and Balance go on the last line.
-				rows[-1][1] = sex
-				rows[-1][2] = age
+				#rows[-1][1] = sex
+				#rows[-1][2] = age
 
 				# Return a Prawn::Table object to be used as a subtable.
 				make_table(rows) do |t|
