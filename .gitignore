@@ -12,6 +12,7 @@ db/migrate/fixtures/*.zip
 db/sphinx
 vendor/prawn
 doc
+docs
 log
 tmp
 *.dat

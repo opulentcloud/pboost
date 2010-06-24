@@ -14,12 +14,14 @@ class WalksheetReport
 
 			repeat(:all) do
 				font_size 20 do
-					text "Walk Sheet - #{walksheet.political_campaign.candidate_name}", :style => :bold
+					text "Walk Sheet - #{walksheet.political_campaign.candidate_name}", :align => :center, :style => :bold
 				end
-				font('Helvetica', :style => :bold, :size => 12) do
-					text "Name of Walker:___________________________________                    Date Walked: ____________"
-					move_down(5)
+
+				font_size 18 do
+					text "#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}", :align => :center, :style => :bold
 				end
+				
+				move_down(5)
 			end
 
 			head = make_table([@@Headers], :column_widths => @@Widths)
