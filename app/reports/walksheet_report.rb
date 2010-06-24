@@ -1,8 +1,8 @@
 
 class WalksheetReport
 
-	@@Widths = [440,200,100,100,200] #width should be 1040
-	@@Headers = ['Address / Voter', 'Sex', 'Age', 'Party', 'Quality']
+	@@Widths = [340,100,100,100,100,100, 100, 100] #width should be 1040
+	@@Headers = ['Address / Voter', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID']
 
 	def self.build(walksheet)
  
@@ -40,8 +40,8 @@ class WalksheetReport
 			data = []
 
 			def row(address, voter)
-				rows = [[address, '', '', '', '']]
-				rows += voter.map { |v| [v[0], v[1], v[2], v[3], v[4]] }
+				rows = [[address, '', '', '', '', '', '', '']]
+				rows += voter.map { |v| [v[0], v[1], v[2], v[3], v[4], '', '', v[5]] }
 
 				# Address goes on the first line.
 				#rows[0][0] = address
@@ -63,7 +63,7 @@ class WalksheetReport
 			end
 
 			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-					voter = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s], ['', 'F', '25', 'R', '0']]
+					voter = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
 					data << row(a.address.full_street_address.rjust(50,' '), voter)
 			end
 
