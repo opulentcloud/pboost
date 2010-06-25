@@ -1,7 +1,7 @@
 
 class WalksheetReport
 
-	@@Widths = [340,40,50,50,50,50,50,120,60,70,80,80] #width should be 1040
+	@@Widths = [320,70,70,70,70,70,70,100,70,70,70,70] #width should be 1040
 	@@Headers = ['Address / Voter Name', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
 
 	def self.build(walksheet)
