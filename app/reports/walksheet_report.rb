@@ -61,14 +61,13 @@ class WalksheetReport
 					t.rows(0).style :style => :bold
 					t.rows(1..rows.size).align = :center
 				  t.columns(1..3.size).align = :center
-				  t.rows(-1).style :borders => [:bottom]
 				end
 
 			end
 
 			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-					voter = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
-					data << row(a.address.full_street_address.rjust(50,' '), voter)
+					voters = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
+					data << row(a.address.full_street_address.upcase.rjust(50,' '), voters)
 			end
 
 			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")

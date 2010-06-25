@@ -45,7 +45,7 @@ class Voter < ActiveRecord::Base
 	end
 	
 	def printable_name
-		"#{last_name}, #{first_name} #{middle_name}"
+		"#{last_name}, #{first_name} #{middle_name}".upcase
 	end
 	
 	def build_search
