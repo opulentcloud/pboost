@@ -1,8 +1,8 @@
 
 class WalksheetReport
 
-	@@Widths = [340,100,100,100,100,100, 100, 100] #width should be 1040
-	@@Headers = ['Address / Voter', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID']
+	@@Widths = [340,40,50,50,50,50,50,50,120,80,80,80] #width should be 1040
+	@@Headers = ['Address / Voter', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
 
 	def self.build(walksheet)
  
@@ -40,8 +40,8 @@ class WalksheetReport
 			data = []
 
 			def row(address, voter)
-				rows = [[address, '', '', '', '', '', '', '']]
-				rows += voter.map { |v| [v[0], v[1], v[2], v[3], v[4], '', '', v[5]] }
+				rows = [[address,'','','','','','','','','','','']]
+				rows += voter.map { |v| [v[0],v[1],v[2],v[3],v[4],'','',v[5],'Y / N / U','Yes | No','Yes | No','Yes | No'] }
 
 				# Address goes on the first line.
 				#rows[0][0] = address
