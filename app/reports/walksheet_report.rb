@@ -56,11 +56,12 @@ class WalksheetReport
 				# Return a Prawn::Table object to be used as a subtable.
 				make_table(rows) do |t|
 				  t.column_widths = @@Widths
-				  t.cells.style :borders => [:bottom], :padding => 2
+				  t.cells.style :borders => [], :padding => 2
 					t.rows(0).align = :left
 					t.rows(0).style :style => :bold
 					t.rows(1..rows.size).align = :center
 				  t.columns(1..3.size).align = :center
+				  t.rows(-1).style :borders => [:bottom]
 				end
 
 			end
