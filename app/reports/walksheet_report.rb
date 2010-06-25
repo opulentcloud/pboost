@@ -37,6 +37,7 @@ class WalksheetReport
 
 			head = make_table([@@Headers], :column_widths => @@Widths) do |t|
 				t.rows(0).align = :center
+				t.rows(0).style(:style => :bold)
 			end
 
 			data = []
