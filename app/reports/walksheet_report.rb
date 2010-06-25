@@ -1,8 +1,8 @@
 
 class WalksheetReport
 
-	@@Widths = [340,40,50,50,50,50,50,50,120,80,80,80] #width should be 1040
-	@@Headers = ['Address / Voter', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
+	@@Widths = [340,40,50,50,50,50,50,120,60,70,80,80] #width should be 1040
+	@@Headers = ['Address / Voter Name', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
 
 	def self.build(walksheet)
  
@@ -35,7 +35,9 @@ class WalksheetReport
 				move_down(5)
 			end
 
-			head = make_table([@@Headers], :column_widths => @@Widths)
+			head = make_table([@@Headers], :column_widths => @@Widths) do |t|
+				t.rows(0).align = :center
+			end
 
 			data = []
 
