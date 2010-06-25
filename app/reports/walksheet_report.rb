@@ -56,7 +56,7 @@ class WalksheetReport
 				# Return a Prawn::Table object to be used as a subtable.
 				make_table(rows) do |t|
 				  t.column_widths = @@Widths
-				  t.cells.style :borders => [:left, :right], :padding => 2
+				  t.cells.style :borders => [:bottom], :padding => 2
 					t.rows(0).align = :left
 					t.rows(0).style :style => :bold
 					t.rows(1..rows.size).align = :center
@@ -80,7 +80,7 @@ class WalksheetReport
 				# Wrap head and each data element in an Array -- the outer table has only one
 				# column.
 					table([[head], *(data.map{|d| [d]})], :header => true,
-								:row_colors => %w[cccccc ffffff]) do
+								:row_colors => %w[ffffff ffffff]) do
 							row(0).style :background_color => 'ffffff', :text_color => '000000'
 						cells.style :borders => []
 					end
