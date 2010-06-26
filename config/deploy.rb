@@ -62,6 +62,13 @@ namespace :prawn do
 	end
 end
 
+namespace :link do
+	desc "Link in docs directory for pdf gen"
+	task :link do
+		run "rm -f #{current_path}/docs && ln -nfs #{deploy_to}/#{shared_dir}/docs #{current_path}/docs"
+	end
+end
+
 namespace :delayed_job do
 	desc "Start delayed_job process"
 	task :start, :roles => :app do
@@ -82,6 +89,7 @@ end
 
 after :deploy, "config:link"
 after :deploy, "prawn:link"
+after :deploy, "docs:link"
 after :deploy, "delayed_job:stop"
 after :deploy, "delayed_job:start"
 
