@@ -53,6 +53,13 @@ class Walksheet < ActiveRecord::Base
 		true
 	end
 
+	def after_destroy
+		begin
+			File.delete("#{RAILS_ROOT}/docs/walksheet_#{self.id}.pdf")
+		rescue
+		end
+	end
+
 	#===== INSTANCE METHODS =====
 	def is_editable?
 		self.populated
