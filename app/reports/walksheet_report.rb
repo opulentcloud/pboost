@@ -11,7 +11,13 @@ class WalksheetReport
 			font_size = 9
 			font 'Helvetica'
 
-			left_header = "Precinct XXX"
+			case walksheet.political_campaign.class
+				when 'MunicipalCampaign' then 
+					if walksheet.gis_region_filter
+						left_header = "GIS Region #{walksheet.gis_region_filter.string_val}"
+					end
+			end	
+
 			right_header = "# Of Voters: #{walksheet.voters.count}"
 
 			header_row = ["#{left_header}","Walk Sheet - #{walksheet.political_campaign.candidate_name}","#{right_header}"]

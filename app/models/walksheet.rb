@@ -142,9 +142,15 @@ class Walksheet < ActiveRecord::Base
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
 		self.constituent_count = self.voters.count
-		self.populated = true
 		self.save!	
+
+		if self.constituent_count > 0 
+			WalksheetReport.build(self)
+		end
 	
+		self.populated = true
+		self.save!
+
 	end
 
 	#===== CLASS METHODS ======

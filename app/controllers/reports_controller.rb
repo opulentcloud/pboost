@@ -15,8 +15,9 @@ class ReportsController < ApplicationController
 	end
 
 	def show
-		@lines_per_page = 28
-		
+		send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
+		return
+		#@lines_per_page = 28
 		#respond_to do |format|
 			#format.csv { csv_list }
 			#format.pdf { prawnto :prawn => {:page_size => 'A4', :page_layout => :landscape, :left_margin => 90, :right_margin => 5}, :inline => false, :skip_page_creation => false }
