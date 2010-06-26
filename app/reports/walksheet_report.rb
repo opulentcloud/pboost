@@ -43,6 +43,7 @@ class WalksheetReport
 			data = []
 
 			def row(address, voter)
+				#debugger
 				rows = [[address,'','','','','','','','','','','']]
 				rows += voter.map { |v| [v[0],v[1],v[2],v[3],v[4],'','',v[5],'Y / N / U','Yes | No','Yes | No','Yes | No'] }
 
@@ -60,21 +61,35 @@ class WalksheetReport
 					t.rows(0).align = :left
 					t.rows(0).style :style => :bold
 					t.rows(1..rows.size).align = :center
-				  t.columns(1..3.size).align = :center
+				  t.columns(1..rows.size).align = :center
+				  #t.rows(1..rows.size).columns(0).align = :left
+				  t.style t.rows(1..rows.size).columns(0), :padding => [0,0,0,20], :align => :left
 				end
 
 			end
 
-			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
-					voters = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
-					data << row(a.address.full_street_address.upcase.rjust(50,' '), voters)
-			end
+			voter = nil
+			voters = nil
+			current_address = nil
 
-			#data << row("", [["Balance Forward", ""]], "0.00", "0.00")
-#			50.times do
-#				data << row("John", [["Foo", "Bar"], 
-#				                                 ["Foo", "Bar"]], "5.00", "0.00")
-#			end
+			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
+					#voters = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
+					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
+					current_address = a.address.full_street_address if current_address.nil?					
+					if current_address == a.address.full_street_address
+						if voters.nil?
+							voters = [voter]
+						else
+							voters += [voter]
+						end
+					else
+						data << row(current_address.upcase, voters)
+						voters = [voter]
+						current_address = a.address.full_street_address
+					end
+			end
+			#print the last row
+			data << row(current_address.upcase, voters)
 
 			bounding_box [30,cursor], :width => 1200 do
 				# Wrap head and each data element in an Array -- the outer table has only one
@@ -87,7 +102,7 @@ class WalksheetReport
 			end
 
 			font('Helvetica', :style => :italic, :size => 8) do
-				number_pages "PoliticalBoost.com Page <page> of <total>", [bounds.right - 80, 0]
+				number_pages "PoliticalBoost.com Page <page> of <total>", [bounds.right - 100, 0]
 			end
 
 		end
