@@ -62,7 +62,7 @@ namespace :prawn do
 	end
 end
 
-namespace :link do
+namespace :docs do
 	desc "Link in docs directory for pdf gen"
 	task :link do
 		run "rm -f #{current_path}/docs && ln -nfs #{deploy_to}/#{shared_dir}/docs #{current_path}/docs"
