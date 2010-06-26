@@ -62,8 +62,8 @@ class WalksheetReport
 					t.rows(0).style :style => :bold
 					t.rows(1..rows.size).align = :center
 				  t.columns(1..rows.size).align = :center
-				  #t.rows(1..rows.size).columns(0).align = :left
-				  t.style t.rows(1..rows.size).columns(0), :padding => [0,0,0,20], :align => :left
+				  t.style t.rows(1..rows.size).columns(0), :padding => [0,0,0,40], :align => :left
+				  t.rows(rows.size-1).style :borders => [:bottom]
 				end
 
 			end
@@ -72,7 +72,7 @@ class WalksheetReport
 			voters = nil
 			current_address = nil
 
-			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no').map do |a|
+			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
 					#voters = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
 					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
 					current_address = a.address.full_street_address if current_address.nil?					
