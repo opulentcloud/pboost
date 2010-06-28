@@ -11,31 +11,23 @@ class WalksheetReport
 			font 'Helvetica'
 			self.font_size = 9
 			
-			case walksheet.political_campaign.class
-				when 'MunicipalCampaign' then 
-					if walksheet.gis_region_filter
-						left_header = "GIS Region #{walksheet.gis_region_filter.string_val}"
-					end
-			end	
+			left_header = "#{walksheet.name}"
 
 			right_header = "# Of Voters: #{walksheet.voters.count}"
 
-			header_row = ["#{left_header}","Walk Sheet - #{walksheet.political_campaign.candidate_name}","#{right_header}"]
+			header_row = [['',"Walk Sheet - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}","#{right_header}"]]
 
 			repeat(:all) do
-				table([header_row])	do |t|
+				table(header_row)	do |t|
 					t.column_widths = [(bounds.width.to_f * 0.2),(bounds.width.to_f * 0.60), (bounds.width.to_f * 0.2)]
 					t.cells.style :borders => []
 					t.column(0).align = :left
-					t.column(0).style :size => 14, :style => :bold
+					t.column(0).style :size => 10, :style => :bold
 					t.column(1).align = :center
-					t.column(1).style :size => 20, :style => :bold
+					t.column(1).style :size => 16, :style => :bold
 					t.column(2).align = :right
-					t.column(2).style :size => 14, :style => :bold
-				end
-
-				font('Helvetica', :style => :bold, :size => 16) do
-					text "#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}", :align => :center
+					t.column(2).style :size => 10, :style => :bold
+					t.rows(1).columns(1).style :size => 14
 				end
 								
 				move_down(5)

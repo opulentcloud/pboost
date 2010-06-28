@@ -14,7 +14,7 @@ class Voter < ActiveRecord::Base
 
 	def quality
 		y = Date.today - ((2 * 5).years)
-		self.voting_history_voters.all(:conditions => "election_year >= #{y} AND election_type = 'P'").count
+		self.voting_history_voters.all(:conditions => "election_year >= #{y.year} AND election_type = 'P'").count
 	end
 
 	def of_6(elec_type)
