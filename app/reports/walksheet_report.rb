@@ -46,8 +46,6 @@ class WalksheetReport
 				t.rows(0).style(:style => :bold)
 			end
 
-			data = []
-
 			def row(address, voter)
 				#debugger
 				rows = [[address,'','','','','','','','','','','']]
@@ -74,12 +72,12 @@ class WalksheetReport
 
 			end
 
+			data = []
 			voter = nil
 			voters = nil
 			current_address = nil
 
-			walksheet.voters.all(:joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
-					#voters = [[a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s], ['', 'F', '25', 'R', '0', '', '', '000000']]
+			walksheet.voters.all(:conditions => '"addresses".is_odd = false', :joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no_int, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
 					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
 					current_address = a.address.full_street_address if current_address.nil?					
 					if current_address == a.address.full_street_address
@@ -95,7 +93,35 @@ class WalksheetReport
 					end
 			end
 			#print the last row
-			data << row(current_address.upcase, voters)
+			if current_address
+				data << row(current_address.upcase, voters)
+			end
+
+			data2 = []
+			voter = nil
+			voters = nil
+			current_address2 = nil
+
+			#now build all odd addresses
+			walksheet.voters.all(:conditions => '"addresses".is_odd = true', :joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no_int, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
+					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
+					current_address2 = a.address.full_street_address if current_address2.nil?					
+					if current_address2 == a.address.full_street_address
+						if voters.nil?
+							voters = [voter]
+						else
+							voters += [voter]
+						end
+					else
+						data2 << row(current_address2.upcase, voters)
+						voters = [voter]
+						current_address2 = a.address.full_street_address
+					end
+			end
+			#print the last row
+			if current_address2
+				data2 << row(current_address.upcase, voters)
+			end
 
 			bounding_box [30,cursor], :width => 1200 do
 				# Wrap head and each data element in an Array -- the outer table has only one
@@ -105,6 +131,15 @@ class WalksheetReport
 							row(0).style :background_color => 'ffffff', :text_color => '000000'
 						cells.style :borders => []
 					end
+					
+					start_new_page
+
+					table([[head], *(data2.map{|d| [d]})], :header => true,
+								:row_colors => %w[ffffff ffffff]) do
+							row(0).style :background_color => 'ffffff', :text_color => '000000'
+						cells.style :borders => []
+					end
+
 			end
 
 			font('Helvetica', :style => :italic, :size => 8) do

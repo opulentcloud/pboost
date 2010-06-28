@@ -104,4 +104,24 @@ class Address < ActiveRecord::Base
 		end
 	end
 
+	def self.populate_street_no_int
+		while true
+		Address.all(:select => 'id, street_no, street_no_int', :conditions => 'street_no_int is null', :limit => 15000).each do |address|
+			begin
+				i = Integer(address.street_no)
+				address.street_no_int = i
+				address.save!
+			rescue
+				if address.street_no = ''
+					address.street_no_int = 0
+					address.save!
+				else
+					debugger
+					puts address.street_no
+				end
+			end
+		end
+		end
+	end
+
 end
