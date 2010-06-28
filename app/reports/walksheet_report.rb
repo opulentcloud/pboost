@@ -1,16 +1,16 @@
 
 class WalksheetReport
 
-	@@Widths = [320,70,70,70,70,70,70,100,70,70,70,70] #width should be 1040
+	@@Widths = [202,32,32,40,50,34,40,80,60,50,50,50] #712 width
 	@@Headers = ['Address / Voter Name', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
 
 	def self.build(walksheet)
  
-		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => [1000, 1200]) do 
+		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => [612, 792], :left_margin => 10) do #, :page_size => [792, 612] 100,1200
 
-			font_size = 9
 			font 'Helvetica'
-
+			self.font_size = 9
+			
 			case walksheet.political_campaign.class
 				when 'MunicipalCampaign' then 
 					if walksheet.gis_region_filter
@@ -24,7 +24,7 @@ class WalksheetReport
 
 			repeat(:all) do
 				table([header_row])	do |t|
-					t.column_widths = [(bounds.width.to_f * 0.2),(bounds.width.to_f * 0.58), (bounds.width.to_f * 0.2)]
+					t.column_widths = [(bounds.width.to_f * 0.2),(bounds.width.to_f * 0.60), (bounds.width.to_f * 0.2)]
 					t.cells.style :borders => []
 					t.column(0).align = :left
 					t.column(0).style :size => 14, :style => :bold

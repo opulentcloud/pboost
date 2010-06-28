@@ -15,7 +15,11 @@ class ReportsController < ApplicationController
 	end
 
 	def show
+		if RAILS_ENV == 'production'
 		send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
+		else
+			send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf"
+		end
 		return
 		#@lines_per_page = 28
 		#respond_to do |format|
