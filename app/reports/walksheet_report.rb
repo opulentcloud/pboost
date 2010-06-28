@@ -120,7 +120,7 @@ class WalksheetReport
 			end
 			#print the last row
 			if current_address2
-				data2 << row(current_address.upcase, voters)
+				data2 << row(current_address2.upcase, voters)
 			end
 
 			bounding_box [30,cursor], :width => 1200 do
