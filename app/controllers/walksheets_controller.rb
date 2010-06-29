@@ -21,13 +21,14 @@ class WalksheetsController < ApplicationController
     @walksheet.build_age_filter
     @walksheet.build_sex_filter
     @walksheet.build_gis_region_filter
+    @walksheet.build_council_district_filter
+    @walksheet.build_precinct_filter
   end
   
   def create
     @walksheet = Walksheet.new(params[:walksheet])
 		@walksheet.political_campaign_id = current_political_campaign.id
 	  if @walksheet.save
-
 	    flash[:notice] = "Successfully created walksheet."
 	    redirect_to @walksheet
 	  else
@@ -42,6 +43,9 @@ class WalksheetsController < ApplicationController
   	end
     @walksheet.build_age_filter if @walksheet.age_filter.nil?
     @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
+    @walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
+    @walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
+    @walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
   end
   
   def update
@@ -53,6 +57,12 @@ class WalksheetsController < ApplicationController
 	    flash[:notice] = "Successfully updated walksheet."
 	    redirect_to @walksheet
 	  else
+		  @walksheet.build_age_filter if @walksheet.age_filter.nil?
+		  @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
+		  @walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
+		  @walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
+		  @walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
+
 	    render :action => 'edit'
 	  end
   end

@@ -24,6 +24,7 @@ class UserSessionsController < ApplicationController
 	
 	def destroy
 		current_user_session.destroy
+		session[:current_political_campaign] = nil
 		flash[:notice] = 'You have been Logged out.'
 		redirect_back_or_default login_url
 	end

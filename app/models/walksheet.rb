@@ -4,6 +4,10 @@ class Walksheet < ActiveRecord::Base
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
+	has_one :precinct_filter, :dependent => :destroy
+	accepts_nested_attributes_for :precinct_filter
+	has_one :council_district_filter, :dependent => :destroy
+	accepts_nested_attributes_for :council_district_filter
 	has_one :age_filter, :dependent => :destroy
 	accepts_nested_attributes_for :age_filter
 	has_one :sex_filter, :dependent => :destroy
@@ -25,6 +29,14 @@ class Walksheet < ActiveRecord::Base
 	
 	#===== EVENTS =====
 	def before_save
+		if self.precinct_filter
+			self.precinct_filter = nil if self.precinct_filter.string_val.blank?
+		end
+		
+		if self.council_district_filter
+			self.council_district_filter = nil if self.council_district_filter.string_val.blank?
+		end
+	
 		if self.gis_region_filter
 			self.gis_region_filter = nil if self.gis_region_filter.int_val == nil
 		end
@@ -87,16 +99,30 @@ class Walksheet < ActiveRecord::Base
 				nextval('walksheet_voters_id_seq') AS id, 
 				 "walksheets"."id", "voters"."id", now() AS created_at, now() AS updated_at 
 			FROM 
-				"walksheets", "constituents", "voters"
+				"walksheets", "constituents", "voters", "addresses"
 			WHERE
 				("walksheets"."id" = #{self.id})
 			AND
-				("constituents"."political_campaign_id") = "walksheets"."political_campaign_id" 
+				("constituents"."political_campaign_id" = "walksheets"."political_campaign_id") 
 			AND
 				("voters"."id" = "constituents"."voter_id")
+			AND
+				("addresses"."id" = "voters"."address_id")
 		eot
 			
 			sql = ''
+
+			if self.precinct_filter
+				sql += <<-eot
+					AND ("addresses"."precinct_code" = '#{self.precinct_filter.string_val}') 
+				eot
+			end
+
+			if self.council_district_filter
+				sql += <<-eot
+					AND ("addresses"."comm_dist_code" = '#{self.council_district_filter.string_val}') 
+				eot
+			end
 
 			if self.gis_region_filter
 				sql += <<-eot

@@ -5,13 +5,23 @@
     <%= f.text_field :name %>
   </p>
 
-	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
-		<h3>GEOGRAPHIC FILTERS:</h3>	
+	<h3>GEOGRAPHIC FILTERS:</h3>	
 
+	<% if @walksheet.political_campaign.type == 'CountyCampaign' %>
+		<p>
+			<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all } %>
+		</p>
+
+		<p>
+			<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.county.precincts } %>
+		</p>
+		
+	<% end %>
+
+	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
 		<p>
 			<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>
 		</p>
-		
 	<% end %>
 
 	<h3>DEMOGRAPHIC FILTERS:</h3>

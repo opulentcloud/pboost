@@ -34,6 +34,7 @@ class CountyCampaign < PoliticalCampaign
 
 	#===== INSTANCE METHODS =====	
 	def require_council_district?
+		return false if self.countywide
 		c = County.find(self.county_id)
 		return false if c.nil?
 		c.council_districts.count > 0

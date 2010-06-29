@@ -15,7 +15,14 @@ class WalksheetReport
 
 			right_header = "# Of Voters: #{walksheet.voters.count}"
 
-			header_row = [['',"Walk Sheet - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}","#{right_header}"]]
+			location_header = case walksheet.political_campaign.class.to_s
+				when 'MunicipalCampaign' then
+					"#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}"
+				when 'CountyCampaign' then
+					"#{walksheet.political_campaign.county.name}, #{walksheet.political_campaign.state.name}"
+			end					
+
+			header_row = [['',"Walk Sheet - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{location_header}","#{right_header}"]]
 
 			repeat(:all) do
 				table(header_row)	do |t|
