@@ -10,6 +10,29 @@
 	<% end %>
 </p>
 
+<h3>GEOGRAPHIC FILTERS:</h3>	
+
+<% if @walksheet.precinct_filter %>
+	<p>
+		<strong>Precinct:</strong> 
+			<%=h @walksheet.precinct_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @walksheet.council_district_filter %>
+	<p>
+		<strong>Council District:</strong> 
+			<%=h @walksheet.council_district_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @walksheet.gis_region_filter %>
+	<p>
+		<strong>GIS Region:</strong> 
+			<%=h GisRegion.find(@walksheet.gis_region_filter.int_val).name %>
+	</p>
+<% end %>
+
 <h3>DEMOGRAPHIC FILTERS:</h3>
 
 <% if @walksheet.age_filter %>
