@@ -20,6 +20,8 @@ class WalksheetReport
 					"#{walksheet.political_campaign.city.name}, #{walksheet.political_campaign.state.name}"
 				when 'CountyCampaign' then
 					"#{walksheet.political_campaign.county.name}, #{walksheet.political_campaign.state.name}"
+				else
+					"#{walksheet.political_campaign.state.name}"				
 			end					
 
 			header_row = [['',"Walk Sheet - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{location_header}","#{right_header}"]]
