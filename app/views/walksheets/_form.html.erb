@@ -7,6 +7,26 @@
 
 	<h3>GEOGRAPHIC FILTERS:</h3>	
 
+	<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
+		<% if @walksheet.political_campaign.congressional_district %>
+			<p>
+				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts } %>
+			</p>
+
+			<p>
+				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.congressional_district.precincts } %>
+			</p>
+		<% else %>
+			<p>
+				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
+			</p>
+
+			<p>
+				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.state.precincts } %>
+			</p>
+		<% end %>
+	<% end %>
+
 	<% if @walksheet.political_campaign.class.to_s == 'StateCampaign' %>
 		<% if @walksheet.political_campaign.house_district %>
 			<p>
