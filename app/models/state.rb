@@ -14,6 +14,8 @@ class State < ActiveRecord::Base
 	has_many :congressional_districts
 	has_many :senate_districts
 	has_many :house_districts
+	has_many :precincts
+	has_many :council_districts, :through => :precincts, :uniq => true
 
 	#===== VALIDATIONS ======
 	validate :valid_county

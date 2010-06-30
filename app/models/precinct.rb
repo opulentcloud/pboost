@@ -4,6 +4,7 @@ class Precinct < ActiveRecord::Base
 	default_scope :order => 'precincts.code'
 
 	#====== ASSOCIATIONS ======
+	belongs_to :state
 	belongs_to :county
 	belongs_to :congressional_district
 	belongs_to :senate_district

@@ -133,10 +133,18 @@ require 'ruby-debug'
 		data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/precincts.csv", :headers => true)
 	data.each do |row|
 		next if row[2] != 'MD'
+
 		p = nil
 		p = Precinct.find_or_create_by_name_and_code(row[0], row[1]) unless row[1].to_s == ''
 		if !p.nil?
 			s = State.find_by_abbrev(row[2])
+			if s.nil?
+				debugger
+			end
+
+			#relate to state
+			p.state = s if p.state.nil?
+			
 			#relate to county
 			county = County.find_by_name_and_state_id(row[3],s.id)
 			if county.nil?

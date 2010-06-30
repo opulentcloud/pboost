@@ -5,7 +5,9 @@ class HouseDistrict < ActiveRecord::Base
 
 	#====== ASSOCIATIONS ======
 	belongs_to :state
+	has_many :counties, :through => :state
 	has_many :precincts
+	has_many :council_districts, :through => :precincts, :uniq => true
 	
 	#===== CLASS METHODS ======
 	def self.to_json(hds)
