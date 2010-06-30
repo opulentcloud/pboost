@@ -56,3 +56,12 @@
 </p>
 <% end %>
 
+<h3>VOTING HISTORY FILTERS:</h3>
+
+<% if @walksheet.voting_history_filters.size > 0 %>
+<p>
+	<% @walksheet.voting_history_filters.each do |f| %>
+	<strong><%=h f.election.description %></strong> <%=h f.string_val %><br />
+	<% end %>
+</p>
+<% end %>

@@ -185,3 +185,14 @@ require 'ruby-debug'
 	end
 	#===== end populate parties table data =====
 
+	#====== populate elections table data ======
+	
+	sql = "TRUNCATE TABLE elections"
+	ActiveRecord::Base.connection.execute(sql)	
+
+	data = FasterCSV.read("#{RAILS_ROOT}/db/migrate/fixtures/elections.csv", :headers => true)
+	data.each do |row|
+		Election.create!(:description => row[0], :year => row[1], :election_type => row[2])
+	end
+
+	#===== end populate elections table data ======

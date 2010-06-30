@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100630162556) do
+ActiveRecord::Schema.define(:version => 20100630174611) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -183,6 +183,17 @@ ActiveRecord::Schema.define(:version => 20100630162556) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "elections", :force => true do |t|
+    t.column "description", :string, :limit => 32, :null => false
+    t.column "year", :integer, :null => false
+    t.column "election_type", :string, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "elections", ["description"], :name => "index_elections_on_description", :unique => true
+  add_index "elections", ["year", "election_type"], :name => "index_elections_on_year_and_election_type", :unique => true
 
   create_table "filters", :force => true do |t|
     t.column "type", :string, :limit => 64, :null => false

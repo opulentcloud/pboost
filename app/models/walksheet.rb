@@ -21,6 +21,9 @@ class Walksheet < ActiveRecord::Base
 	has_many :addresses, :through => :walksheet_addresses
 	has_one :gis_region_filter, :dependent => :destroy
 	accepts_nested_attributes_for :gis_region_filter
+	has_many :voting_history_filters, :dependent => :destroy
+	accepts_nested_attributes_for :voting_history_filters
+	has_many :elections, :through => :voting_history_filters
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -28,6 +31,12 @@ class Walksheet < ActiveRecord::Base
 	validates_associated :sex_filter
 	
 	#===== EVENTS =====
+	def before_create
+		self.voting_history_filters.each do |vh|
+			vh.destroy if vh.string_val.nil?
+		end
+	end
+
 	def before_save
 		if self.precinct_filter
 			self.precinct_filter = nil if self.precinct_filter.string_val.blank?
@@ -52,6 +61,7 @@ class Walksheet < ActiveRecord::Base
 		self.party_filters.each do |pf|
 			pf.destroy if pf.string_val == "0"
 		end
+		
 		true
 	end
 

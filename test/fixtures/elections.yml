@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  description: MyString
+  year: 1
+  election_type: MyString
+
+two:
+  description: MyString
+  year: 1
+  election_type: MyString
