@@ -1,6 +1,13 @@
 <% fields_for "walksheet[voting_history_type_filter_attributes]", voting_history_type_filter do |f| %>
-	<p>Include voters who did <%= f.select :string_val, VotingHistoryTypeFilter::VOTING_HISTORY_TYPES %> 
-	<%= f.select :int_val, (1..Election.count-1).map %>
-of the following:</p>
+	<p>Include voters who did <%= f.select :string_val, VotingHistoryTypeFilter::VOTING_HISTORY_TYPES -%> 
+	<% if @walksheet.new_record? || (@walksheet.voting_history_type_filter && ['Any','All'].include?(@walksheet.voting_history_type_filter.string_val)) %>
+		<span id="xval" style="display: none;">	
+	<% else %>
+		<span id="xval" style="display: inline;">	
+	<% end %>
+	<%= f.select :int_val, (1..Election.count-1).map -%></span>
+of the following:
+
+</p>
 <% end %>
 
