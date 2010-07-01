@@ -102,17 +102,18 @@
 	
 	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
 	
-	<p>
+		<table class="form_table">
 		<% Election.all.each do |election| %>
-			<%= check_box_tag "walksheet[election_ids][]", election.id, @walksheet.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %> &nbsp;
-			<%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Voted',  @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Voted') %> Voted &nbsp;
-			<%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Didn\'t Vote', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Didn\'t Vote') %> Didn't Vote &nbsp;
-			<%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Abs', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Abs') %> Abs &nbsp;
-			<%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Polls', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Polls') %> Polls &nbsp;
-			<%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Provisional', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Provisional') %> Provisional
-			<br />
+			<tr class="<%= cycle("even","odd") %>">
+			<td><%= check_box_tag "walksheet[election_ids][]", election.id, @walksheet.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %></td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Voted',  @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Voted') %> Voted</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Didn\'t Vote', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Didn\'t Vote') %> Didn't Vote</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Abs', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Abs') %> Abs</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Polls', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Polls') %> Polls</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Provisional', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Provisional') %> Provisional</td>
+		</tr>	
 		<% end %>
-	</p>
+	</table>	
 
 	</hr />
 

@@ -421,3 +421,19 @@ padding-left: 5px;
 #user_submit {
 	margin-left: 30px;
 }
+
+table.form_table {
+margin: 10px 30px;
+font-weight: normal;
+font-size: 14px;
+color:#666666;
+line-height: 1.4;
+}
+
+table.form_table tr.odd {
+background: #cccccc
+}
+
+table.form_table td {
+padding: 5px;
+}
