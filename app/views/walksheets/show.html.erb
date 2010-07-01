@@ -59,7 +59,11 @@
 <h3>VOTING HISTORY FILTERS:</h3>
 
 <% if @walksheet.voting_history_type_filter %>
-	<p>Include voters who did <%=h @walksheet.voting_history_type_filter.string_val %> of the following:</p>
+	<p>Include voters who did <%=h @walksheet.voting_history_type_filter.string_val %> 
+	<% if ['At Least', 'Exactly', 'No More Than'].include?(@walksheet.voting_history_type_filter.string_val) %>
+	<%= @walksheet.voting_history_type_filter.int_val %> 
+	<% end %>
+	of the following:</p>
 <% end %>
 
 <% if @walksheet.voting_history_filters.size > 0 %>

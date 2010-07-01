@@ -1,5 +1,6 @@
 <% fields_for "walksheet[voting_history_type_filter_attributes]", voting_history_type_filter do |f| %>
-	<p>Include voters who did <%= f.select :string_val, VotingHistoryTypeFilter::VOTING_HISTORY_TYPES %>
+	<p>Include voters who did <%= f.select :string_val, VotingHistoryTypeFilter::VOTING_HISTORY_TYPES %> 
+	<%= f.select :int_val, (1..Election.count-1).map %>
 of the following:</p>
 <% end %>
 

@@ -177,6 +177,9 @@ class Walksheet < ActiveRecord::Base
 				sql += case self.voting_history_type_filter.string_val
 					when 'Any' then build_any_voting_history_query
 					when 'All' then build_all_voting_history_query
+					when 'At Least' then build_at_least_voting_history_query
+					when 'Exactly' then build_exactly_voting_history_query
+					when 'No More Than' then build_no_more_than_voting_history_query
 				end
 			end
 
@@ -195,7 +198,7 @@ class Walksheet < ActiveRecord::Base
 			AND
 				"voters"."id" = "walksheet_voters"."voter_id") AS r;		
 			eot
-
+debugger
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
@@ -224,6 +227,51 @@ class Walksheet < ActiveRecord::Base
 
 	#===== PRIVATE CLASS METHODS ======
 private
+	def build_no_more_than_voting_history_query
+		sql = build_x_limit_query
+		sql += " <= #{self.voting_history_type_filter.int_val})"
+	end
+
+	def build_exactly_voting_history_query
+		sql = build_x_limit_query
+		sql += " = #{self.voting_history_type_filter.int_val})"
+	end
+
+	def build_at_least_voting_history_query
+		sql = build_x_limit_query
+		sql += " >= #{self.voting_history_type_filter.int_val})"
+	end
+
+	def build_x_limit_query
+		sql = 'AND ('
+		query_type = nil
+
+		self.voting_history_filters.each do |f|
+			next if f.string_val.blank?
+			e = Election.find(f.int_val)
+			vt = VotingHistoryFilter::VOTING_TYPES.map { |disp,value| [disp,value] }.to_a
+
+			vt.each do |a|
+				if a[0] == f.string_val 
+					query_type = a[1]
+					break
+				end
+			end
+			
+			case query_type
+				when 'Voted' then
+					sql += "(SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') + "
+				when 'Didn\'t Vote' then
+					sql += "CASE (SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') WHEN 0 THEN 1 ELSE 0 END + "
+				else
+					sql += "(SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}' AND \"voting_history_voters\".\"voter_type\" = '#{query_type}' ) + "
+			end
+		end
+
+		sql = sql[0,sql.length-3]
+	
+	end
+
 	def build_all_voting_history_query
 		sql = build_any_voting_history_query
 		sql.gsub(' OR ', ' AND ')

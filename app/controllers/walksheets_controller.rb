@@ -29,7 +29,7 @@ class WalksheetsController < ApplicationController
   def create
     @walksheet = Walksheet.new(params[:walksheet])
 
-   	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a
+   	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
     
     @walksheet.elections.each_with_index do |e,index|
 			a = vh_filters[index]
@@ -44,6 +44,13 @@ class WalksheetsController < ApplicationController
 	    flash[:notice] = "Successfully created walksheet."
 	    redirect_to @walksheet
 	  else
+		  @walksheet.build_age_filter if @walksheet.build_age_filter.nil?
+		  @walksheet.build_sex_filter if @walksheet.build_sex_filter.nil?
+		  @walksheet.build_gis_region_filter if @walksheet.build_gis_region_filter.nil?
+		  @walksheet.build_council_district_filter if @walksheet.build_council_district_filter.nil?
+		  @walksheet.build_precinct_filter if 		  @walksheet.build_precinct_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?
+
 	    render :action => 'new'
 	  end
   end
@@ -71,7 +78,7 @@ class WalksheetsController < ApplicationController
 			end
 			
 			if @walksheet.update_attributes(params[:walksheet])
-			 	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a
+			 	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
 				
 				vh_filters.each do |id,value|
 					d = @walksheet.voting_history_filters.find_by_int_val(id)
@@ -79,7 +86,7 @@ class WalksheetsController < ApplicationController
 						d.string_val = value
 						d.save
 					end
-				end
+				end unless vh_filters.nil?
 
 				@walksheet.voting_history_filters.each do |vh|
 					vh.destroy if vh.string_val.nil?
