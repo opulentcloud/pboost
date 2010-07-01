@@ -100,6 +100,8 @@
 
 	<h3>VOTING HISTORY FILTERS:</h3>
 	
+	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
+	
 	<p>
 		<% Election.all.each do |election| %>
 			<%= check_box_tag "walksheet[election_ids][]", election.id, @walksheet.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %> &nbsp;

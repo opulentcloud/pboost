@@ -58,6 +58,10 @@
 
 <h3>VOTING HISTORY FILTERS:</h3>
 
+<% if @walksheet.voting_history_type_filter %>
+	<p>Include voters who did <%=h @walksheet.voting_history_type_filter.string_val %> of the following:</p>
+<% end %>
+
 <% if @walksheet.voting_history_filters.size > 0 %>
 <p>
 	<% @walksheet.voting_history_filters.each do |f| %>

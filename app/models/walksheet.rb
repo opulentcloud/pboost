@@ -24,6 +24,8 @@ class Walksheet < ActiveRecord::Base
 	has_many :voting_history_filters, :dependent => :destroy
 	accepts_nested_attributes_for :voting_history_filters
 	has_many :elections, :through => :voting_history_filters
+	has_one :voting_history_type_filter
+	accepts_nested_attributes_for :voting_history_type_filter
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -31,10 +33,16 @@ class Walksheet < ActiveRecord::Base
 	validates_associated :sex_filter
 	
 	#===== EVENTS =====
-	def before_create
+	def after_create
 		self.voting_history_filters.each do |vh|
 			vh.destroy if vh.string_val.nil?
 		end
+
+		if self.voting_history_type_filter
+			self.voting_history_type_filter = nil if self.voting_history_filters.size == 0
+		end
+		
+		true
 	end
 
 	def before_save

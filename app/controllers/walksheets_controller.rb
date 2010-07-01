@@ -23,6 +23,7 @@ class WalksheetsController < ApplicationController
     @walksheet.build_gis_region_filter
     @walksheet.build_council_district_filter
     @walksheet.build_precinct_filter
+		@walksheet.build_voting_history_type_filter
   end
   
   def create
@@ -36,7 +37,7 @@ class WalksheetsController < ApplicationController
 			if a[0].to_i == e.id
 				@walksheet.voting_history_filters.build(:int_val => e.id, :string_val => a[1])
 			end			
-    end
+	  end
 
 		@walksheet.political_campaign_id = current_political_campaign.id
 	  if @walksheet.save
@@ -79,6 +80,16 @@ class WalksheetsController < ApplicationController
 						d.save
 					end
 				end
+
+				@walksheet.voting_history_filters.each do |vh|
+					vh.destroy if vh.string_val.nil?
+				end
+
+				if @walksheet.voting_history_type_filter
+					@walksheet.voting_history_type_filter = nil if @walksheet.voting_history_filters.size == 0
+				end
+				
+				@walksheet.save if @walksheet.changed?
 				
 			  flash[:notice] = "Successfully updated walksheet."
 			  redirect_to @walksheet
