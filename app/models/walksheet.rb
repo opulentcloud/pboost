@@ -173,6 +173,13 @@ class Walksheet < ActiveRecord::Base
 				eot
 			end
 
+			if self.voting_history_filters.size > 0
+				sql += case self.voting_history_type_filter.string_val
+					when 'Any' then build_any_voting_history_query
+					when 'All' then build_all_voting_history_query
+				end
+			end
+
 		sql2_header = <<-eot
 			INSERT INTO walksheet_addresses
 			SELECT
@@ -190,6 +197,7 @@ class Walksheet < ActiveRecord::Base
 			eot
 
 		sql1 = sql1_header + sql + '; ' + sql2_header
+		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
 		self.constituent_count = self.voters.count
@@ -214,4 +222,40 @@ class Walksheet < ActiveRecord::Base
 		walksheet.populate
 	end
 
+	#===== PRIVATE CLASS METHODS ======
+private
+	def build_all_voting_history_query
+		sql = build_any_voting_history_query
+		sql.gsub(' OR ', ' AND ')
+	end
+
+	def build_any_voting_history_query
+		sql = 'AND ('
+		query_type = nil
+
+		self.voting_history_filters.each do |f|
+			next if f.string_val.blank?
+			e = Election.find(f.int_val)
+			vt = VotingHistoryFilter::VOTING_TYPES.map { |disp,value| [disp,value] }.to_a
+
+			vt.each do |a|
+				if a[0] == f.string_val 
+					query_type = a[1]
+					break
+				end
+			end
+			
+			case query_type
+				when 'Voted' then
+					sql += "EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') OR "
+				when 'Didn\'t Vote' then
+					sql += "NOT EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') OR "
+				else
+					sql += "EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}' AND \"voting_history_voters\".\"voter_type\" = '#{query_type}' ) OR "
+			end
+		end
+
+		sql = sql[0,sql.length-4]
+		sql += ')'
+	end
 end

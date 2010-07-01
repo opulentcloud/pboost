@@ -4,7 +4,7 @@ class VotingHistoryFilter < Filter
 
 	VOTING_TYPES = [
 		['Voted', 'Voted'],
-		['Didn\'t Vote', 'No Voted'],
+		['Didn\'t Vote', 'Didn\'t Vote'],
 		['Abs', 'A'],
 		['Polls', 'P'],
 		['Provisional', 'V']
