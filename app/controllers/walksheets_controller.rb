@@ -95,8 +95,11 @@ class WalksheetsController < ApplicationController
 				if @walksheet.voting_history_type_filter
 					@walksheet.voting_history_type_filter = nil if @walksheet.voting_history_filters.size == 0
 				end
-				
-				@walksheet.save if @walksheet.changed?
+
+				@walksheet.repopulate = true
+				@walksheet.constituent_count = nil
+				@walksheet.populated = false
+				@walksheet.save
 				
 			  flash[:notice] = "Successfully updated walksheet."
 			  redirect_to @walksheet

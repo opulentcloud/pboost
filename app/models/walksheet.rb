@@ -1,4 +1,6 @@
 class Walksheet < ActiveRecord::Base
+	attr_accessor_with_default :repopulate, false
+
 	#===== SCOPES ======
 	default_scope :order => 'walksheets.name'
 
@@ -84,13 +86,20 @@ class Walksheet < ActiveRecord::Base
 	end
 
 	def after_destroy
-		begin
-			File.delete("#{RAILS_ROOT}/docs/walksheet_#{self.id}.pdf")
-		rescue
-		end
+		delete_file
 	end
 
 	#===== INSTANCE METHODS =====
+	def delete_file
+		fname = "#{RAILS_ROOT}/docs/walksheet_#{self.id}.pdf"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end
+		end
+	end
+	
 	def is_editable?
 		self.populated
 	end
@@ -102,6 +111,7 @@ class Walksheet < ActiveRecord::Base
 	end
 
 	def populate
+		delete_file
 
 		#unlink any addresses from this walksheet
 		sql = "DELETE FROM walksheet_addresses WHERE walksheet_id = #{self.id}"
@@ -198,19 +208,18 @@ class Walksheet < ActiveRecord::Base
 			AND
 				"voters"."id" = "walksheet_voters"."voter_id") AS r;		
 			eot
-debugger
+
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
-		self.constituent_count = self.voters.count
-		self.save!	
-
-		if self.constituent_count > 0 
+		if self.voters.count > 0 
 			WalksheetReport.build(self)
 		end
-	
+
+		self.constituent_count = self.voters.count
 		self.populated = true
+		self.repopulate = false
 		self.save!
 
 	end
