@@ -28,12 +28,13 @@ class GisRegionsController < ApplicationController
 			redirect_to gis_regions_path
 			return
 		end
+		@sess_id = UUIDTools::UUID.timestamp_create
     @gis_region = current_political_campaign.gis_regions.build
   end
   
   def create
   	if request.post?
-			poly = Polygon.from_coordinates([session[:vertices]])
+			poly = Polygon.from_coordinates([session[:sess_id]])
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
@@ -53,7 +54,7 @@ class GisRegionsController < ApplicationController
 
 	def add_vertices
 		if request.post?
-			session[:vertices] = GisRegion.coordinates_from_text(params[:vertices])
+			session[:sess_id] = GisRegion.coordinates_from_text(params[:vertices])
 		end
   end
   

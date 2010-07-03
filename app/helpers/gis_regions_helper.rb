@@ -30,12 +30,11 @@ module GisRegionsHelper
 			polygon.enable_editing
 
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :sess_id => "#{@sess_id}" }, :location => :location)
 	    end
 
 			polygon.edited do |script|
-				script.post :url => { :controller => :gis_regions, :action => :add_vertices, 
-					:vertices => Google::UrlHelper.encode_vertices(polygon)}
+				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }
 			end
 
     end
