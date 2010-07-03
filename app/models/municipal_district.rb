@@ -7,6 +7,7 @@ class MunicipalDistrict < ActiveRecord::Base
 	has_and_belongs_to_many :cities
 	has_many :counties, :through => :cities
 	has_many :states, :through => :counties
+	has_many :precincts
 
 	#===== CLASS METHODS ======
 	def self.to_json(municipal_districts)

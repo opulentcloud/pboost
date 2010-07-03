@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100630174611) do
+ActiveRecord::Schema.define(:version => 20100703142932) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -108,6 +108,17 @@ ActiveRecord::Schema.define(:version => 20100630174611) do
 
   add_index "cities_municipal_districts", ["city_id"], :name => "index_cities_municipal_districts_on_city_id"
   add_index "cities_municipal_districts", ["municipal_district_id"], :name => "index_cities_municipal_districts_on_municipal_district_id"
+
+  create_table "city_precincts", :force => true do |t|
+    t.column "city_id", :integer
+    t.column "precinct_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "city_precincts", ["city_id"], :name => "index_city_precincts_on_city_id"
+  add_index "city_precincts", ["city_id", "precinct_id"], :name => "index_city_precincts_on_city_id_and_precinct_id", :unique => true
+  add_index "city_precincts", ["precinct_id"], :name => "index_city_precincts_on_precinct_id"
 
   create_table "congressional_districts", :force => true do |t|
     t.column "cd", :string, :limit => 3, :null => false
@@ -328,11 +339,12 @@ ActiveRecord::Schema.define(:version => 20100630174611) do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "state_id", :integer
+    t.column "municipal_district_id", :integer
   end
 
   add_index "precincts", ["code"], :name => "index_precincts_on_code"
   add_index "precincts", ["code", "congressional_district_id"], :name => "index_precincts_on_code_and_congressional_district_id", :unique => true
-  add_index "precincts", ["council_district_id", "code"], :name => "index_precincts_on_code_and_council_district_id", :unique => true
+  add_index "precincts", ["code", "council_district_id"], :name => "index_precincts_on_code_and_council_district_id", :unique => true
   add_index "precincts", ["county_id", "code"], :name => "index_precincts_on_code_and_county_id", :unique => true
   add_index "precincts", ["house_district_id", "code"], :name => "index_precincts_on_code_and_house_district_id", :unique => true
   add_index "precincts", ["code", "senate_district_id"], :name => "index_precincts_on_code_and_senate_district_id", :unique => true
@@ -340,8 +352,10 @@ ActiveRecord::Schema.define(:version => 20100630174611) do
   add_index "precincts", ["council_district_id"], :name => "index_precincts_on_council_district_id"
   add_index "precincts", ["county_id"], :name => "index_precincts_on_county_id"
   add_index "precincts", ["house_district_id"], :name => "index_precincts_on_house_district_id"
+  add_index "precincts", ["municipal_district_id"], :name => "index_precincts_on_municipal_district_id"
+  add_index "precincts", ["code", "municipal_district_id"], :name => "index_precincts_on_municipal_district_id_and_code", :unique => true
   add_index "precincts", ["name"], :name => "index_precincts_on_name"
-  add_index "precincts", ["name", "code"], :name => "index_precincts_on_name_and_code", :unique => true
+  add_index "precincts", ["code", "name"], :name => "index_precincts_on_name_and_code", :unique => true
   add_index "precincts", ["senate_district_id"], :name => "index_precincts_on_senate_district_id"
   add_index "precincts", ["state_id"], :name => "index_precincts_on_state_id"
 

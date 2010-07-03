@@ -74,6 +74,23 @@
 		
 	<% end %>
 
+	<% if @walksheet.political_campaign.class.to_s == 'MunicipalCampaign' %>
+		<% if @walksheet.political_campaign.municipal_district %>
+			<p>
+				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.municipal_district.precincts.all } %>
+			</p>
+		<% else %>
+			<p>
+				<%= render :partial => 'municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all } %>
+			</p>
+
+			<p>
+				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.city.precincts } %>
+			</p>
+		<% end %>
+
+	<% end %>
+	
 	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
 		<p>
 			<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>

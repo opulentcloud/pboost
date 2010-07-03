@@ -152,29 +152,44 @@ require 'ruby-debug'
 			end
 			p.county = county if p.county.nil?
 			raise "County does not match precinct" if p.county_id != county.id
+			#relate to city
+			city = City.find_by_name_and_state_id(row[4],s.id)
+			if city.nil?
+				debugger
+			end
+			p.cities << city unless p.cities.exists?(city)
+
 			#relate to congressional district
-			cd = CongressionalDistrict.find_by_cd_and_state_id(row[4], s.id)
+			cd = CongressionalDistrict.find_by_cd_and_state_id(row[5], s.id)
 			p.congressional_district = cd if p.congressional_district.nil?
 			raise "CD does not match precinct" if p.congressional_district_id != cd.id
 			
 			#relate to senate district
-			sd = SenateDistrict.find_by_sd_and_state_id(row[5], s.id)
+			sd = SenateDistrict.find_by_sd_and_state_id(row[6], s.id)
 			p.senate_district = sd if p.senate_district.nil?
 			raise "SD does not match precinct" if p.senate_district_id != sd.id
 
 			#relate to house district
-			hd = HouseDistrict.find_by_hd_and_state_id(row[6], s.id)
+			hd = HouseDistrict.find_by_hd_and_state_id(row[7], s.id)
 			p.house_district = hd if p.house_district.nil?
 			raise "HD does not match precinct" if p.house_district_id != hd.id
 			
 			#relate to council district
-			comm_dist = CouncilDistrict.find_by_code(row[7])
+			comm_dist = CouncilDistrict.find_by_code(row[8])
 			p.council_district = comm_dist if p.council_district.nil? && comm_dist
 			raise "CommDistCode does not match precinct" if comm_dist &&  p.council_district_id != comm_dist.id 
 			
 			p.save! if p.changed?
+
+			#relate to municipal district
+			mcomm_dist = MunicipalDistrict.find_by_code(row[9])
+			p.municipal_district = mcomm_dist if p.municipal_district.nil? && mcomm_dist
+			raise "MCommDistCode does not match precinct" if mcomm_dist && p.municipal_district_id != mcomm_dist.id
+		
+			p.save! if p.changed?
 			
 		end
+		
 	end
 	#===== end populate council_districts table data =====
 
@@ -196,3 +211,5 @@ require 'ruby-debug'
 	end
 
 	#===== end populate elections table data ======
+
+
