@@ -4,6 +4,8 @@
 		<%= label_tag :name %>
 		<%= text_field_tag :name %>
 	</p>
+
+	<%= hidden_field_tag :vertices, params[:vertices] %>
 	
 	<%= submit_tag 'Save New GIS Region' %>
 	

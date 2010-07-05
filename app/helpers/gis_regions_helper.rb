@@ -16,7 +16,7 @@ module GisRegionsHelper
   end
   
   def gis_new_init_map
-    run_map_script do
+    run_map_script do |mscript|
 			
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
@@ -29,13 +29,17 @@ module GisRegionsHelper
 			polygon.enable_drawing
 			polygon.enable_editing
 
+			map.click do |script, location|
+				polygon.add_vertex(location)
+			end
+
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :sess_id => "#{@sess_id}" }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
 	    end
 
-			polygon.edited do |script|
-				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }
-			end
+#			polygon.edited do |script|
+#				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }
+#			end
 
     end
   end

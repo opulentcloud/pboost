@@ -34,7 +34,8 @@ class GisRegionsController < ApplicationController
   
   def create
   	if request.post?
-			poly = Polygon.from_coordinates([session[:sess_id]])
+  	debugger
+			poly = Polygon.from_coordinates(GisRegion.coordinates_from_text(params[:vertices]))
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
@@ -71,7 +72,6 @@ class GisRegionsController < ApplicationController
   end
   
   def destroy
-  debugger
 		@name = @gis_region.name
     @gis_region.destroy
     flash[:notice] = "Successfully deleted GIS Region: #{@name}."
