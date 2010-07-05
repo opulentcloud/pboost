@@ -34,8 +34,7 @@ class GisRegionsController < ApplicationController
   
   def create
   	if request.post?
-  	debugger
-			poly = Polygon.from_coordinates(GisRegion.coordinates_from_text(params[:vertices]))
+			poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
 
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
