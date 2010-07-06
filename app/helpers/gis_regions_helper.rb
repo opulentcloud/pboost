@@ -17,12 +17,16 @@ module GisRegionsHelper
 
 	def init_new_poly
 		run_javascript do |script|
-			script << "function init_new_poly(){";
-			map = script.map
+			script << "function init_new_poly(){"
+			script << "	polygon_index++;"
+			script << "var color_index = [\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"];"
 
+			map = script.map
+			
 			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'black')
 
 			overlay = map.add_overlay(polygon)
+			script << 'overlays[polygon_index] = polygon;'
 			polygon.enable_drawing
 			polygon.enable_editing
 
