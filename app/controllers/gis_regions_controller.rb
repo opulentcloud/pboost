@@ -28,7 +28,7 @@ class GisRegionsController < ApplicationController
 			redirect_to gis_regions_path
 			return
 		end
-		@sess_id = UUIDTools::UUID.timestamp_create
+		#@sess_id = UUIDTools::UUID.timestamp_create
     @gis_region = current_political_campaign.gis_regions.build
   end
   
@@ -47,7 +47,10 @@ class GisRegionsController < ApplicationController
 					map.update_info_window :html => "GIS Region #{params[:name]} has been saved!"
 				end
 			else
+				run_javascript do |script|
+					map = script.map
 					map.update_info_window :html => "Ooops, we were not able to save your GIS Region!  Please click on it to try again."
+				end
 			end
 		end
   end

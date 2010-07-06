@@ -17,14 +17,14 @@ module GisRegionsHelper
   
   def gis_new_init_map
     run_map_script do |mscript|
-			
+
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays
 			
-			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'green')
+			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'black')
 			overlay = map.add_overlay(polygon)
 			polygon.enable_drawing
 			polygon.enable_editing
@@ -34,7 +34,7 @@ module GisRegionsHelper
 			end
 
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
 	    end
 
 #			polygon.edited do |script|
