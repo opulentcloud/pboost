@@ -3,6 +3,7 @@
 <%= include_google_javascript %>
 <%= gis_new_init_map %>
 <%= init_new_poly %>
+<%= init_delete_current_poly %>
 
 <%= render :partial => 'nav_menu' %>
 
@@ -19,6 +20,9 @@
 	<tr>
 		<td>
 			<input type="button" value="Draw New Region" onclick="init_new_poly();" />
+		</td>
+		<td>
+			<input type="button" value="Delete Current Region" onclick="delete_current_poly();" />
 		</td>
 	</tr>	
 </table>
