@@ -25,6 +25,27 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== INSTANCE METHODS ======
+	def potential_voters_count
+
+		sql1_header = <<-eot
+					SELECT COUNT(*)
+					FROM  
+						"constituent_addresses", "addresses", "voters"
+					WHERE 
+						("constituent_addresses"."political_campaign_id" = #{political_campaign.id}) 
+						AND "addresses"."id" = "constituent_addresses"."address_id"
+						AND "voters"."address_id" = "addresses"."id"
+					AND 
+						("addresses"."geom" && '#{self.geom.as_hex_ewkb}' ) 
+				 AND 
+						ST_contains('#{self.geom.as_hex_ewkb}', "addresses"."geom"::geometry)
+				eot
+#debugger
+		sql1 = sql1_header
+		sql_result = ActiveRecord::Base.connection.execute(sql1)
+		sql_result.first[0].to_i
+	end
+	
 	def print_report
 		self.addresses.report_table(:all, :only => [:state, :city], :methods => :full_street_address, :order => 'state, city, street_name, street_prefix, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no',
 		:include => { :voters => { :only => [:last_name, :first_name, :sex, :age, :party], :order => 'last_name, first_name' } },
@@ -42,6 +63,16 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== CLASS METHODS ======
+	def self.to_vertices_array(poly)
+		poly.first.map { |g| [g.x, g.y]}
+		#r = []
+		#a = self.geom.text_representation.gsub(')','').gsub('(','').split(',')
+		#a.each do |s|
+		#	r.push(s.split(' '))
+		#end
+		#r
+	end
+
 	def self.populate_all_addresses_within(gis_region_id)
 		gis_region = GisRegion.find(gis_region_id)
 
@@ -72,9 +103,9 @@ class GisRegion < ActiveRecord::Base
 						AND "addresses"."id" = "constituent_addresses"."address_id"
 						AND ("gis_regions"."id" = #{gis_region.id}) 
 					AND 
-						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
+						("addresses"."geom" && '#{gis_region.geom2.as_hex_ewkb}' ) 
 				 AND 
-						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
+						ST_contains("gis_regions"."geom2", "addresses"."geom"::geometry)
 				eot
 
 		sql2_header = <<-eot
@@ -143,7 +174,6 @@ class GisRegion < ActiveRecord::Base
 		logger.debug(gis_region.addresses.count)
 		logger.debug(gis_region.voters.count)
 	end
-
 
 	def self.coordinates_from_text(text_coords)
  		text_coords.scan(/[\d\-\.]+/ ).map{|v| v.to_f }.in_groups_of(2)

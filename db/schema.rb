@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100703142932) do
+ActiveRecord::Schema.define(:version => 20100706223808) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20100703142932) do
     t.column "geom", :polygon, :srid => 4326, :null => false
     t.column "voter_count", :integer, :default => 0
     t.column "populated", :boolean, :default => false
+    t.column "geom2", :multi_polygon, :srid => 4326
   end
 
   add_index "gis_regions", ["geom"], :name => "index_gis_regions_on_geom", :spatial=> true 

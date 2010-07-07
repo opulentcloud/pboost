@@ -1,0 +1,8 @@
+<h3>Region Information</h3>
+<% info_window_form :url => { :action => :create } do %>
+	<p>
+		<strong>Voters in this area: </strong>
+		<%= number_with_delimiter @gis_region.potential_voters_count %>
+	</p>
+	
+<% end %>
