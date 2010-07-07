@@ -5,7 +5,15 @@
 		<%= text_field_tag :name %>
 	</p>
 
-	<%= hidden_field_tag :vertices, params[:vertices] %>
+	<% l_count = -1 %>
+	<% while true %>
+		<% l_count += 1 %>
+		<% if !params[('vertices_'+l_count.to_s).to_sym].nil? %>
+			<%= hidden_field_tag ('vertices_'+l_count.to_s).to_sym, params[('vertices_'+l_count.to_s).to_sym] %>
+		<% else %>
+			<% break %>
+		<% end %>
+	<% end %>
 	
 	<%= submit_tag 'Save New GIS Region' %>
 	

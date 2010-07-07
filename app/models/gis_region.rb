@@ -42,6 +42,16 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== CLASS METHODS ======
+	def self.to_vertices_array(poly)
+		poly.first.map { |g| [g.x, g.y]}
+		#r = []
+		#a = self.geom.text_representation.gsub(')','').gsub('(','').split(',')
+		#a.each do |s|
+		#	r.push(s.split(' '))
+		#end
+		#r
+	end
+
 	def self.populate_all_addresses_within(gis_region_id)
 		gis_region = GisRegion.find(gis_region_id)
 
@@ -143,7 +153,6 @@ class GisRegion < ActiveRecord::Base
 		logger.debug(gis_region.addresses.count)
 		logger.debug(gis_region.voters.count)
 	end
-
 
 	def self.coordinates_from_text(text_coords)
  		text_coords.scan(/[\d\-\.]+/ ).map{|v| v.to_f }.in_groups_of(2)

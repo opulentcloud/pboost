@@ -8,9 +8,15 @@ module GisRegionsHelper
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays
+
+			color_index = Eschaton::JavascriptVariable.new(:name => :color_index, :value => "[\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"]")
+
+			@gis_region.geom2.each_with_index do |poly, index|	
 			
-      map.add_polygon(:vertices => @gis_region.to_vertices_array,
-      	:fill_colour => 'yellow', :border_colour => 'green', :editable => false, :tooltip => { :text => @gis_region.name })
+		    map.add_polygon(:vertices => GisRegion.to_vertices_array(poly),
+		    	:fill_colour => color_index[index], :border_colour => 'black', :editable => false, :tooltip => { :text => @gis_region.name })
+		    	
+			end
 
     end
   end
@@ -20,6 +26,7 @@ module GisRegionsHelper
 			script << "function delete_current_poly(){"		
 			map = script.map
 			script << 'map.removeOverlay(overlays[polygon_index]);'
+			script << 'overlays[polygon_index] = null;'
 			script << 'polygon_index--;'
 			script << "}"
 		end	
@@ -28,12 +35,18 @@ module GisRegionsHelper
 	def init_new_poly
 		run_javascript do |script|
 			script << "function init_new_poly(){"
+			script << " if (polygon_index >= 4) {"
+			script << "	alert('Sorry, you can not have more than 5 routes.');"
+			script << " return;"
+			script << "}"
 			script << "	polygon_index++;"
-			script << "var color_index = [\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"];"
+			polygon_index = Eschaton::JavascriptVariable.existing(:var => :polygon_index)
+			#script << "var color_index = [\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"];"
+			color_index = Eschaton::JavascriptVariable.new(:name => :color_index, :value => "[\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"]")
 
 			map = script.map
 			
-			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'yellow', :border_colour => 'black')
+			polygon = Google::Polygon.new(:vertices => [], :fill_colour => color_index[polygon_index], :border_colour => 'black')
 
 			overlay = map.add_overlay(polygon)
 			script << 'overlays[polygon_index] = polygon;'
@@ -51,6 +64,25 @@ module GisRegionsHelper
 			script << "};"
 		end
 	end
+  
+  def init_save_current_polys
+  	run_javascript do |script|
+  		script << "function save_current_polys() {"
+			map = script.map
+  		script << "	vertices = new Array();"
+  		script << " point = overlays[0].getVertex(0);"
+  		#script << " alert(point.lat());"
+			script << " vurl = '';"
+  		script << "	for(var x=0;x<overlays.length;x++) {"
+  		script << "		vertices.push(build_vertices(overlays[x]));"
+  		#script << "	  alert(x);"
+  		script << "	vurl += '&vertices_'+x+'='+vertices[x]"
+  		script << "	}"
+  		#script << " alert(vurl);"
+			script << "	jQuery.get('/customer/create_polygon?location%5Blatitude%5D=' + point.lat() + '&location%5Blongitude%5D=' + point.lng() + vurl + '', function(data) { map.openInfoWindow(point, \"<div id='info_window_content'>\" + data + \"</div>\");});"
+  		script << "}"
+  	end
+  end
   
   def gis_new_init_map
     run_map_script do |mscript|

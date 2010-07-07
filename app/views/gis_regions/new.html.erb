@@ -4,6 +4,7 @@
 <%= gis_new_init_map %>
 <%= init_new_poly %>
 <%= init_delete_current_poly %>
+<%= init_save_current_polys %>
 
 <%= render :partial => 'nav_menu' %>
 
@@ -16,13 +17,16 @@
 	</ol>
 </p>
 
-<table>
+<table cellpadding="5" cellspacing="25" border="0">
 	<tr>
 		<td>
 			<input type="button" value="Draw New Region" onclick="init_new_poly();" />
 		</td>
 		<td>
 			<input type="button" value="Delete Current Region" onclick="delete_current_poly();" />
+		</td>
+		<td>
+			<input type="button" value="Save GIS Region" onclick="save_current_polys();" />
 		</td>
 	</tr>	
 </table>

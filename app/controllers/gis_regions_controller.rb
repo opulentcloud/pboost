@@ -18,7 +18,6 @@ class GisRegionsController < ApplicationController
   end
   
   def show
-#debugger
     logger.info(@gis_region.to_vertices_array)
   end
   
@@ -34,11 +33,26 @@ class GisRegionsController < ApplicationController
   
   def create
   	if request.post?
-			poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
+			
+			polys = []
+			l_count = -1
+			while true do
+				l_count += 1
+				if params[('vertices_'+l_count.to_s).to_sym].nil?
+					break
+				end
+				
+				polys.push(Polygon.from_coordinates([GisRegion.coordinates_from_text(params[('vertices_'+l_count.to_s).to_sym])]))
 
+			end
+			
+			poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices_0])])
+		
+			mpoly = MultiPolygon.from_polygons(polys)
+		
 			#save model here
 			@gis_region = GisRegion.new(:name => params[:name],
-				:geom => poly, :political_campaign_id => current_political_campaign.id)
+				:geom => poly, :geom2 => mpoly, :political_campaign_id => current_political_campaign.id)
 			
 			if @gis_region.save
 				#send javascript back to update the map
