@@ -5,7 +5,7 @@ module GisRegionsHelper
 			
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => @gis_region.geom.envelope.center.x, :longitude => @gis_region.geom.envelope.center.y },
-                            :zoom => 13)
+                            :zoom => 15)
       map.enableScrollWheelZoom
 			map.clear_overlays
 
