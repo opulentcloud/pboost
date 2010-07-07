@@ -13,24 +13,13 @@ module GisRegionsHelper
 
 			@gis_region.geom2.each_with_index do |poly, index|	
 			
-			map.add_polygon(:vertices => GisRegion.to_vertices_array(poly),
+		    map.add_polygon(:vertices => GisRegion.to_vertices_array(poly),
 		    	:fill_colour => colors[index], :border_colour => 'black', :editable => false, :tooltip => { :text => @gis_region.name })
 		    	
 			end
 
     end
   end
-  
-  def gis_new_init_map
-    run_map_script do |mscript|
-
-      map = Google::Map.new(:controls => [:small_map, :map_type],
-                            :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
-                            :zoom => 13)
-      map.enableScrollWheelZoom
-			map.clear_overlays
-
-	end			
 
 	def init_delete_current_poly
 		run_javascript do |script|
