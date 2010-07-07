@@ -82,9 +82,9 @@ class GisRegion < ActiveRecord::Base
 						AND "addresses"."id" = "constituent_addresses"."address_id"
 						AND ("gis_regions"."id" = #{gis_region.id}) 
 					AND 
-						("addresses"."geom" && '#{gis_region.geom.as_hex_ewkb}' ) 
+						("addresses"."geom" && '#{gis_region.geom2.as_hex_ewkb}' ) 
 				 AND 
-						ST_contains("gis_regions"."geom", "addresses"."geom"::geometry)
+						ST_contains("gis_regions"."geom2", "addresses"."geom"::geometry)
 				eot
 
 		sql2_header = <<-eot
