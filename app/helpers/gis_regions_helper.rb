@@ -25,8 +25,8 @@ module GisRegionsHelper
 		run_javascript do |script|
 			script << "function delete_current_poly(){"		
 			map = script.map
-			script << 'map.removeOverlay(overlays[polygon_index]);'
-			script << 'overlays[polygon_index] = null;'
+			script << 'poly = overlays.pop();'
+			script << 'map.removeOverlay(poly);'
 			script << 'polygon_index--;'
 			script << "}"
 		end	
