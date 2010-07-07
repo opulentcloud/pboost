@@ -1,6 +1,6 @@
 var polygon_index = -1;
 var overlays = new Array();
-var colors = ["yellow","orange","blue","purple","red"];
+var colors = ["red","blue","orange","purple","yellow","green"];
 
 function build_vertices(polygon){
 	v = '';

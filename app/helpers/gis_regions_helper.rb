@@ -9,12 +9,12 @@ module GisRegionsHelper
       map.enableScrollWheelZoom
 			map.clear_overlays
 
-			color_index = Eschaton::JavascriptVariable.new(:name => :color_index, :value => "[\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"]")
+			colors = Eschaton::JavascriptVariable.new(:name => :colors, :value => "[\"red\",\"blue\",\"orange\",\"purple\",\"yellow\",\"green\"]")
 
 			@gis_region.geom2.each_with_index do |poly, index|	
 			
 		    map.add_polygon(:vertices => GisRegion.to_vertices_array(poly),
-		    	:fill_colour => color_index[index], :border_colour => 'black', :editable => false, :tooltip => { :text => @gis_region.name })
+		    	:fill_colour => colors[index], :border_colour => 'black', :editable => false, :tooltip => { :text => @gis_region.name })
 		    	
 			end
 
@@ -35,18 +35,18 @@ module GisRegionsHelper
 	def init_new_poly
 		run_javascript do |script|
 			script << "function init_new_poly(){"
-			script << " if (polygon_index >= 4) {"
-			script << "	alert('Sorry, you can not have more than 5 routes.');"
+			script << " if (polygon_index > 5) {"
+			script << "	alert('Sorry, you can not have more than 6 routes on a single walksheet.');"
 			script << " return;"
 			script << "}"
 			script << "	polygon_index++;"
 			polygon_index = Eschaton::JavascriptVariable.existing(:var => :polygon_index)
-			#script << "var color_index = [\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"];"
-			color_index = Eschaton::JavascriptVariable.new(:name => :color_index, :value => "[\"yellow\",\"orange\",\"blue\",\"purple\",\"red\"]")
+
+			colors = Eschaton::JavascriptVariable.existing(:var => :colors)
 
 			map = script.map
 			
-			polygon = Google::Polygon.new(:vertices => [], :fill_colour => color_index[polygon_index], :border_colour => 'black')
+			polygon = Google::Polygon.new(:vertices => [], :fill_colour => colors[polygon_index], :border_colour => 'black')
 
 			overlay = map.add_overlay(polygon)
 			script << 'overlays[polygon_index] = polygon;'
@@ -86,7 +86,7 @@ module GisRegionsHelper
   
   def gis_new_init_map
     run_map_script do |mscript|
-			
+		
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
