@@ -13,6 +13,7 @@ class Precinct < ActiveRecord::Base
 	belongs_to :municipal_district
 	has_many :city_precincts
 	has_many :cities, :through => :city_precincts
+	has_many :addresses, :foreign_key => :precinct_code, :primary_key => :code
 
 	#===== CLASS METHODS ======
 	def self.to_json(precincts)

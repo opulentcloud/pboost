@@ -5,6 +5,7 @@
 <%= init_new_poly %>
 <%= init_delete_current_poly %>
 <%= init_save_current_polys %>
+<%= init_update_map_precinct %>
 
 <%= render :partial => 'nav_menu' %>
 
@@ -17,6 +18,12 @@
 		<li><b><u>*YOU MUST CLICK ON THE SAVE REGION BUTTON TO SAVE ALL OF YOUR SHAPES WHEN YOU ARE FINISHED DRAWING THEM *</u></b></li>
 	</ol>
 </p>
+
+	<p>
+		<strong>Precint: </strong>
+		<%= select_tag(:precinct_code, options_from_collection_for_select(current_political_campaign.municipal_district.precincts.all, :code, :code), { :onchange => 'update_map_precinct(this);' }) %>
+
+	</p>
 
 <table cellpadding="5" cellspacing="25" border="0">
 	<tr>

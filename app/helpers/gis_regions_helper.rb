@@ -83,15 +83,31 @@ module GisRegionsHelper
   		script << "}"
   	end
   end
+
+	def init_update_map_precinct
+		run_javascript do |script|
+			script << "function update_map_precinct(ctrl) {"
+			script << "	alert(ctrl.value);"
+			script << "}"
+		end
+	end
   
   def gis_new_init_map
     run_map_script do |mscript|
-		
+
       map = Google::Map.new(:controls => [:small_map, :map_type],
                             :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays
+		
+			clusterer = map.add_marker_clusterer	
+			
+		precinct = current_political_campaign.municipal_district.precincts.first
+
+		precinct.addresses.all(:conditions => 'geom is not null').each do |address|
+			clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
+		end
 
 #			polygon.edited do |script|
 #				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }

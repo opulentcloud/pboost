@@ -5,6 +5,7 @@ class Address < ActiveRecord::Base
 	#===== ASSOCIATIONS ======
 	has_and_belongs_to_many :gis_regions
 	has_many :voters
+	belongs_to :precinct, :primary_key => :code, :foreign_key => :precinct_code
 
 	#===== VALIDATIONS ======
   #only enable this go get lat, lng, and geom point saved

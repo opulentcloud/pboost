@@ -10,3 +10,4 @@ function build_vertices(polygon){
 	v = '[' + v.substring(0, v.length - 1) + ']';
 	return v;
 }
+
