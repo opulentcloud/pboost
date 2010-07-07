@@ -25,6 +25,27 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== INSTANCE METHODS ======
+	def potential_voters_count
+
+		sql1_header = <<-eot
+					SELECT COUNT(*)
+					FROM  
+						"constituent_addresses", "addresses", "voters"
+					WHERE 
+						("constituent_addresses"."political_campaign_id" = #{political_campaign.id}) 
+						AND "addresses"."id" = "constituent_addresses"."address_id"
+						AND "voters"."address_id" = "addresses"."id"
+					AND 
+						("addresses"."geom" && '#{self.geom.as_hex_ewkb}' ) 
+				 AND 
+						ST_contains('#{self.geom.as_hex_ewkb}', "addresses"."geom"::geometry)
+				eot
+#debugger
+		sql1 = sql1_header
+		sql_result = ActiveRecord::Base.connection.execute(sql1)
+		sql_result.first[0].to_i
+	end
+	
 	def print_report
 		self.addresses.report_table(:all, :only => [:state, :city], :methods => :full_street_address, :order => 'state, city, street_name, street_prefix, street_no, street_no_half, street_type, street_suffix, apt_type, apt_no',
 		:include => { :voters => { :only => [:last_name, :first_name, :sex, :age, :party], :order => 'last_name, first_name' } },

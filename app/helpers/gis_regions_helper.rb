@@ -58,7 +58,7 @@ module GisRegionsHelper
 			end
 
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :create, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
 	    end
 
 			script << "};"
