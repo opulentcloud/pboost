@@ -27,6 +27,14 @@ module GisRegionsHelper
 
 			map = script.map
 			map.clear_overlays
+			#reload any polygons they were drawing onto the map.
+			overlays = Eschaton::JavascriptVariable.existing(:var => :overlays) 
+			overlays.each do |polygon|
+				overlay = map.add_overlay(polygon)
+				#polygon.enable_drawing
+				polygon.enable_editing
+				
+			end
 
 			clusterer = map.add_marker_clusterer
 			#clusterer = Eschaton::JavascriptVariable.existing(:var => :clusterer) 
