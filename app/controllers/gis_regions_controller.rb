@@ -29,6 +29,38 @@ class GisRegionsController < ApplicationController
 		end
 		#@sess_id = UUIDTools::UUID.timestamp_create
     @gis_region = current_political_campaign.gis_regions.build
+		@precincts = current_political_campaign.municipal_district.precincts.all.map{ |p| [p.code,p.code] }
+		@precincts.insert(0,['Choose...',''])
+  end
+  
+  def plot_precinct_cluster
+
+		run_javascript do |script|
+			script << "<script type=\"text/javascript\">"
+			map = script.map
+			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
+			map.pan_to center_point
+			script << "</script>"
+		end
+		
+	if 1 == 0
+  	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
+
+		#send javascript back to update the map
+		run_javascript do |script|
+			map = script.map
+
+			clusterer = map.add_marker_clusterer	
+			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
+			@precinct.addresses.all(:conditions => 'geom is not null').each_with_index do |address,index|
+				center_point = Google::Location.new(:latitude => address.lat, :longitude => address.lng) if index == 0
+				clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
+			end
+
+			map.pan_to center_point unless center_point.nil?
+			logger.debug(script)
+		end
+		end
   end
   
   def count_in_poly

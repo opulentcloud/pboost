@@ -21,7 +21,7 @@
 
 	<p>
 		<strong>Precint: </strong>
-		<%= select_tag(:precinct_code, options_from_collection_for_select(current_political_campaign.municipal_district.precincts.all, :code, :code), { :onchange => 'update_map_precinct(this);' }) %>
+		<%= select_tag(:precinct_code, options_for_select(@precincts, { :include_blank => true }),  { :onchange => 'update_map_precinct(this);' }) %>
 
 	</p>
 

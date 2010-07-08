@@ -87,7 +87,8 @@ module GisRegionsHelper
 	def init_update_map_precinct
 		run_javascript do |script|
 			script << "function update_map_precinct(ctrl) {"
-			script << "	alert(ctrl.value);"
+			#script << "	alert(ctrl.value);"
+			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>Click the draw new region button above and begin creating shapes around your target area.</div>\"); });"
 			script << "}"
 		end
 	end
@@ -95,19 +96,26 @@ module GisRegionsHelper
   def gis_new_init_map
     run_map_script do |mscript|
 
+#:center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
+
       map = Google::Map.new(:controls => [:small_map, :map_type],
-                            :center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays
-		
-			clusterer = map.add_marker_clusterer	
-			
-		precinct = current_political_campaign.municipal_district.precincts.first
 
-		precinct.addresses.all(:conditions => 'geom is not null').each do |address|
-			clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
-		end
+			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
+			center_point = Google::Location.new(:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng)
+			mscript << "center_point = #{center_point}"
+			#map.pan_to center_point
+		
+#			clusterer = map.add_marker_clusterer	
+			
+#		precinct = Precinct.find_by_code("2400502-011.1")
+		#precinct = current_political_campaign.municipal_district.precincts.first
+
+#		precinct.addresses.all(:conditions => 'geom is not null').each do |address|
+#			clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
+#		end
 
 #			polygon.edited do |script|
 #				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }

@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
 		site.create_polygon 'create_polygon', :action => 'create', :conditions => { :method => [:post, :get] }
 		site.add_vertices 'add_vertices', :action => 'add_vertices', :conditions => { :method => :post }
 		site.count_in_poly 'count_in_poly', :action => 'count_in_poly', :conditions => { :method => :get }
+		site.plot_precinct_cluster 'plot_precinct_cluster', :action => 'plot_precinct_cluster', :conditions => { :method => :get }
 	end
 	map.resources :gis_regions, :path_prefix => '/customer'
 
