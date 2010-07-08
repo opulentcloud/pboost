@@ -10,6 +10,8 @@ class Walksheet < ActiveRecord::Base
 	accepts_nested_attributes_for :precinct_filter
 	has_one :council_district_filter, :dependent => :destroy
 	accepts_nested_attributes_for :council_district_filter
+	has_one :municipal_district_filter, :dependent => :destroy
+	accepts_nested_attributes_for :municipal_district_filter
 	has_one :age_filter, :dependent => :destroy
 	accepts_nested_attributes_for :age_filter
 	has_one :sex_filter, :dependent => :destroy
@@ -50,6 +52,10 @@ class Walksheet < ActiveRecord::Base
 	def before_save
 		if self.precinct_filter
 			self.precinct_filter = nil if self.precinct_filter.string_val.blank?
+		end
+
+		if self.municipal_district_filter
+			self.municipal_district_filter = nil if self.municipal_district_filter.string_val.blank?
 		end
 		
 		if self.council_district_filter
@@ -143,6 +149,12 @@ class Walksheet < ActiveRecord::Base
 			if self.precinct_filter
 				sql += <<-eot
 					AND ("addresses"."precinct_code" = '#{self.precinct_filter.string_val}') 
+				eot
+			end
+
+			if self.municipal_district_filter
+				sql += <<-eot
+					AND ("addresses"."mcomm_dist_code" = '#{self.municipal_district_filter.string_val}') 
 				eot
 			end
 

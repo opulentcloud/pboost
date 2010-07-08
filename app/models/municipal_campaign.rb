@@ -12,6 +12,14 @@ class MunicipalCampaign < PoliticalCampaign
 	validates_presence_of :municipal_district_id, :if => :require_municipal_district?
 
 	#===== PROPERTIES ======
+	def precincts
+		if self.municipal_district
+				self.municipal_district.precincts
+		else
+				self.city.precincts
+		end
+	end
+	
 	def lat
 		self.city.lat
 	end

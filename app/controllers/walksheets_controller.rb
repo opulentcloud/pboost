@@ -22,6 +22,7 @@ class WalksheetsController < ApplicationController
     @walksheet.build_sex_filter
     @walksheet.build_gis_region_filter
     @walksheet.build_council_district_filter
+    @walksheet.build_municipal_district_filter
     @walksheet.build_precinct_filter
 		@walksheet.build_voting_history_type_filter
   end
@@ -49,6 +50,7 @@ class WalksheetsController < ApplicationController
 		  @walksheet.build_gis_region_filter if @walksheet.build_gis_region_filter.nil?
 		  @walksheet.build_council_district_filter if @walksheet.build_council_district_filter.nil?
 		  @walksheet.build_precinct_filter if 		  @walksheet.build_precinct_filter.nil?
+    @walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
 			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?
 
 	    render :action => 'new'
@@ -65,6 +67,8 @@ class WalksheetsController < ApplicationController
     @walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
     @walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
     @walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
+@walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?    
   end
   
   def update
@@ -109,7 +113,8 @@ class WalksheetsController < ApplicationController
 				@walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
 				@walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
 				@walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
-
+@walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?
 			  render :action => 'edit'
 			end
 		end

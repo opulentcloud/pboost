@@ -29,14 +29,12 @@ class GisRegionsController < ApplicationController
 		end
 		#@sess_id = UUIDTools::UUID.timestamp_create
     @gis_region = current_political_campaign.gis_regions.build
-		@precincts = current_political_campaign.municipal_district.precincts.all.map{ |p| [p.code,p.code] }
+		@precincts = current_political_campaign.precincts.all.map{ |p| [p.code,p.code] }
 		@precincts.insert(0,['Choose...',''])
   end
   
   def plot_precinct_cluster
-
-  	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
-		
+	 	@precinct = current_political_campaign.precincts.find_by_code(params[:precinct_code])
   end
   
   def count_in_poly

@@ -11,6 +11,8 @@
 
 <p>
 	<ol>
+		<li>Choose a Precinct: <%= select_tag(:precinct_code, options_for_select(@precincts, { :include_blank => true }),  { :onchange => 'update_map_precinct(this);' }) %> </li>
+		<li>"Clusters" will appear on your map in red, light-blue and yellow - these indicate the number of addresses existing in a cluster.  Zooming in will provide more detail.</li>
 		<li>Use the Draw New Region button to create shapes on the map.</li>
 		<li>Outline your new region on the map below by clicking the points that outline the border of the region.</li>
 		<li>You may click and hold any point to drag and manipulate the shape of your region.</li>
@@ -18,12 +20,6 @@
 		<li><b><u>*YOU MUST CLICK ON THE SAVE REGION BUTTON TO SAVE ALL OF YOUR SHAPES WHEN YOU ARE FINISHED DRAWING THEM *</u></b></li>
 	</ol>
 </p>
-
-	<p>
-		<strong>Precint: </strong>
-		<%= select_tag(:precinct_code, options_for_select(@precincts, { :include_blank => true }),  { :onchange => 'update_map_precinct(this);' }) %>
-
-	</p>
 
 <table cellpadding="5" cellspacing="25" border="0">
 	<tr>

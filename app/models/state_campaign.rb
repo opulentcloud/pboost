@@ -21,6 +21,16 @@ class StateCampaign < PoliticalCampaign
 	validates_presence_of :house_district_id, :if => Proc.new { |c| c.seat_type == 'State House' }
 
 	#===== PROPERTIES ======
+	def precincts
+		if self.house_district
+			self.house_district.precincts
+		elsif self.senate_district
+			self.senate_district.precincts
+		else
+			self.state.precincts
+		end	
+	end
+	
 	def lat
 		self.state.lat
 	end

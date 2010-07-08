@@ -13,17 +13,11 @@
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts } %>
 			</p>
 
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.congressional_district.precincts } %>
-			</p>
 		<% else %>
 			<p>
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
 			</p>
 
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.state.precincts } %>
-			</p>
 		<% end %>
 	<% end %>
 
@@ -32,64 +26,42 @@
 			<p>
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.house_district.council_districts } %>
 			</p>
-
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.house_district.precincts } %>
-			</p>
 		<% elsif @walksheet.political_campaign.senate_district %>
 			<p>
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.senate_district.council_districts } %>
 			</p>
 
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.senate_district.precincts } %>
-			</p>
 		<% else %>
 			<p>
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
 			</p>
 
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.state.precincts } %>
-			</p>
 		<% end %>
 	
 	<% end %>
 
 	<% if @walksheet.political_campaign.class.to_s == 'CountyCampaign' %>
 
-		<% if @walksheet.political_campaign.council_district %>
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.council_district.precincts.all(:conditions => "county_id = #{@walksheet.political_campaign.county_id}") } %>
-			</p>
-		<% else %>
+		<% if @walksheet.political_campaign.council_district.nil? %>
 			<p>
 				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all } %>
-			</p>
-
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.county.precincts } %>
 			</p>
 		<% end %>
 		
 	<% end %>
 
 	<% if @walksheet.political_campaign.class.to_s == 'MunicipalCampaign' %>
-		<% if @walksheet.political_campaign.municipal_district %>
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.municipal_district.precincts.all } %>
-			</p>
-		<% else %>
+		<% if @walksheet.political_campaign.municipal_district.nil? %>
 			<p>
 				<%= render :partial => 'municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all } %>
-			</p>
-
-			<p>
-				<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.city.precincts } %>
 			</p>
 		<% end %>
 
 	<% end %>
+
+	<p>
+		<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts } %>
+	</p>
 	
 	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
 		<p>

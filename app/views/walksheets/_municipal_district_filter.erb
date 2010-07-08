@@ -1,0 +1,5 @@
+		<% fields_for "walksheet[municipal_district_filter_attributes]", municipal_district_filter do |f| %>
+			<%= f.label :string_val, 'Municipal District:' %><br />
+			<%= f.collection_select(:string_val, municipal_districts, :code, :code, {:prompt => 'N/A'}, :class => '') %>
+		<% end %>
+

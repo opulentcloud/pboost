@@ -11,6 +11,14 @@ class CountyCampaign < PoliticalCampaign
 	#validates_presence_of :council_district_id, :if => Proc.new { |c| c.countywide == false }
 
 	#===== PROPERTIES ======
+	def precincts
+		if self.council_district
+			self.council_district.precincts
+		else
+			self.county.precincts
+		end
+	end
+	
 	def lat
 		self.county.lat
 	end
