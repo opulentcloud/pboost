@@ -26,6 +26,7 @@ module GisRegionsHelper
 			#script << "<script type=\"text/javascript\">"
 
 			map = script.map
+			map.clear_overlays
 
 			clusterer = map.add_marker_clusterer
 			#clusterer = Eschaton::JavascriptVariable.existing(:var => :clusterer) 
@@ -111,7 +112,7 @@ module GisRegionsHelper
 		run_javascript do |script|
 			script << "function update_map_precinct(ctrl) {"
 			#script << "	alert(ctrl.value);"
-			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"</div>\"); });"
+			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"Click the draw new region button above to create a shape over your desired area.  You may create up to 6 different areas on this map.</div>\"); });"
 			script << "}"
 		end
 	end
@@ -119,9 +120,8 @@ module GisRegionsHelper
   def gis_new_init_map
     run_map_script do |mscript|
 
-#:center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
-
       map = Google::Map.new(:controls => [:small_map, :map_type],
+														:center => {:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng},
                             :zoom => 13)
       map.enableScrollWheelZoom
 			map.clear_overlays

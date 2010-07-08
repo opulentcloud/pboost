@@ -37,24 +37,6 @@ class GisRegionsController < ApplicationController
 
   	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
 		
-	if 1 == 0
-  	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
-
-		#send javascript back to update the map
-		run_javascript do |script|
-			map = script.map
-
-			clusterer = map.add_marker_clusterer	
-			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
-			@precinct.addresses.all(:conditions => 'geom is not null').each_with_index do |address,index|
-				center_point = Google::Location.new(:latitude => address.lat, :longitude => address.lng) if index == 0
-				clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
-			end
-
-			map.pan_to center_point unless center_point.nil?
-			logger.debug(script)
-		end
-		end
   end
   
   def count_in_poly
