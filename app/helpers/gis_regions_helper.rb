@@ -21,6 +21,29 @@ module GisRegionsHelper
     end
   end
 
+	def init_plot_precinct_cluster
+		run_map_script do |script|
+			#script << "<script type=\"text/javascript\">"
+
+			map = script.map
+
+			clusterer = map.add_marker_clusterer
+			#clusterer = Eschaton::JavascriptVariable.existing(:var => :clusterer) 
+
+			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
+
+			@precinct.addresses.all(:conditions => 'geom is not null').each_with_index do |address,index|
+				center_point = Google::Location.new(:latitude => address.lat, :longitude => address.lng) if index == 0
+				clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
+			end
+
+			#script << "#{clusterer}"
+			map.pan_to center_point
+			#script << "</script>"
+		end
+	
+	end
+
 	def init_delete_current_poly
 		run_javascript do |script|
 			script << "function delete_current_poly(){"		
@@ -88,7 +111,7 @@ module GisRegionsHelper
 		run_javascript do |script|
 			script << "function update_map_precinct(ctrl) {"
 			#script << "	alert(ctrl.value);"
-			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>Click the draw new region button above and begin creating shapes around your target area.</div>\"); });"
+			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"</div>\"); });"
 			script << "}"
 		end
 	end
@@ -103,9 +126,12 @@ module GisRegionsHelper
       map.enableScrollWheelZoom
 			map.clear_overlays
 
+			#clusterer = map.add_marker_clusterer	
+
 			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
 			center_point = Google::Location.new(:latitude => current_political_campaign.lat, :longitude => current_political_campaign.lng)
 			mscript << "center_point = #{center_point}"
+			#mscript << "clusterer = #{clusterer}"
 			#map.pan_to center_point
 		
 #			clusterer = map.add_marker_clusterer	

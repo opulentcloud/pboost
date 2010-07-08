@@ -35,13 +35,7 @@ class GisRegionsController < ApplicationController
   
   def plot_precinct_cluster
 
-		run_javascript do |script|
-			script << "<script type=\"text/javascript\">"
-			map = script.map
-			center_point = Eschaton::JavascriptVariable.existing(:var => :center_point) 
-			map.pan_to center_point
-			script << "</script>"
-		end
+  	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
 		
 	if 1 == 0
   	@precinct = current_political_campaign.municipal_district.precincts.find_by_code(params[:precinct_code])
