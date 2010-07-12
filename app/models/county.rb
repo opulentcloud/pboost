@@ -8,6 +8,7 @@ class County < ActiveRecord::Base
 	has_and_belongs_to_many :cities
 	has_and_belongs_to_many :council_districts
 	has_many :precincts
+	has_many :addresses, :primary_key => :name, :foreign_key => :county_name
 
 	#===== VALIDATIONS ======
 	validate :valid_county
