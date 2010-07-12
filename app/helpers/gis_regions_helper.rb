@@ -83,7 +83,7 @@ module GisRegionsHelper
 			polygon = Google::Polygon.new(:vertices => [], :fill_colour => colors[polygon_index], :border_colour => 'black')
 
 			overlay = map.add_overlay(polygon)
-			script << 'overlays[polygon_index] = polygon;'
+			script << 'overlays.push(polygon);'
 			polygon.enable_drawing
 			polygon.enable_editing
 
@@ -152,19 +152,15 @@ module GisRegionsHelper
 			#mscript << "clusterer = #{clusterer}"
 			#map.pan_to center_point
 
-			#1st poly isn't counting voters correctly
-			#seeing if this can solve it.
-			#mscript << "init_new_poly();"		
-			#mscript << "delete_current_poly();"
-			
-#			clusterer = map.add_marker_clusterer	
-			
-#		precinct = Precinct.find_by_code("2400502-011.1")
-		#precinct = current_political_campaign.municipal_district.precincts.first
+			polygon = Google::Polygon.new(:vertices => [], :fill_colour => 'black', :border_colour => 'black')
 
-#		precinct.addresses.all(:conditions => 'geom is not null').each do |address|
-#			clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
-#		end
+			polygon.enable_drawing
+			polygon.enable_editing
+
+			map.click do |script, location|
+				polygon.add_vertex(location)
+			end
+
 
 #			polygon.edited do |script|
 #				script.post :url => { :controller => :gis_regions, :action => :add_vertices, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }
