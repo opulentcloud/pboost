@@ -67,8 +67,8 @@ module GisRegionsHelper
 	def init_new_poly
 		run_javascript do |script|
 			script << "function init_new_poly(){"
-			script << " if (polygon_index > 5) {"
-			script << "	alert('Sorry, you can not have more than 6 routes on a single walksheet.');"
+			script << " if (polygon_index > 10) {"
+			script << "	alert('Sorry, you can not have more than 10 routes on a single walksheet.');"
 			script << " return;"
 			script << "}"
 			script << "	polygon_index++;"
@@ -90,6 +90,14 @@ module GisRegionsHelper
 			end
 
 	    polygon.click do |script, location|
+				#== working on 1st poly voter count bug.
+				#script << 'poly = overlays.pop();'
+				#script << 'map.removeOverlay(poly);'
+				#poly = Eschaton::JavascriptVariable.existing(:var => 'poly')
+	    	#map.add_overlay(poly)
+				#poly.enable_drawing
+				#poly.enable_editing
+	    	#=====
 	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :sess_id => "#{@sess_id}", :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
 	    end
 
@@ -141,7 +149,12 @@ module GisRegionsHelper
 			mscript << "center_point = #{center_point}"
 			#mscript << "clusterer = #{clusterer}"
 			#map.pan_to center_point
-		
+
+			#1st poly isn't counting voters correctly
+			#seeing if this can solve it.
+			#mscript << "init_new_poly();"		
+			#mscript << "delete_current_poly();"
+			
 #			clusterer = map.add_marker_clusterer	
 			
 #		precinct = Precinct.find_by_code("2400502-011.1")
