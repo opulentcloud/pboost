@@ -26,7 +26,7 @@ class ClubTexting
 		end
 
 		def to_s
-			"?user=#{user_name}&pass=#{password}&phonenumber=#{phone_number}&subject=#{subject}&message=#{message}&express=#{express}"
+			"user=#{user_name}&pass=#{password}&phonenumber=#{phone_number}&subject=#{subject}&message=#{message}&express=#{express}"
 		end
 
 	end
