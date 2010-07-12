@@ -38,12 +38,12 @@ class GisRegionsController < ApplicationController
   end
   
   def count_in_poly
-			poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
+			@poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
 
 			#logger.debug(params[:vertices])
 
 			@gis_region = GisRegion.new(:name => ('temp_' + UUIDTools::UUID.timestamp_create),
-				:geom => poly, :political_campaign_id => current_political_campaign.id)
+				:geom => @poly, :political_campaign_id => current_political_campaign.id)
   		
   end
   

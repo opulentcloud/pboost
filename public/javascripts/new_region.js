@@ -1,6 +1,6 @@
 var polygon_index = -1;
 var overlays = new Array();
-var colors = ["red","blue","orange","purple","yellow","green"];
+var colors = ["red","blue","orange","purple","yellow","green","gray","pink","cyan","navy"];
 var center_point;
 var clusterer;
 
