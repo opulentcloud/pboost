@@ -69,7 +69,7 @@ module GisRegionsHelper
 	def init_new_poly
 		run_javascript do |script|
 			script << "function init_new_poly(){"
-			script << " if (polygon_index > 10) {"
+			script << " if (polygon_index > 9) {"
 			script << "	alert('Sorry, you can not have more than 10 routes on a single walksheet.');"
 			script << " return;"
 			script << "}"
