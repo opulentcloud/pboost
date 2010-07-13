@@ -4,7 +4,7 @@ class ContactList < ActiveRecord::Base
 	attr_accessor_with_default :repopulate, false
 
 	#===== SCOPES ======
-	default_scope :order => 'contact_list.name'
+	default_scope :order => 'contact_lists.name'
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
@@ -228,7 +228,7 @@ class ContactList < ActiveRecord::Base
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
-		if self.voters.count > 0 & self.class.to_s == 'Walksheet'
+		if self.voters.count > 0 && self.class.to_s == 'Walksheet'
 			WalksheetReport.build(self)
 		end
 

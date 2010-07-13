@@ -1,6 +1,6 @@
-class AddListableIdAndListableTypeToFilters < ActiveRecord::Migration
+class AddContactListIdToFilters < ActiveRecord::Migration
   def self.up
-  	add_column :filters, :contact_list_id, :integer, :null => false
+  	add_column :filters, :contact_list_id, :integer
 		add_index :filters, [:type, :contact_list_id]
   end
 

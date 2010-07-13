@@ -45,13 +45,13 @@ class WalksheetsController < ApplicationController
 	    flash[:notice] = "Successfully created walksheet."
 	    redirect_to @walksheet
 	  else
-		  @walksheet.build_age_filter if @walksheet.build_age_filter.nil?
-		  @walksheet.build_sex_filter if @walksheet.build_sex_filter.nil?
-		  @walksheet.build_gis_region_filter if @walksheet.build_gis_region_filter.nil?
-		  @walksheet.build_council_district_filter if @walksheet.build_council_district_filter.nil?
-		  @walksheet.build_precinct_filter if 		  @walksheet.build_precinct_filter.nil?
-    @walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
-			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?
+		  @walksheet.build_age_filter if @walksheet.age_filter.nil?
+		  @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
+		  @walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
+		  @walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
+		  @walksheet.build_precinct_filter if 		  @walksheet.precinct_filter.nil?
+    @walksheet.build_municipal_district_filter if     @walksheet.municipal_district_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.voting_history_type_filter.nil?
 
 	    render :action => 'new'
 	  end
@@ -67,8 +67,8 @@ class WalksheetsController < ApplicationController
     @walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
     @walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
     @walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
-@walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
-			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?    
+@walksheet.build_municipal_district_filter if     @walksheet.municipal_district_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.voting_history_type_filter.nil?    
   end
   
   def update
@@ -80,7 +80,7 @@ class WalksheetsController < ApplicationController
 			if params[:walksheet][:election_ids].nil?
 				@walksheet.voting_history_filters.destroy_all
 			end
-			
+			debugger
 			if @walksheet.update_attributes(params[:walksheet])
 			 	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
 				
@@ -113,8 +113,8 @@ class WalksheetsController < ApplicationController
 				@walksheet.build_gis_region_filter if @walksheet.gis_region_filter.nil?
 				@walksheet.build_council_district_filter if @walksheet.council_district_filter.nil?
 				@walksheet.build_precinct_filter if @walksheet.precinct_filter.nil?
-@walksheet.build_municipal_district_filter if     @walksheet.build_municipal_district_filter.nil?
-			@walksheet.build_voting_history_type_filter if @walksheet.build_voting_history_type_filter.nil?
+@walksheet.build_municipal_district_filter if     @walksheet.municipal_district_filter.nil?
+			@walksheet.build_voting_history_type_filter if @walksheet.voting_history_type_filter.nil?
 			  render :action => 'edit'
 			end
 		end
