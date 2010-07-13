@@ -4,6 +4,8 @@
 	
 $(document).ready(function() {
 
+  $("#accordions").accordion();
+
 	function xvalShowHide() {
 		$('span#xval').hide();
 

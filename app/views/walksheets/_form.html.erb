@@ -5,71 +5,74 @@
     <%= f.text_field :name %>
   </p>
 
-	<h3>GEOGRAPHIC FILTERS:</h3>	
+	<% accordions_for do |accordion| %>
 
-	<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
-		<% if @walksheet.political_campaign.congressional_district %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts } %>
-			</p>
+	<% accordion.create("geo", "&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS") do %>
 
-		<% else %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
-			</p>
+		<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
+			<% if @walksheet.political_campaign.congressional_district %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts } %>
+				</p>
 
+			<% else %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
+				</p>
+
+			<% end %>
 		<% end %>
-	<% end %>
 
-	<% if @walksheet.political_campaign.class.to_s == 'StateCampaign' %>
-		<% if @walksheet.political_campaign.house_district %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.house_district.council_districts } %>
-			</p>
-		<% elsif @walksheet.political_campaign.senate_district %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.senate_district.council_districts } %>
-			</p>
+		<% if @walksheet.political_campaign.class.to_s == 'StateCampaign' %>
+			<% if @walksheet.political_campaign.house_district %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.house_district.council_districts } %>
+				</p>
+			<% elsif @walksheet.political_campaign.senate_district %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.senate_district.council_districts } %>
+				</p>
 
-		<% else %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
-			</p>
+			<% else %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
+				</p>
 
-		<% end %>
+			<% end %>
 	
-	<% end %>
-
-	<% if @walksheet.political_campaign.class.to_s == 'CountyCampaign' %>
-
-		<% if @walksheet.political_campaign.council_district.nil? %>
-			<p>
-				<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all } %>
-			</p>
 		<% end %>
+
+		<% if @walksheet.political_campaign.class.to_s == 'CountyCampaign' %>
+
+			<% if @walksheet.political_campaign.council_district.nil? %>
+				<p>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all } %>
+				</p>
+			<% end %>
 		
-	<% end %>
-
-	<% if @walksheet.political_campaign.class.to_s == 'MunicipalCampaign' %>
-		<% if @walksheet.political_campaign.municipal_district.nil? %>
-			<p>
-				<%= render :partial => 'municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all } %>
-			</p>
 		<% end %>
 
-	<% end %>
+		<% if @walksheet.political_campaign.class.to_s == 'MunicipalCampaign' %>
+			<% if @walksheet.political_campaign.municipal_district.nil? %>
+				<p>
+					<%= render :partial => 'municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all } %>
+				</p>
+			<% end %>
 
-	<p>
-		<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts } %>
-	</p>
-	
-	<% if @walksheet.political_campaign.gis_regions.size > 0 %>
+		<% end %>
+
 		<p>
-			<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>
+			<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts } %>
 		</p>
+	
+		<% if @walksheet.political_campaign.gis_regions.size > 0 %>
+			<p>
+				<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>
+			</p>
+		<% end %>
 	<% end %>
 
-	<h3>DEMOGRAPHIC FILTERS:</h3>
+	<% accordion.create("dem", "&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS") do %>
 
 	<p>
 		<%= render :partial => 'age_filter', :locals =>  { :age_filter => @walksheet.age_filter } %>
@@ -86,9 +89,10 @@
 			<%=h party.name %> &nbsp;
 		<% end %>
 	</p>
+	<% end %>
 
-	<h3>VOTING HISTORY FILTERS:</h3>
-	
+	<% accordion.create("vh", "&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS") do %>
+
 	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
 	
 		<table class="form_table">
@@ -103,6 +107,8 @@
 		</tr>	
 		<% end %>
 	</table>	
+	<% end %>
+	<% end %>
 
 	</hr />
 
