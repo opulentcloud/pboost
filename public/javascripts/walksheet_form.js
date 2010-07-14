@@ -32,9 +32,15 @@ function set_map_vertices() {
 	
 $(document).ready(function() {
 
-	//$('#new_walksheet').ajaxForm(function() {
-		//submitted the form via ajax.
-	//});
+	jQuery.ajaxSetup({
+		'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
+	})
+
+	//submit the form via ajax request.
+	$('#new_walksheet').submit(function() {
+		$.post($(this).attr("action"), $(this).serialize(), null, "script");
+		return false;
+	});
 
   $('#accordions').accordion();
 

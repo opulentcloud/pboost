@@ -1,0 +1,7 @@
+$("#flash_error").remove();
+$("#errorExplanation").remove();
+
+$("#new_walksheet").before('<div id="errorExplanation" class="errorExplanation"><h2>Please fix the following in order to continue:</h2><ul><% flash.now[:error].each_full do |msg| %><li><%= escape_javascript("#{msg}") %></li><% end %></ul></div>');
+
+alert('<% flash.delete(:error).each_full do |msg| %><%= escape_javascript("#{msg}\r\n") %><% end %>');
+

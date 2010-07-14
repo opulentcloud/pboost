@@ -51,7 +51,7 @@ class ContactList < ActiveRecord::Base
 			return true if !self.gis_region.geom2.nil? || !self.gis_region.vertices.blank?
 		end
 
-		errors.add_to_base('You must create your walksheet from a Precinct or by using the map to create routes.')
+		errors.add_to_base('You must use a Geographic filter (either choose a Precinct or Draw at least one Route on the map)')
 	end
 	
 	def after_create

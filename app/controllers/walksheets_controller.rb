@@ -45,7 +45,10 @@ debugger
 
 	  if @walksheet.save
 	    flash[:notice] = "Successfully created walksheet."
-	    redirect_to @walksheet
+			respond_to do |format|
+				format.html { redirect_to @walksheet }
+				format.js
+			end
 	  else
 		  @walksheet.build_age_filter if @walksheet.age_filter.nil?
 		  @walksheet.build_sex_filter if @walksheet.sex_filter.nil?
@@ -55,7 +58,17 @@ debugger
     @walksheet.build_municipal_district_filter if     @walksheet.municipal_district_filter.nil?
 			@walksheet.build_voting_history_type_filter if @walksheet.voting_history_type_filter.nil?
 
-	    render :action => 'new'
+			respond_to do |format|
+      	format.html { render :action => 'new' }
+				format.js { 
+					flash.now[:error] = @walksheet.errors
+					if @walksheet.errors.nil?
+						flash.now[:error] = @walksheet.errors.add_to_base('Your Walksheet could not be created at this time.')
+					end
+					logger.debug(flash[:error].each_full { |msg| msg }.join('\n'))
+					render :action => 'new' 
+				}
+    	end
 	  end
   end
   
