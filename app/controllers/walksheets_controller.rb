@@ -18,6 +18,7 @@ class WalksheetsController < ApplicationController
 		end
   
     @walksheet = current_political_campaign.walksheets.build
+    @gis_region = @walksheet.build_gis_region
     @walksheet.build_age_filter
     @walksheet.build_sex_filter
     @walksheet.build_gis_region_filter

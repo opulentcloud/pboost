@@ -1,0 +1,26 @@
+<p>
+	<ol>
+		<li>If you have chosen a precinct from the list above then "Clusters" will appear on your map in red, yellow, and blue. &nbsp; Clusters indicate the number of addresses existing in proximity to the area. &nbsp;Zooming in will provide more detail.</li>
+		<li>Use the Add A New Route button to create up to 10 shapes on the map.</li>
+		<li>Outline your new route on the map below by clicking the points that outline the borders of the route.</li>
+		<li>You may click and hold any point to drag and manipulate the shape of your route.</li>
+		<li>Click inside of your route at anytime to do a quick check of how many potential voters exist in the route you have drawn.</li>
+	</ol>
+</p>
+
+<table cellpadding="5" cellspacing="25" border="0">
+	<tr>
+		<td>
+			<input type="button" value="Add A New Route" onclick="init_new_poly();" />
+		</td>
+		<td>
+			<input type="button" value="Delete Last Route" onclick="delete_current_poly();" />
+		</td>
+		<td>
+			<input type="button" value="Save These Routes" onclick="save_current_polys();" />
+		</td>
+	</tr>	
+</table>
+
+<%= google_map :width => 880, :height => 465 %>
+

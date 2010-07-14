@@ -3,18 +3,17 @@
 	<h3>Insufficient Point Data</h3>
 	<% info_window_form :url => { :action => :create } do %>
 		<p>
-			We apoplogize but we received insufficient point data to determine your desired area. &nbsp;We suggest you click the delete region button at this time and then re-draw your shape.
+			We apoplogize but we received insufficient point data to determine your desired route. &nbsp;We suggest you click the delete last route button at this time and then re-draw your route.
 		</p>
 	
 	<% end %>
 
 <% else %>
 
-	<h3>Region Information</h3>
+	<h3>Route Info</h3>
 	<% info_window_form :url => { :action => :create } do %>
 		<p>
-			<strong>Voters in this area: </strong>
-			<%= number_with_delimiter @gis_region.potential_voters_count %>
+			<strong><%= number_with_delimiter @gis_region.potential_voters_count %> Voters found</strong>
 		</p>
 	
 	<% end %>

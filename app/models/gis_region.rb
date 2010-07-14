@@ -1,5 +1,6 @@
 class GisRegion < ActiveRecord::Base
 	acts_as_geom :geom => :polygon
+	attr_accessor :vertices
 
 	#===== SCOPES ======
 	default_scope :order => 'gis_regions.name'
@@ -10,10 +11,18 @@ class GisRegion < ActiveRecord::Base
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
+	belongs_to :contact_list
 	has_and_belongs_to_many :addresses
 	has_and_belongs_to_many :voters
 
 	#===== EVENTS =====
+	def	before_validation
+	debugger
+		a = instance_eval(self.vertices)
+		self.geom = Polygon.from_coordinates(a[0][0])
+		self.geom2 = MultiPolygon.from_coordinates(instance_eval(self.vertices))
+	end
+	
 	def before_destroy
 		return if self.new_record?
 		sql = "DELETE FROM addresses_gis_regions WHERE gis_region_id = #{self.id}"

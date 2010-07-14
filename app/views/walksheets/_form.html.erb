@@ -65,11 +65,7 @@
 			<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts } %>
 		</p>
 	
-		<% if @walksheet.political_campaign.gis_regions.size > 0 %>
-			<p>
-				<%= render :partial => 'gis_region_filter', :locals =>  { :gis_region_filter => @walksheet.gis_region_filter } %>
-			</p>
-		<% end %>
+			<%= render :partial => 'map/form' %>
 	<% end %>
 
 	<% accordion.create("dem", "&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS") do %>
@@ -112,5 +108,8 @@
 
 	</hr />
 
-  <p><%= f.submit @walksheet.new_record? ? 'Create Walk Sheet' : 'Save Changes' %></p>
+	<%= render :partial => 'gis_region', :locals =>  { :gis_region => @walksheet.gis_region } %>
+
+
+  <p><%= f.submit @walksheet.new_record? ? 'Create Walk Sheet' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
 <% end %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100713164626) do
+ActiveRecord::Schema.define(:version => 20100713232647) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -267,9 +267,12 @@ ActiveRecord::Schema.define(:version => 20100713164626) do
     t.column "voter_count", :integer, :default => 0
     t.column "populated", :boolean, :default => false
     t.column "geom2", :multi_polygon, :srid => 4326
+    t.column "contact_list_id", :integer
   end
 
+  add_index "gis_regions", ["contact_list_id"], :name => "index_gis_regions_on_contact_list_id"
   add_index "gis_regions", ["geom"], :name => "index_gis_regions_on_geom", :spatial=> true 
+  add_index "gis_regions", ["geom2"], :name => "index_gis_regions_on_geom2", :spatial=> true 
   add_index "gis_regions", ["name", "political_campaign_id"], :name => "index_gis_regions_on_name_and_political_campaign_id", :unique => true
   add_index "gis_regions", ["political_campaign_id"], :name => "index_gis_regions_on_political_campaign_id"
 
