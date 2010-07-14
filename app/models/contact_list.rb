@@ -169,7 +169,14 @@ class ContactList < ActiveRecord::Base
 			
 			sql = ''
 
-			if self.precinct_filter
+			if self.gis_region
+				sql += <<-eot
+					AND 
+						("addresses"."geom" && '#{self.gis_region.geom2.as_hex_ewkb}' ) 
+				 AND 
+						ST_contains('#{self.gis_region.geom2.as_hex_ewkb}', "addresses"."geom"::geometry)
+				eot
+			elsif self.precinct_filter
 				sql += <<-eot
 					AND ("addresses"."precinct_code" = '#{self.precinct_filter.string_val}') 
 				eot
@@ -184,15 +191,6 @@ class ContactList < ActiveRecord::Base
 			if self.council_district_filter
 				sql += <<-eot
 					AND ("addresses"."comm_dist_code" = '#{self.council_district_filter.string_val}') 
-				eot
-			end
-
-			if self.gis_region
-				sql += <<-eot
-					AND 
-						("addresses"."geom" && '#{self.gis_region.geom2.as_hex_ewkb}' ) 
-				 AND 
-						ST_contains('#{self.gis_region.geom2.as_hex_ewkb}', "addresses"."geom"::geometry)
 				eot
 			end
 

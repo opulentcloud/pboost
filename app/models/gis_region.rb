@@ -22,7 +22,7 @@ class GisRegion < ActiveRecord::Base
 	end
 	
 	def	before_validation
-		self.vertices = nil if self.vertices = "[]"
+		self.vertices = nil if self.vertices == "[]"
 		return true if self.vertices.blank?
 		a = instance_eval(self.vertices)
 		self.geom = Polygon.from_coordinates([a[0]])
