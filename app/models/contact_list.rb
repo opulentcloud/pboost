@@ -39,7 +39,7 @@ class ContactList < ActiveRecord::Base
 	validates_presence_of :name
 	validates_uniqueness_of :name, :scope => :political_campaign_id
 	validates_associated :sex_filter
-	validate :valid_geo_filters
+	validate :valid_geo_filters, :if => Proc.new { |c| c.class.to_s == 'Walksheet' }
 	
 	#===== EVENTS =====
 	def valid_geo_filters
