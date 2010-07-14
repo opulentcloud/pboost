@@ -26,10 +26,10 @@
 	</p>
 <% end %>
 
-<% if @walksheet.gis_region_filter %>
+<% if @walksheet.gis_region %>
 	<p>
-		<strong>GIS Region:</strong> 
-			<%=h GisRegion.find(@walksheet.gis_region_filter.int_val).name %>
+		<strong>Custom Map Routes: </strong> 
+			<%=link_to 'View Routes On Map', gis_region_path(@walksheet.gis_region), { :target => "_blank" } %>
 	</p>
 <% end %>
 

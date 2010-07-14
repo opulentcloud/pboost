@@ -39,8 +39,21 @@ class ContactList < ActiveRecord::Base
 	validates_presence_of :name
 	validates_uniqueness_of :name, :scope => :political_campaign_id
 	validates_associated :sex_filter
+	validate :valid_geo_filters
 	
 	#===== EVENTS =====
+	def valid_geo_filters
+		if self.precinct_filter
+			return true if !self.precinct_filter.string_val.blank?		
+		end
+
+		if self.gis_region
+			return true if !self.gis_region.geom2.nil? || !self.gis_region.vertices.blank?
+		end
+
+		errors.add_to_base('You must create your walksheet from a Precinct or by using the map to create routes.')
+	end
+	
 	def after_create
 		self.voting_history_filters.each do |vh|
 			vh.destroy if vh.string_val.nil?
@@ -54,6 +67,10 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_save
+
+		if self.gis_region
+			self.gis_region = nil if self.gis_region.geom2.blank?
+		end
 
 		if self.precinct_filter
 			self.precinct_filter = nil if self.precinct_filter.string_val.blank?
