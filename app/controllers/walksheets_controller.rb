@@ -32,7 +32,7 @@ class WalksheetsController < ApplicationController
     @walksheet = Walksheet.new(params[:walksheet])
 
    	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
-debugger    
+
     @walksheet.elections.each_with_index do |e,index|
 			a = vh_filters[index]
 			next if a.nil?
