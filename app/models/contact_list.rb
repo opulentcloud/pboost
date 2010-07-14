@@ -54,6 +54,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_save
+
 		if self.precinct_filter
 			self.precinct_filter = nil if self.precinct_filter.string_val.blank?
 		end
@@ -122,7 +123,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file
+		delete_file if self.class.to_s == 'Walksheet'
 
 		#unlink any addresses from this walksheet
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
@@ -169,6 +170,16 @@ class ContactList < ActiveRecord::Base
 				eot
 			end
 
+			if self.gis_region
+				sql += <<-eot
+					AND 
+						("addresses"."geom" && '#{self.gis_region.geom2.as_hex_ewkb}' ) 
+				 AND 
+						ST_contains('#{self.gis_region.geom2.as_hex_ewkb}', "addresses"."geom"::geometry)
+				eot
+			end
+
+=begin
 			if self.gis_region_filter
 				sql += <<-eot
 					AND EXISTS (
@@ -177,7 +188,7 @@ class ContactList < ActiveRecord::Base
 					AND "gis_regions_voters"."voter_id" = "voters"."id") 
 				eot
 			end
-			
+=end			
 			if self.age_filter
 				sql += <<-eot
 					AND

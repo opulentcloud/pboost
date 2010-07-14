@@ -7,7 +7,7 @@ class GisRegion < ActiveRecord::Base
 	named_scope :populated, :conditions => 'gis_regions.populated = true'
 		
 	#===== VALIDATIONS ======
-	validates_presence_of :name, :geom, :political_campaign_id
+	validates_presence_of :name, :geom#, :political_campaign_id
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
@@ -16,11 +16,24 @@ class GisRegion < ActiveRecord::Base
 	has_and_belongs_to_many :voters
 
 	#===== EVENTS =====
+	def before_save
+		self.political_campaign_id = self.contact_list.political_campaign_id
+		true
+	end
+	
 	def	before_validation
-	debugger
+		return true if self.vertices.blank?
 		a = instance_eval(self.vertices)
-		self.geom = Polygon.from_coordinates(a[0][0])
-		self.geom2 = MultiPolygon.from_coordinates(instance_eval(self.vertices))
+		self.geom = Polygon.from_coordinates([a[0]])
+		
+		polys = []
+		a.each do |polygon|				
+			polys.push(Polygon.from_coordinates([polygon]))
+		end
+		
+		self.geom2 = MultiPolygon.from_polygons(polys)
+		self.vertices = nil
+		true
 	end
 	
 	def before_destroy

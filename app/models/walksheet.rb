@@ -1,7 +1,7 @@
 class Walksheet < ContactList
 	
 	def contact_list_id
-		id
+		self.id
 	end
 	
 end

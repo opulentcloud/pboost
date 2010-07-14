@@ -32,7 +32,11 @@ function set_map_vertices() {
 	
 $(document).ready(function() {
 
-  $("#accordions").accordion();
+	//$('#new_walksheet').ajaxForm(function() {
+		//submitted the form via ajax.
+	//});
+
+  $('#accordions').accordion();
 
 	function xvalShowHide() {
 		$('span#xval').hide();

@@ -31,6 +31,8 @@ class WalksheetsController < ApplicationController
   def create
     @walksheet = Walksheet.new(params[:walksheet])
 
+		@walksheet.political_campaign_id = current_political_campaign.id
+
    	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
     
     @walksheet.elections.each_with_index do |e,index|
@@ -41,7 +43,6 @@ class WalksheetsController < ApplicationController
 			end			
 	  end
 
-		@walksheet.political_campaign_id = current_political_campaign.id
 	  if @walksheet.save
 	    flash[:notice] = "Successfully created walksheet."
 	    redirect_to @walksheet
