@@ -28,7 +28,7 @@
 
 <% if @walksheet.gis_region %>
 	<p>
-		<strong>Custom Map Routes: </strong> 
+		<strong><%=h @walksheet.gis_region.geom2.size %> Custom Map Routes: </strong> 
 			<%=link_to 'View Routes On Map', gis_region_path(@walksheet.gis_region), { :target => "_blank" } %>
 	</p>
 <% end %>
