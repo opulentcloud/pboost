@@ -178,7 +178,11 @@ module MapHelper
  			script << "	jQuery.get('/customer/voting_history_type_filter_changed/'+vhf+'/'+mv+'/'+'?sess_id=#{@sess_id}', function(data) { });"
 			script << "}"
 			script << ""
-			
+
+			script << "function voting_history_filter_changed() {"
+			script << "	alert('called');"
+			script << "}"
+						
   	end
    end
   

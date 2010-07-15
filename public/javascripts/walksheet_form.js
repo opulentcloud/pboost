@@ -55,6 +55,16 @@ $('div#party_group').each(function () {
 	$(this).children('input:checkbox').bind('click', party_filter_changed);
 });
 
+$('table#voting_history_group').each(function () {
+	$(this).children('tbody').each(function() {
+		$(this).children('tr').each(function() {
+			$(this).children('td').each(function() {
+				$(this).children('input:checkbox').bind('click', voting_history_filter_changed);
+			});
+		});
+	});
+});
+
 });
 
 

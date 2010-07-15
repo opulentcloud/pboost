@@ -92,8 +92,8 @@
 	<% accordion.create("vh", "&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS") do %>
 
 	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
-	
-		<table class="form_table">
+		
+		<table id ="voting_history_group" class="form_table">
 		<% Election.all.each do |election| %>
 			<tr class="<%= cycle("even","odd") %>">
 			<td><%= check_box_tag "walksheet[election_ids][]", election.id, @walksheet.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %></td>
@@ -111,7 +111,6 @@
 	</hr />
 
 	<%= render :partial => 'gis_region', :locals =>  { :gis_region => @walksheet.gis_region } %>
-
 
   <p><%= f.submit @walksheet.new_record? ? 'Create Walk Sheet' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
 <% end %>
