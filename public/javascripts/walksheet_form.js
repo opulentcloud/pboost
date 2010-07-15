@@ -61,6 +61,10 @@ $('#walksheet_sex_filter_attributes_string_val_m').bind('click', sex_filter_chan
 
 $('#walksheet_sex_filter_attributes_string_val_a').bind('click', sex_filter_changed);
 
+$('div#party_group').each(function () {
+	$(this).children('input:checkbox').bind('click', party_filter_changed);
+});
+
 });
 
 

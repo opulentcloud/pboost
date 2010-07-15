@@ -80,10 +80,12 @@
 
 	<p>
 		Party: <i>(leave blank for all)</i><br />
+		<div id="party_group">
 		<% Party.all.each do |party| %>
 			<%= check_box_tag "walksheet[party_ids][]", party.id, @walksheet.party_filters.map(&:int_val).include?(party.id), :index => nil %>
 			<%=h party.name %> &nbsp;
 		<% end %>
+		</div>
 	</p>
 	<% end %>
 

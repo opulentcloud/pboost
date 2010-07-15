@@ -138,6 +138,14 @@ module MapHelper
  			script << "	sex = $(this).val();"
  			script << "	jQuery.get('/customer/sex_filter_changed/'+sex+'?sess_id=#{@sess_id}', function(data) { });"
  			script << "} 	"
+			script << ""  
+ 			script << "function party_filter_changed() {"
+			script << "	//alert($(this).filter(':checked').val());"
+			script << "	v = $(this).val();"
+			script << " if ($(this).filter(':checked').length > 0) {"
+			script << "		alert('add it '+v);"
+			script << "	} else { alert('delete it '+v); }"
+ 			script << "} 	"
   	end
    end
   
