@@ -141,10 +141,14 @@ module MapHelper
 			script << ""  
  			script << "function party_filter_changed() {"
 			script << "	//alert($(this).filter(':checked').val());"
-			script << "	v = $(this).val();"
+			script << "	p = $(this).val();"
 			script << " if ($(this).filter(':checked').length > 0) {"
-			script << "		alert('add it '+v);"
-			script << "	} else { alert('delete it '+v); }"
+			script << "		//alert('add it '+p);"
+ 			script << "	jQuery.get('/customer/party_filter_add/'+p+'?sess_id=#{@sess_id}', function(data) { });"
+			script << "	} else {"
+			script << "	  //alert('delete it '+p);"
+ 			script << "	jQuery.get('/customer/party_filter_remove/'+p+'?sess_id=#{@sess_id}', function(data) { });"
+			script << " }"
  			script << "} 	"
   	end
    end

@@ -3,6 +3,36 @@ class ContactListsController < ApplicationController
 	after_filter :save_session_filters
 	filter_access_to :all
 
+	def party_filter_add
+		party_filters = @filters[:party_filters] ||= ''
+		if party_filters.length > 0
+			party_filters += ','+params[:party_id]
+		else
+			party_filters = params[:party_id]
+		end
+		@filters[:party_filters] = party_filters
+		
+		render :partial => '/shared/blank', :layout => false
+	end
+
+	def party_filter_remove
+		party_filters = @filters[:party_filters] ||= ''
+		new_party_filters = ''
+		if party_filters.size > 0
+			party_filters.split(',').each do |a|
+				next if a == params[:party_id]
+				if new_party_filters.length > 0
+					new_party_filters += ',' + a
+				else
+					new_party_filters += a
+				end
+			end
+		end	
+		@filters[:party_filters] = new_party_filters
+		
+		render :partial => '/shared/blank', :layout => false
+	end
+
 	def age_filter_changed
 		@filters[:min_age] = params[:min_age].to_i
 		@filters[:max_age] = params[:max_age].to_i

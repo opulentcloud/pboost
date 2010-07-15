@@ -80,6 +80,18 @@ class GisRegion < ActiveRecord::Base
 				eot
 			end
 
+			if filters.has_key?(:party_filters)
+				@in = []
+				filters[:party_filters].split(',').each do |f|
+					@in.push(Party.find(f.to_i).code)
+				end
+
+				sql += <<-eot
+					AND
+						("voters"."party" IN ('#{@in.join(',')}'))
+				eot
+			end
+
 debugger
 		sql1 = sql1_header + sql + ';'
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
