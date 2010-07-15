@@ -2,6 +2,11 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.root :controller => 'site'
 
+	map.with_options(:controller => 'contact_lists', :path_prefix => '/customer') do |site|
+		site.sex_filter_changed 'sex_filter_changed/:sex', :action => 'sex_filter_changed', :conditions => { :method => :get }
+	end
+	map.resources :contact_lists, :path_prefix => '/customer'
+
 	map.admin_control_panel 'control_panel', :controller => 'admin', :action => 'index', :path_prefix => '/admin'
 
   map.resources :county_campaigns, :path_prefix => '/admin'

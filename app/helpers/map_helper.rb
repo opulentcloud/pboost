@@ -91,7 +91,7 @@ module MapHelper
 			end
 
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :vertices => Google::UrlHelper.encode_vertices(polygon) }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :vertices => Google::UrlHelper.encode_vertices(polygon), :sess_id => "#{@sess_id}" }, :location => :location)
 	    end
 
 			script << "};"
@@ -125,6 +125,15 @@ module MapHelper
 			script << "}"
 		end
 	end
+  
+  def init_map_events
+  	run_javascript do |script|
+ 			script << "function sex_filter_changed() {"
+ 			script << "	sex = $(this).val();"
+ 			script << "	jQuery.get('/customer/sex_filter_changed/'+sex+'?sess_id=#{@sess_id}', function(data) { });"
+ 			script << "} 	"
+  	end
+   end
   
   def new_init_map
     run_map_script do |mscript|

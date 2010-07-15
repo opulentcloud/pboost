@@ -13,6 +13,7 @@ authorization do
 	end
 
 	role :customer do
+		has_permission_on :contact_lists, :to => [:sex_filter_changed]
 		has_permission_on :customer, :to => [:index]
 		has_permission_on [:gis_regions], :to => [:plot_precinct_cluster, :count_in_poly, :add_vertices, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:walksheets], :to => [:index, :show, :new, :create, :edit, :update, :destroy]

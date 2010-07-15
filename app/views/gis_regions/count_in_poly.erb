@@ -13,7 +13,7 @@
 	<h3>Route Info</h3>
 	<% info_window_form :url => { :action => :create } do %>
 		<p>
-			<strong><%= number_with_delimiter @gis_region.potential_voters_count %> Voters found</strong>
+			<strong><%= number_with_delimiter @gis_region.potential_voters_count(@filters) %> Voters found</strong>
 		</p>
 	
 	<% end %>

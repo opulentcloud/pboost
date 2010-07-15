@@ -16,7 +16,9 @@ class WalksheetsController < ApplicationController
 			redirect_to walksheets_path
 			return
 		end
-  
+
+		@sess_id = UUIDTools::UUID.timestamp_create  
+		
     @walksheet = current_political_campaign.walksheets.build
     @gis_region = @walksheet.build_gis_region
     @walksheet.build_age_filter

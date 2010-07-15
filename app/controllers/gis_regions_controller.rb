@@ -1,6 +1,7 @@
 class GisRegionsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_gis_region, :only => [:show, :edit, :update, :destroy]
+	before_filter :get_session_filters, :only => [:count_in_poly]
 	filter_access_to :all
 	#this automatically populates session[:geo_location]
 	#with a GeoLoc object based on visitors ip address
@@ -38,6 +39,7 @@ class GisRegionsController < ApplicationController
   end
   
   def count_in_poly
+  #debugger
 			@poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
 
 			#logger.debug(params[:vertices])
@@ -111,6 +113,11 @@ class GisRegionsController < ApplicationController
   end
   
 private
+
+	def get_session_filters
+		@sess_id = params[:sess_id]
+		@filters = session[(@sess_id+'_filters').to_sym] ||= Hash.new()
+	end
 
 	#get the gis_region for the current user
 	def get_gis_region

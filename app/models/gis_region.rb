@@ -48,7 +48,9 @@ class GisRegion < ActiveRecord::Base
 	end
 
 	#===== INSTANCE METHODS ======
-	def potential_voters_count
+	def potential_voters_count(filters)
+
+		sql = ''
 
 		sql1_header = <<-eot
 					SELECT COUNT(*)
@@ -61,10 +63,18 @@ class GisRegion < ActiveRecord::Base
 					AND 
 						("addresses"."geom" && '#{self.geom.as_hex_ewkb}' ) 
 				 AND 
-						ST_contains('#{self.geom.as_hex_ewkb}', "addresses"."geom"::geometry)
+						ST_contains('#{self.geom.as_hex_ewkb}', "addresses"."geom"::geometry) 
 				eot
-#debugger
-		sql1 = sql1_header
+
+			if filters.has_key?(:sex)
+				sql += <<-eot
+					AND
+						("voters"."sex" = '#{filters[:sex]}')
+				eot
+			end
+
+debugger
+		sql1 = sql1_header + sql + ';'
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 		sql_result.first[0].to_i
 	end

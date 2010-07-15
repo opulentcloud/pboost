@@ -49,7 +49,13 @@ $(document).ready(function() {
 		}
 	}
 
-$('#walksheet_voting_history_type_filter_attributes_string_val').bind("change", xvalShowHide);
+$('#walksheet_voting_history_type_filter_attributes_string_val').bind('change', xvalShowHide);
+
+$('#walksheet_sex_filter_attributes_string_val_f').bind('click', sex_filter_changed);
+
+$('#walksheet_sex_filter_attributes_string_val_m').bind('click', sex_filter_changed);
+
+$('#walksheet_sex_filter_attributes_string_val_a').bind('click', sex_filter_changed);
 
 });
 
