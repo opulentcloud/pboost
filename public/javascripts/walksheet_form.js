@@ -51,6 +51,10 @@ $(document).ready(function() {
 
 $('#walksheet_voting_history_type_filter_attributes_string_val').bind('change', xvalShowHide);
 
+$('#walksheet_age_filter_attributes_int_val').bind('change', age_filter_changed);
+
+$('#walksheet_age_filter_attributes_max_int_val').bind('change', age_filter_changed);
+
 $('#walksheet_sex_filter_attributes_string_val_f').bind('click', sex_filter_changed);
 
 $('#walksheet_sex_filter_attributes_string_val_m').bind('click', sex_filter_changed);

@@ -4,6 +4,7 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.with_options(:controller => 'contact_lists', :path_prefix => '/customer') do |site|
 		site.sex_filter_changed 'sex_filter_changed/:sex', :action => 'sex_filter_changed', :conditions => { :method => :get }
+		site.age_filter_changed 'age_filter_changed/:min_age/:max_age', :action => 'age_filter_changed', :conditions => { :method => :get }
 	end
 	map.resources :contact_lists, :path_prefix => '/customer'
 

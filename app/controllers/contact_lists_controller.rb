@@ -3,6 +3,26 @@ class ContactListsController < ApplicationController
 	after_filter :save_session_filters
 	filter_access_to :all
 
+	def age_filter_changed
+		@filters[:min_age] = params[:min_age].to_i
+		@filters[:max_age] = params[:max_age].to_i
+		#fix any strange problems
+		if @filters[:max_age] < @filters[:min_age]
+			if @filters[:max_age] == 0
+				@filters[:max_age] = 109 
+			else
+				@filters[:max_age] = @filters[:min_age]
+			end
+		end
+		
+		if @filters[:min_age] == 0 && @filters[:max_age] == 0
+			@filters.delete(:min_age)
+			@filters.delete(:max_age)
+		end
+		
+		render :partial => '/shared/blank', :layout => false
+	end
+
 	def sex_filter_changed
 		@filters[:sex] = params[:sex] unless params[:sex] == 'A'
 		@filters.delete(:sex) if params[:sex] == 'A'

@@ -128,6 +128,12 @@ module MapHelper
   
   def init_map_events
   	run_javascript do |script|
+ 			script << "function age_filter_changed() {"
+			script << "	min_age = $('#walksheet_age_filter_attributes_int_val').val();"
+			script << " max_age = $('#walksheet_age_filter_attributes_max_int_val').val()"
+ 			script << "	jQuery.get('/customer/age_filter_changed/'+min_age+'/'+max_age+'/'+'?sess_id=#{@sess_id}', function(data) { });"
+ 			script << "} 	"
+			script << ""  
  			script << "function sex_filter_changed() {"
  			script << "	sex = $(this).val();"
  			script << "	jQuery.get('/customer/sex_filter_changed/'+sex+'?sess_id=#{@sess_id}', function(data) { });"

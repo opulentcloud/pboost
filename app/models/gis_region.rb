@@ -66,6 +66,13 @@ class GisRegion < ActiveRecord::Base
 						ST_contains('#{self.geom.as_hex_ewkb}', "addresses"."geom"::geometry) 
 				eot
 
+			if filters.has_key?(:min_age) && filters.has_key?(:max_age)
+				sql += <<-eot
+					AND
+						("voters"."age" BETWEEN #{filters[:min_age]} AND #{filters[:max_age]})
+				eot
+			end
+
 			if filters.has_key?(:sex)
 				sql += <<-eot
 					AND
