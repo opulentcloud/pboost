@@ -37,19 +37,9 @@ $(document).ready(function() {
 	
   $('#accordions').accordion();
 
-	function xvalShowHide() {
-		$('span#xval').hide();
+$('#walksheet_voting_history_type_filter_attributes_string_val').bind('change', voting_history_type_filter_changed);
 
-		if (this.value == "At Least") {
-			$('span#xval').css('display','inline');
-		} else if (this.value == "Exactly") {
-				$('span#xval').css('display','inline');
-		} else if (this.value == "No More Than") {
-				$('span#xval').css('display','inline');
-		}
-	}
-
-$('#walksheet_voting_history_type_filter_attributes_string_val').bind('change', xvalShowHide);
+$('#walksheet_voting_history_type_filter_attributes_int_val').bind('change', voting_history_type_filter_int_val_changed);
 
 $('#walksheet_age_filter_attributes_int_val').bind('change', age_filter_changed);
 

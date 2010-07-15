@@ -3,6 +3,13 @@ class ContactListsController < ApplicationController
 	after_filter :save_session_filters
 	filter_access_to :all
 
+	def voting_history_type_filter_changed
+		@filters[:filter_type] = params[:filter_type]
+		@filters[:filter_type_int_val] = params[:int_val].to_i
+
+		render :partial => '/shared/blank', :layout => false
+	end
+
 	def party_filter_add
 		party_filters = @filters[:party_filters] ||= ''
 		if party_filters.length > 0

@@ -134,11 +134,13 @@ module MapHelper
  			script << "	jQuery.get('/customer/age_filter_changed/'+min_age+'/'+max_age+'/'+'?sess_id=#{@sess_id}', function(data) { });"
  			script << "} 	"
 			script << ""  
+			
  			script << "function sex_filter_changed() {"
  			script << "	sex = $(this).val();"
  			script << "	jQuery.get('/customer/sex_filter_changed/'+sex+'?sess_id=#{@sess_id}', function(data) { });"
  			script << "} 	"
 			script << ""  
+			
  			script << "function party_filter_changed() {"
 			script << "	//alert($(this).filter(':checked').val());"
 			script << "	p = $(this).val();"
@@ -150,6 +152,33 @@ module MapHelper
  			script << "	jQuery.get('/customer/party_filter_remove/'+p+'?sess_id=#{@sess_id}', function(data) { });"
 			script << " }"
  			script << "} 	"
+			script << ""  
+			 						
+ 			script << "function voting_history_type_filter_changed() {"
+ 			script << "	//alert('called');"
+ 			script << "	vhf = $(this).val();"
+ 			script << " mv = $('#walksheet_voting_history_type_filter_attributes_int_val').val();"
+ 			script << "	jQuery.get('/customer/voting_history_type_filter_changed/'+vhf+'/'+mv+'/'+'?sess_id=#{@sess_id}', function(data) { });"
+
+			script << "	$('span#xval').hide();"
+			script << "	if (this.value == \"At Least\") {"
+			script << "		$('span#xval').css('display','inline');"
+			script << "	} else if (this.value == \"Exactly\") {"
+			script << "		$('span#xval').css('display','inline');"
+			script << "	} else if (this.value == \"No More Than\") {"
+			script << "		$('span#xval').css('display','inline');"
+			script << "	}"
+			script << "}"
+			script << ""
+			
+ 			script << "function voting_history_type_filter_int_val_changed() {"
+ 			script << "	//alert('called');"
+ 			script << "	vhf = $('#walksheet_voting_history_type_filter_attributes_string_val').val();"
+ 			script << " mv = $(this).val();"
+ 			script << "	jQuery.get('/customer/voting_history_type_filter_changed/'+vhf+'/'+mv+'/'+'?sess_id=#{@sess_id}', function(data) { });"
+			script << "}"
+			script << ""
+			
   	end
    end
   
