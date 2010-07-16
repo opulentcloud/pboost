@@ -20,6 +20,7 @@ class GisRegionsController < ApplicationController
   
   def show
     logger.info(@gis_region.to_vertices_array)
+    render :show, :layout => false
   end
   
   def new

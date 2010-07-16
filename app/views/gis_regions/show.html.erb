@@ -1,8 +1,7 @@
-<% title "GIS Region: #{@gis_region.name}" %>
+<% title "#{@gis_region.name}" %>
 <%= javascript :defaults %>
 <%= include_google_javascript %>
 <%= gis_show_init_map %>
-<%= render :partial => 'nav_menu' %>
 
 <%= google_map :width => 940, :height => 465 %>
 
