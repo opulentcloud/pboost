@@ -94,8 +94,8 @@
 	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
 		
 		<table id ="voting_history_group" class="form_table">
-		<% Election.all.each do |election| %>
-			<tr class="<%= cycle("even","odd") %>">
+		<% Election.all.each_with_index do |election,index| %>
+			<tr id="tr_<%=election.id %>" class="<%= cycle("even","odd") %>">
 			<td><%= check_box_tag "walksheet[election_ids][]", election.id, @walksheet.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %></td>
 			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Voted',  @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Voted') %> Voted</td>
 			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Didn\'t Vote', @walksheet.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Didn\'t Vote') %> Didn't Vote</td>

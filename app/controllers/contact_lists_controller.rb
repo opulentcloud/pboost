@@ -3,6 +3,37 @@ class ContactListsController < ApplicationController
 	after_filter :save_session_filters
 	filter_access_to :all
 
+	def voting_history_filter_remove
+		voting_history_filters = @filters[:voting_history_filters] ||= []
+		voting_history_filters.each do |vhf|
+			vhf.pop if vhf.id == params[:election_id].to_i
+		end
+		@filters[:voting_history_filters] = voting_history_filters
+	
+		render :partial => '/shared/blank', :layout => false
+	end
+
+	def voting_history_filter_add
+		voting_history_filters = @filters[:voting_history_filters] ||= []
+		e = Election.find(params[:election_id].to_i)
+		e.query_vote_type = params[:vote_type]
+
+		voting_history_filters.each do |vhf|
+			if vhf.id == e.id
+				voting_history_filters.delete(e)
+				break
+			end
+		end
+
+		voting_history_filters.push(e)
+		
+		@filters[:voting_history_filters] = voting_history_filters
+		@filters[:filter_type] = 'Any' if @filters[:filter_type].blank?
+		@filters[:filter_type_int_val] = 1 if @filters[:filter_type_int_val].blank?
+debugger
+		render :partial => '/shared/blank', :layout => false
+	end
+
 	def voting_history_type_filter_changed
 		@filters[:filter_type] = params[:filter_type]
 		@filters[:filter_type_int_val] = params[:int_val].to_i

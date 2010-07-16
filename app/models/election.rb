@@ -1,5 +1,7 @@
 class Election < ActiveRecord::Base
 
+	attr_accessor :query_vote_type
+
 	#====== VALIDATIONS =====
 	validates_presence_of [:description, :year, :election_type]
 	validates_uniqueness_of :description

@@ -8,6 +8,8 @@ ActionController::Routing::Routes.draw do |map|
 		site.party_filter_add 'party_filter_add/:party_id', :action => 'party_filter_add', :conditions => { :method => :get }
 		site.party_filter_remove 'party_filter_remove/:party_id', :action => 'party_filter_remove', :conditions => { :method => :get }
 		site.voting_history_type_filter_changed 'voting_history_type_filter_changed/:filter_type/:int_val', :action => 'voting_history_type_filter_changed', :conditions => { :method => :get }
+		site.voting_history_filter_remove 'voting_history_filter_remove/:election_id', :action => 'voting_history_filter_remove', :conditions => { :method => :get }
+		site.voting_history_filter_add 'voting_history_filter_add/:election_id/:vote_type', :action => 'voting_history_filter_add', :conditions => { :method => :get }
 	end
 	map.resources :contact_lists, :path_prefix => '/customer'
 
