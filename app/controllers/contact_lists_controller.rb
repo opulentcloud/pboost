@@ -6,7 +6,10 @@ class ContactListsController < ApplicationController
 	def voting_history_filter_remove
 		voting_history_filters = @filters[:voting_history_filters] ||= []
 		voting_history_filters.each do |vhf|
-			vhf.pop if vhf.id == params[:election_id].to_i
+			if vhf.id == params[:election_id].to_i
+				voting_history_filters.delete(vhf)
+				break
+			end
 		end
 		@filters[:voting_history_filters] = voting_history_filters
 	
@@ -30,7 +33,7 @@ class ContactListsController < ApplicationController
 		@filters[:voting_history_filters] = voting_history_filters
 		@filters[:filter_type] = 'Any' if @filters[:filter_type].blank?
 		@filters[:filter_type_int_val] = 1 if @filters[:filter_type_int_val].blank?
-debugger
+
 		render :partial => '/shared/blank', :layout => false
 	end
 

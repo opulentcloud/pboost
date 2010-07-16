@@ -92,6 +92,16 @@ class GisRegion < ActiveRecord::Base
 				eot
 			end
 
+			if filters.has_key?(:voting_history_filters) && filters[:voting_history_filters].size > 0
+				sql += case filters[:filter_type]
+					when 'Any' then build_any_voting_history_query(filters)
+					when 'All' then build_all_voting_history_query(filters)
+					when 'At Least' then build_at_least_voting_history_query(filters)
+					when 'Exactly' then build_exactly_voting_history_query(filters)
+					when 'No More Than' then build_no_more_than_voting_history_query(filters)
+				end
+			end
+
 debugger
 		sql1 = sql1_header + sql + ';'
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
@@ -241,4 +251,82 @@ debugger
 #		r
 	end
 
+private
+	#===== PRIVATE INSTANCE METHODS =====
+	def build_any_voting_history_query(filters)
+		sql = 'AND ('
+		query_type = nil
+
+		filters[:voting_history_filters].each do |e|
+			vt = VotingHistoryFilter::VOTING_TYPES.map { |disp,value| [disp,value] }.to_a
+
+			vt.each do |a|
+				if a[0] == e.query_vote_type
+					query_type = a[1]
+					break
+				end
+			end
+			
+			case query_type
+				when 'Voted' then
+					sql += "EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') OR "
+				when 'Didn\'t Vote' then
+					sql += "NOT EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') OR "
+				else
+					sql += "EXISTS (SELECT * FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}' AND \"voting_history_voters\".\"voter_type\" = '#{query_type}' ) OR "
+			end
+		end
+
+		sql = sql[0,sql.length-4]
+		sql += ')'
+	end
+
+	def build_all_voting_history_query(filters)
+		sql = build_any_voting_history_query(filters)
+		sql.gsub(' OR ', ' AND ')
+	end
+
+	def build_x_limit_query(filters)
+		sql = 'AND ('
+		query_type = nil
+
+		filters[:voting_history_filters].each do |e|
+			vt = VotingHistoryFilter::VOTING_TYPES.map { |disp,value| [disp,value] }.to_a
+
+			vt.each do |a|
+				if a[0] == e.query_vote_type
+					query_type = a[1]
+					break
+				end
+			end
+			
+			case query_type
+				when 'Voted' then
+					sql += "(SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') + "
+				when 'Didn\'t Vote' then
+					sql += "CASE (SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}') WHEN 0 THEN 1 ELSE 0 END + "
+				else
+					sql += "(SELECT COUNT(*) FROM \"voting_history_voters\" WHERE \"voting_history_voters\".\"voter_id\" = \"voters\".\"id\" AND \"voting_history_voters\".\"election_year\" = #{e.year} AND \"voting_history_voters\".\"election_type\" = '#{e.election_type}' AND \"voting_history_voters\".\"voter_type\" = '#{query_type}' ) + "
+			end
+		end
+
+		sql = sql[0,sql.length-3]
+	
+	end
+
+	def build_no_more_than_voting_history_query(filters)
+		sql = build_x_limit_query(filters)
+		sql += " <= #{filters[:filter_type_int_val]})"
+	end
+
+	def build_exactly_voting_history_query(filters)
+		sql = build_x_limit_query(filters)
+		sql += " = #{filters[:filter_type_int_val]})"
+	end
+
+	def build_at_least_voting_history_query
+		sql = build_x_limit_query(filters)
+		sql += " >= #{filters[:filter_type_int_val]})"
+	end
+		
 end
