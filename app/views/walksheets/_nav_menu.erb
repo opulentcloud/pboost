@@ -8,7 +8,7 @@
 	<% if @walksheet && !@walksheet.new_record? %>
 		<td><%=link_to 'List Walk Sheets', walksheets_path %></td>
 		<td><%= link_to 'View Walk Sheet', @walksheet %></td>
-		<td><%= link_to 'Edit Walk Sheet', edit_walksheet_path(@walksheet) %></td>
+		<!--<td><%= link_to 'Edit Walk Sheet', edit_walksheet_path(@walksheet) %></td>-->
 		<td><%= link_to 'Delete Walk Sheet', @walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
   <% end %>

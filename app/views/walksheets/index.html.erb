@@ -12,7 +12,7 @@
       <td align="center"><%=h walksheet.name %></td>
       <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.constituent_count) : '*Populating' %></td>
       <td>&nbsp;&nbsp;<%= link_to "Show", walksheet %></td>
-      <td> &nbsp;<%= link_to "Edit", edit_walksheet_path(walksheet) %></td>
+      <!--<td> &nbsp;<%= link_to "Edit", edit_walksheet_path(walksheet) %></td>-->
       <td> &nbsp;<%= link_to "Delete", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
