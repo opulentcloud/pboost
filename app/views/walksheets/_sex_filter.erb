@@ -1,4 +1,5 @@
 		<div id="sex_group">
+		<p>
 		<% fields_for "walksheet[sex_filter_attributes]", sex_filter do |sf| %>
 			<%= sf.label :string_val, 'Sex:' %><br />
 			
@@ -7,4 +8,5 @@
 				<%= sf.radio_button :string_val, st[1] %> <%= "#{st[0]}" %> &nbsp;
 			<% end %>
 		<% end %>
+		</p>
 		</div>

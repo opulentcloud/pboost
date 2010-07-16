@@ -8,7 +8,7 @@
 	<% accordions_for do |accordion| %>
 
 	<% accordion.create("geo", "&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS") do %>
-
+	
 		<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
 			<% if @walksheet.political_campaign.congressional_district %>
 				<p>
@@ -79,12 +79,14 @@
 	</p>
 
 	<p>
-		Party: <i>(leave blank for all)</i><br />
+		Party: <i>(leave blank for all)</i>
 		<div id="party_group">
+		<p>
 		<% Party.all.each do |party| %>
 			<%= check_box_tag "walksheet[party_ids][]", party.id, @walksheet.party_filters.map(&:int_val).include?(party.id), :index => nil %>
 			<%=h party.name %> &nbsp;
 		<% end %>
+		</p>
 		</div>
 	</p>
 	<% end %>
