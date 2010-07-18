@@ -28,7 +28,7 @@ class ContactList < ActiveRecord::Base
 	has_many :addresses, :through => :contact_list_addresses
 	has_one :gis_region_filter, :dependent => :destroy
 	accepts_nested_attributes_for :gis_region_filter
-	has_one :gis_region
+	has_one :gis_region, :dependent => :destroy
 	accepts_nested_attributes_for :gis_region
 	has_many :voting_history_filters, :dependent => :destroy
 	accepts_nested_attributes_for :voting_history_filters
