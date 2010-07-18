@@ -16,9 +16,9 @@ class ReportsController < ApplicationController
 
 	def show
 		if RAILS_ENV == 'production'
-		send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
+		send_file "#{RAILS_ROOT}/docs/canvass_list_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
 		else
-			send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf"
+			send_file "#{RAILS_ROOT}/docs/canvass_list_#{@walksheet.id}.pdf", :type => "application/pdf"
 		end
 		return
 		#@lines_per_page = 28
@@ -32,19 +32,19 @@ class ReportsController < ApplicationController
 	end
 
 	def send_pdf_file
-		send_file "#{RAILS_ROOT}/docs/walksheet_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
+		send_file "#{RAILS_ROOT}/docs/canvass_list_#{@walksheet.id}.pdf", :type => "application/pdf", :x_sendfile => true
 	end
 
 	def printable_list
 		pdf = WalksheetReport.new(:walksheet => walksheet, :page_layout => :landscape).to_pdf
 		send_data pdf, :type => 'application/pdf',
-									:filename => 'walksheet.pdf'
+									:filename => 'canvass_list.pdf'
 	end
 
 	def csv_list
 		csv = render_walk_sheet_list_as :csv
 		send_data csv, :type => 'text/csv',
-			:filename => 'walksheet.csv'
+			:filename => 'canvass_list.csv'
 	end
 
 protected
@@ -56,7 +56,7 @@ protected
 		begin
     @walksheet = current_political_campaign.walksheets.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-    	flash[:error] = "The requested Walk Sheet was not found."
+    	flash[:error] = "The requested Canvass List was not found."
     	redirect_back_or_default customer_control_panel_url
     end
 	end

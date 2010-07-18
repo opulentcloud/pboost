@@ -126,12 +126,20 @@ class ContactList < ActiveRecord::Base
 	end
 	
 	def delete_file
-		fname = "#{RAILS_ROOT}/docs/walksheet_#{self.id}.pdf"
+		fname = "#{RAILS_ROOT}/docs/canvass_list_#{self.id}.pdf"
 		if File.exists?(fname)
 			begin
 				File.delete(fname)
 			rescue
 			end
+		end
+
+		fname = "#{RAILS_ROOT}/docs/canvass_list_route_*_#{self.id}.pdf"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
 		end
 	end
 	

@@ -8,14 +8,14 @@ class WalksheetReport
 		if walksheet.gis_region && !walksheet.gis_region.geom2.nil?
 			walksheet.gis_region.geom2.each_with_index do |poly, index|
 				#build a pdf for each route.
-				walksheet.file_name = "docs/walksheet_route_#{index+1}_#{walksheet.id}.pdf"
+				walksheet.file_name = "docs/canvass_list_route_#{index+1}_#{walksheet.id}.pdf"
 				walksheet.route_index = index
 				WalksheetReport.generate_pdf(walksheet)
 			end
-			%x[pdfjoin --orient --tidy --outfile "docs/walksheet_#{walksheet.id}.pdf" "docs/walksheet_route_*_#{walksheet.id}.pdf"]
+			%x[pdfjoin --orient --tidy --outfile "docs/canvass_list_#{walksheet.id}.pdf" "docs/canvass_list_route_*_#{walksheet.id}.pdf"]
 
 		else
-			walksheet.file_name = "docs/walksheet_#{walksheet.id}.pdf"
+			walksheet.file_name = "docs/canvass_list_#{walksheet.id}.pdf"
 			walksheet.route_index = nil
 			WalksheetReport.generate_pdf(walksheet) #only 1 route
 		end
