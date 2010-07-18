@@ -2,14 +2,14 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
 	<tr>
 	<% if @walksheets %>
-		<td><%=link_to 'Add New Walk Sheet', new_walksheet_path %></td>
-		<td><%=link_to 'Refresh Walk Sheets', walksheets_path %></td>
+		<td><%=link_to 'Create Canvass List', new_walksheet_path %></td>
+		<td><%=link_to 'Refresh Canvass Lists', walksheets_path %></td>
 	<% end %>	
 	<% if @walksheet && !@walksheet.new_record? %>
-		<td><%=link_to 'List Walk Sheets', walksheets_path %></td>
-		<td><%= link_to 'View Walk Sheet', @walksheet %></td>
-		<!--<td><%= link_to 'Edit Walk Sheet', edit_walksheet_path(@walksheet) %></td>-->
-		<td><%= link_to 'Delete Walk Sheet', @walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td><%=link_to 'List Canvass Lists', walksheets_path %></td>
+		<td><%= link_to 'View Canvass List', @walksheet %></td>
+		<!--<td><%= link_to 'Edit Canvass List', edit_walksheet_path(@walksheet) %></td>-->
+		<td><%= link_to 'Delete Canvass List', @walksheet, :confirm => 'Are you sure you want to permanently delete this Canvass List?', :method => :delete %></td>
 	</tr>
   <% end %>
 </table>
