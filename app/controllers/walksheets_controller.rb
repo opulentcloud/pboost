@@ -12,7 +12,7 @@ class WalksheetsController < ApplicationController
   
   def new
 		if current_political_campaign.populated == false
-			flash[:error] = 'You can not add Walk Sheets until we have finished populating your Political Campaign Constituents'
+			flash[:error] = 'You can not add Canvass Lists until we have finished populating your Political Campaign Constituents'
 			redirect_to walksheets_path
 			return
 		end
@@ -46,7 +46,7 @@ class WalksheetsController < ApplicationController
 		@walksheet.political_campaign_id = current_political_campaign.id
 
 	  if @walksheet.save
-	    flash[:notice] = "Successfully created walksheet."
+	    flash[:notice] = "Successfully created Canvass List."
 			respond_to do |format|
 				format.html { redirect_to @walksheet }
 				format.js
@@ -65,7 +65,7 @@ class WalksheetsController < ApplicationController
 				format.js { 
 					flash.now[:error] = @walksheet.errors
 					if @walksheet.errors.nil?
-						flash.now[:error] = @walksheet.errors.add_to_base('Your Walksheet could not be created at this time.')
+						flash.now[:error] = @walksheet.errors.add_to_base('Your Canvass List could not be created at this time.')
 					end
 					logger.debug(flash[:error].each_full { |msg| msg }.join('\n'))
 					render :action => 'new' 
@@ -76,7 +76,7 @@ class WalksheetsController < ApplicationController
   
   def edit
   	if !@walksheet.is_editable?
-  		flash[:notice] = 'You can not edit this Walk Sheet while it is being populated.'
+  		flash[:notice] = 'You can not edit this Canvass List while it is being populated.'
   		redirect_to @walksheet
   	end
     @walksheet.build_age_filter if @walksheet.age_filter.nil?
@@ -122,7 +122,7 @@ class WalksheetsController < ApplicationController
 				@walksheet.populated = false
 				@walksheet.save
 				
-			  flash[:notice] = "Successfully updated walksheet."
+			  flash[:notice] = "Successfully updated Canvass List."
 			  redirect_to @walksheet
 			else
 				@walksheet.build_age_filter if @walksheet.age_filter.nil?
@@ -139,12 +139,12 @@ class WalksheetsController < ApplicationController
   
   def destroy
   	if !@walksheet.is_editable?
-  		flash[:notice] = 'You can not delete this Walk Sheet while it is being populated.'
+  		flash[:notice] = 'You can not delete this Canvass List while it is being populated.'
   		redirect_to @walksheet
   		return
   	end
     @walksheet.destroy
-    flash[:notice] = "Successfully destroyed walksheet."
+    flash[:notice] = "Successfully deleted Canvass List."
     redirect_to walksheets_url
   end
   
@@ -155,7 +155,7 @@ private
 		begin
     @walksheet = current_political_campaign.walksheets.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-    	flash[:error] = "The requested Walk Sheet was not found."
+    	flash[:error] = "The requested Canvass List was not found."
     	redirect_back_or_default customer_control_panel_url
     end
 	end

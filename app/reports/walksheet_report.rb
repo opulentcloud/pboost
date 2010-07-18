@@ -49,7 +49,7 @@ class WalksheetReport
 					"#{walksheet.political_campaign.state.name}"				
 			end					
 
-			header_row = [['',"Walk Sheet - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{location_header}","#{right_header}"]]
+			header_row = [['',"Canvass List - #{walksheet.political_campaign.candidate_name}",''],["#{left_header}","#{location_header}","#{right_header}"]]
 
 			repeat(:all) do
 				table(header_row)	do |t|

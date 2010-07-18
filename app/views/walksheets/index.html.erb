@@ -1,10 +1,10 @@
-<% title "Walk Sheets" %>
+<% title "Canvass Lists" %>
 
 <%= render :partial => 'nav_menu' %>
 
 <table border='0' cellpadding='6' cellspacing='0' width="100%">
   <tr>
-    <th align="center">Walk Sheet Name</th>
+    <th align="center">Canvass List Name</th>
     <th align="right">Constituent Count</th>
   </tr>
   <% for walksheet in @walksheets %>
@@ -13,7 +13,7 @@
       <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.constituent_count) : '*Populating' %></td>
       <td>&nbsp;&nbsp;<%= link_to "Show", walksheet %></td>
       <!--<td> &nbsp;<%= link_to "Edit", edit_walksheet_path(walksheet) %></td>-->
-      <td> &nbsp;<%= link_to "Delete", walksheet, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td> &nbsp;<%= link_to "Delete", walksheet, :confirm => 'Are you sure you wish to permanently delete this Canvass List?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>
