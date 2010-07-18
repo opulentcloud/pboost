@@ -29,7 +29,7 @@ class WalksheetReport
 			if walksheet.route_index.nil?			
 				left_header = "#{walksheet.name}"
 			else
-				left_header = "#{walksheet.name} - Route #{walksheet.route_index}"
+				left_header = "#{walksheet.name} - Route #{walksheet.route_index+1}"
 			end
 
 			if walksheet.route_index.nil?
@@ -101,7 +101,7 @@ class WalksheetReport
 			voters = nil
 			current_address = nil
 
-			walksheet.voters.all(:conditions => '"addresses".is_odd = false', :joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no_int, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
+			walksheet.voters_by_route('false').map do |a|
 					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
 					current_address = a.address.full_street_address if current_address.nil?					
 					if current_address == a.address.full_street_address
@@ -127,7 +127,7 @@ class WalksheetReport
 			current_address2 = nil
 
 			#now build all odd addresses
-			walksheet.voters.all(:conditions => '"addresses".is_odd = true', :joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no_int, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name').map do |a|
+			walksheet.voters_by_route('true').map do |a|
 					voter = [a.printable_name, a.sex, a.age.to_s, a.party, a.quality.to_s, a.state_file_id.to_s]
 					current_address2 = a.address.full_street_address if current_address2.nil?					
 					if current_address2 == a.address.full_street_address

@@ -125,17 +125,6 @@ class ContactList < ActiveRecord::Base
 		self.gis_region.geom2.size
 	end
 	
-	def voters_by_route
-		if self.gis_region.blank?
-			return nil if self.route_index > 0
-			return self.voters
-		end
-		
-		poly = self.gis_region.geom2[self.route_index]
-		return nil if poly.nil?
-		self.voters.all(:include => :address, :conditions => "(addresses.geom && '#{poly.as_hex_ewkb}' ) AND ST_contains('#{poly.as_hex_ewkb}',addresses.geom::geometry)")
-	end
-	
 	def delete_file
 		fname = "#{RAILS_ROOT}/docs/walksheet_#{self.id}.pdf"
 		if File.exists?(fname)
