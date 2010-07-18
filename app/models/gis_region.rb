@@ -102,7 +102,7 @@ class GisRegion < ActiveRecord::Base
 				end
 			end
 
-debugger
+#debugger
 		sql1 = sql1_header + sql + ';'
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 		sql_result.first[0].to_i

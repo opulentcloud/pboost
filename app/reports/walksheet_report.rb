@@ -5,15 +5,38 @@ class WalksheetReport
 	@@Headers = ['Address / Voter Name', 'Sex', 'Age', 'Party', 'Quality', 'New', 'Ethn', 'State ID', 'Y / N / U', 'AB','Sign','Trans']
 
 	def self.build(walksheet)
- 
-		Prawn::Document.generate("docs/walksheet_#{walksheet.id}.pdf", :page_layout => :landscape, :page_size => [612, 792], :left_margin => 10) do #, :page_size => [792, 612] 100,1200
+		if walksheet.gis_region && !walksheet.gis_region.geom2.nil?
+			walksheet.gis_region.geom2.each_with_index do |poly, index|
+				#build a pdf for each route.
+				walksheet.file_name = "docs/walksheet_route_#{index}_#{walksheet.id}.pdf"
+				walksheet.route_index = index
+				WalksheetReport.generate_pdf(walksheet)
+			end
+		else
+			walksheet.file_name = "docs/walksheet_#{walksheet.id}.pdf"
+			walksheet.route_index = nil
+			WalksheetReport.generate_pdf(walksheet) #only 1 route
+		end
+	end
 
-			font 'Helvetica'
+	def self.generate_pdf(walksheet)
+		 
+		Prawn::Document.generate("#{walksheet.file_name}", :page_layout => :landscape, :page_size => [612, 792], :left_margin => 10) do
+
+			self.font 'Helvetica'
 			self.font_size = 9
 			
-			left_header = "#{walksheet.name}"
+			if walksheet.route_index.nil?			
+				left_header = "#{walksheet.name}"
+			else
+				left_header = "#{walksheet.name} - Route #{walksheet.route_index}"
+			end
 
-			right_header = "# Of Voters: #{walksheet.voters.count}"
+			if walksheet.route_index.nil?
+				right_header = "# Of Voters: #{walksheet.voters.count}"
+			else
+				right_header = "# Of Voters: #{walksheet.voters_by_route.count}"
+			end
 
 			location_header = case walksheet.political_campaign.class.to_s
 				when 'MunicipalCampaign' then
