@@ -48,10 +48,23 @@ $('#walksheet_precinct_filter_attributes_string_val').ajaxAddOption('/precincts_
 	
 $(document).ready(function() {
 
+	$('h3#geo').click(function(event) {
+		event.preventDefault();
+		$('#geo_box').slideToggle();
+	});
+
+	$('h3#dem').click(function(event) {
+		event.preventDefault();
+		$('#dem_box').slideToggle();
+	});
+
+	$('h3#vh').click(function(event) {
+		event.preventDefault();
+		$('#vh_box').slideToggle();
+	});
+
 	//submit the form via ajax request.
 	$('#new_walksheet').submitWithAjax();
-	
-  $('#accordions').accordion();
 
 $('#walksheet_municipal_district_filter_attributes_string_val').bind("change", PrecinctOptionsPopulate2);
 

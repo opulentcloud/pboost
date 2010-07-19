@@ -5,10 +5,11 @@
     <%= f.text_field :name %>
   </p>
 
-	<% accordions_for do |accordion| %>
+	<div id="accordians">
 
-	<% accordion.create("geo", "&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS") do %>
-	
+	<h3 id="geo" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS</a></h3>
+	<div id="geo_box" style="display: none;">
 		<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
 			<% if @walksheet.political_campaign.congressional_district %>
 				<p>
@@ -53,10 +54,11 @@
 		</p>
 	
 			<%= render :partial => 'map/form' %>
-	<% end %>
+	</div>
 
-	<% accordion.create("dem", "&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS") do %>
-
+	<h3 id="dem" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS</a></h3>
+	<div id="dem_box" style="display: none;">
 	<p>
 		<%= render :partial => 'age_filter', :locals =>  { :age_filter => @walksheet.age_filter } %>
 	</p>
@@ -76,10 +78,11 @@
 		</p>
 		</div>
 	</p>
-	<% end %>
+	</div>
 
-	<% accordion.create("vh", "&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS") do %>
-
+	<h3 id="vh" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS</a></h3>
+	<div id="vh_box" style="display: none;">
 	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter } %>
 		
 		<table id ="voting_history_group" class="form_table">
@@ -94,8 +97,8 @@
 		</tr>	
 		<% end %>
 	</table>	
-	<% end %>
-	<% end %>
+	</div>
+	</div>
 
 	</hr />
 

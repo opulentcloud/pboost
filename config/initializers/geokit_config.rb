@@ -29,7 +29,7 @@ if defined? Geokit
 if RAILS_ENV=='development'
 	Geokit::Geocoders::google = 'ABQIAAAAP8PF3LMYnz-mbG7IgoZF6hQZwBjgfsfRkToaSbr0WUSUomvCZBQTOEt4-CqxsFZLuQiPXR2GQqgDMQ'
 else
-	Geokit::Geocoders::google = 'ABQIAAAAP8PF3LMYnz-mbG7IgoZF6hSrilMUV8zmD685EQMQ1vNkz0XZ4hRgkCOY9dtGJTQauUhXFR7fhheq9w'
+	Geokit::Geocoders::google = 'ABQIAAAAP8PF3LMYnz-mbG7IgoZF6hTxETx59xMCxjjGtYCy6kcInJkYKRQP5nrHPXzb8lZOUR2O5VF-bYGC7g'
 end
     
 	# This is your username and password for geocoder.us.
