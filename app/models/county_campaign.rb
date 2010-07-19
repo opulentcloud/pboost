@@ -13,7 +13,7 @@ class CountyCampaign < PoliticalCampaign
 	#===== PROPERTIES ======
 	def precincts
 		if self.council_district
-			self.council_district.precincts(:conditions => { :county_id => "#{self.count_id}" }) 
+			self.council_district.precincts(:conditions => { :county_id => "#{self.county_id}" }) 
 		else
 			self.county.precincts
 		end

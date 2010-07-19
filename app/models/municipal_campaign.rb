@@ -11,12 +11,11 @@ class MunicipalCampaign < PoliticalCampaign
 	validates_inclusion_of :muniwide, :in => [true, false], :message => 'Please choose yes or no'
 	validates_presence_of :municipal_district_id, :if => :require_municipal_district?
 
-	#===== PROPERTIES ======
 	def precincts
 		if self.municipal_district
-				self.municipal_district.precincts
+			self.municipal_district.precincts(:conditions => { :city_id => "#{self.city_id}" }) 
 		else
-				self.city.precincts
+			self.city.precincts
 		end
 	end
 	

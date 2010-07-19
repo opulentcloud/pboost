@@ -68,7 +68,8 @@ class UsersController < ApplicationController
 				@precincts = current_political_campaign.precincts
 			when 'cd' then
 				@precincts = current_political_campaign.precincts.all(:conditions => "council_district_id = #{@id}")
-				#@precincts = CouncilDistrict.find_by_code(@id).precincts.all(:conditions => { :county_id => current_political_campaign.county_id })
+			when 'mcomm_dist_code' then
+				@precincts = current_political_campaign.precincts.all(:conditions => "municipal_district_id = #{@id}")
 		end
 
 		respond_to do |format|
