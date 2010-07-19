@@ -18,9 +18,10 @@ class Walksheet < ContactList
 
 	#this is the data returned to print a walksheet.
 	def voters_by_route(is_odd = nil)
+	#debugger
 		return voters_by_route_all if is_odd.nil?
 		if self.gis_region.blank?
-			return nil if self.route_index > 0
+			return nil if !self.route_index.nil?
 			return self.voters.all(:conditions => "(addresses.is_odd = #{is_odd})", :joins => :address, :order => 'state, city, street_name, street_prefix, is_odd, street_no_int, street_no_half, street_type, street_suffix, apt_type, apt_no,  last_name, first_name')
 		end
 		
