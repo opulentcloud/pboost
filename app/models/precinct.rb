@@ -19,7 +19,7 @@ class Precinct < ActiveRecord::Base
 	def self.to_json(precincts)
 		s = "{\"\" : \"Please choose\",\n"
 		precincts.each do |c|
-			s += "\"#{c.id}\" : \"#{c.code}\",\n"
+			s += "\"#{c.code}\" : \"#{c.code}\",\n"
 		end
 		s = s[0,s.length-2]
 		s += "}"

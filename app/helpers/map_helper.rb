@@ -121,7 +121,7 @@ module MapHelper
 		run_javascript do |script|
 			script << "function update_map_precinct(ctrl) {"
 			#script << "	alert(ctrl.value);"
-			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_id='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"You may create up to 10 different routes on this map.</div>\"); });"
+			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"You may create up to 10 different routes on this map.</div>\"); });"
 			script << "}"
 		end
 	end

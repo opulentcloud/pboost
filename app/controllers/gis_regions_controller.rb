@@ -36,7 +36,7 @@ class GisRegionsController < ApplicationController
   end
   
   def plot_precinct_cluster
-	 	@precinct = current_political_campaign.precincts.find(params[:precinct_id].to_i)
+	 	@precinct = current_political_campaign.precincts.find(params[:precinct_code])
   end
   
   def count_in_poly
