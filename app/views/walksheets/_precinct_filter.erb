@@ -1,5 +1,5 @@
 		<% fields_for "walksheet[precinct_filter_attributes]", precinct_filter do |f| %>
 			<%= f.label :string_val, 'Precinct:' %><br />
-			<%= f.collection_select(:string_val, precincts, :id, :code, {:prompt => 'N/A'}, { :onchange => 'update_map_precinct(this);', :class => '' }) %>
+			<%= f.collection_select(:string_val, precincts, :code, :code, {:prompt => 'N/A'}, { :onchange => 'update_map_precinct(this);', :class => '' }) %>
 		<% end %>
 
