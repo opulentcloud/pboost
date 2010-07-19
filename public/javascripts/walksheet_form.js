@@ -50,17 +50,23 @@ $(document).ready(function() {
 
 	$('h3#geo').click(function(event) {
 		event.preventDefault();
-		$('#geo_box').slideToggle();
+		$('#geo_box').slideToggle('fast', function() {
+			//animation complete.
+		});
 	});
 
 	$('h3#dem').click(function(event) {
 		event.preventDefault();
-		$('#dem_box').slideToggle();
+		$('#dem_box').slideToggle('fast', function() {
+			//animation complete.
+		});
 	});
 
 	$('h3#vh').click(function(event) {
 		event.preventDefault();
-		$('#vh_box').slideToggle();
+		$('#vh_box').slideToggle('fast', function() {
+			//animation complete.
+		});
 	});
 
 	//submit the form via ajax request.
