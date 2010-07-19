@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	before_filter :require_user, :only => [:index, :show, :update, :destroy]
 	before_filter :get_user, :only => [:show, :edit, :update, :destroy]
-	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select]
+	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select, :precints_populate]
 	filter_access_to [:show, :update, :index, :destroy, :edit]
 
   # PUT /users/1
@@ -58,6 +58,23 @@ class UsersController < ApplicationController
     end
   end
 
+	def precincts_populate
+		@parent = params[:parent]
+		@id = params[:id]
+		@parent = 'none' if @id == '0'
+		
+		case @parent
+			when 'none' then
+				@precincts = current_political_campaign.county.precincts
+			when 'cd' then
+				@precincts = CouncilDistrict.find_by_code(@id).precincts.all(:conditions => { :county_id => current_political_campaign.county_id })
+		end
+
+		respond_to do |format|
+			format.json { render :text => Precinct.to_json(@precincts) }
+		end
+		
+	end
 
 	def populate_municipal_districts_select
 		@city = @state.cities.find_by_name(params[:city])

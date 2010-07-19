@@ -29,6 +29,14 @@ function set_map_vertices() {
 	vtext = "[" + vtext.substr(0, vtext.length-1) + "]"
 	$("#walksheet_gis_region_attributes_vertices").val(vtext);
 }
+
+function PrecinctOptionsPopulate() {
+	$('#walksheet_precinct_filter_attributes_string_val').children().remove();
+	q_val = this.value;
+	if (q_val == '') { q_val = 0; }
+$('#walksheet_precinct_filter_attributes_string_val').ajaxAddOption('/precincts_populate/cd/'+q_val+'.json', {}, false);
+
+}
 	
 $(document).ready(function() {
 
@@ -36,6 +44,8 @@ $(document).ready(function() {
 	$('#new_walksheet').submitWithAjax();
 	
   $('#accordions').accordion();
+
+$('#walksheet_council_district_filter_attributes_string_val').bind("change", PrecinctOptionsPopulate);
 
 $('#walksheet_voting_history_type_filter_attributes_string_val').bind('change', voting_history_type_filter_changed);
 
