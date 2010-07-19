@@ -12,7 +12,7 @@ class WalksheetsController < ApplicationController
   
   def new
 		if current_political_campaign.populated == false
-			flash[:error] = 'You can not add Canvass Lists until we have finished populating your Political Campaign Constituents'
+			flash[:error] = 'You can not add Canvass Lists until we have finished populating your Political Campaign Voters'
 			redirect_to walksheets_path
 			return
 		end

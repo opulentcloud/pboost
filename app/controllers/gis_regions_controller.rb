@@ -25,7 +25,7 @@ class GisRegionsController < ApplicationController
   
   def new
 		if current_political_campaign.populated == false
-			flash[:error] = 'You can not add GIS Regions until we have finished populating your Political Campaign Constituents'
+			flash[:error] = 'You can not add GIS Regions until we have finished populating your Political Campaign Voters'
 			redirect_to gis_regions_path
 			return
 		end

@@ -44,7 +44,7 @@
 	<% if current_political_campaign %>
 		<p>
 			<strong>Political Campaign:</strong>
-			<%=h current_political_campaign.campaign_description -%> <%=current_political_campaign.populated? ? '(' + number_with_delimiter(current_political_campaign.constituent_count)+ ' Constituents)' : '(*Populating Constituents)' %>
+			<%=h current_political_campaign.campaign_description -%> <%=current_political_campaign.populated? ? '(' + number_with_delimiter(current_political_campaign.constituent_count)+ ' Voters)' : '(*Populating Voters)' %>
 		</p>
 	<% end %>
     <%- flash.each do |name, msg| -%>

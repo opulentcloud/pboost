@@ -24,22 +24,9 @@
 		<% end %>
 
 		<% if @walksheet.political_campaign.class.to_s == 'StateCampaign' %>
-			<% if @walksheet.political_campaign.house_district %>
 				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.house_district.council_districts } %>
+					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.council_districts } %>
 				</p>
-			<% elsif @walksheet.political_campaign.senate_district %>
-				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.senate_district.council_districts } %>
-				</p>
-
-			<% else %>
-				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts } %>
-				</p>
-
-			<% end %>
-	
 		<% end %>
 
 		<% if @walksheet.political_campaign.class.to_s == 'CountyCampaign' %>

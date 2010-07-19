@@ -21,11 +21,21 @@ class StateCampaign < PoliticalCampaign
 	validates_presence_of :house_district_id, :if => Proc.new { |c| c.seat_type == 'State House' }
 
 	#===== PROPERTIES ======
+	def council_districts
+		if self.house_district
+			self.house_district.council_districts
+		elsif self.senate_district
+			self.senate_district.council_districts
+		else
+			self.state.council_districts
+		end							
+	end
+
 	def precincts
 		if self.house_district
-			self.house_district.precincts
+			self.house_district.precincts(:conditions => { :house_district_id => "#{self.house_district_id}" })
 		elsif self.senate_district
-			self.senate_district.precincts
+			self.senate_district.precincts(:conditions => { :senate_district_id => "#{self.senate_district_id}" })
 		else
 			self.state.precincts
 		end	
