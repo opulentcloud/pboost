@@ -121,7 +121,7 @@ module MapHelper
 		run_javascript do |script|
 			script << "function update_map_precinct(ctrl) {"
 			#script << "	alert(ctrl.value);"
-			script << "	jQuery.get('/customer/plot_precinct_cluster?precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"You may create up to 10 different routes on this map.</div>\"); });"
+			script << "	jQuery.get('/customer/plot_precinct_cluster?sess_id=#{@sess_id}&precinct_code='+ ctrl.value + '', function(data) { map.openInfoWindow(center_point, \"<div id='info_window_content'>\" + data + \"You may create up to 10 different routes on this map.</div>\"); });"
 			script << "}"
 		end
 	end
@@ -139,7 +139,7 @@ module MapHelper
 			script << "	$(\"#current_voter_count\").text(\"calculating...\");"
 			script << "	set_map_vertices();"
 			script << "	vertices = $(\"#walksheet_gis_region_attributes_vertices\").val();"
- 			script << "	jQuery.get('/customer/current_voter_count/'+vertices+'.js'+'?sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
+ 			script << "	jQuery.get('/customer/current_voter_count.js?vertices='+vertices+'&sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
 			script << "}"
 			script << ""
 			

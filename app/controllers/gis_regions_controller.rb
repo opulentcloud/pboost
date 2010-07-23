@@ -1,7 +1,7 @@
 class GisRegionsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_gis_region, :only => [:show, :edit, :update, :destroy]
-	before_filter :get_session_filters, :only => [:count_in_poly]
+	before_filter :get_session_filters, :only => [:count_in_poly, :plot_precinct_cluster]
 	filter_access_to :all
 	#this automatically populates session[:geo_location]
 	#with a GeoLoc object based on visitors ip address
@@ -37,6 +37,8 @@ class GisRegionsController < ApplicationController
   
   def plot_precinct_cluster
 	 	@precinct = current_political_campaign.precincts.find_by_code(params[:precinct_code])
+	 	@filters[:precinct_code] = @precinct.code unless @precinct.nil?
+	 	@filters.delete(:precinct_code) if @precinct.nil?
   end
   
   def count_in_poly

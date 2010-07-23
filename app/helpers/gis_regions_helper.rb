@@ -36,7 +36,7 @@ module GisRegionsHelper
 			@precinct.addresses.all(:conditions => 'geom is not null').each_with_index do |address,index|
 				center_point = Google::Location.new(:latitude => address.lat, :longitude => address.lng) if index == 0
 				clusterer.add_marker :location => { :latitude => address.lat, :longitude => address.lng }	
-			end
+			end unless @precinct.nil?
 
 			#script << "#{clusterer}"
 

@@ -77,6 +77,76 @@ class PoliticalCampaign < ActiveRecord::Base
 		end
 	end
 
+	#===== INSTANCE METHODS ======
+	def potential_voters_count(filters)
+
+		sql = ''
+
+		sql1_header = <<-eot
+					SELECT COUNT(*)
+					FROM  
+						"constituent_addresses", "addresses", "voters"
+					WHERE 
+						("constituent_addresses"."political_campaign_id" = #{self.id}) 
+						AND "addresses"."id" = "constituent_addresses"."address_id"
+						AND "voters"."address_id" = "addresses"."id"
+				eot
+
+			if filters.has_key?(:geom) && !filters[:geom].blank?
+					sql += <<-eot
+					AND 
+						("addresses"."geom" && '#{filters[:geom]}' ) 
+				 AND 
+						ST_contains('#{filters[:geom]}', "addresses"."geom"::geometry) 
+					eot
+			elsif filters.has_key?(:precinct_code)
+				sql += <<-eot
+					AND ("addresses"."precinct_code" = '#{filters[:precinct_code]}') 
+				eot
+			end
+
+			if filters.has_key?(:min_age) && filters.has_key?(:max_age)
+				sql += <<-eot
+					AND
+						("voters"."age" BETWEEN #{filters[:min_age]} AND #{filters[:max_age]})
+				eot
+			end
+
+			if filters.has_key?(:sex)
+				sql += <<-eot
+					AND
+						("voters"."sex" = '#{filters[:sex]}')
+				eot
+			end
+
+			if filters.has_key?(:party_filters)
+				@in = []
+				filters[:party_filters].split(',').each do |f|
+					@in.push(Party.find(f.to_i).code)
+				end
+
+				sql += <<-eot
+					AND
+						("voters"."party" IN ('#{@in.join(',')}'))
+				eot
+			end
+
+			if filters.has_key?(:voting_history_filters) && filters[:voting_history_filters].size > 0
+				sql += case filters[:filter_type]
+					when 'Any' then build_any_voting_history_query(filters)
+					when 'All' then build_all_voting_history_query(filters)
+					when 'At Least' then build_at_least_voting_history_query(filters)
+					when 'Exactly' then build_exactly_voting_history_query(filters)
+					when 'No More Than' then build_no_more_than_voting_history_query(filters)
+				end
+			end
+
+#debugger
+		sql1 = sql1_header + sql + ';'
+		sql_result = ActiveRecord::Base.connection.execute(sql1)
+		sql_result.first[0].to_i
+	end
+
 	#===== CLASS METHODS =====
 	def self.populate_constituents(political_campaign_id)
 

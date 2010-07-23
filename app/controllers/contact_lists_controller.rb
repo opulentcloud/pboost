@@ -4,7 +4,20 @@ class ContactListsController < ApplicationController
 	filter_access_to :all
 
 	def current_voter_count
-		@current_voter_count = 0
+	#debugger
+		@vertices = params[:vertices]
+		
+		if @vertices
+			r = GisRegion.new()
+			r.name = 'temp'
+			r.vertices = @vertices
+			r.valid?
+			if r.geom2
+				@filters[:geom] = r.geom2.as_hex_ewkb
+			end
+		end
+		
+		@current_voter_count = current_political_campaign.potential_voters_count(@filters)
 		
 		respond_to do |format|
 			format.html { }

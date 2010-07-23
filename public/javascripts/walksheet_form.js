@@ -85,11 +85,15 @@ $('#walksheet_age_filter_attributes_int_val').bind('change', age_filter_changed)
 $('#walksheet_age_filter_attributes_max_int_val').bind('change', age_filter_changed);
 
 $('div#sex_group').each(function () {
-	$(this).children('input:radio').bind('click', sex_filter_changed);
+	$(this).children('p').each(function () {
+		$(this).children('input:radio').bind('click', sex_filter_changed);
+	});	
 });
 
 $('div#party_group').each(function () {
-	$(this).children('input:checkbox').bind('click', party_filter_changed);
+	$(this).children('p').each(function () {
+		$(this).children('input:checkbox').bind('click', party_filter_changed);
+	});
 });
 
 $('table#voting_history_group').each(function () {
