@@ -17,9 +17,9 @@ class ClubTexting
 			self.express = exp
 			
 			#testing
-			self.user_name = 'pboost' if self.user_name.blank?
-			self.password = '' if self.password.blank?
-			self.phone_number = '9496357010' if self.phone_number.blank?
+			self.user_name = 'dstinnie' if self.user_name.blank?
+			self.password = 'china1' if self.password.blank?
+			self.phone_number = '9497357010' if self.phone_number.blank?
 			self.subject = 'Test Subject' if self.subject.blank?
 			self.message = 'Test Message' if self.message.blank?
 			self.express = '1' if self.express.blank?
@@ -53,7 +53,9 @@ class ClubTexting
 	end
 	
 	def self.valid_characters(text)
-
+		#valid characters are a-z, A-Z, 0-9, .,:;!?()~=+-_\/@$#&%
+		#the following characters count as two:
+		# ~ @ # % + = / \ \r\n
 	end
 
 	def self.translate_response(response)

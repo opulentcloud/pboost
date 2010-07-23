@@ -134,6 +134,14 @@ module MapHelper
  			script << "	jQuery.get('/customer/age_filter_changed/'+min_age+'/'+max_age+'/'+'?sess_id=#{@sess_id}', function(data) { });"
  			script << "} 	"
 			script << ""  
+
+			script << "function calc_current_voter_count() {"
+			script << "	$(\"#current_voter_count\").text(\"calculating...\");"
+			script << "	set_map_vertices();"
+			script << "	vertices = $(\"#walksheet_gis_region_attributes_vertices\").val();"
+ 			script << "	jQuery.get('/customer/current_voter_count/'+vertices+'.js'+'?sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
+			script << "}"
+			script << ""
 			
  			script << "function sex_filter_changed() {"
  			script << "	sex = $(this).val();"

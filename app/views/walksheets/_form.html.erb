@@ -1,9 +1,11 @@
 <% form_for @walksheet do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
+
+	<p>
+		<input type="button" value="Update Current Voter Count" onclick="calc_current_voter_count();" />&nbsp;&nbsp;
+		<strong>Current Voter Count: 
+		<span id="current_voter_count"><%=number_with_delimiter @walksheet.current_voter_count.nil? ? 0 : @walksheet.current_voter.count %></span></strong>
+	</p>
 
 	<h3 id="geo" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
 	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS</a>
@@ -104,5 +106,10 @@
 
 	<%= render :partial => 'gis_region', :locals =>  { :gis_region => @walksheet.gis_region } %>
 
-  <p><%= f.submit @walksheet.new_record? ? 'Create Walk Sheet' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
+  <p>
+    <%= f.label :name, 'Enter a unique name for this Canvass List:' %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p><%= f.submit @walksheet.new_record? ? 'Create Canvass List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
 <% end %>

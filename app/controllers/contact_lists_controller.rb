@@ -3,6 +3,15 @@ class ContactListsController < ApplicationController
 	after_filter :save_session_filters
 	filter_access_to :all
 
+	def current_voter_count
+		@current_voter_count = 0
+		
+		respond_to do |format|
+			format.html { }
+			format.js { }
+		end
+	end
+
 	def voting_history_filter_remove
 		voting_history_filters = @filters[:voting_history_filters] ||= []
 		voting_history_filters.each do |vhf|

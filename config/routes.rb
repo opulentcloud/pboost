@@ -10,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 		site.voting_history_type_filter_changed 'voting_history_type_filter_changed/:filter_type/:int_val', :action => 'voting_history_type_filter_changed', :conditions => { :method => :get }
 		site.voting_history_filter_remove 'voting_history_filter_remove/:election_id', :action => 'voting_history_filter_remove', :conditions => { :method => :get }
 		site.voting_history_filter_add 'voting_history_filter_add/:election_id/:vote_type', :action => 'voting_history_filter_add', :conditions => { :method => :get }
+		site.current_voter_count 'current_voter_count/:vertices.:format', :action => 'current_voter_count', :conditions => { :method => :get }
 	end
 	map.resources :contact_lists, :path_prefix => '/customer'
 

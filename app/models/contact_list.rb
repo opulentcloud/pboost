@@ -2,7 +2,7 @@ class ContactList < ActiveRecord::Base
 
 	#===== ACCESSORS =====
 	attr_accessor_with_default :repopulate, false
-	attr_accessor :file_name, :route_index
+	attr_accessor :file_name, :route_index, :current_voter_count
 
 	#===== SCOPES ======
 	default_scope :order => 'contact_lists.name'
