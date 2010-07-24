@@ -1,0 +1,19 @@
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">List Type</th>
+    <th align="center">List Name</th>
+    <th align="right">Voter Count</th>
+  </tr>
+  <% for contact_list in @contact_lists %>
+    <tr>
+    	<td align="center"><%=h contact_list.class.to_s %>
+      <td align="center"><%=h contact_list.name %></td>
+      <td align="right"><%=contact_list.populated? ? number_with_delimiter(contact_list.constituent_count) : '*Populating' %></td>
+      <!--<td>&nbsp;&nbsp;<%= link_to "Show", contact_list %></td>
+      <td> &nbsp;<%= link_to "Edit", edit_contact_list_path(contact_list) %></td>
+      <td> &nbsp;<%= link_to "Delete", contact_list, :confirm => 'Are you sure you wish to permanently delete this Contact List?', :method => :delete %></td>-->
+    </tr>
+  <% end %>
+</table>
+

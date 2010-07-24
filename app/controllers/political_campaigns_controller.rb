@@ -11,6 +11,7 @@ class PoliticalCampaignsController < ApplicationController
   
   def show
     @political_campaign = PoliticalCampaign.find(params[:id])
+    @contact_lists = @political_campaign.contact_lists
   end
   
   def new

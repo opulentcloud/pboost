@@ -14,6 +14,7 @@ class PoliticalCampaign < ActiveRecord::Base
 	has_many :users, :through => :organization
 	belongs_to :state
 	has_many :gis_regions, :dependent => :destroy
+	has_many :contact_lists
 	has_many :walksheets, :dependent => :destroy
 	has_many :constituents#, :dependent => :destroy
 	has_many :voters, :through => :constituents
