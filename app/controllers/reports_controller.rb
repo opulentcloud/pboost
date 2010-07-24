@@ -15,11 +15,11 @@ class ReportsController < ApplicationController
 	end
 
 	def show
-		if RAILS_ENV == 'production'
-		send_file "#{RAILS_ROOT}/docs/canvass_list_#{@contact_list.id}.pdf", :type => "application/pdf", :x_sendfile => true
-		else
-			send_file "#{RAILS_ROOT}/docs/canvass_list_#{@contact_list.id}.pdf", :type => "application/pdf"
+		respond_to do |format|
+			format.csv { send_csv_file }
+			format.pdf { send_pdf_file }
 		end
+		
 		return
 		#@lines_per_page = 28
 		#respond_to do |format|
@@ -31,8 +31,28 @@ class ReportsController < ApplicationController
 		#end
 	end
 
+	def send_csv_file
+		file_name = ''
+
+		case @contact_list.class.to_s
+			when 'sms_list' then 
+				file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
+		end	
+
+		if RAILS_ENV == 'production'
+			send_file "#{file_name}", :type => "text/csv", :x_sendfile => true
+		else
+			send_file "#{file_name}", :type => "text/csv"
+		end
+		
+	end
+
 	def send_pdf_file
+		if RAILS_ENV == 'production'
 		send_file "#{RAILS_ROOT}/docs/canvass_list_#{@contact_list.id}.pdf", :type => "application/pdf", :x_sendfile => true
+		else
+			send_file "#{RAILS_ROOT}/docs/canvass_list_#{@contact_list.id}.pdf", :type => "application/pdf"
+		end
 	end
 
 	def printable_list
