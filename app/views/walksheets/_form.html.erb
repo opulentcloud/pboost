@@ -14,12 +14,12 @@
 		<% if @walksheet.political_campaign.class.to_s == 'FederalCampaign' %>
 			<% if @walksheet.political_campaign.congressional_district %>
 				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts, :form => f } %>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.congressional_district.council_districts, :form => f } %>
 				</p>
 
 			<% else %>
 				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts, :form => f } %>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.state.council_districts, :form => f } %>
 				</p>
 
 			<% end %>
@@ -27,7 +27,7 @@
 
 		<% if @walksheet.political_campaign.class.to_s == 'StateCampaign' %>
 				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.council_districts, :form => f } %>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.council_districts, :form => f } %>
 				</p>
 		<% end %>
 
@@ -35,7 +35,7 @@
 
 			<% if @walksheet.political_campaign.council_district.nil? %>
 				<p>
-					<%= render :partial => 'council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all, :form => f } %>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @walksheet.council_district_filter, :council_districts => @walksheet.political_campaign.county.council_districts.all, :form => f } %>
 				</p>
 			<% end %>
 		
@@ -44,14 +44,14 @@
 		<% if @walksheet.political_campaign.class.to_s == 'MunicipalCampaign' %>
 			<% if @walksheet.political_campaign.municipal_district.nil? %>
 				<p>
-					<%= render :partial => 'municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all, :form => f } %>
+					<%= render :partial => 'contact_lists/municipal_district_filter', :locals =>  { :municipal_district_filter => @walksheet.municipal_district_filter, :municipal_districts => @walksheet.political_campaign.city.municipal_districts.all, :form => f } %>
 				</p>
 			<% end %>
 
 		<% end %>
 
 		<p>
-			<%= render :partial => 'precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts, :form => f } %>
+			<%= render :partial => 'contact_lists/precinct_filter', :locals =>  { :precinct_filter => @walksheet.precinct_filter, :precincts => @walksheet.political_campaign.precincts, :form => f } %>
 		</p>
 	
 		<p>
@@ -63,11 +63,11 @@
 	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS</a></h3>
 	<div id="dem_box" style="display: none;">
 	<p>
-		<%= render :partial => 'age_filter', :locals =>  { :age_filter => @walksheet.age_filter, :form => f } %>
+		<%= render :partial => 'contact_lists/age_filter', :locals =>  { :age_filter => @walksheet.age_filter, :form => f } %>
 	</p>
 
 	<p>
-		<%= render :partial => 'sex_filter', :locals => { :sex_filter => @walksheet.sex_filter, :form => f } %>
+		<%= render :partial => 'contact_lists/sex_filter', :locals => { :sex_filter => @walksheet.sex_filter, :form => f } %>
 	</p>
 
 	<p>
@@ -86,7 +86,7 @@
 	<h3 id="vh" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
 	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS</a></h3>
 	<div id="vh_box" style="display: none;">
-	<%= render :partial => 'voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter, :form => f, :record => @walksheet } %>
+	<%= render :partial => 'contact_lists/voting_history_type_filter', :locals => { :voting_history_type_filter => @walksheet.voting_history_type_filter, :form => f, :record => @walksheet } %>
 		
 		<table id ="voting_history_group" class="form_table">
 		<% Election.all.each_with_index do |election,index| %>
@@ -104,7 +104,7 @@
 
 	</hr />
 
-	<%= render :partial => 'gis_region', :locals =>  { :gis_region => @walksheet.gis_region } %>
+	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @walksheet.gis_region, :form => f } %>
 
   <p>
     <%= f.label :name, 'Enter a unique name for this Canvass List:' %><br />

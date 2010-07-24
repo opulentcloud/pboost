@@ -1,0 +1,22 @@
+<% title "SMS Lists" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">Date Created</th>
+    <th align="center">SMS List Name</th>
+    <th align="right">Voter Count</th>
+  </tr>
+  <% for sms_list in @sms_lists %>
+    <tr>
+			<td align="center"><%=format_date sms_list.created_at %>
+      <td align="center"><%=h sms_list.name %></td>
+      <td align="right"><%=sms_list.populated? ? number_with_delimiter(sms_list.constituent_count) : '*Populating' %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", sms_list %></td>
+      <!--<td> &nbsp;<%= link_to "Edit", edit_sms_list_path(sms_list) %></td>-->
+      <td> &nbsp;<%= link_to "Delete", sms_list, :confirm => 'Are you sure you wish to permanently delete this SMS List?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+

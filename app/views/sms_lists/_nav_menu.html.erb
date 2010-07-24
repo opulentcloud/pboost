@@ -1,0 +1,16 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @sms_lists %>
+		<td><%=link_to 'Create SMS List', new_sms_list_path %></td>
+		<td><%=link_to 'Refresh SMS Lists', sms_lists_path %></td>
+	<% end %>	
+	<% if @sms_list && !@sms_list.new_record? %>
+		<td><%=link_to 'List SMS Lists', sms_lists_path %></td>
+		<td><%= link_to 'View SMS List', @sms_list %></td>
+		<!--<td><%= link_to 'Edit SMS List', edit_sms_list_path(@sms_list) %></td>-->
+		<td><%= link_to 'Delete SMS List', @sms_list, :confirm => 'Are you sure you want to permanently delete this SMS List?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>
