@@ -104,7 +104,7 @@
 
 	</hr />
 
-	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @sms_list.gis_region } %>
+	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @sms_list.gis_region, :form => f } %>
 
   <p>
     <%= f.label :name, 'Enter a unique name for this SMS List:' %><br />

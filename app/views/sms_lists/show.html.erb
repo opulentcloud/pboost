@@ -1,0 +1,76 @@
+<% title "SMS List: #{@sms_list.name}" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<p>
+  <strong>Constituent Count:</strong>
+  <%=@sms_list.populated? ? number_with_delimiter(@sms_list.constituent_count) : '*Populating' %>
+	<% if @sms_list.populated? %>
+		<%=link_to 'Download SMS List', download_path(@sms_list.id, :format => 'csv') %>
+	<% end %>
+</p>
+
+<h3>GEOGRAPHIC FILTERS:</h3>	
+
+<% if @sms_list.precinct_filter %>
+	<p>
+		<strong>Precinct:</strong> 
+			<%=h @sms_list.precinct_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @sms_list.council_district_filter %>
+	<p>
+		<strong>Council District:</strong> 
+			<%=h @sms_list.council_district_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @sms_list.gis_region %>
+	<p>
+		<strong><%=h @sms_list.gis_region.geom2.size %> Custom Map Routes: </strong> 
+			<%=link_to 'View Routes On Map', gis_region_path(@sms_list.gis_region), { :target => "_blank" } %>
+	</p>
+<% end %>
+
+<h3>DEMOGRAPHIC FILTERS:</h3>
+
+<% if @sms_list.age_filter %>
+<p>
+  <strong>Age Range:</strong>
+	  <%= @sms_list.age_filter.int_val %> to <%= @sms_list.age_filter.max_int_val %>
+</p>
+<% end %>
+
+<% if @sms_list.sex_filter %>
+<p>
+  <strong>Sex:</strong>
+	  <%=h @sms_list.sex_filter.string_val %>
+</p>
+<% end %>
+
+<% if @sms_list.party_filters.size > 0 %>
+<p>
+	<strong>Party:</strong>
+	<%= @sms_list.party_filters.map { |f| Party.find(f.int_val).name }.join(',') %>
+</p>
+<% end %>
+
+<h3>VOTING HISTORY FILTERS:</h3>
+
+<% if @sms_list.voting_history_type_filter %>
+	<p>Include voters who did <%=h @sms_list.voting_history_type_filter.string_val %> 
+	<% if ['At Least', 'Exactly', 'No More Than'].include?(@sms_list.voting_history_type_filter.string_val) %>
+	<%= @sms_list.voting_history_type_filter.int_val %> 
+	<% end %>
+	of the following:</p>
+<% end %>
+
+<% if @sms_list.voting_history_filters.size > 0 %>
+<p>
+	<% @sms_list.voting_history_filters.each do |f| %>
+	<strong><%=h f.election.description %></strong> <%=h f.string_val %><br />
+	<% end %>
+</p>
+<% end %>
+
