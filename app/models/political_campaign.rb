@@ -25,6 +25,8 @@ class PoliticalCampaign < ActiveRecord::Base
 
 	#===== EVENTS ======
 	def before_validation
+		self.repopulate = true if (self.repopulate == "1")
+	
 		if self.type == 'FederalCampaign'
 			self.seat_sought = self.seat_type
 		elsif self.type == 'StateCampaign'
@@ -47,6 +49,14 @@ class PoliticalCampaign < ActiveRecord::Base
 		true
 	end
 
+	def before_save
+		if self.repopulate == true
+			self.constituent_count = 0
+			self.populated = false
+		end
+		true
+	end
+
 	def before_destroy
 		return if self.new_record?
 		sql = "DELETE FROM constituent_addresses WHERE political_campaign_id = #{self.id}"
@@ -56,7 +66,8 @@ class PoliticalCampaign < ActiveRecord::Base
 		ActiveRecord::Base.connection.execute(sql)
 	end
 
-	#==== PROPERTIES =====
+	#==== ACCESSORS =====
+	attr_accessor_with_default :repopulate, false
 	attr_accessor :city_text
 
 	def lat
@@ -265,6 +276,7 @@ class PoliticalCampaign < ActiveRecord::Base
 
 		political_campaign.constituent_count = political_campaign.constituents.count
 		political_campaign.populated = true
+		political_campaign.repopulate = false
 		political_campaign.save!
 	end
 	

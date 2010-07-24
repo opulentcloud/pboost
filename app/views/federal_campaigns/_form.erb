@@ -16,4 +16,7 @@
     <%= f.label :congressional_district_id %><br />
 		<%= f.collection_select(:congressional_district_id, @federal_campaign.state.congressional_districts, :id, :cd, {:prompt => true}, :class => '') %>
   </p>
+  <p>
+    <%= f.check_box :repopulate %> <%= f.label :repopulate, 'Re-populate voters for this Campaign?' %>
+  </p>
 

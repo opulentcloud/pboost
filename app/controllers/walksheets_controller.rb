@@ -97,7 +97,7 @@ class WalksheetsController < ApplicationController
 			if params[:walksheet][:election_ids].nil?
 				@walksheet.voting_history_filters.destroy_all
 			end
-			debugger
+			#debugger
 			if @walksheet.update_attributes(params[:walksheet])
 			 	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
 				

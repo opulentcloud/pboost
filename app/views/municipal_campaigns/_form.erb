@@ -22,4 +22,7 @@
     <%= f.label :municipal_district_id %><br />
     <%= f.collection_select(:municipal_district_id, @municipal_campaign.city.municipal_districts, :id, :code, {:prompt => true }, :class => 'required' ) %>
   </p>
+  <p>
+    <%= f.check_box :repopulate %> <%= f.label :repopulate, 'Re-populate voters for this Campaign?' %>
+  </p>
 
