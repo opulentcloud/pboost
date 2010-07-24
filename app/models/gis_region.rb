@@ -324,7 +324,7 @@ private
 		sql += " = #{filters[:filter_type_int_val]})"
 	end
 
-	def build_at_least_voting_history_query
+	def build_at_least_voting_history_query(filters)
 		sql = build_x_limit_query(filters)
 		sql += " >= #{filters[:filter_type_int_val]})"
 	end

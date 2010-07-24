@@ -1,6 +1,6 @@
 		<div id="sex_group">
 		<p>
-		<% fields_for "walksheet[sex_filter_attributes]", sex_filter do |sf| %>
+		<% form.fields_for :sex_filter, sex_filter do |sf| %>
 			<%= sf.label :string_val, 'Sex:' %><br />
 			
 			<% SexFilter::SEX_TYPES.map {|disp,value| [disp,value]}.each do |st| %>

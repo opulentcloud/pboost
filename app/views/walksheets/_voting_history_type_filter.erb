@@ -1,6 +1,6 @@
-<% fields_for "walksheet[voting_history_type_filter_attributes]", voting_history_type_filter do |f| %>
+<% form.fields_for :voting_history_type_filter, voting_history_type_filter do |f| %>
 	<p>Include voters who did <%= f.select :string_val, VotingHistoryTypeFilter::VOTING_HISTORY_TYPES -%> 
-	<% if @walksheet.new_record? || @walksheet.voting_history_type_filter.nil? ||  ['Any','All'].include?(@walksheet.voting_history_type_filter.string_val) %>
+	<% if record.new_record? || record.voting_history_type_filter.nil? ||  ['Any','All'].include?(record.voting_history_type_filter.string_val) %>
 		<span id="xval" style="display: none;">	
 	<% else %>
 		<span id="xval" style="display: inline;">	

@@ -1,4 +1,4 @@
-		<% fields_for "walksheet[council_district_filter_attributes]", council_district_filter do |f| %>
+		<% form.fields_for :council_district_filter, council_district_filter do |f| %>
 			<%= f.label :string_val, 'Council District:' %><br />
 			<%= f.collection_select(:string_val, council_districts, :code, :code, {:prompt => 'N/A'}, :class => '') %>
 		<% end %>
