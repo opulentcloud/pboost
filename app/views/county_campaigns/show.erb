@@ -1,6 +1,11 @@
 <% title "County Campaign: #{@county_campaign.campaign_description}" %>
 <%= render :partial => 'nav_menu' %>
 <p>
+	<strong># Of Voters:</strong> 
+<%=@county_campaign.populated? ? number_with_delimiter(@county_campaign.constituent_count) : '*Populating' %>
+</p>
+
+<p>
   <strong>Candidate Name:</strong>
   <%=h @county_campaign.candidate_name %>
 </p>
