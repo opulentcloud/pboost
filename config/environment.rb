@@ -32,6 +32,7 @@ Rails::Initializer.run do |config|
 	config.gem 'geokit'
 	config.gem 'GeoRuby', :lib => 'geo_ruby', :version => '1.3.4'
 	config.gem 'postgis_adapter'
+	config.gem 'ruport'
 	config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
 			
   # Only load the plugins named here, in the order given (default is alphabetical).
