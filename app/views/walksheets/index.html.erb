@@ -4,11 +4,13 @@
 
 <table border='0' cellpadding='6' cellspacing='0' width="100%">
   <tr>
+		<th align="center">Date Created</th>
     <th align="center">Canvass List Name</th>
     <th align="right">Voter Count</th>
   </tr>
   <% for walksheet in @walksheets %>
     <tr>
+			<td align="center"><%=format_date walksheet.created_at %>
       <td align="center"><%=h walksheet.name %></td>
       <td align="right"><%=walksheet.populated? ? number_with_delimiter(walksheet.constituent_count) : '*Populating' %></td>
       <td>&nbsp;&nbsp;<%= link_to "Show", walksheet %></td>

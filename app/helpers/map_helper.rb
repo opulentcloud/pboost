@@ -69,7 +69,7 @@ module MapHelper
 		run_javascript do |script|
 			script << "function init_new_poly(){"
 			script << " if (polygon_index > 9) {"
-			script << "	alert('Sorry, you can not have more than 10 routes on a single walksheet.');"
+			script << "	alert('Sorry, you can not have more than 10 routes on this list.');"
 			script << " return;"
 			script << "}"
 			script << "	polygon_index++;"
@@ -126,11 +126,11 @@ module MapHelper
 		end
 	end
   
-  def init_map_events
+  def init_map_events(the_class)
   	run_javascript do |script|
  			script << "function age_filter_changed() {"
-			script << "	min_age = $('#walksheet_age_filter_attributes_int_val').val();"
-			script << " max_age = $('#walksheet_age_filter_attributes_max_int_val').val()"
+			script << "	min_age = $('##{the_class}_age_filter_attributes_int_val').val();"
+			script << " max_age = $('##{the_class}_age_filter_attributes_max_int_val').val()"
  			script << "	jQuery.get('/customer/age_filter_changed/'+min_age+'/'+max_age+'/'+'?sess_id=#{@sess_id}', function(data) { });"
  			script << "} 	"
 			script << ""  
@@ -138,7 +138,7 @@ module MapHelper
 			script << "function calc_current_voter_count() {"
 			script << "	$(\"#current_voter_count\").text(\"calculating...\");"
 			script << "	set_map_vertices();"
-			script << "	vertices = $(\"#walksheet_gis_region_attributes_vertices\").val();"
+			script << "	vertices = $(\"##{the_class}_gis_region_attributes_vertices\").val();"
  			script << "	jQuery.get('/customer/current_voter_count.js?vertices='+vertices+'&sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
 			script << "}"
 			script << ""
@@ -165,7 +165,7 @@ module MapHelper
  			script << "function voting_history_type_filter_changed() {"
  			script << "	//alert('called');"
  			script << "	vhf = $(this).val();"
- 			script << " mv = $('#walksheet_voting_history_type_filter_attributes_int_val').val();"
+ 			script << " mv = $('##{the_class}_voting_history_type_filter_attributes_int_val').val();"
  			script << "	jQuery.get('/customer/voting_history_type_filter_changed/'+vhf+'/'+mv+'/'+'?sess_id=#{@sess_id}', function(data) { });"
 
 			script << "	$('span#xval').hide();"
@@ -181,7 +181,7 @@ module MapHelper
 			
  			script << "function voting_history_type_filter_int_val_changed() {"
  			script << "	//alert('called');"
- 			script << "	vhf = $('#walksheet_voting_history_type_filter_attributes_string_val').val();"
+ 			script << "	vhf = $('##{the_class}_voting_history_type_filter_attributes_string_val').val();"
  			script << " mv = $(this).val();"
  			script << "	jQuery.get('/customer/voting_history_type_filter_changed/'+vhf+'/'+mv+'/'+'?sess_id=#{@sess_id}', function(data) { });"
 			script << "}"

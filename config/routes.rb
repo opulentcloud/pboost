@@ -48,6 +48,8 @@ ActionController::Routing::Routes.draw do |map|
 	end
 	map.resources :reports, :path_prefix => '/customer'
 
+  map.resources :sms_lists, :path_prefix => '/customer'
+
   map.resources :state_campaigns, :path_prefix => '/admin'
 
 	#user signups and users resources

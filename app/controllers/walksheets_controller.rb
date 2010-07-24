@@ -4,7 +4,7 @@ class WalksheetsController < ApplicationController
 	filter_access_to :all
 
   def index
-    @walksheets = current_political_campaign.walksheets.all
+    @walksheets = current_political_campaign.walksheets.all(:order => 'contact_lists.created_at DESC')
   end
   
   def show

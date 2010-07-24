@@ -1,14 +1,14 @@
-<% title "Create Canvass List" %>
+<% title "Create SMS List" %>
 <%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
-<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'walksheet_form' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'sms_list_form' %>
 <%= include_google_javascript %>
 <%= new_init_map %>
 <%= init_map_new_poly %>
 <%= init_map_delete_current_poly %>
 <%= init_map_save_current_polys %>
 <%= init_map_update_map_precinct %>
-<%= init_map_events('walksheet') %>
+<%= init_map_events('sms_list') %>
 
 <%= render :partial => 'form' %>
 
-<p><%= link_to "Cancel and return to Canvass Lists", walksheets_path %></p>
+<p><%= link_to "Cancel and return to SMS Lists", sms_lists_path %></p>
