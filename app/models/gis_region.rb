@@ -52,8 +52,15 @@ class GisRegion < ActiveRecord::Base
 
 		sql = ''
 
-		sql1_header = <<-eot
-					SELECT COUNT(*)
+		list_type = filters[:list_type]
+		case list_type
+			when "sms_list" then
+				sql1_header = "SELECT COUNT(DISTINCT voters.cell_phone)\n"
+			else
+				sql1_header = "SELECT COUNT(*)\n"
+		end
+
+		sql1_header += <<-eot
 					FROM  
 						"constituent_addresses", "addresses", "voters"
 					WHERE 
