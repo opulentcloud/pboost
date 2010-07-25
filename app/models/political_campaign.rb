@@ -154,6 +154,14 @@ class PoliticalCampaign < ActiveRecord::Base
 				end
 			end
 
+		if filters.has_key?(:list_type)
+			if filters[:list_type] == 'sms_list'
+				sql += <<-eot
+				AND ("voters"."cell_phone" != '') 
+				eot
+			end
+		end
+
 #debugger
 		sql1 = sql1_header + sql + ';'
 		sql_result = ActiveRecord::Base.connection.execute(sql1)

@@ -115,7 +115,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def after_destroy
-		return true unless self.class.to_s == 'Walksheet'
+		return true unless ['Walksheet','SmsList'].include?(self.class.to_s)
 		delete_file
 	end
 
@@ -141,6 +141,15 @@ class ContactList < ActiveRecord::Base
 			rescue
 			end		
 		end
+		
+		fname = "#{RAILS_ROOT}/docs/sms_list_#{self.id}.csv"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
+		end
+		
 	end
 	
 	def is_editable?
@@ -249,6 +258,12 @@ class ContactList < ActiveRecord::Base
 					when 'No More Than' then build_no_more_than_voting_history_query
 				end
 			end
+
+		if self.class.to_s == 'SmsList'
+			sql += <<-eot
+			AND ("voters"."cell_phone" != '') 
+			eot
+		end
 
 		sql2_header = <<-eot
 			INSERT INTO contact_list_addresses

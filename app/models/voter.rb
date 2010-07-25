@@ -1,4 +1,5 @@
 class Voter < ActiveRecord::Base
+	acts_as_reportable
 
 	#===== ASSOCIATIONS ======
 	belongs_to :address

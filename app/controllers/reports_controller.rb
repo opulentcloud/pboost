@@ -17,7 +17,13 @@ class ReportsController < ApplicationController
 	def show
 		respond_to do |format|
 			format.csv { send_csv_file }
-			format.pdf { send_pdf_file }
+			format.pdf { 
+				if @contact_list.class.to_s != 'Walksheet'
+					@contact_list.errors.add_to_base('You can not print a Walksheet from this List.')
+					redirect_to contact_list_url(@contact_list)
+				end	
+				send_pdf_file 
+			}
 		end
 		
 		return
@@ -32,19 +38,39 @@ class ReportsController < ApplicationController
 	end
 
 	def send_csv_file
+		full_file_name = ''
 		file_name = ''
+		rendered_report = nil
 
-		case @contact_list.class.to_s
+		case @report_type
 			when 'sms_list' then 
-				file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
+				full_file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
+				file_name = "sms_list_#{@contact_list.id}.csv"
+				rendered_report = @contact_list.voters.report_table(:all,
+ :conditions => "cell_phone != ''",
+ :only => ['last_name', 'first_name', 'cell_phone']
+).save_as(full_file_name) unless File.exists?(full_file_name)
 		end	
 
-		if RAILS_ENV == 'production'
-			send_file "#{file_name}", :type => "text/csv", :x_sendfile => true
-		else
-			send_file "#{file_name}", :type => "text/csv"
+		if rendered_report
+			if rendered_report == ''
+				File.delete(full_file_name)
+				rendered_report = nil
+				render :text => 'There are no records found for this list.'
+				return
+			#else
+			#	send_data(rendered_report,
+			#		:type => 'text/csv',
+			#		:filename => file_name)
+			end
 		end
-		
+			
+		if RAILS_ENV == 'production'
+			send_file "#{full_file_name}", :type => "text/csv", :x_sendfile => true
+		else
+			send_file "#{full_file_name}", :type => "text/csv"
+		end
+
 	end
 
 	def send_pdf_file
@@ -74,7 +100,8 @@ protected
 
 	def get_contact_list
 		begin
-    @contact_list = current_political_campaign.contact_lists.find(params[:id])
+    	@contact_list = current_political_campaign.contact_lists.find(params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
+    	@report_type = params[:report_type]
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested List was not found."
     	redirect_back_or_default customer_control_panel_url

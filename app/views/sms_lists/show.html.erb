@@ -6,7 +6,7 @@
   <strong>Constituent Count:</strong>
   <%=@sms_list.populated? ? number_with_delimiter(@sms_list.constituent_count) : '*Populating' %>
 	<% if @sms_list.populated? %>
-		<%=link_to 'Download SMS List', download_path(@sms_list.id, :format => 'csv') %>
+		<%=link_to 'Download SMS List', sms_list_report_path(@sms_list.id, :report_type => 'sms_list', :format => 'csv') %>
 	<% end %>
 </p>
 

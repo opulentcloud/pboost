@@ -42,13 +42,18 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :political_campaigns, :path_prefix => '/admin'
 
-	map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|
-		site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
-		site.pdf 'pdf/:id', :action => 'send_pdf_file', :conditions => { :method => :get }
-	end
-	map.resources :reports, :path_prefix => '/customer'
+	#map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|
+		#site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
+		#site.pdf 'pdf/:id', :action => 'send_pdf_file', :conditions => { :method => :get }
+	#end
+	#map.resources :reports, :path_prefix => '/customer'
 
-  map.resources :sms_lists, :path_prefix => '/customer'
+	map.with_options(:controller => 'sms_lists', :path_prefix => '/customer') do |site|
+		site.resources :sms_lists do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+  #map.resources :sms_lists, :path_prefix => '/customer'
 
   map.resources :state_campaigns, :path_prefix => '/admin'
 
@@ -78,7 +83,12 @@ ActionController::Routing::Routes.draw do |map|
 		site.validate_signup 'signup/:step_id.:format', :action => 'validate_signup', :conditions => { :method => :post }
 	end
 
-  map.resources :walksheets, :path_prefix => '/customer'
+	map.with_options(:controller => 'walksheets', :path_prefix => '/customer') do |site|
+		site.resources :walksheets do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+  #map.resources :walksheets, :path_prefix => '/customer'
 
 #  map.connect ':controller/:action/:id'
 #  map.connect ':controller/:action/:id.:format'
