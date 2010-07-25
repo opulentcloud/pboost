@@ -47,8 +47,9 @@ class ReportsController < ApplicationController
 				full_file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
 				file_name = "sms_list_#{@contact_list.id}.csv"
 				rendered_report = @contact_list.voters.report_table(:all,
+ :select => "DISTINCT cell_phone",				
  :conditions => "cell_phone != ''",
- :only => ['last_name', 'first_name', 'cell_phone']
+ :only => ['cell_phone']
 ).save_as(full_file_name) unless File.exists?(full_file_name)
 		end	
 
