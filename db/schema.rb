@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100713232647) do
+ActiveRecord::Schema.define(:version => 20100726180921) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -161,6 +161,15 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
   add_index "contact_list_addresses", ["contact_list_id"], :name => "index_contact_list_addresses_on_contact_list_id"
   add_index "contact_list_addresses", ["contact_list_id", "address_id"], :name => "index_contact_list_addresses_on_contact_list_id_and_address_id", :unique => true
 
+  create_table "contact_list_smsses", :force => true do |t|
+    t.column "cell_phone", :string, :limit => 10, :null => false
+    t.column "contact_list_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "contact_list_smsses", ["contact_list_id"], :name => "index_contact_list_smses_on_contact_list_id"
+
   create_table "contact_list_voters", :force => true do |t|
     t.column "contact_list_id", :integer
     t.column "voter_id", :integer
@@ -180,6 +189,9 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
     t.column "type", :string, :limit => 100, :null => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "scheduled_at", :datetime
+    t.column "sms_text", :text
+    t.column "schedule", :boolean, :default => false
   end
 
   add_index "contact_lists", ["name", "type"], :name => "index_contact_lists_on_name_and_type"
@@ -240,6 +252,28 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
 
   add_index "elections", ["description"], :name => "index_elections_on_description", :unique => true
   add_index "elections", ["year", "election_type"], :name => "index_elections_on_year_and_election_type", :unique => true
+
+  create_table "events", :force => true do |t|
+    t.column "event_date", :datetime
+    t.column "event_code", :string, :limit => 25
+    t.column "event_message", :text
+    t.column "contact_list_id", :integer
+    t.column "address_id", :integer
+    t.column "voter_id", :integer
+    t.column "eventable_id", :integer
+    t.column "eventable_type", :string
+    t.column "type", :string, :limit => 64
+    t.column "delayed_job_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "events", ["address_id"], :name => "index_events_on_address_id"
+  add_index "events", ["contact_list_id"], :name => "index_events_on_contact_list_id"
+  add_index "events", ["eventable_id"], :name => "index_events_on_eventable_id"
+  add_index "events", ["eventable_type"], :name => "index_events_on_eventable_type"
+  add_index "events", ["type"], :name => "index_events_on_type"
+  add_index "events", ["voter_id"], :name => "index_events_on_voter_id"
 
   create_table "filters", :force => true do |t|
     t.column "type", :string, :limit => 64, :null => false

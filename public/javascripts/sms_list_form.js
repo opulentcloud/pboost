@@ -45,6 +45,14 @@ function PrecinctOptionsPopulate2() {
 $('#sms_list_precinct_filter_attributes_string_val').ajaxAddOption('/precincts_populate/mcomm_dist_code/'+q_val+'.json', {}, false);
 
 }
+
+function SchedulingOptionsShowHide() {
+	$('div#schedule').hide();
+
+	if (this.checked) {
+		$('div#schedule').show();
+	}
+}
 	
 $(document).ready(function() {
 
@@ -101,6 +109,8 @@ $('table#voting_history_group').each(function () {
 		$(this).children('tr').bind('click', voting_history_filter_changed);
 	});
 });
+
+$('#sms_list_schedule').bind("click", SchedulingOptionsShowHide);
 
 });
 

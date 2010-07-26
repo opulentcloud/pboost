@@ -5,12 +5,11 @@ class SmsListReport < Ruport::Controller
 	def setup
 		options.paper_orientation = :portrait
 		conditions = ["sms_list.id = ?", options.sms_list]
-		self.data = SmsList.find(options.sms_list).voters.report_table(:all,
- :conditions => { "cell_phone != ''" } 
- :only => ['last_name', 'first_name', 'cell_phone'], 
+		self.data = SmsList.find(options.sms_list).contact_list_smsses.report_table(:all,
+ :only => ['cell_phone']
 )
 	
-		data.rename_columns('last_name' => 'Last Name', 'first_name' => 'First Name', 'cell_phone', 'Cell Phone')
+		self.data.rename_columns('cell_phone' => 'Cell Phone')
 
 	end
 

@@ -44,6 +44,7 @@ class GisRegionsController < ApplicationController
   def count_in_poly
   #debugger
 			@poly = Polygon.from_coordinates([GisRegion.coordinates_from_text(params[:vertices])])
+			@filters[:list_type] = params[:list_type]
 
 			#logger.debug(params[:vertices])
 

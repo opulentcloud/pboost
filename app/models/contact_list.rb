@@ -35,6 +35,7 @@ class ContactList < ActiveRecord::Base
 	has_many :elections, :through => :voting_history_filters
 	has_one :voting_history_type_filter
 	accepts_nested_attributes_for :voting_history_type_filter
+	has_many :contact_list_smsses
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -68,7 +69,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_save
-
+debugger
 		if self.gis_region
 			self.gis_region = nil if self.gis_region.geom2.blank?
 		end
@@ -111,6 +112,13 @@ class ContactList < ActiveRecord::Base
 				
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
+
+		case self.class.to_s
+			when 'SmsList' then
+				sql = "DELETE FROM contact_list_smsses WHERE contact_list_id = #{self.id}"
+				ActiveRecord::Base.connection.execute(sql)
+		end
+
 		true
 	end
 
@@ -163,7 +171,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file if self.class.to_s == 'Walksheet'
+		delete_file if ['SmsList','Walksheet'].include?(self.class.to_s)
 
 		#unlink any addresses from this walksheet
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
@@ -265,21 +273,27 @@ class ContactList < ActiveRecord::Base
 			eot
 		end
 
-		sql2_header = <<-eot
-			INSERT INTO contact_list_addresses
-			SELECT
-				nextval('contact_list_addresses_id_seq') AS id, 
-				r.*, now() AS created_at, now() AS updated_at
-			FROM
-			(SELECT 
-				DISTINCT "contact_list_voters"."contact_list_id", "voters"."address_id" 
-			FROM 
-				"contact_list_voters", "voters"
-			WHERE
-				("contact_list_voters"."contact_list_id" = #{self.id})
-			AND
-				"voters"."id" = "contact_list_voters"."voter_id") AS r;		
-			eot
+		if self.class.to_s != 'Walksheet'
+			sql2_header = ";"
+		else
+
+			sql2_header = <<-eot
+				INSERT INTO contact_list_addresses
+				SELECT
+					nextval('contact_list_addresses_id_seq') AS id, 
+					r.*, now() AS created_at, now() AS updated_at
+				FROM
+				(SELECT 
+					DISTINCT "contact_list_voters"."contact_list_id", "voters"."address_id" 
+				FROM 
+					"contact_list_voters", "voters"
+				WHERE
+					("contact_list_voters"."contact_list_id" = #{self.id})
+				AND
+					"voters"."id" = "contact_list_voters"."voter_id") AS r;		
+				eot
+		
+		end
 
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
@@ -289,7 +303,20 @@ class ContactList < ActiveRecord::Base
 			WalksheetReport.build(self)
 		end
 
-		self.constituent_count = self.voters.count
+		if self.voters.count > 0 && self.class.to_s == 'SmsList'
+			self.voters.all(:select => 'DISTINCT voters.cell_phone', :conditions => "voters.cell_phone != ''").each do |voter|
+				cls = ContactListSmss.new
+				cls.cell_phone = voter.cell_phone
+				self.contact_list_smsses << cls
+			end
+		end
+
+		case self.class.to_s
+			when 'SmsList' then
+				self.constituent_count = self.contact_list_smsses.count
+			else	
+				self.constituent_count = self.voters.count
+		end
 		self.populated = true
 		self.repopulate = false
 		self.save!
@@ -387,4 +414,13 @@ private
 		sql = sql[0,sql.length-4]
 		sql += ')'
 	end
+	
+	def format_date(date_time)
+		date_time.strftime '%m/%d/%Y'
+	end
+
+	def format_date_time(date_time)
+		date_time.strftime '%m/%d/%Y %I:%M %p %Z'
+	end
+	
 end
