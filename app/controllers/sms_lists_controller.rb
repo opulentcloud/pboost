@@ -44,6 +44,19 @@ class SmsListsController < ApplicationController
     @sms_list.build_precinct_filter
 		@sms_list.build_voting_history_type_filter
   end
+
+	def intro
+    @sms_list = SmsList.new(params[:sms_list])
+		@upload_list = @sms_list.upload_list == "true"
+		if @sms_list.upload_list.blank?
+			flash[:error] = 'You must choose YES or NO below.'
+		else
+			self.new
+			@sms_list.upload_list = @upload_list
+		end
+debugger
+		render :action => 'new'
+	end
   
   def create
     @sms_list = SmsList.new(params[:sms_list])

@@ -1,6 +1,8 @@
 class SmsList < ContactList
 	acts_as_reportable
 
+	attr_accessor :upload_list
+
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
 		[ "n/a",	        "n/a" ],

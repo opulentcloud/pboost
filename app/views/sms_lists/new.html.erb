@@ -1,4 +1,11 @@
 <% title "Create SMS List" %>
+
+<% if @sms_list.upload_list.nil? %>
+	<%= render :partial => 'intro_form' %>
+<% elsif @sms_list.upload_list == true %>
+	UPLOAD A LIST
+<% else %>
+
 <%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
 <%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'sms_list_form' %>
 <%= include_google_javascript %>
@@ -11,4 +18,7 @@
 
 <%= render :partial => 'form' %>
 
+<% end %>
+
 <p><%= link_to "Cancel and return to SMS Lists", sms_lists_path %></p>
+
