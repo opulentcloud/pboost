@@ -79,3 +79,10 @@
 		<strong><%= @sms_list.status_display %></strong>
 	<p/>
 <% end %>
+
+<% if !@sms_list.sms_text.blank? %>
+	<p>
+		<strong>SMS Text Message: </strong><br />
+		<%=h @sms_list.sms_text %>
+	</p>
+<% end %>

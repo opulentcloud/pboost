@@ -13,6 +13,7 @@ class SmsList < ContactList
 	validates_datetime :scheduled_at, 
 		:after => lambda { Time.zone.now }, 
 		:if => :do_scheduling?
+	validates_presence_of :sms_text, :if => :do_scheduling?
 
 	#====== EVENTS ======
 	def before_save
@@ -53,7 +54,7 @@ class SmsList < ContactList
 			job = self.delayed_job
 			if !self.delayed_job_id.nil?
 				if !job.nil?
-					if !job.failed_at.nil? 
+					if !job.last_error.nil? 
 						'Failed'
 					elsif !job.locked_at.nil?
 						'Sending'
@@ -78,7 +79,7 @@ class SmsList < ContactList
 			when 'Sent' then format_date_time(self.scheduled_at)
 			when 'Scheduled' then format_date_time(self.scheduled_at)
 			when 'Sending' then format_date_time(job.locked_at)
-			when 'Failed' then format_date_time(job.failed_at)	
+			when 'Failed' then format_date_time(self.scheduled_at)	
 			else ''			
 		end
 		d = ': ' + d unless d.blank?
@@ -89,8 +90,6 @@ class SmsList < ContactList
 	def self.send!(sms_list_id)
 		@sms_list = SmsList.find(sms_list_id)
 		sleep 60
-		@sms_list.scheduled_at = Time.zone.now
-		@sms_list.save!
 	end
 	
 end
