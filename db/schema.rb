@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100727185320) do
+ActiveRecord::Schema.define(:version => 20100727220559) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -75,6 +75,21 @@ ActiveRecord::Schema.define(:version => 20100727185320) do
   add_index "addresses_gis_regions", ["address_id"], :name => "index_addresses_gis_regions_on_address_id"
   add_index "addresses_gis_regions", ["address_id", "gis_region_id"], :name => "index_addresses_gis_regions_on_address_id_and_gis_region_id", :unique => true
   add_index "addresses_gis_regions", ["gis_region_id"], :name => "index_addresses_gis_regions_on_gis_region_id"
+
+  create_table "attachments", :force => true do |t|
+    t.column "attachable_id", :integer
+    t.column "attachable_type", :string
+    t.column "type", :string
+    t.column "data_file_name", :string
+    t.column "data_content_type", :string
+    t.column "data_file_size", :integer
+    t.column "data_updated_at", :datetime
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "attachments", ["attachable_id", "attachable_type"], :name => "index_attachments_on_attachable_id_and_attachable_type", :unique => true
+  add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false

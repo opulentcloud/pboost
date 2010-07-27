@@ -10,6 +10,10 @@ class SmsList < ContactList
 		[ "Sending",				"Sending" ],
 		[ "Sent",				    "Sent" ]
 	]
+
+	#====== ASSOCIATIONS =======
+	has_one :sms_list_attachment, :as => :attachable, :dependent => :destroy
+	accepts_nested_attributes_for :sms_list_attachment
 	
 	#====== VALIDATIONS =======
 	validates_datetime :scheduled_at, 

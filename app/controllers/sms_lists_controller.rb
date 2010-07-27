@@ -43,6 +43,7 @@ class SmsListsController < ApplicationController
     @sms_list.build_municipal_district_filter
     @sms_list.build_precinct_filter
 		@sms_list.build_voting_history_type_filter
+    @sms_list.build_sms_list_attachment
   end
 
 	def intro
@@ -87,6 +88,7 @@ class SmsListsController < ApplicationController
 		  @sms_list.build_precinct_filter if 		  @sms_list.precinct_filter.nil?
     @sms_list.build_municipal_district_filter if     @sms_list.municipal_district_filter.nil?
 			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?
+    	@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
 
 			respond_to do |format|
       	format.html { render :action => 'new' }
@@ -120,6 +122,8 @@ class SmsListsController < ApplicationController
     @sms_list.build_precinct_filter if @sms_list.precinct_filter.nil?
 @sms_list.build_municipal_district_filter if     @sms_list.municipal_district_filter.nil?
 			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?    
+    	@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
+
   end
   
   def update
@@ -181,6 +185,8 @@ class SmsListsController < ApplicationController
 				@sms_list.build_precinct_filter if @sms_list.precinct_filter.nil?
 @sms_list.build_municipal_district_filter if     @sms_list.municipal_district_filter.nil?
 			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?
+    	@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
+
 			  render :action => 'edit'
 			end
 		end
