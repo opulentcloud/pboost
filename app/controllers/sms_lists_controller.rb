@@ -91,9 +91,15 @@ class SmsListsController < ApplicationController
   
   def edit
   	if !@sms_list.is_editable?
-  		flash[:notice] = 'You can not edit this SMS List while it is being populated.'
+  		flash[:error] = 'You can not edit this SMS List while it is being populated.'
   		redirect_to @sms_list
   	end
+  	
+  	if !@sms_list.status == 'n/a'
+  		flash[:error] = "You can not edit this SMS List because the current status is #{@sms_list.status}."
+  		redirect_to @sms_list
+  	end
+  	
     @sms_list.build_age_filter if @sms_list.age_filter.nil?
     @sms_list.build_sex_filter if @sms_list.sex_filter.nil?
     @sms_list.build_gis_region_filter if @sms_list.gis_region_filter.nil?
@@ -104,7 +110,13 @@ class SmsListsController < ApplicationController
   end
   
   def update
+  	if !@sms_list.status == 'n/a'
+  		flash[:error] = "You can not edit this SMS List because the current status is #{@sms_list.status}."
+  		redirect_to @sms_list
+  	end
+
 		@sms_list.schedule = true
+
 		if @sms_list.update_attributes(params[:sms_list])
 			  flash[:notice] = "Successfully scheduled SMS List For Delivery."
 			  redirect_to @sms_list
