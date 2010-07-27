@@ -36,6 +36,7 @@ class ContactList < ActiveRecord::Base
 	has_one :voting_history_type_filter
 	accepts_nested_attributes_for :voting_history_type_filter
 	has_many :contact_list_smsses
+	belongs_to :delayed_job, :dependent => :destroy
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -69,7 +70,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_save
-debugger
+#debugger
 		if self.gis_region
 			self.gis_region = nil if self.gis_region.geom2.blank?
 		end
