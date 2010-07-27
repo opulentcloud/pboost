@@ -129,5 +129,7 @@
 		</p>
 	</div>
 
-  <p><%= f.submit @sms_list.new_record? ? 'Create SMS List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
+  <p>
+  	<%= f.hidden_field :upload_list %>
+  	<%= f.submit @sms_list.new_record? ? 'Create SMS List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
 <% end %>

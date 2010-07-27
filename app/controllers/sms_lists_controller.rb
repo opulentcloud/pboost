@@ -54,7 +54,7 @@ class SmsListsController < ApplicationController
 			self.new
 			@sms_list.upload_list = @upload_list
 		end
-debugger
+
 		render :action => 'new'
 	end
   
