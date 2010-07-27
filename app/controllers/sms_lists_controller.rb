@@ -1,7 +1,22 @@
 class SmsListsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_sms_list, :only => [:show, :edit, :update, :destroy]
+	before_filter :get_sms_list, :only => [:unschedule, :show, :edit, :update, :destroy]
 	filter_access_to :all
+
+	def unschedule
+		if @sms_list.status != 'Scheduled'
+			flash[:error] = "We could not cancel the sending of this list because the current status is #{@sms_list.status}."
+		else
+			@sms_list.schedule = false
+			@sms_list.scheduled_at = nil
+			if @sms_list.save
+				flash[:notice] = 'Unschedule was successful.'
+			else
+				flash[:error] = 'We could not unschedule at this time.'
+			end
+		end
+		redirect_back_or_default sms_lists_path
+	end
 
   def index
     @sms_lists = current_political_campaign.sms_lists.all(:order => 'contact_lists.created_at DESC')
@@ -89,7 +104,16 @@ class SmsListsController < ApplicationController
   end
   
   def update
-		sms_list.transaction do
+		@sms_list.schedule = true
+		if @sms_list.update_attributes(params[:sms_list])
+			  flash[:notice] = "Successfully scheduled SMS List For Delivery."
+			  redirect_to @sms_list
+		else
+			  render :action => 'edit'
+		end
+
+		if 1 == 0
+		Smslist.transaction do
 			if params[:sms_list][:party_ids].nil?
 				@sms_list.party_filters.destroy_all  	
 			end
@@ -134,6 +158,7 @@ class SmsListsController < ApplicationController
 			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?
 			  render :action => 'edit'
 			end
+		end
 		end
   end
   

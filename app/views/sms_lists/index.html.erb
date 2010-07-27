@@ -18,6 +18,9 @@
       <td>&nbsp;&nbsp;<%= link_to "Show", sms_list %></td>
       <!--<td> &nbsp;<%= link_to "Edit", edit_sms_list_path(sms_list) %></td>-->
       <td> &nbsp;<%= link_to "Delete", sms_list, :confirm => 'Are you sure you wish to permanently delete this SMS List?', :method => :delete %></td>
+      <% if sms_list.schedule && sms_list.status == 'Scheduled' %>
+	      <td> &nbsp;<%= link_to "Unschedule", unschedule_sms_list_path(sms_list), :confirm => 'Are you sure you wish to cancel the Scheduled sending to this SMS List?' %></td>
+      <% end %>
     </tr>
   <% end %>
 </table>

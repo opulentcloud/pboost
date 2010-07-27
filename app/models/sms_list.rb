@@ -67,6 +67,8 @@ class SmsList < ContactList
 			else
 				'n/a'
 			end
+		else
+			'n/a'
 		end
 	end
 

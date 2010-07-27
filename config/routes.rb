@@ -49,6 +49,7 @@ ActionController::Routing::Routes.draw do |map|
 	#map.resources :reports, :path_prefix => '/customer'
 
 	map.with_options(:controller => 'sms_lists', :path_prefix => '/customer') do |site|
+		site.unschedule_sms_list 'unschedule_sms_list/:id', :action => 'unschedule', :conditions => { :method => :get }
 		site.resources :sms_lists do |site2|
 			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
 		end	
