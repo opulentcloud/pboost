@@ -24,6 +24,9 @@ class ClubTexting
 			txt = ClubTexting::TextMessage.new(self.user_name, self.password, sms.cell_phone, self.message, self.express)
 			sms.status = send_text(uri, http, txt)
 			sms.save!
+			if ['-1','-2','-7'].include?(sms.status)
+				raise "Exiting SMS Scheduled Send Prematurely Due To Error Code #{sms.status} being encountered."
+			end
 		end	
 
 		http = nil
