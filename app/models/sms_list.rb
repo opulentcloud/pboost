@@ -89,7 +89,8 @@ class SmsList < ContactList
 	#===== CLASS METHODS ======
 	def self.send!(sms_list_id)
 		@sms_list = SmsList.find(sms_list_id)
-		sleep 60
+		sms = ClubTexting.new(@sms_list.sms_text, @sms_list.contact_list_smsses.unsent)
+		sms.send_messages!
 	end
 	
 end
