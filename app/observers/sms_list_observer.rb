@@ -6,7 +6,8 @@ class SmsListObserver < ActiveRecord::Observer
 		if @@delayed_job == true
 			Delayed::Job.enqueue SmsListJob.new(sms_list.id)
 		else
-			sms_list.populate
+			Delayed::Job.enqueue SmsListJob.new(sms_list.id)
+			#sms_list.populate
 		end
 	end	
 

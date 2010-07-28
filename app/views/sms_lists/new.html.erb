@@ -3,8 +3,6 @@
 <% if @sms_list.upload_list.nil? %>
 	<%= render :partial => 'intro_form' %>
 <% elsif @sms_list.upload_list == true %>
-	<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'application', 'sms_list_upload_form' %>
-
 	<%= render :partial => 'upload_form' %>
 <% else %>
 

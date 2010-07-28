@@ -47,16 +47,32 @@ class SmsListsController < ApplicationController
   end
 
 	def intro
-    @sms_list = SmsList.new(params[:sms_list])
-		@upload_list = @sms_list.upload_list == "true"
-		if @sms_list.upload_list.blank?
-			flash[:error] = 'You must choose YES or NO below.'
-		else
-			self.new
-			@sms_list.upload_list = @upload_list
+    @intro_list = SmsList.new(params[:sms_list])
+
+		if @intro_list.upload_list.nil?
+			flash.now[:error] = 'You must choose YES or NO below.'
+			@sms_list = @intro_list
+			render :action => 'new'
+			return
 		end
 
+		@sess_id = UUIDTools::UUID.timestamp_create  
+
+	  @sms_list = current_political_campaign.sms_lists.build
+	  @gis_region = @sms_list.build_gis_region
+	  @sms_list.build_age_filter
+	  @sms_list.build_sex_filter
+	  @sms_list.build_gis_region_filter
+	  @sms_list.build_council_district_filter
+	  @sms_list.build_municipal_district_filter
+	  @sms_list.build_precinct_filter
+		@sms_list.build_voting_history_type_filter
+	  @sms_list.build_sms_list_attachment
+
+		@sms_list.upload_list = @intro_list.upload_list
+		@sms_list.do_mapping = @sms_list.upload_list
 		render :action => 'new'
+
 	end
   
   def create
@@ -73,8 +89,15 @@ class SmsListsController < ApplicationController
 	  end
 
 		@sms_list.political_campaign_id = current_political_campaign.id
-
 	  if @sms_list.save
+	  	if @sms_list.do_mapping
+	  		#if we have just a single field then we are good to go
+	  		#otherwise we have to ask the user which column is the
+	  		#cell phone field.
+	  		if @sms_list.need_mapping?
+	  			#render file for user to make mapping.
+	  		end
+	  	end
 	    flash[:notice] = "Successfully created SMS List."
 			respond_to do |format|
 				format.html { redirect_to @sms_list }

@@ -25,5 +25,9 @@ class Attachment < ActiveRecord::Base
 	def file_size
 		data_file_size
 	end
+	
+	def file_name
+		"#{RAILS_ROOT}/#{self.url[0,self.url.index(self.name)] + self.name}"
+	end
 end
 

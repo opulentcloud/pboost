@@ -1,8 +1,6 @@
 class SmsList < ContactList
 	acts_as_reportable
 
-	attr_accessor :upload_list
-
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
 		[ "n/a",	        "n/a" ],
@@ -12,7 +10,7 @@ class SmsList < ContactList
 	]
 
 	#====== ASSOCIATIONS =======
-	has_one :sms_list_attachment, :as => :attachable, :dependent => :destroy
+	has_one :sms_list_attachment, :as => :attachable
 	accepts_nested_attributes_for :sms_list_attachment
 	
 	#====== VALIDATIONS =======

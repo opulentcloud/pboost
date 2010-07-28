@@ -3,6 +3,7 @@ class SmsListReport < Ruport::Controller
 	stage :list
 
 	def setup
+	debugger
 		options.paper_orientation = :portrait
 		conditions = ["sms_list.id = ?", options.sms_list]
 		self.data = SmsList.find(options.sms_list).contact_list_smsses.report_table(:all,
