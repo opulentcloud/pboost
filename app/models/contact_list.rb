@@ -12,13 +12,9 @@ class ContactList < ActiveRecord::Base
 		@do_mapping = [true,'true',1,'1','T','t'].include?(value.class == String ? value.downcase : value)
 	end
 	
-	def upload_list
-		@upload_list
-	end
-	
-	def upload_list=(value)
-		@upload_list = [true,'true',1,'1','T','t'].include?(value.class == String ? value.downcase : value)
-	end
+#	def upload_list=(value)
+#		@upload_list = [true,'true',1,'1','T','t'].include?(value.class == String ? value.downcase : value)
+#	end
 	
 	#===== SCOPES ======
 	default_scope :order => 'contact_lists.name'
@@ -53,7 +49,6 @@ class ContactList < ActiveRecord::Base
 	accepts_nested_attributes_for :voting_history_type_filter
 	has_many :contact_list_smsses
 	belongs_to :delayed_job, :dependent => :destroy
-	has_one :sms_list_attachment, :as => :attachable, :dependent => :destroy
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -146,13 +141,6 @@ class ContactList < ActiveRecord::Base
 	end
 
 	#===== INSTANCE METHODS =====
-	#determine if we need to ask the user which column is the cell phone column if we have a manually uploaded file.
-	def need_mapping?
-		return false unless self.upload_list == true
-		 i = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
-		 i.need_mapping?	
-	end
-
 	def route_count
 		return 0 if self.gis_region.nil?
 		self.gis_region.geom2.size
@@ -196,12 +184,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		case self.class.to_s
-			when 'SmsList' then
-				self.upload_list = true if !self.sms_list_attachment.nil?
-		end
-		
-		delete_file if ['SmsList','Walksheet'].include?(self.class.to_s)
+		delete_file if ['Walksheet'].include?(self.class.to_s)
 
 		#unlink any addresses from this contact_list
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
@@ -299,12 +282,6 @@ class ContactList < ActiveRecord::Base
 				end
 			end
 
-		if self.class.to_s == 'SmsList'
-			sql += <<-eot
-			AND ("voters"."cell_phone" != '') 
-			eot
-		end
-
 		if self.class.to_s != 'Walksheet'
 			sql2_header = ";"
 		else
@@ -337,25 +314,8 @@ class ContactList < ActiveRecord::Base
 
 		end #end if !self.upload_list == true
 
-		if self.class.to_s == 'SmsList'
-			if self.voters.count > 0 && !self.upload_list == true
-				#build list of sms phone numbers from voters.
-				self.voters.all(:select => 'DISTINCT voters.cell_phone', :conditions => "voters.cell_phone != ''").each do |voter|
-					cls = ContactListSmss.new
-					cls.cell_phone = voter.cell_phone
-					self.contact_list_smsses << cls
-				end
-			elsif self.upload_list == true & !self.need_mapping?
-				#build list of sms phone numbers from uploaded file.
-				 importer = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
-				 importer.import!										
-			end			
-		end
-
 		case self.class.to_s
-			when 'SmsList' then
-				self.constituent_count = self.contact_list_smsses.count
-			else	
+			when 'Walksheet' then
 				self.constituent_count = self.voters.count
 		end
 		
