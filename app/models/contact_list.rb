@@ -358,6 +358,7 @@ class ContactList < ActiveRecord::Base
 			else	
 				self.constituent_count = self.voters.count
 		end
+		
 		self.populated = true
 		self.repopulate = false
 		self.save!

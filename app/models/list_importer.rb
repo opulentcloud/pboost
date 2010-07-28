@@ -30,7 +30,7 @@ class ListImporter
 
 	def import!
 		@list = ContactList.find(self.contact_list_id)
-debugger
+#debugger
 		begin
 			FasterCSV.foreach(self.file_name) do |row|
 				case list_type
