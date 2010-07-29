@@ -197,14 +197,14 @@ class SmsListsController < ApplicationController
   		redirect_to @sms_list
   	end
   	
-    @sms_list.build_age_filter if @sms_list.age_filter.nil?
-    @sms_list.build_sex_filter if @sms_list.sex_filter.nil?
-    @sms_list.build_gis_region_filter if @sms_list.gis_region_filter.nil?
-    @sms_list.build_council_district_filter if @sms_list.council_district_filter.nil?
-    @sms_list.build_precinct_filter if @sms_list.precinct_filter.nil?
-@sms_list.build_municipal_district_filter if     @sms_list.municipal_district_filter.nil?
-			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?    
-    	@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
+    #@sms_list.build_age_filter if @sms_list.age_filter.nil?
+    #@sms_list.build_sex_filter if @sms_list.sex_filter.nil?
+    #@sms_list.build_gis_region_filter if @sms_list.gis_region_filter.nil?
+    #@sms_list.build_council_district_filter if @sms_list.council_district_filter.nil?
+    #@sms_list.build_precinct_filter if @sms_list.precinct_filter.nil?
+#@sms_list.build_municipal_district_filter if     @sms_list.municipal_district_filter.nil?
+			#@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?    
+    	#@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
 
   end
   

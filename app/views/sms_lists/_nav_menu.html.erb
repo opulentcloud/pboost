@@ -9,9 +9,12 @@
 		<td><%=link_to 'List SMS Lists', sms_lists_path %></td>
 		<td><%= link_to 'View SMS List', @sms_list %></td>
 		<td><%= link_to 'Delete SMS List', @sms_list, :confirm => 'Are you sure you want to permanently delete this SMS List?', :method => :delete %></td>
-		<% if @sms_list.schedule == false %>
+		<% if @sms_list.schedule == false && @sms_list.is_editable? %>
 			<td><%= link_to 'Schedule', edit_sms_list_path(@sms_list) %></td>
 		<% end %>	
+		<% if @sms_list.upload_list == true && @sms_list.populated == false %>
+			<td><%=link_to 'Finish Importing', map_fields_sms_list_path(@sms_list) %></td>
+		<% end %>
 		<% if @sms_list.schedule && @sms_list.status == 'Scheduled' %>
 			<td><%= link_to "Unschedule", unschedule_sms_list_path(@sms_list), :confirm => 'Are you sure you wish to cancel the Scheduled sending to this SMS List?' %></td>
 		<% end %>	
