@@ -1,7 +1,63 @@
 class SmsListsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_sms_list, :only => [:unschedule, :show, :edit, :update, :destroy]
+	before_filter :get_sms_list, :only => [:map_fields, :unschedule, :show, :edit, :update, :destroy]
 	filter_access_to :all
+
+	def map_fields
+		@mapped_fields = { }
+		@mapped_fields_string = '{ '
+		@rows = @sms_list.rows
+		@fields = [['',''],['Cell Phone', 'cell_phone']]
+
+		if request.post?
+			@have_selection = false
+			params[:fields].each do |key,value|
+				next if value.blank?
+				@have_selection = true
+				break;
+			end
+
+			if @have_selection == false
+				flash.now[:error] = "You must choose the column that represents your Cell Phone field in the drop-down list for the appropriate column."
+				render
+				return
+			end
+
+			params[:fields].each do |key,value|
+				if !value.blank? && @mapped_fields.has_key?(value.to_sym)
+					flash.now[:error] = "We could not import your file because you have selected the field #{value} for two different columns. &nbsp;Only one column must be selected as the 'Cell Phone' field for the field mapping to be valid."
+					render
+					return
+				end
+				unless value.blank?
+					@mapped_fields.store(value.to_sym, (key.to_i-1))
+					@mapped_fields_string += ":#{value} => #{(key.to_i-1)}, "
+				end
+			end
+
+			@mapped_fields_string = @mapped_fields_string[0,@mapped_fields_string.size-2] + " }" unless @mapped_fields_string.size == 0
+
+			#ensure we mapped the field to a column number
+			begin
+				i = Integer(@mapped_fields[:cell_phone])
+			rescue 
+				flash.now[:error] = "We were not able to successfully map your fields and import your file. &nbsp;Please contact us if your need further assistance."
+				render
+				return
+			end
+
+			#mapped successfully let's import the file now.
+			@sms_list.mapped_fields = @mapped_fields_string
+			@sms_list.repopulate = true
+			if @sms_list.save
+				flash[:notice] = "Import in progress."			
+				redirect_to @sms_list
+			else
+				flash.now[:error] = "We were not able to import your file at this time."
+			end
+		end
+
+	end
 
 	def unschedule
 		if @sms_list.status != 'Scheduled'
@@ -89,13 +145,16 @@ class SmsListsController < ApplicationController
 	  end
 
 		@sms_list.political_campaign_id = current_political_campaign.id
+
 	  if @sms_list.save
-	  	if @sms_list.do_mapping
+	  	if @sms_list.do_mapping == true
 	  		#if we have just a single field then we are good to go
 	  		#otherwise we have to ask the user which column is the
 	  		#cell phone field.
-	  		if @sms_list.need_mapping?
+	  		if @sms_list.need_mapping == true
 	  			#render file for user to make mapping.
+	  			redirect_to map_fields_sms_list_path(@sms_list)
+	  			return
 	  		end
 	  	end
 	    flash[:notice] = "Successfully created SMS List."

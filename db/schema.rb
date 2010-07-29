@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100728203243) do
+ActiveRecord::Schema.define(:version => 20100729195314) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(:version => 20100728203243) do
     t.column "schedule", :boolean, :default => false
     t.column "delayed_job_id", :integer
     t.column "upload_list", :boolean
+    t.column "mapped_fields", :text
   end
 
   add_index "contact_lists", ["name", "type"], :name => "index_contact_lists_on_name_and_type"

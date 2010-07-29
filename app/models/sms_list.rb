@@ -36,10 +36,17 @@ class SmsList < ContactList
 
 	#====== INSTANCE METHODS =======	
 	#determine if we need to ask the user which column is the cell phone column if we have a manually uploaded file.
-	def need_mapping?
+	def rows(x = 10)
+		i = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
+		i.rows(x)
+	end
+
+	def need_mapping
+	#debugger
 		return false unless self.upload_list == true
+		return false if !self.mapped_fields.blank?
 		 i = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
-		 i.need_mapping?	
+		 i.need_mapping
 	end
 
 	def schedule_send_job!
@@ -237,9 +244,9 @@ class SmsList < ContactList
 			self.repopulate = false
 			self.save!
 		elsif self.upload_list == true
-			if !self.need_mapping?
+			if !self.need_mapping == true
 				#build list of sms phone numbers from uploaded file.
-				 importer = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
+				 importer = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id, instance_eval(self.mapped_fields))
 				 importer.import!										
 
 				self.constituent_count = self.contact_list_smsses.count
