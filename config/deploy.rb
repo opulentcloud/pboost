@@ -72,7 +72,7 @@ end
 namespace :delayed_job do
 	desc "Start delayed_job process"
 	task :start, :roles => :app do
-		run "#{sudo} RAILS_ENV=production #{current_path}/script/delayed_job start"
+		run "#{sudo} RAILS_ENV=production #{current_path}/script/delayed_job start -n 3 start"
 	end
 	
 	desc "Stop delayed_job process"
