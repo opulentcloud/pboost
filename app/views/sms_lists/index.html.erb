@@ -23,7 +23,7 @@
 				<td> &nbsp;<%= link_to 'Schedule', edit_sms_list_path(sms_list) %></td>
 			<% end %>	
 
-			<% if sms_list.upload_list == true && sms_list.populated == false %>
+			<% if sms_list.upload_list == true && sms_list.need_mapping == true %>
 				<td><%=link_to 'Finish Importing', map_fields_sms_list_path(sms_list) %></td>
 			<% end %>
 
