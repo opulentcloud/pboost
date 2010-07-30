@@ -3,7 +3,19 @@ class ContactList < ActiveRecord::Base
 	#===== ACCESSORS =====
 	attr_accessor_with_default :repopulate, false
 	attr_accessor :file_name, :route_index, :current_voter_count
-
+	
+	def do_mapping
+		@do_mapping
+	end
+	
+	def do_mapping=(value)
+		@do_mapping = [true,'true',1,'1','T','t'].include?(value.class == String ? value.downcase : value)
+	end
+	
+#	def upload_list=(value)
+#		@upload_list = [true,'true',1,'1','T','t'].include?(value.class == String ? value.downcase : value)
+#	end
+	
 	#===== SCOPES ======
 	default_scope :order => 'contact_lists.name'
 
@@ -35,6 +47,8 @@ class ContactList < ActiveRecord::Base
 	has_many :elections, :through => :voting_history_filters
 	has_one :voting_history_type_filter
 	accepts_nested_attributes_for :voting_history_type_filter
+	has_many :contact_list_smsses
+	belongs_to :delayed_job, :dependent => :destroy
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -68,7 +82,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_save
-
+#debugger
 		if self.gis_region
 			self.gis_region = nil if self.gis_region.geom2.blank?
 		end
@@ -111,11 +125,18 @@ class ContactList < ActiveRecord::Base
 				
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
+
+		case self.class.to_s
+			when 'SmsList' then
+				sql = "DELETE FROM contact_list_smsses WHERE contact_list_id = #{self.id}"
+				ActiveRecord::Base.connection.execute(sql)
+		end
+
 		true
 	end
 
 	def after_destroy
-		return true unless self.class.to_s == 'Walksheet'
+		return true unless ['Walksheet','SmsList'].include?(self.class.to_s)
 		delete_file
 	end
 
@@ -141,6 +162,15 @@ class ContactList < ActiveRecord::Base
 			rescue
 			end		
 		end
+		
+		fname = "#{RAILS_ROOT}/docs/sms_list_#{self.id}.csv"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
+		end
+		
 	end
 	
 	def is_editable?
@@ -154,15 +184,17 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file if self.class.to_s == 'Walksheet'
+		delete_file if ['Walksheet'].include?(self.class.to_s)
 
-		#unlink any addresses from this walksheet
+		#unlink any addresses from this contact_list
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
 		sql_result = ActiveRecord::Base.connection.execute(sql)
 				
-		#unlink any voters from this walksheet
+		#unlink any voters from this contact_list
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		sql_result = ActiveRecord::Base.connection.execute(sql)
+
+		if !self.upload_list == true
 
 		sql1_header = <<-eot
 			INSERT INTO contact_list_voters
@@ -250,21 +282,27 @@ class ContactList < ActiveRecord::Base
 				end
 			end
 
-		sql2_header = <<-eot
-			INSERT INTO contact_list_addresses
-			SELECT
-				nextval('contact_list_addresses_id_seq') AS id, 
-				r.*, now() AS created_at, now() AS updated_at
-			FROM
-			(SELECT 
-				DISTINCT "contact_list_voters"."contact_list_id", "voters"."address_id" 
-			FROM 
-				"contact_list_voters", "voters"
-			WHERE
-				("contact_list_voters"."contact_list_id" = #{self.id})
-			AND
-				"voters"."id" = "contact_list_voters"."voter_id") AS r;		
-			eot
+		if self.class.to_s != 'Walksheet'
+			sql2_header = ";"
+		else
+
+			sql2_header = <<-eot
+				INSERT INTO contact_list_addresses
+				SELECT
+					nextval('contact_list_addresses_id_seq') AS id, 
+					r.*, now() AS created_at, now() AS updated_at
+				FROM
+				(SELECT 
+					DISTINCT "contact_list_voters"."contact_list_id", "voters"."address_id" 
+				FROM 
+					"contact_list_voters", "voters"
+				WHERE
+					("contact_list_voters"."contact_list_id" = #{self.id})
+				AND
+					"voters"."id" = "contact_list_voters"."voter_id") AS r;		
+				eot
+		
+		end
 
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
@@ -274,7 +312,13 @@ class ContactList < ActiveRecord::Base
 			WalksheetReport.build(self)
 		end
 
-		self.constituent_count = self.voters.count
+		end #end if !self.upload_list == true
+
+		case self.class.to_s
+			when 'Walksheet' then
+				self.constituent_count = self.voters.count
+		end
+		
 		self.populated = true
 		self.repopulate = false
 		self.save!
@@ -284,10 +328,11 @@ class ContactList < ActiveRecord::Base
 	#===== CLASS METHODS ======
 	def self.populate(contact_list_id)
 		contact_list = ContactList.find(contact_list_id)
-		
+
 		if contact_list.nil?
 			raise ActiveRecord::RecordNotFound
 		end
+		
 		contact_list.populate
 	end
 
@@ -372,4 +417,13 @@ private
 		sql = sql[0,sql.length-4]
 		sql += ')'
 	end
+	
+	def format_date(date_time)
+		date_time.strftime '%m/%d/%Y'
+	end
+
+	def format_date_time(date_time)
+		date_time.strftime '%m/%d/%Y %I:%M %p %Z'
+	end
+	
 end

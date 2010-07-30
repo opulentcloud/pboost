@@ -1,0 +1,2 @@
+class QueuedEvent < Event
+end

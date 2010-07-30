@@ -5,36 +5,34 @@ class ClubTexting
 	
 	CLUB_TEXTING_URL = 'https://app.clubtexting.com/api/sending/'
 
-	class TextMessage
-		attr_accessor :user_name, :password, :phone_number, :subject, :message, :express
+	attr_accessor :user_name, :password, :message, :express, :list
 
-		def initialize(usr, pwd, phn, sub, msg, exp)
-			self.user_name = usr
-			self.password = pwd
-			self.phone_number = phn
-			self.subject = sub
-			self.message = msg
-			self.express = exp
-			
-			#testing
-			self.user_name = 'dstinnie' if self.user_name.blank?
-			self.password = 'china1' if self.password.blank?
-			self.phone_number = '9497357010' if self.phone_number.blank?
-			self.subject = 'Test Subject' if self.subject.blank?
-			self.message = 'Test Message' if self.message.blank?
-			self.express = '1' if self.express.blank?
-		end
-
-		def to_s
-			"user=#{user_name}&pass=#{password}&phonenumber=#{phone_number}&subject=#{subject}&message=#{message}&express=#{express}"
-		end
-
+	def initialize(msg, list)
+		self.user_name = 'dstinnie'# if self.user_name.blank?
+		self.password = 'china1'# if self.password.blank?
+		self.message = msg
+		self.express = '1'
+		self.list = list
 	end
-	
-	def self.send_text(message)
+
+	def send_messages!
 		uri = URI.parse(CLUB_TEXTING_URL)
 		http = Net::HTTP.new(uri.host, uri.port)
 		http.use_ssl = true if uri.scheme == 'https'
+
+		self.list.each do |sms|
+			txt = ClubTexting::TextMessage.new(self.user_name, self.password, sms.cell_phone, self.message, self.express)
+			sms.status = send_text(uri, http, txt)
+			sms.save!
+			if ['-1','-2','-7'].include?(sms.status)
+				raise "Exiting SMS Scheduled Send Prematurely Due To Error Code #{sms.status} being encountered."
+			end
+		end	
+
+		http = nil
+	end
+
+	def send_text(uri, http, message)
 		
 		headers = { 'Content-Type' => 'application/x-www-form-urlencoded', 'Content-Length' => message.to_s.size.to_s }
 
@@ -46,19 +44,19 @@ class ClubTexting
 
 		case response
 			when Net::HTTPCreated; response('Location')
-			when Net::HTTPSuccess; ClubTexting.translate_response(response.body);
+			when Net::HTTPSuccess; response.body;
 			else response.error;
 		end
 		
 	end
 	
-	def self.valid_characters(text)
+	def valid_characters(text)
 		#valid characters are a-z, A-Z, 0-9, .,:;!?()~=+-_\/@$#&%
 		#the following characters count as two:
 		# ~ @ # % + = / \ \r\n
 	end
 
-	def self.translate_response(response)
+	def translate_response(response)
 		case response
 			when '1' then 'Message Sent'
 			when '-1' then 'Invalid user or password'
@@ -71,6 +69,23 @@ class ClubTexting
 			else
 				'Unknown Response'
 			end
+	end
+
+	class TextMessage
+		attr_accessor :user_name, :password, :phone_number, :message, :express
+
+		def initialize(username, pwd, cell_number, msg, express)
+			self.user_name = username
+			self.password = pwd
+			self.phone_number = cell_number
+			self.message = msg
+			self.express = express
+		end
+
+		def to_s
+			"user=#{user_name}&pass=#{password}&phonenumber=#{phone_number}&subject=&message=#{message}&express=#{express}"
+		end
+
 	end
 	
 end

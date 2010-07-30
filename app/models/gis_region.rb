@@ -52,8 +52,15 @@ class GisRegion < ActiveRecord::Base
 
 		sql = ''
 
-		sql1_header = <<-eot
-					SELECT COUNT(*)
+		list_type = filters[:list_type]
+		case list_type
+			when "sms_list" then
+				sql1_header = "SELECT COUNT(DISTINCT voters.cell_phone)\n"
+			else
+				sql1_header = "SELECT COUNT(*)\n"
+		end
+
+		sql1_header += <<-eot
 					FROM  
 						"constituent_addresses", "addresses", "voters"
 					WHERE 
@@ -99,6 +106,14 @@ class GisRegion < ActiveRecord::Base
 					when 'At Least' then build_at_least_voting_history_query(filters)
 					when 'Exactly' then build_exactly_voting_history_query(filters)
 					when 'No More Than' then build_no_more_than_voting_history_query(filters)
+				end
+			end
+
+			if filters.has_key?(:list_type)
+				if filters[:list_type] == 'sms_list'
+					sql += <<-eot
+					AND ("voters"."cell_phone" != '') 
+					eot
 				end
 			end
 

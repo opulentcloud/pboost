@@ -65,7 +65,7 @@ module MapHelper
 		end	
 	end
 
-	def init_map_new_poly
+	def init_map_new_poly(the_class)
 		run_javascript do |script|
 			script << "function init_new_poly(){"
 			script << " if (polygon_index > 9) {"
@@ -91,7 +91,7 @@ module MapHelper
 			end
 
 	    polygon.click do |script, location|
-	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :vertices => Google::UrlHelper.encode_vertices(polygon), :sess_id => "#{@sess_id}" }, :location => :location)
+	    	map.open_info_window( :url => { :controller => :gis_regions, :action => :count_in_poly, :vertices => Google::UrlHelper.encode_vertices(polygon), :sess_id => "#{@sess_id}", :list_type => "#{the_class}" }, :location => :location)
 	    end
 
 			script << "};"
@@ -139,7 +139,7 @@ module MapHelper
 			script << "	$(\"#current_voter_count\").text(\"calculating...\");"
 			script << "	set_map_vertices();"
 			script << "	vertices = $(\"##{the_class}_gis_region_attributes_vertices\").val();"
- 			script << "	jQuery.get('/customer/current_voter_count.js?vertices='+vertices+'&sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
+ 			script << "	jQuery.get('/customer/current_voter_count.js?vertices='+vertices+'&list_type=#{the_class}&sess_id=#{@sess_id}', function(data) { $(\"#current_voter_count\").text(data); } );"
 			script << "}"
 			script << ""
 			

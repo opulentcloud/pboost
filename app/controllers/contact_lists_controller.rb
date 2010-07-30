@@ -6,6 +6,7 @@ class ContactListsController < ApplicationController
 	def current_voter_count
 	#debugger
 		@vertices = params[:vertices]
+		@filters[:list_type] = params[:list_type]
 		
 		if @vertices
 			r = GisRegion.new()

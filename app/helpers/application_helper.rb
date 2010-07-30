@@ -33,4 +33,13 @@ module ApplicationHelper
 		date_time.strftime '%m/%d/%Y %I:%M %p %Z' rescue nil
 	end
 
+	def time_format(time)
+		time.strftime '%I:%M %p %Z' rescue nil
+	end
+
+	def format_phone_number(phone_record)
+		return String.empty unless !phone_record.nil?
+		number_to_phone(phone_record.phone, :area_code => true, :extension => phone_record.extension)
+	end
+
 end

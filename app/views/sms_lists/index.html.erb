@@ -7,15 +7,29 @@
 		<th align="center">Date Created</th>
     <th align="center">SMS List Name</th>
     <th align="right">Voter Count</th>
+    <th align="center">Status</th>
   </tr>
   <% for sms_list in @sms_lists %>
     <tr>
 			<td align="center"><%=format_date sms_list.created_at %>
       <td align="center"><%=h sms_list.name %></td>
       <td align="right"><%=sms_list.populated? ? number_with_delimiter(sms_list.constituent_count) : '*Populating' %></td>
+      <td align="center"><%=h sms_list.status_display %></td>
       <td>&nbsp;&nbsp;<%= link_to "Show", sms_list %></td>
       <!--<td> &nbsp;<%= link_to "Edit", edit_sms_list_path(sms_list) %></td>-->
       <td> &nbsp;<%= link_to "Delete", sms_list, :confirm => 'Are you sure you wish to permanently delete this SMS List?', :method => :delete %></td>
+
+			<% if sms_list.schedule == false && sms_list.is_editable? %>
+				<td> &nbsp;<%= link_to 'Schedule', edit_sms_list_path(sms_list) %></td>
+			<% end %>	
+
+			<% if sms_list.upload_list == true && sms_list.need_mapping == true %>
+				<td><%=link_to 'Finish Importing', map_fields_sms_list_path(sms_list) %></td>
+			<% end %>
+
+      <% if sms_list.schedule && sms_list.status == 'Scheduled' %>
+	      <td> &nbsp;<%= link_to "Unschedule", unschedule_sms_list_path(sms_list), :confirm => 'Are you sure you wish to cancel the Scheduled sending to this SMS List?' %></td>
+      <% end %>
     </tr>
   <% end %>
 </table>

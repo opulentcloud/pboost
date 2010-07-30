@@ -32,6 +32,7 @@ Rails::Initializer.run do |config|
 	config.gem 'geokit'
 	config.gem 'GeoRuby', :lib => 'geo_ruby', :version => '1.3.4'
 	config.gem 'postgis_adapter'
+	config.gem 'ruport'
 	config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
 			
   # Only load the plugins named here, in the order given (default is alphabetical).
@@ -45,7 +46,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-	config.active_record.observers = [:county_campaign_observer, :federal_campaign_observer, :gis_region_observer, :municipal_campaign_observer, :state_campaign_observer, :walksheet_observer]
+	config.active_record.observers = [:county_campaign_observer, :federal_campaign_observer, :gis_region_observer, :municipal_campaign_observer, :sms_list_observer, :state_campaign_observer, :walksheet_observer]
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.

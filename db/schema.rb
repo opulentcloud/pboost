@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100713232647) do
+ActiveRecord::Schema.define(:version => 20100729195314) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -75,6 +75,21 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
   add_index "addresses_gis_regions", ["address_id"], :name => "index_addresses_gis_regions_on_address_id"
   add_index "addresses_gis_regions", ["address_id", "gis_region_id"], :name => "index_addresses_gis_regions_on_address_id_and_gis_region_id", :unique => true
   add_index "addresses_gis_regions", ["gis_region_id"], :name => "index_addresses_gis_regions_on_gis_region_id"
+
+  create_table "attachments", :force => true do |t|
+    t.column "attachable_id", :integer
+    t.column "attachable_type", :string
+    t.column "type", :string
+    t.column "data_file_name", :string
+    t.column "data_content_type", :string
+    t.column "data_file_size", :integer
+    t.column "data_updated_at", :datetime
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "attachments", ["attachable_id", "attachable_type"], :name => "index_attachments_on_attachable_id_and_attachable_type", :unique => true
+  add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false
@@ -161,6 +176,17 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
   add_index "contact_list_addresses", ["contact_list_id"], :name => "index_contact_list_addresses_on_contact_list_id"
   add_index "contact_list_addresses", ["contact_list_id", "address_id"], :name => "index_contact_list_addresses_on_contact_list_id_and_address_id", :unique => true
 
+  create_table "contact_list_smsses", :force => true do |t|
+    t.column "cell_phone", :string, :limit => 10, :null => false
+    t.column "contact_list_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+    t.column "status", :string, :limit => 4
+  end
+
+  add_index "contact_list_smsses", ["contact_list_id"], :name => "index_contact_list_smses_on_contact_list_id"
+  add_index "contact_list_smsses", ["status"], :name => "index_contact_list_smsses_on_status"
+
   create_table "contact_list_voters", :force => true do |t|
     t.column "contact_list_id", :integer
     t.column "voter_id", :integer
@@ -180,6 +206,12 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
     t.column "type", :string, :limit => 100, :null => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "scheduled_at", :datetime
+    t.column "sms_text", :text
+    t.column "schedule", :boolean, :default => false
+    t.column "delayed_job_id", :integer
+    t.column "upload_list", :boolean
+    t.column "mapped_fields", :text
   end
 
   add_index "contact_lists", ["name", "type"], :name => "index_contact_lists_on_name_and_type"
@@ -240,6 +272,28 @@ ActiveRecord::Schema.define(:version => 20100713232647) do
 
   add_index "elections", ["description"], :name => "index_elections_on_description", :unique => true
   add_index "elections", ["year", "election_type"], :name => "index_elections_on_year_and_election_type", :unique => true
+
+  create_table "events", :force => true do |t|
+    t.column "event_date", :datetime
+    t.column "event_code", :string, :limit => 25
+    t.column "event_message", :text
+    t.column "contact_list_id", :integer
+    t.column "address_id", :integer
+    t.column "voter_id", :integer
+    t.column "eventable_id", :integer
+    t.column "eventable_type", :string
+    t.column "type", :string, :limit => 64
+    t.column "delayed_job_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "events", ["address_id"], :name => "index_events_on_address_id"
+  add_index "events", ["contact_list_id"], :name => "index_events_on_contact_list_id"
+  add_index "events", ["eventable_id"], :name => "index_events_on_eventable_id"
+  add_index "events", ["eventable_type"], :name => "index_events_on_eventable_type"
+  add_index "events", ["type"], :name => "index_events_on_type"
+  add_index "events", ["voter_id"], :name => "index_events_on_voter_id"
 
   create_table "filters", :force => true do |t|
     t.column "type", :string, :limit => 64, :null => false

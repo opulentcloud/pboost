@@ -1,0 +1,2 @@
+class SendEvent < Event
+end

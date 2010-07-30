@@ -104,12 +104,32 @@
 
 	</hr />
 
-	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @sms_list.gis_region } %>
+	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @sms_list.gis_region, :form => f } %>
 
   <p>
     <%= f.label :name, 'Enter a unique name for this SMS List:' %><br />
     <%= f.text_field :name %>
   </p>
 
-  <p><%= f.submit @sms_list.new_record? ? 'Create SMS List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
+	<p>
+		<%=f.check_box :schedule %> Check here if you would like to schedule this SMS List for delivery. 
+	</p>
+	
+	<div id="schedule" style="display: <%=@sms_list.schedule == "1" ? 'inline' : 'none' %>;">
+
+		<p>
+			<%=f.label :sms_text, 'Enter Your Text Message: ' %><i>(<span id="chars_used">0</span>/160 characters used. &nbsp;The following characters count as two characters ~ @ # % + = / \ newline)</i></br />
+			<%=f.text_area :sms_text, :cols => 80, :rows => 4 %>
+		</p>
+
+		<p>	
+			<%= f.label :scheduled_at, 'Date & Time To Start Sending To Your SMS List:' %><br />
+			<%=f.datetime_select(:scheduled_at, :order => [:month, :day, :year], :use_month_numbers => true, :start_year => Time.zone.now.year, :default => { :year => Time.zone.now.year, :month => Time.zone.now.month, :day => Time.zone.now.day }, :minute_step => 15, :twelve_hour => true) %>
+			<%=h @current_user.time_zone.zone %>					
+		</p>
+	</div>
+
+  <p>
+  	<%= f.hidden_field :upload_list %>
+  	<%= f.submit @sms_list.new_record? ? 'Create SMS List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
 <% end %>

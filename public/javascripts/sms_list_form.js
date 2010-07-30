@@ -45,7 +45,15 @@ function PrecinctOptionsPopulate2() {
 $('#sms_list_precinct_filter_attributes_string_val').ajaxAddOption('/precincts_populate/mcomm_dist_code/'+q_val+'.json', {}, false);
 
 }
-	
+
+function SchedulingOptionsShowHide() {
+	$('div#schedule').hide();
+
+	if (this.checked) {
+		$('div#schedule').show();
+	}
+}
+
 $(document).ready(function() {
 
 	$('h3#geo').click(function(event) {
@@ -100,6 +108,54 @@ $('table#voting_history_group').each(function () {
 	$(this).children('tbody').each(function() {
 		$(this).children('tr').bind('click', voting_history_filter_changed);
 	});
+});
+
+$('#sms_list_schedule').bind("click", SchedulingOptionsShowHide);
+
+$('#sms_list_sms_text').keypress(function(event) {
+	cnt = parseInt($('span#chars_used').text())
+
+	if (event.which != 8 && cnt >= 160) {
+		alert('You have reached the length limit for this message.');
+		event.preventDefault();
+		return;
+	}
+
+	if (event.which == 8 && cnt>0) { 
+		cnt--; 
+		current_text = $('#sms_list_sms_text').val();
+		lc = current_text.substr(current_text.length-1,1);
+		var re = /[~@#%+=/\\\r\n]/;
+		if (re.test(lc) && cnt > 1) { cnt--; }
+	}
+	
+	else if (event.which == 0) { } 
+	else if (event.which == 13) { cnt+=2; }
+	else if (event.which >= 32 && event.which <= 33) { cnt++; }
+	else if (event.which == 35) { cnt+=2; }
+	else if (event.which == 36) { cnt++; }
+	else if (event.which == 37) { cnt+=2; }
+	else if (event.which == 38) { cnt++; }
+	else if (event.which >= 40 && event.which <= 41) { cnt++; }
+	else if (event.which == 43) { cnt+=2; }
+	else if (event.which >= 44 && event.which <= 46) { cnt++; }
+	else if (event.which == 47) { cnt+=2; }
+	else if (event.which >= 48 && event.which <= 59) { cnt++; }
+	else if (event.which == 61) { cnt+=2; }
+	else if (event.which == 63) { cnt++; }
+	else if (event.which == 64) { cnt+=2; }
+	else if (event.which >= 65 && event.which <= 90) { cnt++; }
+	else if (event.which == 92) { cnt+=2; }
+	else if (event.which == 95) { cnt++; }
+	else if (event.which >= 97 && event.which <= 122) { cnt++; }
+	else if (event.which == 126) { cnt+=2; }
+	else {
+		alert('This character is not allowed in an SMS message.')
+		event.preventDefault();
+		return;
+	}
+
+	$('span#chars_used').text(cnt);
 });
 
 });

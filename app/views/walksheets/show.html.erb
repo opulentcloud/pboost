@@ -3,10 +3,10 @@
 <%= render :partial => 'nav_menu' %>
 
 <p>
-  <strong>Constituent Count:</strong>
+  <strong>Voter Count:</strong>
   <%=@walksheet.populated? ? number_with_delimiter(@walksheet.constituent_count) : '*Populating' %>
 	<% if @walksheet.populated? %>
-		<%=link_to 'Print Canvass List', report_path(@walksheet.id, :format => 'pdf') %>
+		<%=link_to 'Print Canvass List', walksheet_report_path(@walksheet.id, :report_type => 'walksheet', :format => 'pdf') %>
 	<% end %>
 </p>
 
