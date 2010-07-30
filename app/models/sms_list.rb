@@ -246,7 +246,7 @@ class SmsList < ContactList
 		elsif self.upload_list == true
 			if !self.need_mapping == true
 				#build list of sms phone numbers from uploaded file.
-				 importer = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id, instance_eval(self.mapped_fields))
+				 importer = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id, (self.mapped_fields.blank? ? nil : instance_eval(self.mapped_fields)))
 				 importer.import!										
 
 				self.constituent_count = self.contact_list_smsses.count

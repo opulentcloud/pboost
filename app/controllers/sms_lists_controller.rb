@@ -49,6 +49,7 @@ class SmsListsController < ApplicationController
 			#mapped successfully let's import the file now.
 			@sms_list.mapped_fields = @mapped_fields_string
 			@sms_list.repopulate = true
+
 			if @sms_list.save
 				flash[:notice] = "Import in progress."			
 				redirect_to @sms_list

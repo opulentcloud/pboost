@@ -1,5 +1,10 @@
-<% form_for(@sms_list, :html => { :multipart => true }) do |f| %>
+<p>
+Your file must be of a comma-delimited format with an extension of .csv or .txt.
+</p>
 
+<% form_for(@sms_list, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+  
 	<% f.fields_for :sms_list_attachment do |a| %>
 		<p>
 			File: <br />
