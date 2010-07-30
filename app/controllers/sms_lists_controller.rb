@@ -101,6 +101,8 @@ class SmsListsController < ApplicationController
     @sms_list.build_precinct_filter
 		@sms_list.build_voting_history_type_filter
     @sms_list.build_sms_list_attachment
+    @sms_list.upload_list = true
+    
   end
 
 	def intro
