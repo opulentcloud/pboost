@@ -43,6 +43,9 @@ class ReportsController < ApplicationController
 		rendered_report = nil
 
 		case @report_type
+			when 'phone_bank_list' then
+				full_file_name = "#{RAILS_ROOT}/docs/phone_bank_list_#{@contact_list.id}.csv"
+				file_name = "phone_bank_list_#{@contact_list.id}.csv"
 			when 'sms_list' then 
 				full_file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
 				file_name = "sms_list_#{@contact_list.id}.csv"
@@ -97,7 +100,7 @@ protected
 
 	def get_contact_list
 		begin
-    	@contact_list = current_political_campaign.contact_lists.find(params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
+    	@contact_list = current_political_campaign.contact_lists.find(params[:phone_bank_list_id] ||= params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
     	@report_type = params[:report_type]
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested List was not found."

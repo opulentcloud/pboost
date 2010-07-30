@@ -45,6 +45,10 @@ class Voter < ActiveRecord::Base
 		r
 	end
 	
+	def full_name
+		"#{first_name} #{middle_name} #{last_name}".upcase.squeeze(' ')
+	end
+	
 	def printable_name
 		"#{last_name}, #{first_name} #{middle_name}".upcase
 	end

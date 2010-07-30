@@ -1,0 +1,16 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @phone_bank_lists %>
+		<td><%=link_to 'Create Phone Bank List', new_phone_bank_list_path %></td>
+		<td><%=link_to 'Refresh Phone Bank Lists', phone_bank_lists_path %></td>
+	<% end %>	
+	<% if @phone_bank_list && !@phone_bank_list.new_record? %>
+		<td><%=link_to 'List Phone Bank Lists', phone_bank_lists_path %></td>
+		<td><%= link_to 'View Phone Bank List', @phone_bank_list %></td>
+		<!--<td><%= link_to 'Edit Phone Bank List', edit_phone_bank_list_path(@phone_bank_list) %></td>-->
+		<td><%= link_to 'Delete Phone Bank List', @phone_bank_list, :confirm => 'Are you sure you want to permanently delete this Phone Bank List?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

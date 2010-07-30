@@ -1,0 +1,115 @@
+<% form_for @phone_bank_list do |f| %>
+  <%= f.error_messages %>
+
+	<p>
+		<input type="button" value="Update Current Voter Count" onclick="calc_current_voter_count();" />&nbsp;&nbsp;
+		<strong>Current Voter Count: 
+		<span id="current_voter_count"><%=number_with_delimiter @phone_bank_list.current_voter_count.nil? ? 0 : @phone_bank_list.current_voter.count %></span></strong>
+	</p>
+
+	<h3 id="geo" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;GEOGRAPHIC FILTERS</a>
+	</h3>
+	<div id="geo_box">
+		<% if @phone_bank_list.political_campaign.class.to_s == 'FederalCampaign' %>
+			<% if @phone_bank_list.political_campaign.congressional_district %>
+				<p>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @phone_bank_list.council_district_filter, :council_districts => @phone_bank_list.political_campaign.congressional_district.council_districts, :form => f } %>
+				</p>
+
+			<% else %>
+				<p>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @phone_bank_list.council_district_filter, :council_districts => @phone_bank_list.political_campaign.state.council_districts, :form => f } %>
+				</p>
+
+			<% end %>
+		<% end %>
+
+		<% if @phone_bank_list.political_campaign.class.to_s == 'StateCampaign' %>
+				<p>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @phone_bank_list.council_district_filter, :council_districts => @phone_bank_list.political_campaign.council_districts, :form => f } %>
+				</p>
+		<% end %>
+
+		<% if @phone_bank_list.political_campaign.class.to_s == 'CountyCampaign' %>
+
+			<% if @phone_bank_list.political_campaign.council_district.nil? %>
+				<p>
+					<%= render :partial => 'contact_lists/council_district_filter', :locals =>  { :council_district_filter => @phone_bank_list.council_district_filter, :council_districts => @phone_bank_list.political_campaign.county.council_districts.all, :form => f } %>
+				</p>
+			<% end %>
+		
+		<% end %>
+
+		<% if @phone_bank_list.political_campaign.class.to_s == 'MunicipalCampaign' %>
+			<% if @phone_bank_list.political_campaign.municipal_district.nil? %>
+				<p>
+					<%= render :partial => 'contact_lists/municipal_district_filter', :locals =>  { :municipal_district_filter => @phone_bank_list.municipal_district_filter, :municipal_districts => @phone_bank_list.political_campaign.city.municipal_districts.all, :form => f } %>
+				</p>
+			<% end %>
+
+		<% end %>
+
+		<p>
+			<%= render :partial => 'contact_lists/precinct_filter', :locals =>  { :precinct_filter => @phone_bank_list.precinct_filter, :precincts => @phone_bank_list.political_campaign.precincts, :form => f } %>
+		</p>
+	
+		<p>
+			<%= render :partial => 'map/form' %>
+		</p>	
+	</div>
+
+	<h3 id="dem" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;DEMOGRAPHIC FILTERS</a></h3>
+	<div id="dem_box" style="display: none;">
+	<p>
+		<%= render :partial => 'contact_lists/age_filter', :locals =>  { :age_filter => @phone_bank_list.age_filter, :form => f } %>
+	</p>
+
+	<p>
+		<%= render :partial => 'contact_lists/sex_filter', :locals => { :sex_filter => @phone_bank_list.sex_filter, :form => f } %>
+	</p>
+
+	<p>
+		Party: <i>(leave blank for all)</i>
+		<div id="party_group">
+		<p>
+		<% Party.all.each do |party| %>
+			<%= check_box_tag "phone_bank_list[party_ids][]", party.id, @phone_bank_list.party_filters.map(&:int_val).include?(party.id), :index => nil %>
+			<%=h party.name %> &nbsp;
+		<% end %>
+		</p>
+		</div>
+	</p>
+	</div>
+
+	<h3 id="vh" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">
+	<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;VOTING HISTORY FILTERS</a></h3>
+	<div id="vh_box" style="display: none;">
+	<%= render :partial => 'contact_lists/voting_history_type_filter', :locals => { :voting_history_type_filter => @phone_bank_list.voting_history_type_filter, :form => f, :record => @phone_bank_list } %>
+		
+		<table id ="voting_history_group" class="form_table">
+		<% Election.all.each_with_index do |election,index| %>
+			<tr id="tr_<%=election.id %>" class="<%= cycle("even","odd") %>">
+			<td><%= check_box_tag "phone_bank_list[election_ids][]", election.id, @phone_bank_list.voting_history_filters.map(&:int_val).include?(election.id), :index => nil %> <%=h election.description %></td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Voted',  @phone_bank_list.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Voted') %> Voted</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Didn\'t Vote', @phone_bank_list.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Didn\'t Vote') %> Didn't Vote</td>
+			<!--<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Abs', @phone_bank_list.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Abs') %> Abs</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Polls', @phone_bank_list.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Polls') %> Polls</td>
+			<td><%= radio_button_tag "voting_history_filter_attributes[string_val][#{election.id}]", 'Provisional', @phone_bank_list.voting_history_filters.exists?(:int_val => election.id, :string_val => 'Provisional') %> Provisional</td>-->
+		</tr>	
+		<% end %>
+	</table>	
+	</div>
+
+	</hr />
+
+	<%= render :partial => 'contact_lists/gis_region', :locals =>  { :gis_region => @phone_bank_list.gis_region, :form => f } %>
+
+  <p>
+    <%= f.label :name, 'Enter a unique name for this Phone Bank List:' %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p><%= f.submit @phone_bank_list.new_record? ? 'Create Phone Bank List' : 'Save Changes', { :onclick => "set_map_values();" } %></p>
+<% end %>

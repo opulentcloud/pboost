@@ -1,0 +1,14 @@
+<% title "Create Phone Bank List" %>
+<%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'phone_bank_list_form' %>
+<%= include_google_javascript %>
+<%= new_init_map %>
+<%= init_map_new_poly('phone_bank_list') %>
+<%= init_map_delete_current_poly %>
+<%= init_map_save_current_polys %>
+<%= init_map_update_map_precinct %>
+<%= init_map_events('phone_bank_list') %>
+
+<%= render :partial => 'form' %>
+
+<p><%= link_to "Cancel and return to Phone Bank Lists", phone_bank_lists_path %></p>

@@ -40,6 +40,12 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.resources :organizations, :path_prefix => '/admin'
 
+	map.with_options(:controller => 'phone_bank_lists', :path_prefix => '/customer') do |site|
+		site.resources :phone_bank_lists do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+
   map.resources :political_campaigns, :path_prefix => '/admin'
 
 	#map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|

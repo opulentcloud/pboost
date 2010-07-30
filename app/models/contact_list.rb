@@ -136,7 +136,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def after_destroy
-		return true unless ['Walksheet','SmsList'].include?(self.class.to_s)
+		return true unless ['Walksheet','SmsList','PhoneBankList'].include?(self.class.to_s)
 		delete_file
 	end
 
@@ -170,6 +170,14 @@ class ContactList < ActiveRecord::Base
 			rescue
 			end		
 		end
+
+		fname = "#{RAILS_ROOT}/docs/phone_bank_list_#{self.id}.csv"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
+		end
 		
 	end
 	
@@ -184,7 +192,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file if ['Walksheet'].include?(self.class.to_s)
+		delete_file if ['Walksheet','SmsList','PhoneBankList'].include?(self.class.to_s)
 
 		#unlink any addresses from this contact_list
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
@@ -282,9 +290,15 @@ class ContactList < ActiveRecord::Base
 				end
 			end
 
-		if self.class.to_s != 'Walksheet'
+		if self.class.to_s == 'PhoneBankList'
+			sql += <<-eot
+				AND ("voters"."phone" != '') 
+			eot
+		end
+
+		if self.class.to_s == 'SmsList'
 			sql2_header = ";"
-		else
+		else #Walksheet and PhoneBankList need to do this.
 
 			sql2_header = <<-eot
 				INSERT INTO contact_list_addresses
@@ -308,13 +322,20 @@ class ContactList < ActiveRecord::Base
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
 
-		if self.voters.count > 0 && self.class.to_s == 'Walksheet'
-			WalksheetReport.build(self)
+		if self.voters.count > 0
+			case self.class.to_s
+				when 'Walksheet' then	WalksheetReport.build(self)
+			end
 		end
 
 		end #end if !self.upload_list == true
 
 		case self.class.to_s
+			when 'PhoneBankList' then
+				full_file_name = "#{RAILS_ROOT}/docs/phone_bank_list_#{self.id}.csv"
+				file_name = "phone_bank_list_#{self.id}.csv"
+				self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip','comm_dist_code','precinct_code'] } }, :methods => :full_name, :only => ['phone','age','sex','party']).save_as(full_file_name)
+				self.constituent_count = self.voters.count
 			when 'Walksheet' then
 				self.constituent_count = self.voters.count
 		end

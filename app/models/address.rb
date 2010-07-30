@@ -1,6 +1,7 @@
 class Address < ActiveRecord::Base
   acts_as_mappable
   acts_as_geom :geom => :point
+	acts_as_reportable
 
 	#===== ASSOCIATIONS ======
 	has_and_belongs_to_many :gis_regions

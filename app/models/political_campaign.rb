@@ -17,6 +17,7 @@ class PoliticalCampaign < ActiveRecord::Base
 	has_many :contact_lists
 	has_many :walksheets, :dependent => :destroy
 	has_many :sms_lists, :dependent => :destroy
+	has_many :phone_bank_lists, :dependent => :destroy
 	has_many :constituents#, :dependent => :destroy
 	has_many :voters, :through => :constituents
 	has_many :constituent_addresses#, :dependent => :destroy
