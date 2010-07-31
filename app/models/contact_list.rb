@@ -334,7 +334,7 @@ class ContactList < ActiveRecord::Base
 			when 'PhoneBankList' then
 				full_file_name = "#{RAILS_ROOT}/docs/phone_bank_list_#{self.id}.csv"
 				file_name = "phone_bank_list_#{self.id}.csv"
-				self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip','comm_dist_code','precinct_code'] } }, :methods => :full_name, :only => ['phone','age','sex','party']).save_as(full_file_name)
+				self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip','comm_dist_code','precinct_code'] } }, :only => ['first_name','middle_name','last_name','suffix','phone','age','sex','party','state_file_id']).save_as(full_file_name)
 				self.constituent_count = self.voters.count
 			when 'Walksheet' then
 				self.constituent_count = self.voters.count
