@@ -102,6 +102,7 @@ class SmsListsController < ApplicationController
 		@sms_list.build_voting_history_type_filter
     @sms_list.build_sms_list_attachment
     @sms_list.upload_list = true
+    @sms_list.do_mapping = true
     
   end
 
@@ -136,6 +137,12 @@ class SmsListsController < ApplicationController
   
   def create
     @sms_list = SmsList.new(params[:sms_list])
+		have_file = true
+
+		if params[:sms_list][:sms_list_attachment_attributes].blank?
+			@sms_list.errors.add_to_base('You must attach your file to continue.')
+			have_file = false		
+		end
 
    	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
 
@@ -149,7 +156,7 @@ class SmsListsController < ApplicationController
 
 		@sms_list.political_campaign_id = current_political_campaign.id
 
-	  if @sms_list.save
+	  if have_file && @sms_list.save
 	  	if @sms_list.do_mapping == true
 	  		#if we have just a single field then we are good to go
 	  		#otherwise we have to ask the user which column is the

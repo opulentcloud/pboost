@@ -5,6 +5,7 @@ class Attachment < ActiveRecord::Base
 	#validates_attachment_size :data, :greater_than => 0.kilobytes	
 	validates_attachment_content_type :data,
 		:content_type => ['text/csv','text/plain'], :message => 'The file you have attempted to upload is not an acceptable type.'
+	validates_attachment_presence :data
 		
 	def self.destroy_attachment(class_type, attachable_type, id)
 		Attachment.find(id, :conditions => {:type => class_type, :attachable_type => attachable_type}).destroy	
