@@ -89,17 +89,22 @@ class RobocallList < ContactList
 				eot
 			end
 
+			sql += <<-eot
+				AND
+					("constituents"."voter_id" = (SELECT v.id FROM voters v WHERE v.address_id = addresses.id 
+			eot
+
 			if self.age_filter
 				sql += <<-eot
 					AND
-						("voters"."age" BETWEEN #{self.age_filter.int_val} AND #{self.age_filter.max_int_val})
+						(v.age BETWEEN #{self.age_filter.int_val} AND #{self.age_filter.max_int_val})
 				eot
 			end
 
 			if self.sex_filter
 				sql += <<-eot
 					AND
-						("voters"."sex" = '#{self.sex_filter.string_val}')
+						(v.sex = '#{self.sex_filter.string_val}')
 				eot
 			end
 
@@ -107,22 +112,23 @@ class RobocallList < ContactList
 				@in = self.party_filters.map { |f| "'"+Party.find(f.int_val).code+"'" }.join(',')
 				sql += <<-eot
 					AND
-						("voters"."party" IN (#{@in}))
+						(v.party IN (#{@in}))
 				eot
 			end
 
 			if self.voting_history_filters.size > 0
-				sql += case self.voting_history_type_filter.string_val
+				sql_temp += case self.voting_history_type_filter.string_val
 					when 'Any' then build_any_voting_history_query
 					when 'All' then build_all_voting_history_query
 					when 'At Least' then build_at_least_voting_history_query
 					when 'Exactly' then build_exactly_voting_history_query
 					when 'No More Than' then build_no_more_than_voting_history_query
 				end
+				sql += sql_temp.gsub("\"voters\".\"id\"", "v.id")
 			end
 
 		sql += <<-eot
-		AND ("voters"."phone" != '');
+		AND (v.phone != '');
 		eot
 
 		sql2_header = <<-eot
