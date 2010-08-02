@@ -44,7 +44,8 @@ class SmsList < ContactList
 	def need_mapping
 	#debugger
 		return false unless self.upload_list == true
-		return false if !self.mapped_fields.blank?
+		return false if self.mapped_fields.blank? == false
+		return true if self.sms_list_attachment.nil?
 		 i = ListImporter.new(self.sms_list_attachment.file_name, 'sms_list', self.id)
 		 i.need_mapping
 	end
