@@ -1,0 +1,27 @@
+<p>
+Your file must be of a comma-delimited format with an extension of .csv or .txt.
+</p>
+
+<% form_for(@robocall_list, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+  
+	<% f.fields_for :robocall_list_attachment do |a| %>
+		<p>
+			File: <br />
+			<%= a.file_field :data  %><br /><br /> 
+		</p>
+	<% end %>
+
+  <p>
+    <%= f.label :name, 'Enter a unique name for this Robocall List:' %><br />
+    <%= f.text_field :name %>
+  </p>
+
+	<p>
+		<%= f.hidden_field :upload_list %>
+		<%= f.hidden_field :do_mapping %>
+		<%= f.submit "Upload Your File" %>
+	</p>	
+
+<% end %>
+

@@ -1,0 +1,27 @@
+<% title "Robocall Lists" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">Date Created</th>
+    <th align="center">Robocall List Name</th>
+    <th align="right">Voter Count</th>
+  </tr>
+  <% for robocall_list in @robocall_lists %>
+    <tr>
+			<td align="center"><%=format_date robocall_list.created_at %>
+      <td align="center"><%=h robocall_list.name %></td>
+      <td align="right"><%=robocall_list.populated? ? number_with_delimiter(robocall_list.constituent_count) : '*Populating' %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", robocall_list %></td>
+      <!--<td> &nbsp;<%= link_to "Edit", edit_robocall_list_path(robocall_list) %></td>-->
+      <td> &nbsp;<%= link_to "Delete", robocall_list, :confirm => 'Are you sure you wish to permanently delete this Robocall List?', :method => :delete %></td>
+
+			<% if robocall_list.upload_list == true && robocall_list.need_mapping == true %>
+				<td><%=link_to 'Finish Importing', map_fields_robocall_list_path(robocall_list) %></td>
+			<% end %>
+
+    </tr>
+  <% end %>
+</table>
+

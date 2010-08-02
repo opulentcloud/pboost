@@ -9,6 +9,11 @@ class ListImporter
 		self.mapped_fields = mappedfields
 		
 		case listtype
+			when 'robocall_list' then
+				if mappedfields.nil?
+					self.mapped_fields = { :phone => 0 }
+				end
+			
 			when 'sms_list' then
 				if mappedfields.nil?
 					self.mapped_fields = { :cell_phone => 0 }
@@ -46,6 +51,8 @@ class ListImporter
 		end
 
 		case list_type
+			when 'robocall_list' then
+				return @row.size != 1
 			when 'sms_list' then
 				return @row.size != 1
 		end
@@ -58,6 +65,10 @@ class ListImporter
 		begin
 			FasterCSV.foreach(self.file_name) do |row|
 				case list_type
+					when 'robocall_list' then
+						cls = ContactListRobocall.new
+						cls.phone = valid_phone_number(row[self.mapped_fields[:phone]])
+						@list.contact_list_robocalls << @list.contact_list_robocalls.exists?(:phone => cls.phone)
 					when 'sms_list' then
 						cls = ContactListSmss.new
 						cls.cell_phone = valid_phone_number(row[self.mapped_fields[:cell_phone]])

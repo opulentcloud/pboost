@@ -1,0 +1,24 @@
+<% title "Create Robocall List" %>
+
+<% if @robocall_list.upload_list.nil? %>
+	<%= render :partial => 'intro_form' %>
+<% elsif @robocall_list.upload_list == true %>
+	<%= render :partial => 'upload_form' %>
+<% else %>
+
+<%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'robocall_list_form' %>
+<%= include_google_javascript %>
+<%= new_init_map %>
+<%= init_map_new_poly('robocall_list') %>
+<%= init_map_delete_current_poly %>
+<%= init_map_save_current_polys %>
+<%= init_map_update_map_precinct %>
+<%= init_map_events('robocall_list') %>
+
+<%= render :partial => 'form' %>
+
+<% end %>
+
+<p><%= link_to "Cancel and return to Robocall Lists", robocall_lists_path %></p>
+

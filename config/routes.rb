@@ -54,6 +54,14 @@ ActionController::Routing::Routes.draw do |map|
 	#end
 	#map.resources :reports, :path_prefix => '/customer'
 
+	map.with_options(:controller => 'robocall_lists', :path_prefix => '/customer') do |site|
+		site.intro 'intro', :action => 'intro', :conditions => { :method => :post }
+		site.map_fields_robocall_list 'map_fields_robocall_list/:id', :action => 'map_fields', :conditions => { :method => [:get, :post] }
+		site.resources :robocall_lists do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+
 	map.with_options(:controller => 'sms_lists', :path_prefix => '/customer') do |site|
 		site.intro 'intro', :action => 'intro', :conditions => { :method => :post }
 		site.map_fields_sms_list 'map_fields_sms_list/:id', :action => 'map_fields', :conditions => { :method => [:get, :post] }

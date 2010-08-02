@@ -1,0 +1,76 @@
+<% title "Robocall List: #{@robocall_list.name}" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<p>
+  <strong>Voter Count:</strong>
+  <%=@robocall_list.populated? ? number_with_delimiter(@robocall_list.constituent_count) : '*Populating' %>
+	<% if @robocall_list.populated? %>
+		<%=link_to 'Download Robocall List', robocall_list_report_path(@robocall_list.id, :report_type => 'robocall_list', :format => 'csv') %>
+	<% end %>
+</p>
+
+<h3>GEOGRAPHIC FILTERS:</h3>	
+
+<% if @robocall_list.precinct_filter %>
+	<p>
+		<strong>Precinct:</strong> 
+			<%=h @robocall_list.precinct_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @robocall_list.council_district_filter %>
+	<p>
+		<strong>Council District:</strong> 
+			<%=h @robocall_list.council_district_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @robocall_list.gis_region %>
+	<p>
+		<strong><%=h @robocall_list.gis_region.geom2.size %> Custom Map Routes: </strong> 
+			<%=link_to 'View Routes On Map', gis_region_path(@robocall_list.gis_region), { :target => "_blank" } %>
+	</p>
+<% end %>
+
+<h3>DEMOGRAPHIC FILTERS:</h3>
+
+<% if @robocall_list.age_filter %>
+<p>
+  <strong>Age Range:</strong>
+	  <%= @robocall_list.age_filter.int_val %> to <%= @robocall_list.age_filter.max_int_val %>
+</p>
+<% end %>
+
+<% if @robocall_list.sex_filter %>
+<p>
+  <strong>Sex:</strong>
+	  <%=h @robocall_list.sex_filter.string_val %>
+</p>
+<% end %>
+
+<% if @robocall_list.party_filters.size > 0 %>
+<p>
+	<strong>Party:</strong>
+	<%= @robocall_list.party_filters.map { |f| Party.find(f.int_val).name }.join(',') %>
+</p>
+<% end %>
+
+<h3>VOTING HISTORY FILTERS:</h3>
+
+<% if @robocall_list.voting_history_type_filter %>
+	<p>Include voters who did <%=h @robocall_list.voting_history_type_filter.string_val %> 
+	<% if ['At Least', 'Exactly', 'No More Than'].include?(@robocall_list.voting_history_type_filter.string_val) %>
+	<%= @robocall_list.voting_history_type_filter.int_val %> 
+	<% end %>
+	of the following:</p>
+<% end %>
+
+<% if @robocall_list.voting_history_filters.size > 0 %>
+<p>
+	<% @robocall_list.voting_history_filters.each do |f| %>
+	<strong><%=h f.election.description %></strong> <%=h f.string_val %><br />
+	<% end %>
+</p>
+<% end %>
+

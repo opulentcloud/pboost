@@ -1,0 +1,15 @@
+<% form_for @robocall_list, :url => { :action => 'intro' } do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <strong><%= f.label :upload_list, 'Would you like to upload your own list?' %></strong>
+  </p>
+  <p>  
+    <%= f.radio_button :upload_list, 'true' %> YES, I will upload my own list.
+  </p>
+  <p>  
+    <%= f.radio_button :upload_list, 'false' %> NO, I will create a list from the Political Boost database.
+  </p>
+
+  <p><%= f.submit 'Continue' %></p>
+<% end %>

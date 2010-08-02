@@ -49,6 +49,7 @@ class ContactList < ActiveRecord::Base
 	accepts_nested_attributes_for :voting_history_type_filter
 	has_many :contact_list_smsses
 	belongs_to :delayed_job, :dependent => :destroy
+	has_many :contact_list_robocalls
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -127,6 +128,10 @@ class ContactList < ActiveRecord::Base
 		ActiveRecord::Base.connection.execute(sql)
 
 		case self.class.to_s
+			when 'RobocallList' then
+				sql = "DELETE FROM contact_list_robocalls WHERE contact_list_id = #{self.id}"
+				ActiveRecord::Base.connection.execute(sql)
+
 			when 'SmsList' then
 				sql = "DELETE FROM contact_list_smsses WHERE contact_list_id = #{self.id}"
 				ActiveRecord::Base.connection.execute(sql)
@@ -136,7 +141,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def after_destroy
-		return true unless ['Walksheet','SmsList','PhoneBankList'].include?(self.class.to_s)
+		return true unless ['Walksheet','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
 		delete_file
 	end
 
@@ -178,6 +183,14 @@ class ContactList < ActiveRecord::Base
 			rescue
 			end		
 		end
+
+		fname = "#{RAILS_ROOT}/docs/robocall_list_#{self.id}.csv"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
+		end
 		
 	end
 	
@@ -192,7 +205,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file if ['Walksheet','SmsList','PhoneBankList'].include?(self.class.to_s)
+		delete_file if ['Walksheet','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
 
 		#unlink any addresses from this contact_list
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
@@ -290,7 +303,7 @@ class ContactList < ActiveRecord::Base
 				end
 			end
 
-		if self.class.to_s == 'PhoneBankList'
+		if self.class.to_s == 'PhoneBankList' || self.class.to_s == 'RobocallList'
 			sql += <<-eot
 				AND ("voters"."phone" != '') 
 			eot
@@ -298,7 +311,7 @@ class ContactList < ActiveRecord::Base
 
 		if self.class.to_s == 'SmsList'
 			sql2_header = ";"
-		else #Walksheet and PhoneBankList need to do this.
+		else #Walksheet, PhoneBankList and RobocallList need to do this.
 
 			sql2_header = <<-eot
 				INSERT INTO contact_list_addresses
