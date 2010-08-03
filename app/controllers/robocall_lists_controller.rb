@@ -1,4 +1,4 @@
-class RobocallsController < ApplicationController
+class RobocallListsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_robocall_list, :only => [:map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
@@ -122,7 +122,7 @@ class RobocallsController < ApplicationController
     @robocall_list = RobocallList.new(params[:robocall_list])
 		have_file = true
 
-		if params[:robocall_list][:robocall_list_attachment_attributes].blank?
+		if params[:robocall_list][:robocall_list_attachment_attributes].blank? && @robocall_list.upload_list == true
 			@robocall_list.errors.add_to_base('You must attach your file to continue.')
 			have_file = false		
 		end

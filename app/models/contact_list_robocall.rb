@@ -5,7 +5,7 @@ class ContactListRobocall < ActiveRecord::Base
 	belongs_to :contact_list
 
 	#export with a leading one
-	def phone_mumber 
+	def phone_number 
 		"1#{self.phone}"
 	end
 	

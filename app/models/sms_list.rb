@@ -118,6 +118,9 @@ class SmsList < ContactList
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		sql_result = ActiveRecord::Base.connection.execute(sql)
 
+		sql = "DELETE FROM contact_list_smsses WHERE contact_list_id = #{self.id}"
+		sql_result = ActiveRecord::Base.connection.execute(sql)
+
 		if !self.upload_list == true
 
 		sql1_header = <<-eot

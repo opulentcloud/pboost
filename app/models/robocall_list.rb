@@ -43,6 +43,9 @@ class RobocallList < ContactList
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		sql_result = ActiveRecord::Base.connection.execute(sql)
 
+		sql = "DELETE FROM contact_list_robocalls WHERE contact_list_id = #{self.id}"
+		sql_result = ActiveRecord::Base.connection.execute(sql)
+
 		if !self.upload_list == true
 
 		sql1_header = <<-eot
@@ -128,7 +131,7 @@ class RobocallList < ContactList
 			end
 
 		sql += <<-eot
-		AND (v.phone != '');
+		AND (v.phone != \'\') LIMIT 1))
 		eot
 
 		sql2_header = <<-eot
@@ -155,11 +158,23 @@ class RobocallList < ContactList
 #debugger
 		if self.voters.count > 0 && !self.upload_list == true
 			#build list of robocall phone numbers from voters.
-			self.voters.all(:select => 'DISTINCT voters.phone', :conditions => "voters.phone != ''").each do |voter|
-				cls = ContactListRobocall.new
-				cls.phone = voter.phone
-				self.contact_list_robocalls << cls
-			end
+			sql = <<-eot
+				INSERT INTO contact_list_robocalls
+				SELECT
+					nextval('contact_list_robocalls_id_seq') AS id, 
+					r.*, now() AS created_at, now() AS updated_at
+				FROM
+				(SELECT 
+					DISTINCT "voters"."phone", "contact_list_voters"."contact_list_id"
+				FROM 
+					"contact_list_voters", "voters"
+				WHERE
+					("contact_list_voters"."contact_list_id" = #{self.id})
+				AND
+					"voters"."id" = "contact_list_voters"."voter_id") AS r;		
+			eot
+	
+			sql_result = ActiveRecord::Base.connection.execute(sql)
 
 			self.constituent_count = self.contact_list_robocalls.count
 			self.populated = true
@@ -177,6 +192,12 @@ class RobocallList < ContactList
 				self.save!
 			end
 		end			
+
+		if self.populated == true && self.repopulate == false
+			full_file_name = "#{RAILS_ROOT}/docs/robocall_list_#{self.id}.csv"
+			file_name = "robocall_list_#{self.id}.csv"
+			self.contact_list_robocalls.report_table(:all, :methods => ['phone_number'], :only => ['phone_number']).save_as(full_file_name)
+		end
 
 	end
 

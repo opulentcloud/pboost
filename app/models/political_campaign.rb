@@ -18,6 +18,7 @@ class PoliticalCampaign < ActiveRecord::Base
 	has_many :walksheets, :dependent => :destroy
 	has_many :sms_lists, :dependent => :destroy
 	has_many :phone_bank_lists, :dependent => :destroy
+	has_many :robocall_lists, :dependent => :destroy
 	has_many :constituents#, :dependent => :destroy
 	has_many :voters, :through => :constituents
 	has_many :constituent_addresses#, :dependent => :destroy
@@ -98,6 +99,8 @@ class PoliticalCampaign < ActiveRecord::Base
 
 		list_type = filters[:list_type]
 		case list_type
+			when 'robocall_list' then
+				sql1_header = "SELECT COUNT(DISTINCT voters.phone)\n"
 			when "sms_list" then
 				sql1_header = "SELECT COUNT(DISTINCT voters.cell_phone)\n"
 			else
@@ -163,10 +166,15 @@ class PoliticalCampaign < ActiveRecord::Base
 			end
 
 		if filters.has_key?(:list_type)
-			if filters[:list_type] == 'sms_list'
-				sql += <<-eot
-				AND ("voters"."cell_phone" != '') 
-				eot
+			case filters[:list_type]
+				when 'robocall_list' then
+					sql += <<-eot
+					AND ("voters"."phone" != '') 
+					eot
+				when 'sms_list' then
+					sql += <<-eot
+					AND ("voters"."cell_phone" != '') 
+					eot
 			end
 		end
 

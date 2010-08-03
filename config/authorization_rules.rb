@@ -17,6 +17,7 @@ authorization do
 		has_permission_on :customer, :to => [:index]
 		has_permission_on [:gis_regions], :to => [:plot_precinct_cluster, :count_in_poly, :add_vertices, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:phone_bank_lists], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
+		has_permission_on [:robocall_lists], :to => [:map_fields, :intro, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:sms_lists], :to => [:map_fields, :intro, :unschedule, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:walksheets], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 	end

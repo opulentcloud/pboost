@@ -68,7 +68,7 @@ class ListImporter
 					when 'robocall_list' then
 						cls = ContactListRobocall.new
 						cls.phone = valid_phone_number(row[self.mapped_fields[:phone]])
-						@list.contact_list_robocalls << @list.contact_list_robocalls.exists?(:phone => cls.phone)
+						@list.contact_list_robocalls << cls unless cls.phone.blank? || @list.contact_list_robocalls.exists?(:phone => cls.phone)
 					when 'sms_list' then
 						cls = ContactListSmss.new
 						cls.cell_phone = valid_phone_number(row[self.mapped_fields[:cell_phone]])

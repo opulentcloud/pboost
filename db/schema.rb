@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100729195314) do
+ActiveRecord::Schema.define(:version => 20100802214730) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -176,16 +176,23 @@ ActiveRecord::Schema.define(:version => 20100729195314) do
   add_index "contact_list_addresses", ["contact_list_id"], :name => "index_contact_list_addresses_on_contact_list_id"
   add_index "contact_list_addresses", ["contact_list_id", "address_id"], :name => "index_contact_list_addresses_on_contact_list_id_and_address_id", :unique => true
 
+  create_table "contact_list_robocalls", :force => true do |t|
+    t.column "phone", :string, :limit => 10, :null => false
+    t.column "contact_list_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "contact_list_robocalls", ["contact_list_id"], :name => "index_contact_list_robocalls_on_contact_list_id"
+
   create_table "contact_list_smsses", :force => true do |t|
     t.column "cell_phone", :string, :limit => 10, :null => false
     t.column "contact_list_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "status", :string, :limit => 4
   end
 
-  add_index "contact_list_smsses", ["contact_list_id"], :name => "index_contact_list_smses_on_contact_list_id"
-  add_index "contact_list_smsses", ["status"], :name => "index_contact_list_smsses_on_status"
+  add_index "contact_list_smsses", ["contact_list_id"], :name => "index_contact_list_smsses_on_contact_list_id"
 
   create_table "contact_list_voters", :force => true do |t|
     t.column "contact_list_id", :integer
