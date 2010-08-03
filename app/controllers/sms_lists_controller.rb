@@ -182,6 +182,12 @@ class SmsListsController < ApplicationController
 			@sms_list.build_voting_history_type_filter if @sms_list.voting_history_type_filter.nil?
     	@sms_list.build_sms_list_attachment unless !@sms_list.sms_list_attachment.nil?
 
+			if @sms_list.sms_list_attachment
+				logger.debug(@sms_list.sms_list_attachment.content_type)
+			else
+				logger.debug("no attachment")
+			end
+
 			respond_to do |format|
       	format.html { render :action => 'new' }
 				format.js { 
