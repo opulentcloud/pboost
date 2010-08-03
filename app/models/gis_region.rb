@@ -29,7 +29,9 @@ class GisRegion < ActiveRecord::Base
 		
 		polys = []
 		a.each do |polygon|				
-			polys.push(Polygon.from_coordinates([polygon]))
+		debugger
+			p = Polygon.from_coordinates([polygon])
+			polys.push(p) unless p[0].size == 0
 		end
 		
 		self.geom2 = MultiPolygon.from_polygons(polys)
