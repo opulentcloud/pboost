@@ -120,7 +120,7 @@ class RobocallList < ContactList
 			end
 
 			if self.voting_history_filters.size > 0
-				sql_temp += case self.voting_history_type_filter.string_val
+				sql_temp = case self.voting_history_type_filter.string_val
 					when 'Any' then build_any_voting_history_query
 					when 'All' then build_all_voting_history_query
 					when 'At Least' then build_at_least_voting_history_query
