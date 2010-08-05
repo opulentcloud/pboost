@@ -1,0 +1,34 @@
+<% title "Campaigns" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">Type</th>
+		<th align="center">Date Created</th>
+    <th align="center">Name</th>
+    <th align="right">Voter Count</th>
+    <th align="center">Status</th>
+  </tr>
+  <% for campaign in @campaigns %>
+    <tr>
+    	<td align="center"><%=h campaign.class.to_s %>
+			<td align="center"><%=format_date campaign.created_at %>
+      <td align="center"><%=h campaign.name %></td>
+      <td align="right"><%=number_with_delimiter(campaign.contact_list.constituent_count) %></td>
+      <td align="center"><%=h campaign.status_display %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", campaign %></td>
+      <!--<td> &nbsp;<%= link_to "Edit", edit_campaign_path(campaign) %></td>-->
+      <td> &nbsp;<%= link_to "Delete", campaign, :confirm => 'Are you sure you wish to permanently delete this Campaign?', :method => :delete %></td>
+
+			<% if campaign.scheduled_at.nil? && campaign.is_editable? %>
+				<td> &nbsp;<%= link_to 'Schedule', edit_campaign_path(campaign) %></td>
+			<% end %>	
+
+      <% if !campaign.scheduled_at.nil? && campaign.status == 'Scheduled' %>
+	      <td> &nbsp;<%= link_to "Unschedule", unschedule_campaign_path(campaign), :confirm => 'Are you sure you wish to cancel the Scheduled sending of this Campaign?' %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+

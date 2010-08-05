@@ -1,0 +1,38 @@
+<% title "Robocall Campaign: #{@robocall_campaign.name}" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<p>
+  <strong>Robocall List: </strong>
+  <%=h @robocall_campaign.contact_list.name %>
+</p>
+
+<p>
+  <strong>Caller ID: </strong>
+  <%=format_phone_number @robocall_campaign.caller_id %>
+</p>
+
+<p>
+	<strong>Live Answer Sound File: </strong>
+	<%=h @robocall_campaign.live_answer_attachment.name rescue nil %>
+</p>
+
+<p>
+	<strong>Answer Machine Sound File: </strong>
+	<% if @robocall_campaign.single_sound_file == true %>
+		<%=h @robocall_campaign.live_answer_attachment.name rescue nil %>
+	<% else %>
+		<%=h @robocall_campaign.answer_machine_attachment.name rescue nil %>
+	<% end %>
+</p>
+
+<p>
+	<strong>Scrub against DNC? </strong>
+	<%=h @robocall_campaign.scrub_dnc ? 'YES' : 'NO' %>
+</p>
+
+<h3>STATUS:</h3>
+<p>
+	<strong><%= @robocall_campaign.status_display %></strong>
+<p/>
+

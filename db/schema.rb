@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100802214730) do
+ActiveRecord::Schema.define(:version => 20100804171551) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -90,6 +90,25 @@ ActiveRecord::Schema.define(:version => 20100802214730) do
 
   add_index "attachments", ["attachable_id", "attachable_type"], :name => "index_attachments_on_attachable_id_and_attachable_type", :unique => true
   add_index "attachments", ["type"], :name => "index_attachments_on_type"
+
+  create_table "campaigns", :force => true do |t|
+    t.column "type", :string, :limit => 100, :null => false
+    t.column "name", :string, :limit => 100, :null => false
+    t.column "scheduled_at", :datetime
+    t.column "caller_id", :string, :limit => 10
+    t.column "single_sound_file", :boolean
+    t.column "scrub_dnc", :boolean
+    t.column "sms_text", :text
+    t.column "delayed_job_id", :integer
+    t.column "contact_list_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "campaigns", ["contact_list_id"], :name => "index_campaigns_on_contact_list_id"
+  add_index "campaigns", ["delayed_job_id"], :name => "index_campaigns_on_delayed_job_id"
+  add_index "campaigns", ["id", "type"], :name => "index_campaigns_on_id_and_type"
+  add_index "campaigns", ["type", "name"], :name => "index_campaigns_on_type_and_name"
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false

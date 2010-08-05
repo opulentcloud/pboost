@@ -85,10 +85,10 @@ class ListImporter
 	def valid_phone_number(phone)
 		return '' unless !phone.nil?
 		a = ''
-		phone.each do |n|
+		phone.split('').each do |n|
 			a += n if n =~ /[0-9]/
 		end
-		a = a[1, a.size] if a[0] == '1'
+		a = a[1, a.size] if a[0] == 49 #remove leading 1's
 		a = '' if a.size != 10
 		a
 	end

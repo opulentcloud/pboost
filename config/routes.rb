@@ -2,6 +2,11 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.root :controller => 'site'
 
+	map.with_options(:controller => 'campaigns', :path_prefix => '/customer') do |site|
+		site.resources :campaigns do |site2|
+		end	
+	end
+
 	map.with_options(:controller => 'contact_lists', :path_prefix => '/customer') do |site|
 		site.sex_filter_changed 'sex_filter_changed/:sex', :action => 'sex_filter_changed', :conditions => { :method => :get }
 		site.age_filter_changed 'age_filter_changed/:min_age/:max_age', :action => 'age_filter_changed', :conditions => { :method => :get }
@@ -53,6 +58,11 @@ ActionController::Routing::Routes.draw do |map|
 		#site.pdf 'pdf/:id', :action => 'send_pdf_file', :conditions => { :method => :get }
 	#end
 	#map.resources :reports, :path_prefix => '/customer'
+
+	map.with_options(:controller => 'robocall_campaigns', :path_prefix => '/customer') do |site|
+		site.resources :robocall_campaigns do |site2|
+		end	
+	end
 
 	map.with_options(:controller => 'robocall_lists', :path_prefix => '/customer') do |site|
 		site.intro 'intro', :action => 'intro', :conditions => { :method => :post }

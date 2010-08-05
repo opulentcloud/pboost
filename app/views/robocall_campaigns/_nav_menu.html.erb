@@ -1,0 +1,18 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @robocall_campaign && !@robocall_campaign.new_record? %>
+		<td><%=link_to 'List Campaigns', campaigns_path %></td>
+		<td><%= link_to 'View Campaign', @robocall_campaign %></td>
+		<td><%= link_to 'Delete Campaign', @robocall_campaign, :confirm => 'Are you sure you want to permanently delete this Campaign?', :method => :delete %></td>
+		<% if @robocall_campaign.scheduled_at.nil? && @robocall_campaign.is_editable? %>
+			<td><%= link_to 'Schedule', edit_robocall_campaign_path(@robocall_campaign) %></td>
+		<% end %>	
+		<% if !@robocall_campaign.scheduled_at.nil? && @robocall_campaign.status == 'Scheduled' %>
+			<td><%= link_to "Unschedule", unschedule_robocall_campaign_path(@robocall_campaign), :confirm => 'Are you sure you wish to cancel the Scheduled sending of this Campaign?' %></td>
+		<% end %>	
+	</tr>
+  <% end %>
+</table>
+</p>
+

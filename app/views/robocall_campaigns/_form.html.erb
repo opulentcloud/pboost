@@ -1,0 +1,64 @@
+<% form_for(@robocall_campaign, :html => { :multipart => true }) do |f| %>
+
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name, 'Enter a unique name for this Robocall Campaign:' %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :contact_list_id, 'Choose the Robocall List for this campaign:' %><br />
+		<%= f.collection_select(:contact_list_id, current_political_campaign.robocall_lists, :id, :name, {:prompt => 'Choose...'}, :class => '') %>
+  </p>
+
+  <p>
+    <%= f.label :caller_id, 'Enter your Caller ID:' %><br />
+    <%= f.text_field :caller_id %>
+  </p>
+
+	<p><i>(Sound files must be in .wav or .mp3 file format)</i></p>
+
+	<% f.fields_for :live_answer_attachment do |a1| %>
+		<p>
+			Live Answer Sound File: <br />
+			<%= a1.file_field :data  %>
+		</p>
+	<% end %>
+
+	<p>
+		<%=f.check_box :single_sound_file %> Check here if you want to use your Live Answer sound file for Answer Machine calls otherwise please attach your Answer Machine file below.
+	</p>
+
+	<% f.fields_for :answer_machine_attachment do |a2| %>
+		<p>
+			Answer Machine Sound File: <br />
+			<%= a2.file_field :data  %>
+		</p>
+	<% end %>
+
+	<p>
+		<%=f.label :scrub_dnc, 'Scrub against the Do Not Call List (DNC)?: ' %>
+		<%=f.radio_button :scrub_dnc, 'true' %> YES
+		<%=f.radio_button :scrub_dnc, 'false' %> NO
+	</p>
+
+  <p>
+  	<%= f.submit @robocall_campaign.new_record? ? 'Send Campaign Now' : 'Save Changes' %>
+		&nbsp;&nbsp;<%= button_to_function 'Schedule Campaign Delivery', 'SchedulingOptionsShow()' %>
+  </p>
+
+	<div id="schedule" style="display: none;">
+	<p>	
+		<%= f.label :scheduled_at, 'Date & Time To Start Your Campaign:' %><br />
+		<%=f.datetime_select(:scheduled_at, :order => [:month, :day, :year], :use_month_numbers => true, :start_year => Time.zone.now.year, :default => { :year => Time.zone.now.year, :month => Time.zone.now.month, :day => Time.zone.now.day }, :minute_step => 15, :twelve_hour => true) %>
+		<%=h @current_user.time_zone.zone %>					
+	</p>
+
+  <p>
+  	<%= f.submit 'Schedule Campaign' %>
+  </p>
+	</div>
+
+<% end %>
+

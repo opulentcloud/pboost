@@ -50,6 +50,8 @@ class ContactList < ActiveRecord::Base
 	has_many :contact_list_smsses
 	belongs_to :delayed_job, :dependent => :destroy
 	has_many :contact_list_robocalls
+	has_many :campaigns
+	has_many :robocall_campaigns
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name

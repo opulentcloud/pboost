@@ -1,0 +1,3 @@
+class SmsCampaign < Campaign
+end
+

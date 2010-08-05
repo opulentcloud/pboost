@@ -1,0 +1,20 @@
+<% title "Create A Campaign" %>
+
+<% form_for @campaign do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <strong>Which type of campaign would you like to create?</strong>
+  </p>
+  <p>  
+    <%= f.radio_button :type, 'RobocallCampaign' %> Robocall
+  </p>
+  <p>  
+    <%= f.radio_button :type, 'SmsCampaign' %> SMS
+  </p>
+
+  <p><%= f.submit 'Continue' %></p>
+<% end %>
+
+<p><%= link_to "Cancel and return to Campaigns", campaigns_path %></p>
+

@@ -23,6 +23,8 @@ class PoliticalCampaign < ActiveRecord::Base
 	has_many :voters, :through => :constituents
 	has_many :constituent_addresses#, :dependent => :destroy
 	has_many :addresses, :through => :constituent_addresses
+	has_many :campaigns, :through => :contact_lists
+	has_many :robocall_campaigns, :through => :contact_lists, :dependent => :destroy
 
 	#==== VALIDATIONS ====
 	validates_presence_of :candidate_name, :seat_sought, :state_id, :type

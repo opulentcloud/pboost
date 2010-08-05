@@ -3,8 +3,6 @@ class Attachment < ActiveRecord::Base
 	belongs_to :attachable, :polymorphic => true
 
 	#validates_attachment_size :data, :greater_than => 0.kilobytes	
-	validates_attachment_content_type :data,
-		:content_type => ['text/x-csv','text/csv','text/plain','text/x-comma-separated-values','text/comma-separated-values','application/csv','application/x-csv','application/vnd.ms-excel','application/excel','application/vnd.msexcel'], :message => 'The file you have attempted to upload is not an acceptable type.'
 	validates_attachment_presence :data
 		
 	def self.destroy_attachment(class_type, attachable_type, id)
