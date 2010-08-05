@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
 	map.root :controller => 'site'
 
 	map.with_options(:controller => 'campaigns', :path_prefix => '/customer') do |site|
+		site.unschedule_campaign 'unschedule_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
 		site.resources :campaigns do |site2|
 		end	
 	end
@@ -60,6 +61,7 @@ ActionController::Routing::Routes.draw do |map|
 	#map.resources :reports, :path_prefix => '/customer'
 
 	map.with_options(:controller => 'robocall_campaigns', :path_prefix => '/customer') do |site|
+		site.unschedule_robocall_campaign 'unschedule_robocall_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
 		site.resources :robocall_campaigns do |site2|
 		end	
 	end

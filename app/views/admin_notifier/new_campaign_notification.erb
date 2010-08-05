@@ -1,0 +1,7 @@
+At <%= format_date_time Time.zone.now %> the following Robocall Campaign was scheduled by <%=h @user.name %> with <%=h @organization.name %> for the Political Campaign <%=h @political_campaign.campaign_description %>.
+
+Robocall Campaign: <%=h @campaign.name %>
+    Scheduled For: <%=format_date_time @campaign.scheduled_at %>
+
+<%= render :partial => 'footer' %>
+

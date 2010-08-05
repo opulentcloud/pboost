@@ -7,7 +7,7 @@ class RobocallCampaignsController < ApplicationController
 		if @robocall_campaign.status != 'Scheduled'
 			flash[:error] = "We could not cancel the sending of this Campaign because the current status is #{@robocall_campaign.status}."
 		else
-			@robocall_campaign.schedule_at = nil
+			@robocall_campaign.scheduled_at = nil
 			if @robocall_campaign.save
 				flash[:notice] = 'Unschedule was successful.'
 			else
