@@ -21,7 +21,7 @@
 
 	<% f.fields_for :live_answer_attachment do |a1| %>
 		<p>
-			Live Answer Sound File: <br />
+			Live Answer Sound File: <% if !@robocall_campaign.live_answer_attachment.new_record? %><i><%=h @robocall_campaign.live_answer_attachment.name %> - Only attach a new file here if you wish to overwrite this file.</i><% end %><br />
 			<%= a1.file_field :data  %>
 		</p>
 	<% end %>
@@ -30,12 +30,14 @@
 		<%=f.check_box :single_sound_file %> Check here if you want to use your Live Answer sound file for Answer Machine calls otherwise please attach your Answer Machine file below.
 	</p>
 
+	<div id="answer_machine_file" style="display: <%=@robocall_campaign.single_sound_file == true ? 'none' : 'inline' %>;">
 	<% f.fields_for :answer_machine_attachment do |a2| %>
 		<p>
 			Answer Machine Sound File: <br />
 			<%= a2.file_field :data  %>
 		</p>
 	<% end %>
+	</div>
 
 	<p>
 		<%=f.label :scrub_dnc, 'Scrub against the Do Not Call List (DNC)?: ' %>
@@ -44,11 +46,13 @@
 	</p>
 
   <p>
-  	<%= f.submit @robocall_campaign.new_record? ? 'Send Campaign Now' : 'Save Changes' %>
+  	<%= f.submit 'Send Campaign Now' %>
+		<% if @robocall_campaign.scheduled_at.nil? %>
 		&nbsp;&nbsp;<%= button_to_function 'Schedule Campaign Delivery', 'SchedulingOptionsShow()' %>
+		<% end %>
   </p>
 
-	<div id="schedule" style="display: none;">
+	<div id="schedule" style="display: <%=@robocall_campaign.scheduled_at.nil? ? 'none' : 'inline' %>;">
 	<p>	
 		<%= f.label :scheduled_at, 'Date & Time To Start Your Campaign:' %><br />
 		<%=f.datetime_select(:scheduled_at, :order => [:month, :day, :year], :use_month_numbers => true, :start_year => Time.zone.now.year, :default => { :year => Time.zone.now.year, :month => Time.zone.now.month, :day => Time.zone.now.day }, :minute_step => 15, :twelve_hour => true) %>

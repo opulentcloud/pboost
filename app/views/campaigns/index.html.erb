@@ -21,8 +21,8 @@
       <!--<td> &nbsp;<%= link_to "Edit", edit_campaign_path(campaign) %></td>-->
       <td> &nbsp;<%= link_to "Delete", campaign, :confirm => 'Are you sure you wish to permanently delete this Campaign?', :method => :delete %></td>
 
-			<% if campaign.scheduled_at.nil? && campaign.is_editable? %>
-				<td> &nbsp;<%= link_to 'Schedule', edit_campaign_path(campaign) %></td>
+			<% if campaign.is_editable? %>
+				<td> &nbsp;<%= link_to 'Edit', edit_campaign_path(campaign) %></td>
 			<% end %>	
 
       <% if !campaign.scheduled_at.nil? && campaign.status == 'Scheduled' %>

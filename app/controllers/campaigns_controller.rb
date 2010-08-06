@@ -1,6 +1,6 @@
 class CampaignsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_campaign, :only => [:unschedule]
+	before_filter :get_campaign, :only => [:unschedule, :edit]
 	filter_access_to :all
 
 	def unschedule
@@ -38,6 +38,19 @@ class CampaignsController < ApplicationController
   def index
     @campaigns = current_political_campaign.campaigns.all(:order => 'campaigns.created_at DESC')
   end
+
+	def edit
+		case @campaign.class.to_s
+			when 'RobocallCampaign' then
+				redirect_to edit_robocall_campaign_path(@campaign)
+				return
+			when 'SmsCampaign' then
+				redirect_to edit_sms_campaign_path(@campaign)
+				return
+		end
+		flash[:error] = 'You can not not edit this campaign.'
+		redirect_to campaigns_path
+	end
 
 private
 	#get the campaign

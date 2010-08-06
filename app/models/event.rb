@@ -9,6 +9,6 @@ class Event < ActiveRecord::Base
 	belongs_to :address
 	belongs_to :voter
 	has_one :organization, :through => :contact_list
-	belongs_to :delayed_job
+	belongs_to :background_job
 end
 

@@ -48,10 +48,11 @@ class ContactList < ActiveRecord::Base
 	has_one :voting_history_type_filter
 	accepts_nested_attributes_for :voting_history_type_filter
 	has_many :contact_list_smsses
-	belongs_to :delayed_job, :dependent => :destroy
+	belongs_to :background_job, :dependent => :destroy
 	has_many :contact_list_robocalls
 	has_many :campaigns
 	has_many :robocall_campaigns
+	belongs_to :background_job, :foreign_key => :delayed_job_id
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name

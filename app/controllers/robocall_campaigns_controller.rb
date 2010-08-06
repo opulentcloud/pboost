@@ -34,6 +34,8 @@ class RobocallCampaignsController < ApplicationController
   
   def create
     @robocall_campaign = RobocallCampaign.new(params[:robocall_campaign])
+		@robocall_campaign.user_name = current_user.full_name
+		@robocall_campaign.user_ip_address = request.remote_ip
 
 		notice = 'Your Robocall Campaign has been scheduled.'
 
@@ -67,15 +69,12 @@ class RobocallCampaignsController < ApplicationController
   
   def edit
   	if !@robocall_campaign.is_editable?
-  		flash[:error] = 'You can not edit this Robocall Campaign while it is being populated.'
-  		redirect_to @robocall_campaign
-  	end
-  	
-  	if !@robocall_campaign.status == 'n/a'
-  		flash[:error] = "You can not edit this Robocall Campaign because the current status is #{@robocall_campaign.status}."
+  		flash[:error] = 'You can no longer edit this Robocall Campaign.'
   		redirect_to @robocall_campaign
   	end
 
+    @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?
+    @robocall_campaign.build_answer_machine_attachment unless !@robocall_campaign.answer_machine_attachment.nil?
   end
   
   def update
@@ -84,10 +83,16 @@ class RobocallCampaignsController < ApplicationController
   		redirect_to @robocall_campaign
   	end
 
+		params[:robocall_campaign][:user_name] = current_user.full_name
+		params[:robocall_campaign][:user_ip_address] = request.remote_ip
+
 		if @robocall_campaign.update_attributes(params[:robocall_campaign])
 			  flash[:notice] = "Successfully scheduled Robocall Campaign."
 			  redirect_to @robocall_campaign
 		else
+	    @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?
+	    @robocall_campaign.build_answer_machine_attachment unless !@robocall_campaign.answer_machine_attachment.nil?
+
 			  render :action => 'edit'
 		end
 

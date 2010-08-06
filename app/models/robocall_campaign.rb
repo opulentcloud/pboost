@@ -68,6 +68,10 @@ class RobocallCampaign < Campaign
 		self.caller_id = a.nil? ? nil : a
 	end
 
+	def is_editable?
+		['n/a', 'Scheduled'].include?(self.status)
+	end
+
 	def status
 		if !self.scheduled_at.nil? == true
 			if (Time.zone.now > self.scheduled_at)

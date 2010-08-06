@@ -13,7 +13,7 @@ class AdminNotifier < ActionMailer::Base
 		from				@@from_email
 		recipients	@@admin_email
 		sent_on			Time.zone.now
-		body				:campaign => campaign, :organization => campaign.organization, :user => campaign.user, :political_campaign => campaign.political_campaign
+		body				:campaign => campaign, :organization => campaign.political_campaign.organization, :political_campaign => campaign.political_campaign
 		content_type	'text/plain'		
 	end
 

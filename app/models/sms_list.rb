@@ -70,7 +70,7 @@ class SmsList < ContactList
 
 	def status
 		if self.schedule == true
-			job = self.delayed_job
+			job = self.background_job
 			if !self.delayed_job_id.nil?
 				if !job.nil?
 					if !job.last_error.nil? 
@@ -92,7 +92,7 @@ class SmsList < ContactList
 	end
 
 	def status_display
-		job = self.delayed_job
+		job = self.background_job
 		s = self.status
 		d = nil
 
