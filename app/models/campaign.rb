@@ -1,13 +1,5 @@
 class Campaign < ActiveRecord::Base
 
-	CAMPAIGN_STATUSES = [
-		# Displayed         stored in db
-		[ "n/a",	        "n/a" ],
-		[ "Scheduled",			"Scheduled" ],
-		[ "Sending",				"Sending" ],
-		[ "Sent",				    "Sent" ]
-	]
-
 	#===== VALIDATIONS ======
 	validates_presence_of :name
 	validates_acceptance_of :acknowledgement, :accept => true, :message => 'You must  accept the terms of submitting this Campaign'
@@ -15,6 +7,7 @@ class Campaign < ActiveRecord::Base
 	#===== ASSOCIATIONS =====
 	belongs_to :contact_list
 	has_one :political_campaign, :through => :contact_list
+	belongs_to :background_job, :foreign_key => :delayed_job_id
 
 	def campaign_type
 		self.class.to_s.gsub('Campaign','')

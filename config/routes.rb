@@ -75,6 +75,13 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
+	map.with_options(:controller => 'sms_campaigns', :path_prefix => '/customer') do |site|
+		site.unschedule_sms_campaign 'unschedule_sms_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
+		site.resources :sms_campaigns do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+
 	map.with_options(:controller => 'sms_lists', :path_prefix => '/customer') do |site|
 		site.intro 'intro', :action => 'intro', :conditions => { :method => :post }
 		site.map_fields_sms_list 'map_fields_sms_list/:id', :action => 'map_fields', :conditions => { :method => [:get, :post] }

@@ -4,9 +4,9 @@ class SmsList < ContactList
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
 		[ "n/a",	        "n/a" ],
-		[ "Scheduled",			"Scheduled" ],
-		[ "Sending",				"Sending" ],
-		[ "Sent",				    "Sent" ]
+		[ "Scheduled",		"Scheduled" ],
+		[ "Sending",			"Sending" ],
+		[ "Sent",				  "Sent" ]
 	]
 
 	#====== ASSOCIATIONS =======

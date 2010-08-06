@@ -1,5 +1,13 @@
 class RobocallCampaign < Campaign
 
+	CAMPAIGN_STATUSES = [
+		# Displayed         stored in db
+		[ "n/a",	        "n/a" ],
+		[ "Scheduled",		"Scheduled" ],
+		[ "Sending",			"Sending" ],
+		[ "Sent",				  "Sent" ]
+	]
+
 	#====== ASSOCIATIONS =======
 	belongs_to :contact_list
 	has_one :live_answer_attachment, :as => :attachable, :dependent => :destroy
