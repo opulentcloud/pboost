@@ -9,7 +9,7 @@
 
   <p>
     <%= f.label :contact_list_id, 'Choose the Robocall List for this campaign:' %><br />
-		<%= f.collection_select(:contact_list_id, current_political_campaign.robocall_lists, :id, :name, {:prompt => 'Choose...'}, :class => '') %>
+		<%= f.collection_select(:contact_list_id, current_political_campaign.robocall_lists.populated, :id, :name, {:prompt => 'Choose...'}, :class => '') %>
   </p>
 
   <p>
@@ -43,6 +43,10 @@
 		<%=f.label :scrub_dnc, 'Scrub against the Do Not Call List (DNC)?: ' %>
 		<%=f.radio_button :scrub_dnc, 'true' %> YES
 		<%=f.radio_button :scrub_dnc, 'false' %> NO
+	</p>
+
+	<p>
+		<%=f.check_box :acknowledgement %> By checking this box I acknowledge that if I choose to send this campaign now it CAN NOT be cancelled.  I further understand that if I choose to schedule this campaign for future delivery that I may cancel the delivery up to 2 hours before it is scheduled to run and that there is NO REFUND for the cancellation of a campaign once it has been scheduled.
 	</p>
 
   <p>

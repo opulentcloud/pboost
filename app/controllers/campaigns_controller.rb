@@ -1,7 +1,17 @@
 class CampaignsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_campaign, :only => [:unschedule, :edit]
+	before_filter :get_campaign, :only => [:show, :unschedule, :edit]
 	filter_access_to :all
+
+	def show
+		case @campaign.class.to_s
+			when 'RobocallCampaign' then
+				redirect_to robocall_campaign_path(@campaign)
+				return
+		end
+		flash[:error] = 'You can not display this Campaign'
+		redirect_back_or_default campaigns_path
+	end
 
 	def unschedule
 		case @campaign.class.to_s
@@ -56,7 +66,11 @@ private
 	#get the campaign
 	def get_campaign
 		begin
-    @campaign = current_political_campaign.campaigns.find(params[:id])
+	    @campaign = current_political_campaign.campaigns.find(params[:id]) unless current_political_campaign.nil?
+	    if current_political_campaign.nil? && current_user.is_admin?
+		    @campaign = Campaign.find(params[:id])
+		    session[:current_political_campaign] = @campaign.political_campaign
+			end    
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested Campaign was not found."
     	redirect_back_or_default customer_control_panel_url

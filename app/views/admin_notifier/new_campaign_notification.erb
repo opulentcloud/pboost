@@ -3,6 +3,10 @@ At <%= format_date_time Time.zone.now %> the following Robocall Campaign was sch
 Robocall Campaign: <%=h @campaign.name %>
     Scheduled For: <%=format_date_time @campaign.scheduled_at %>
   From IP Address: <%=h @campaign.user_ip_address %>
+     Sending List: <%=h @campaign.contact_list.name %>
+      Voter Count: <%=number_with_delimiter @campaign.contact_list.constituent_count %>
+
+For further details see: http://www.politicalboost.org<%= @campaign_url %>
 
 <%= render :partial => 'footer' %>
 

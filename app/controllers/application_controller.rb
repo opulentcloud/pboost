@@ -24,8 +24,8 @@ class ApplicationController < ActionController::Base
 	before_filter :set_timezone
 
 	def permission_denied
-		flash.now[:error] = 'You do not have permission to access this page.'
-		redirect_to_back
+		flash[:error] = 'You do not have permission to access this page.'
+		redirect_back_or_default login_url
 	end
 
 	def redirect_to_back

@@ -18,6 +18,7 @@ class ContactList < ActiveRecord::Base
 	
 	#===== SCOPES ======
 	default_scope :order => 'contact_lists.name'
+	named_scope :populated, :conditions => 'contact_lists.populated = true'
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign

@@ -69,7 +69,7 @@ class RobocallCampaignsController < ApplicationController
   
   def edit
   	if !@robocall_campaign.is_editable?
-  		flash[:error] = 'You can no longer edit this Robocall Campaign.'
+  		flash[:error] = 'You can not edit this Robocall Campaign at this time.'
   		redirect_to @robocall_campaign
   	end
 
@@ -78,7 +78,7 @@ class RobocallCampaignsController < ApplicationController
   end
   
   def update
-  	if !@robocall_campaign.status == 'n/a'
+  	if !@robocall_campaign.is_editable?
   		flash[:error] = "You can not edit this Robocall Campaign because the current status is #{@robocall_campaign.status}."
   		redirect_to @robocall_campaign
   	end
@@ -99,8 +99,8 @@ class RobocallCampaignsController < ApplicationController
   end
   
   def destroy
-  	if !@robocall_campaign.is_editable?
-  		flash[:notice] = 'You can not delete this Robocall Campaign while it is being populated.'
+  	if !@robocall_campaign.is_deleteable?
+  		flash[:notice] = 'You can not delete this Robocall Campaign at this time.'
   		redirect_to @robocall_campaign
   		return
   	end

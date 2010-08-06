@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	end
 
 	#===== SCOPES =======
-	default_scope :include => [:organization, :time_zone, :roles]
+	default_scope :include => [:time_zone, :roles]
 
 	#===== VALIDATIONS ======
 	validates_associated :roles
@@ -79,6 +79,10 @@ class User < ActiveRecord::Base
 		roles.map do |role|
 			role.name.downcase.underscore.to_sym
 		end	
+	end
+
+	def is_admin?
+		self.roles.map(&:name).include?('Administrator')
 	end
 
 private
