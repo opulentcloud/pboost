@@ -17,6 +17,8 @@ class ReportsController < ApplicationController
 	def show
 		respond_to do |format|
 			format.csv { send_csv_file }
+			format.mp3 { send_audio_file }
+			format.wav { send_audio_file }
 			format.pdf { 
 				if @contact_list.class.to_s != 'Walksheet'
 					@contact_list.errors.add_to_base('You can not print a Walksheet from this List.')
@@ -35,6 +37,23 @@ class ReportsController < ApplicationController
 			#	@report = render_walk_sheet_list_as :html	
 			#}
 		#end
+	end
+
+	def send_audio_file
+		case @report_type
+			when 'live_answer' then
+				@attachment = @campaign.live_answer_attachment
+			when 'answer_machine' then
+				@attachment = @campaign.answer_machine_attachment
+		end
+		full_file_name = @attachment.file_name
+		file_name = @attachment.name
+			
+		if RAILS_ENV == 'production'
+			send_file "#{full_file_name}", :type => @attachment.content_type, :x_sendfile => true
+		else
+			send_file "#{full_file_name}", :type => @attachment.content_type
+		end
 	end
 
 	def send_csv_file
@@ -100,10 +119,26 @@ protected
 		WalkSheetReport.render(format, :walksheet => @walksheet.id)
 	end
 
+	def get_campaign
+		begin
+	   	@campaign = current_political_campaign.campaigns.find(params[:robocall_campaign_id])
+    rescue ActiveRecord::RecordNotFound
+    	flash[:error] = "The requested Campaign was not found."
+    	redirect_back_or_default customer_control_panel_url
+    end
+	end
+
 	def get_contact_list
 		begin
-    	@contact_list = current_political_campaign.contact_lists.find(params[:phone_bank_list_id] ||= params[:robocall_list_id] ||= params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
     	@report_type = params[:report_type]
+			case @report_type
+				when 'answer_machine' then
+					get_campaign
+				when 'live_answer' then
+					get_campaign
+				else
+		    	@contact_list = current_political_campaign.contact_lists.find(params[:phone_bank_list_id] ||= params[:robocall_list_id] ||= params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
+		  end
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested List was not found."
     	redirect_back_or_default customer_control_panel_url

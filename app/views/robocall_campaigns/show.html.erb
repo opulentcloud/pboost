@@ -5,6 +5,7 @@
 <p>
   <strong>Robocall List: </strong>
   <%=h @robocall_campaign.contact_list.name %>
+	&nbsp; <%=link_to 'Download Robocall List', robocall_list_report_path(@robocall_campaign.contact_list.id, :report_type => 'robocall_list', :format => 'csv') %>
 </p>
 
 <p>
@@ -14,15 +15,27 @@
 
 <p>
 	<strong>Live Answer Sound File: </strong>
-	<%=h @robocall_campaign.live_answer_attachment.name rescue nil %>
+	<% if !@robocall_campaign.live_answer_attachment.nil? %>
+		<%=link_to h(@robocall_campaign.live_answer_attachment.name), robocall_campaign_report_path(@robocall_campaign.id, :report_type => 'live_answer', :format => @robocall_campaign.live_answer_attachment.file_extension ) %>
+	<% else %>
+		none
+	<% end %>
 </p>
 
 <p>
 	<strong>Answer Machine Sound File: </strong>
 	<% if @robocall_campaign.single_sound_file == true %>
-		<%=h @robocall_campaign.live_answer_attachment.name rescue nil %>
+		<% if !@robocall_campaign.answer_machine_attachment.nil? %>
+			<%=link_to h(@robocall_campaign.answer_machine_attachment.name), robocall_campaign_report_path(@robocall_campaign.id, :report_type => 'answer_machine', :format =>  @robocall_campaign.answer_machine_attachment.file_extension ) %>
+		<% else %>
+			none
+		<% end %>
 	<% else %>
-		<%=h @robocall_campaign.answer_machine_attachment.name rescue nil %>
+		<% if !@robocall_answer_machine_attachment.nil? %>
+			<%=link_to h(@robocall_campaign.answer_machine_attachment.name), robocall_campaign_report_path(@robocall_campaign.id, :report_type => 'answer_machine', :format =>  @robocall_campaign.answer_machine_attachment.file_extension ) %>
+		<% else %>
+			none
+		<% end %>
 	<% end %>
 </p>
 

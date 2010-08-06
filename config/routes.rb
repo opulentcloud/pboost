@@ -63,6 +63,7 @@ ActionController::Routing::Routes.draw do |map|
 	map.with_options(:controller => 'robocall_campaigns', :path_prefix => '/customer') do |site|
 		site.unschedule_robocall_campaign 'unschedule_robocall_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
 		site.resources :robocall_campaigns do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
 		end	
 	end
 

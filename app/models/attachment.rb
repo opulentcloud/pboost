@@ -28,5 +28,10 @@ class Attachment < ActiveRecord::Base
 	def file_name
 		"#{RAILS_ROOT}/#{self.url[0,self.url.index(self.name)] + self.name}"
 	end
+	
+	def file_extension
+		a = self.data_file_name.downcase.split('.')
+		a[a.size-1]
+	end
 end
 
