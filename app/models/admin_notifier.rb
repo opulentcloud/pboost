@@ -16,13 +16,29 @@ class AdminNotifier < ActionMailer::Base
 		return		
 	end
 
+	def updated_campaign_notification(campaign)
+		case campaign.class.to_s
+			when 'RobocallCampaign' then 
+				updated_robocall_campaign_notification(campaign)
+		end
+		return		
+	end
+
 	def new_robocall_campaign_notification(campaign)
 		subject			'New Robocall Campaign Scheduled Notification'
 		from				@@from_email
 		recipients	@@admin_email
 		sent_on			Time.zone.now
-		body				:campaign => campaign, :organization => campaign.political_campaign.organization, :political_campaign => campaign.political_campaign, :campaign_url => campaign_path(campaign)
+		body				:campaign => campaign, :organization => campaign.political_campaign.organization, :political_campaign => campaign.political_campaign, :campaign_url => HOST_SITE+campaign_path(campaign)
 		content_type	'text/plain'		
 	end
 
+	def updated_robocall_campaign_notification(campaign)
+		subject			'Updated Robocall Campaign Notification'
+		from				@@from_email
+		recipients	@@admin_email
+		sent_on			Time.zone.now
+		body				:campaign => campaign, :organization => campaign.political_campaign.organization, :political_campaign => campaign.political_campaign, :campaign_url => HOST_SITE+campaign_path(campaign)
+		content_type	'text/plain'		
+	end
 end

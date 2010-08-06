@@ -73,6 +73,8 @@ class RobocallCampaignsController < ApplicationController
   		redirect_to @robocall_campaign
   	end
 
+		@robocall_campaign.acknowledgement = false #must acknowledge again.
+
     @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?
     @robocall_campaign.build_answer_machine_attachment unless !@robocall_campaign.answer_machine_attachment.nil?
   end
@@ -86,21 +88,31 @@ class RobocallCampaignsController < ApplicationController
 		params[:robocall_campaign][:user_name] = current_user.full_name
 		params[:robocall_campaign][:user_ip_address] = request.remote_ip
 
-		if @robocall_campaign.update_attributes(params[:robocall_campaign])
-			  flash[:notice] = "Successfully scheduled Robocall Campaign."
-			  redirect_to @robocall_campaign
-		else
-	    @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?
-	    @robocall_campaign.build_answer_machine_attachment unless !@robocall_campaign.answer_machine_attachment.nil?
+		RobocallCampaign.transaction do
+			if params[:robocall_campaign][:single_sound_file] == '1'
+				if !@robocall_campaign.answer_machine_attachment.nil?
+					@robocall_campaign.answer_machine_attachment.destroy
+				end
+				params[:robocall_campaign].delete(:answer_machine_attachments)
+			end
 
-			  render :action => 'edit'
+			if @robocall_campaign.update_attributes(params[:robocall_campaign])
+					flash[:notice] = "Successfully scheduled Robocall Campaign."
+					redirect_to @robocall_campaign
+			else
+			  @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?
+			  @robocall_campaign.build_answer_machine_attachment unless !@robocall_campaign.answer_machine_attachment.nil?
+
+					render :action => 'edit'
+			end
+
 		end
 
   end
   
   def destroy
   	if !@robocall_campaign.is_deleteable?
-  		flash[:notice] = 'You can not delete this Robocall Campaign at this time.'
+  		flash[:notice] = 'You can not delete this Robocall Campaign at this time. &nbsp;You may be able to delete this campaign by unscheduling it if it is scheduled.'
   		redirect_to @robocall_campaign
   		return
   	end

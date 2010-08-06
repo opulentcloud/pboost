@@ -8,12 +8,9 @@ class Campaign < ActiveRecord::Base
 		[ "Sent",				    "Sent" ]
 	]
 
-	#===== CLASS ACCESSORS
-	attr_accessor :acknowledgement
-
 	#===== VALIDATIONS ======
 	validates_presence_of :name
-	validates_confirmation_of :acknowledgement, :message => 'You must acknowledge that you accept the terms of submitting this Campaign'
+	validates_acceptance_of :acknowledgement, :accept => true, :message => 'You must  accept the terms of submitting this Campaign'
 
 	#===== ASSOCIATIONS =====
 	belongs_to :contact_list

@@ -12,7 +12,8 @@ class CreateAttachments < ActiveRecord::Migration
       t.timestamps
     end
 		add_index :attachments, :type
-		add_index :attachments, [:attachable_id, :attachable_type], :unique => true
+		add_index :attachments, [:attachable_id, :attachable_type]
+		add_index :attachments, [:attachable_id, :attachable_type, :type], :uniq => true
   end
 
   def self.down

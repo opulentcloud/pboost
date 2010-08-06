@@ -31,7 +31,7 @@
 			none
 		<% end %>
 	<% else %>
-		<% if !@robocall_answer_machine_attachment.nil? %>
+		<% if !@robocall_campaign.answer_machine_attachment.nil? %>
 			<%=link_to h(@robocall_campaign.answer_machine_attachment.name), robocall_campaign_report_path(@robocall_campaign.id, :report_type => 'answer_machine', :format =>  @robocall_campaign.answer_machine_attachment.file_extension ) %>
 		<% else %>
 			none

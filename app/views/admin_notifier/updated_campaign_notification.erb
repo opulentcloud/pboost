@@ -1,0 +1,19 @@
+At <%=format_date_time Time.zone.now -%> the following Robocall Campaign was updated by <%=h @campaign.user_name -%> with <%=h @organization.name -%> for the Political Campaign <%=h @political_campaign.campaign_description -%> from the ip address <%=h @campaign.user_ip_address -%>.
+
+Robocall Campaign: <%=h @campaign.name %> <% if @campaign.name_changed? %> *was <%=h @campaign.name_was -%><% end %>
+     Sending List: <%=h @campaign.contact_list.name %> <% if @campaign.contact_list_id_changed? %> *was <%=h Campaign.find(@campaign.contact_list_id_was).name %><% end %>
+      Voter Count: <%=number_with_delimiter @campaign.contact_list.constituent_count %><% if @campaign.contact_list_id_changed? %> *was <%=number_with_delimiter Campaign.find(@campaign.contact_list_id_was).constituent_count %><% end %>
+    Scheduled For: <%=@campaign.scheduled_at.nil? ? 'not schedule' : format_date_time(@campaign.scheduled_at) %> <% if @campaign.scheduled_at_changed? %> *was <%=@campaign.scheduled_at_was.nil? ? 'not scheduled' : format_date_time(@campaign.scheduled_at_was) %><% end %>
+        Caller ID: <%=format_phone_number(@campaign.caller_id) %> <% if @campaign.caller_id_changed? %> *was <%=format_phone_number(@campaign.caller_id_was) %><% end %>
+       Scrub DNC?: <%=@campaign.scrub_dnc == true ? 'Yes' : 'No' %><% if @campaign.scrub_dnc_changed? %> *was <%=h @campaign.scrub_dnc_was == true ? 'Yes' : 'No' %><% end %>
+<% if @campaign.live_answer_attachment.changed? %>
+**The Live Answer sound file has been changed.
+<% end %>
+<% if !@campaign.answer_machine_attachment.nil? &&  @campaign.answer_machine_attachment.changed? %>
+**The Answer Machine sound file has been changed.
+<% end %>
+
+For further details see: <%= @campaign_url %>
+
+<%= render :partial => 'footer' %>
+

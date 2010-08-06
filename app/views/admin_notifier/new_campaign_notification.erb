@@ -1,12 +1,13 @@
-At <%= format_date_time Time.zone.now %> the following Robocall Campaign was scheduled by <%=h @campaign.user_name %> with <%=h @organization.name %> for the Political Campaign <%=h @political_campaign.campaign_description %>.
+At <%= format_date_time Time.zone.now -%> the following Robocall Campaign was scheduled by <%=h @campaign.user_name -%> with <%=h @organization.name -%> for the Political Campaign <%=h @political_campaign.campaign_description -%> from the ip address <%=h @campaign.user_ip_address -%>.
 
 Robocall Campaign: <%=h @campaign.name %>
-    Scheduled For: <%=format_date_time @campaign.scheduled_at %>
-  From IP Address: <%=h @campaign.user_ip_address %>
      Sending List: <%=h @campaign.contact_list.name %>
       Voter Count: <%=number_with_delimiter @campaign.contact_list.constituent_count %>
+    Scheduled For: <%=format_date_time @campaign.scheduled_at %>
+        Caller ID: <%=format_phone_number @campaign.caller_id %>
+       Scrub DNC?: <%=@campaign.scrub_dnc == true ? 'Yes' : 'No' %>
 
-For further details see: http://www.politicalboost.org<%= @campaign_url %>
+For further details see: <%= @campaign_url %>
 
 <%= render :partial => 'footer' %>
 

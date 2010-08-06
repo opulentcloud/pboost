@@ -44,7 +44,7 @@ module ApplicationHelper
 
 	def format_phone_number(phone_record)
 		return String.empty unless !phone_record.nil?
-		number_to_phone(phone_record.phone, :area_code => true, :extension => phone_record.extension)
+		number_to_phone(phone_record, :area_code => false, :extension => nil)
 	end
 
 end

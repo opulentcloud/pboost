@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100805220605) do
+ActiveRecord::Schema.define(:version => 20100806211218) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -88,7 +88,8 @@ ActiveRecord::Schema.define(:version => 20100805220605) do
     t.column "updated_at", :datetime
   end
 
-  add_index "attachments", ["attachable_id", "attachable_type"], :name => "index_attachments_on_attachable_id_and_attachable_type", :unique => true
+  add_index "attachments", ["attachable_id", "attachable_type"], :name => "index_attachments_on_attachable_id_and_attachable_type"
+  add_index "attachments", ["attachable_id", "attachable_type", "type"], :name => "index_attachments_on_attachable_id_and_attachable_type_and_type"
   add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
   create_table "campaigns", :force => true do |t|
@@ -105,6 +106,7 @@ ActiveRecord::Schema.define(:version => 20100805220605) do
     t.column "updated_at", :datetime
     t.column "user_name", :string, :limit => 100
     t.column "user_ip_address", :string, :limit => 32
+    t.column "acknowledgement", :boolean
   end
 
   add_index "campaigns", ["contact_list_id"], :name => "index_campaigns_on_contact_list_id"

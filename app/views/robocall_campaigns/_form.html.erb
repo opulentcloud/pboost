@@ -33,7 +33,7 @@
 	<div id="answer_machine_file" style="display: <%=@robocall_campaign.single_sound_file == true ? 'none' : 'inline' %>;">
 	<% f.fields_for :answer_machine_attachment do |a2| %>
 		<p>
-			Answer Machine Sound File: <br />
+			Answer Machine Sound File: <% if !@robocall_campaign.answer_machine_attachment.new_record? %><i><%=h @robocall_campaign.answer_machine_attachment.name %> - Only attach a new file here if you wish to overwrite this file.</i><% end %><br />
 			<%= a2.file_field :data  %>
 		</p>
 	<% end %>
