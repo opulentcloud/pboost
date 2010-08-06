@@ -274,8 +274,11 @@ class RobocallListsController < ApplicationController
   		redirect_to @robocall_list
   		return
   	end
-    @robocall_list.destroy
-    flash[:notice] = "Successfully deleted Robocall List."
+    if @robocall_list.destroy
+	    flash[:notice] = "Successfully deleted Robocall List."
+	  else
+	  	flash[:error] = 'This list could not be deleted.  It may be used in a Campaign - lists used in a campaign cannot be deleted (unless you first delete the campaign)'
+	  end
     redirect_to robocall_lists_url
   end
   

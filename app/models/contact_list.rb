@@ -124,6 +124,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def before_destroy
+		return false if self.campaigns.count > 0
 		return if self.new_record?
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
 		ActiveRecord::Base.connection.execute(sql)
