@@ -15,11 +15,24 @@ class SmsCampaign < Campaign
 
 	#====== VALIDATIONS =======
 	validates_datetime :scheduled_at, 
-		:after => lambda { Time.zone.now - 1.minute }, 
+		:after => lambda { Time.zone.now - 1.minutes }, 
 		:if => :do_scheduling?
 	validates_presence_of :sms_text, :if => :do_scheduling?
 
 	#====== EVENTS ======
+	def before_save
+		if self.scheduled_at_changed? && !self.delayed_job_id.blank?
+			j = self.background_job
+			if self.scheduled_at.blank?
+				j.destroy
+				self.delayed_job_id = nil
+			else
+				j.run_at = self.scheduled_at
+				j.save
+			end
+		end
+	end
+	
 	def after_save
 		if !self.scheduled_at.nil? && self.delayed_job_id.blank?
 			self.schedule_send_job!
@@ -49,7 +62,7 @@ class SmsCampaign < Campaign
 		return false if !self.populated == true
 		return true if self.status == 'n/a'
 		return true if self.scheduled_at.nil?
-		return true if self.scheduled_at > Time.zone.now + 2.hours
+		return true if self.scheduled_at > Time.zone.now + 1.minutes
 		false
 	end
 
@@ -119,6 +132,14 @@ class SmsCampaign < Campaign
 	#===== CLASS METHODS ======
 	def self.send!(sms_campaign_id)
 		@sms_campaign = SmsCampaign.find(sms_campaign_id)
+		# need to wait until we have populated
+		if !@sms_campaign.populated == true
+			@job = Delayed::Job.enqueue(SmsCampaignSendJob.new(@sms_campaign.id), 3, Time.zone.now + 2.minutes) #3 = highest priority
+			self.delayed_job_id = @job.id
+			save!
+			return
+		end
+		
 		sms = ClubTexting.new(@sms_campaign.sms_text, @sms_campaign.campaign_smsses.unsent)
 		sms.send_messages!
 	end

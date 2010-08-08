@@ -1,0 +1,9 @@
+<% title "Edit SMS Campaign" %>
+
+<%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application', 'sms_campaign_form' %>
+
+<%= render :partial => 'form' %>
+
+<p><%= link_to "Cancel and return to Campaigns", campaigns_path %></p>
+

@@ -79,7 +79,14 @@ class SmsCampaignsController < ApplicationController
 
 		case params[:commit]
 			when 'Send Campaign Now' then
-				@sms_campaign.scheduled_at = Time.zone.now
+				params[:sms_campaign][:scheduled_at] = Time.zone.now
+				params[:sms_campaign].delete('scheduled_at(1i)')
+				params[:sms_campaign].delete('scheduled_at(2i)')
+				params[:sms_campaign].delete('scheduled_at(3i)')
+				params[:sms_campaign].delete('scheduled_at(4i)')
+				params[:sms_campaign].delete('scheduled_at(5i)')
+				params[:sms_campaign].delete('scheduled_at(6i)')
+				params[:sms_campaign].delete('scheduled_at(7i)')
 				notice = 'Your SMS Campaign is being sent.'
 		end
 
