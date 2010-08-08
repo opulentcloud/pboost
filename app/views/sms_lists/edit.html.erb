@@ -1,6 +1,6 @@
 <% title "Schedule SMS List: #{@sms_list.name}" %>
 
-<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'application', 'sms_list_edit_form' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'application' %>
 
 <%= render :partial => 'nav_menu' %>
 
@@ -74,22 +74,5 @@
 	<strong><%=h f.election.description %></strong> <%=h f.string_val %><br />
 	<% end %>
 </p>
-<% end %>
-
-<% form_for @sms_list do |f| %>
-  <%= f.error_messages %>
-
-	<p>
-		<%=f.label :sms_text, 'Enter Your Text Message: ' %><i>(<span id="chars_used">0</span>/160 characters used. &nbsp;The following characters count as two characters ~ @ # % + = / \ newline)</i></br />
-		<%=f.text_area :sms_text, :cols => 80, :rows => 4 %>
-	</p>
-
-	<p>	
-		<%= f.label :scheduled_at, 'Date & Time To Start Sending To Your SMS List:' %><br />
-		<%=f.datetime_select(:scheduled_at, :order => [:month, :day, :year], :use_month_numbers => true, :start_year => Time.zone.now.year, :default => { :year => Time.zone.now.year, :month => Time.zone.now.month, :day => Time.zone.now.day }, :minute_step => 15, :twelve_hour => true) %>
-		<%=h @current_user.time_zone.zone %>					
-	</p>
-
-  <p><%= f.submit 'Schedule' %></p>
 <% end %>
 

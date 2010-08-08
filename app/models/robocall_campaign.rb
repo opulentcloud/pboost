@@ -29,6 +29,10 @@ class RobocallCampaign < Campaign
 		self.caller_id = format_caller_id
 	end
 
+	def before_save
+		self.voter_count = self.contact_list.constituent_count
+	end
+
 	#====== INSTANCE METHODS ======
 	def do_scheduling?
 		!self.scheduled_at.blank?

@@ -88,6 +88,21 @@ class RobocallCampaignsController < ApplicationController
 		params[:robocall_campaign][:user_name] = current_user.full_name
 		params[:robocall_campaign][:user_ip_address] = request.remote_ip
 
+		notice = "Successfully scheduled Robocall Campaign."
+
+		case params[:commit]
+			when 'Send Campaign Now' then
+				params[:robocall_campaign][:scheduled_at] = Time.zone.now
+				params[:robocall_campaign].delete('scheduled_at(1i)')
+				params[:robocall_campaign].delete('scheduled_at(2i)')
+				params[:robocall_campaign].delete('scheduled_at(3i)')
+				params[:robocall_campaign].delete('scheduled_at(4i)')
+				params[:robocall_campaign].delete('scheduled_at(5i)')
+				params[:robocall_campaign].delete('scheduled_at(6i)')
+				params[:robocall_campaign].delete('scheduled_at(7i)')
+				notice = 'Your Robocall Campaign will begin within the next hour.'
+		end
+
 		RobocallCampaign.transaction do
 			if params[:robocall_campaign][:single_sound_file] == '1'
 				if !@robocall_campaign.answer_machine_attachment.nil?
@@ -97,7 +112,7 @@ class RobocallCampaignsController < ApplicationController
 			end
 
 			if @robocall_campaign.update_attributes(params[:robocall_campaign])
-					flash[:notice] = "Successfully scheduled Robocall Campaign."
+					flash[:notice] = notice
 					redirect_to @robocall_campaign
 			else
 			  @robocall_campaign.build_live_answer_attachment unless !@robocall_campaign.live_answer_attachment.nil?

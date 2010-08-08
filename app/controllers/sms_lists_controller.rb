@@ -1,6 +1,6 @@
 class SmsListsController < ApplicationController
 	before_filter :require_user
-	before_filter :get_sms_list, :only => [:map_fields, :unschedule, :show, :edit, :update, :destroy]
+	before_filter :get_sms_list, :only => [:map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
 
 	def map_fields
@@ -58,21 +58,6 @@ class SmsListsController < ApplicationController
 			end
 		end
 
-	end
-
-	def unschedule
-		if @sms_list.status != 'Scheduled'
-			flash[:error] = "We could not cancel the sending of this list because the current status is #{@sms_list.status}."
-		else
-			@sms_list.schedule = false
-			@sms_list.scheduled_at = nil
-			if @sms_list.save
-				flash[:notice] = 'Unschedule was successful.'
-			else
-				flash[:error] = 'We could not unschedule at this time.'
-			end
-		end
-		redirect_back_or_default sms_lists_path
 	end
 
   def index
