@@ -18,6 +18,7 @@ class SmsCampaign < Campaign
 		:after => lambda { Time.zone.now - 1.minutes }, 
 		:if => :do_scheduling?
 	validates_presence_of :sms_text, :if => :do_scheduling?
+	validates_presence_of :contact_list_id
 
 	#====== EVENTS ======
 	def before_save
