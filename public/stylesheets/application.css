@@ -371,11 +371,12 @@ padding-left: 5px;
 }
 
 .fieldWithErrors input {
-	margin-left: 30px;
   display: inline;
 }
 
 .fieldWithErrors {
+	color: red;
+	margin-left: 30px;
   display: inline;
 }
 
