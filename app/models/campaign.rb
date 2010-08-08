@@ -5,7 +5,7 @@ class Campaign < ActiveRecord::Base
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
-	validates_acceptance_of :acknowledgement, :accept => true, :message => 'You must  accept the terms of submitting this Campaign'
+	validates_acceptance_of :acknowledgement, :message => 'You must accept the terms of submitting this Campaign'
 
 	#===== ASSOCIATIONS =====
 	belongs_to :contact_list

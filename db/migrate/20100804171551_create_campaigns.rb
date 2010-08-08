@@ -13,8 +13,8 @@ class CreateCampaigns < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :campaigns, [:id, :type], :uniq => true
-		add_index :campaigns, [:type, :name], :uniq => true
+    add_index :campaigns, [:id, :type], :unique => true
+		add_index :campaigns, [:type, :name], :unique => true
     add_index :campaigns, [:delayed_job_id]
     add_index :campaigns, [:contact_list_id]
   end
