@@ -2,7 +2,7 @@ class AdminNotifier < ActionMailer::Base
 	helper :application
 	
 	@@from_email = 'PBOOST <dls@politicalboost.org>'
-	if RAILS_ENV == 'Production'
+	if RAILS_ENV == 'production'
 		@@admin_email = ['Desmond Stinnie <dls@politicalboost.org>', 'Mark Wilson <mark@wilsonsdev.com>']
 	else
 		@@admin_email = ['Mark Wilson <mark@wilsonsdev.com>']
