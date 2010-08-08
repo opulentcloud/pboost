@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100808174521) do
+ActiveRecord::Schema.define(:version => 20100808201730) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -252,10 +252,6 @@ ActiveRecord::Schema.define(:version => 20100808174521) do
     t.column "type", :string, :limit => 100, :null => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "scheduled_at", :datetime
-    t.column "sms_text", :text
-    t.column "schedule", :boolean, :default => false
-    t.column "delayed_job_id", :integer
     t.column "upload_list", :boolean
     t.column "mapped_fields", :text
   end

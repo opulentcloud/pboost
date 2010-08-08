@@ -54,7 +54,6 @@ class ContactList < ActiveRecord::Base
 	has_many :campaigns
 	has_many :robocall_campaigns
 	has_many :sms_campaigns
-	belongs_to :background_job, :foreign_key => :delayed_job_id
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name

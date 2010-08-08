@@ -282,8 +282,11 @@ class SmsListsController < ApplicationController
   		redirect_to @sms_list
   		return
   	end
-    @sms_list.destroy
-    flash[:notice] = "Successfully deleted SMS List."
+    if @sms_list.destroy
+	    flash[:notice] = "Successfully deleted SMS List."
+	  else
+	  	flash[:error] = 'This list could not be deleted.  It may be used in a Campaign - lists used in a campaign cannot be deleted (unless you first delete the campaign)'
+	  end
     redirect_to sms_lists_url
   end
   

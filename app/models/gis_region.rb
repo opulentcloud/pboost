@@ -29,7 +29,7 @@ class GisRegion < ActiveRecord::Base
 		
 		polys = []
 		a.each do |polygon|				
-		debugger
+		#debugger
 			p = Polygon.from_coordinates([polygon])
 			polys.push(p) unless p[0].size == 0
 		end
