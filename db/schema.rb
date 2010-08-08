@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100806211218) do
+ActiveRecord::Schema.define(:version => 20100808174521) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -92,6 +92,18 @@ ActiveRecord::Schema.define(:version => 20100806211218) do
   add_index "attachments", ["attachable_id", "attachable_type", "type"], :name => "index_attachments_on_attachable_id_and_attachable_type_and_type"
   add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
+  create_table "campaign_smsses", :force => true do |t|
+    t.column "cell_phone", :string, :limit => 10, :null => false
+    t.column "status", :string, :limit => 4
+    t.column "campaign_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "campaign_smsses", ["campaign_id"], :name => "index_campaign_smsses_on_campaign_id"
+  add_index "campaign_smsses", ["cell_phone", "campaign_id"], :name => "index_campaign_smsses_on_campaign_id_and_cell_phone", :unique => true
+  add_index "campaign_smsses", ["status"], :name => "index_campaign_smsses_on_status"
+
   create_table "campaigns", :force => true do |t|
     t.column "type", :string, :limit => 100, :null => false
     t.column "name", :string, :limit => 100, :null => false
@@ -107,6 +119,8 @@ ActiveRecord::Schema.define(:version => 20100806211218) do
     t.column "user_name", :string, :limit => 100
     t.column "user_ip_address", :string, :limit => 32
     t.column "acknowledgement", :boolean
+    t.column "populated", :boolean
+    t.column "voter_count", :integer
   end
 
   add_index "campaigns", ["contact_list_id"], :name => "index_campaigns_on_contact_list_id"

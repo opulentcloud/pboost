@@ -10,7 +10,7 @@ class CreateContactLists < ActiveRecord::Migration
       t.timestamps
     end
     add_index :contact_lists, [:name, :type]
-    add_index :contact_lists, [:political_campaign_id, :name, :type], :uniq => true
+    add_index :contact_lists, [:political_campaign_id, :name, :type], :unique => true
   end
   
   def self.down

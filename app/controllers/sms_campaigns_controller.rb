@@ -34,8 +34,9 @@ class SmsCampaignsController < ApplicationController
     @sms_campaign = SmsCampaign.new(params[:sms_campaign])
 		@sms_campaign.user_name = current_user.full_name
 		@sms_campaign.user_ip_address = request.remote_ip
+		@sms_campaign.populated = false
 
-		notice = 'Your SMS Campaign has been scheduled.'
+		notice = 'Your SMS Campaign is being scheduled.'
 
 		case params[:commit]
 			when 'Send Campaign Now' then

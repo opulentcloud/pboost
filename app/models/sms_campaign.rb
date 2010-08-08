@@ -2,7 +2,9 @@ class SmsCampaign < Campaign
 
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
-		[ "n/a",	        "n/a" ],
+		[ "n/a",	        	"n/a" ],
+		[ "Populating",			"Populating" ],
+		[ "Scheduling",			"Scheduling" ],
 		[ "Scheduled",			"Scheduled" ],
 		[ "Sending",				"Sending" ],
 		[ "Sent",				    "Sent" ]
@@ -19,7 +21,7 @@ class SmsCampaign < Campaign
 
 	#====== EVENTS ======
 	def after_save
-		if !self.schedule_at.nil? && self.delayed_job_id.blank?
+		if !self.scheduled_at.nil? && self.delayed_job_id.blank?
 			self.schedule_send_job!
 		else
 			true
@@ -38,11 +40,13 @@ class SmsCampaign < Campaign
 	end
 
 	def is_deleteable?
+		return false if !self.populated == true
 		return true if ['n/a','Sent'].include?(self.status)
 		false
 	end
 
 	def is_editable?
+		return false if !self.populated == true
 		return true if self.status == 'n/a'
 		return true if self.scheduled_at.nil?
 		return true if self.scheduled_at > Time.zone.now + 2.hours
@@ -50,7 +54,9 @@ class SmsCampaign < Campaign
 	end
 
 	def status
-		if !self.schedule_at.nil?
+		return 'Populating' if !self.populated == true
+		
+		if !self.scheduled_at.nil?
 			job = self.background_job
 			if !self.delayed_job_id.nil?
 				if !job.nil?
@@ -88,11 +94,32 @@ class SmsCampaign < Campaign
 		s+d
 	end
 
+	def populate
+
+		sql = <<-eot
+			INSERT INTO campaign_smsses
+				SELECT nextval('campaign_smsses_id_seq') AS id, 
+				"contact_list_smsses"."cell_phone", 
+				NULL AS status, #{self.id} AS campaign_id,
+				now() AS created_at, now() AS updated_at
+			FROM 
+				"contact_list_smsses"
+			WHERE
+				("contact_list_smsses"."contact_list_id" = #{self.contact_list_id})
+			eot
+		
+		sql_result = ActiveRecord::Base.connection.execute(sql)
+		self.voter_count = self.campaign_smsses.count
+		self.populated = true
+		self.repopulate = false
+		self.save!
+
+	end
+
 	#===== CLASS METHODS ======
 	def self.send!(sms_campaign_id)
 		@sms_campaign = SmsCampaign.find(sms_campaign_id)
-		@sms_list = @sms_campaign.contact_list
-		sms = ClubTexting.new(@sms_campaign.sms_text, @sms_list.contact_list_smsses.unsent)
+		sms = ClubTexting.new(@sms_campaign.sms_text, @sms_campaign.campaign_smsses.unsent)
 		sms.send_messages!
 	end
 

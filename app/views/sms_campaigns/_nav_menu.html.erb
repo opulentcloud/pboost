@@ -1,0 +1,20 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @sms_campaign && !@sms_campaign.new_record? %>
+		<td><%=link_to 'List Campaigns', campaigns_path %></td>
+		<td><%= link_to 'View Campaign', @sms_campaign %></td>
+		<% if @sms_campaign.is_deleteable? %>
+			<td><%= link_to 'Delete Campaign', @sms_campaign, :confirm => 'Are you sure you want to permanently delete this Campaign?', :method => :delete %></td>
+		<% end %>	
+		<% if @sms_campaign.is_editable? %>
+				<td> &nbsp;<%= link_to 'Edit Campaign', edit_sms_campaign_path(@sms_campaign) %></td>
+		<% end %>
+		<% if !@sms_campaign.scheduled_at.nil? && @sms_campaign.status == 'Scheduled' %>
+			<td><%= link_to "Unschedule", unschedule_sms_campaign_path(@sms_campaign), :confirm => 'Are you sure you wish to cancel the Scheduled sending of this Campaign?' %></td>
+		<% end %>	
+	</tr>
+  <% end %>
+</table>
+</p>
+

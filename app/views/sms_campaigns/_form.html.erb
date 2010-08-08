@@ -1,0 +1,44 @@
+<% form_for @sms_campaign do |f| %>
+
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name, 'Enter a unique name for this SMS Campaign:' %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :contact_list_id, 'Choose the SMS List for this campaign:' %><br />
+		<%= f.collection_select(:contact_list_id, current_political_campaign.sms_lists.populated, :id, :name, {:prompt => 'Choose...'}, :class => '') %>
+  </p>
+
+	<p>
+		<%=f.label :sms_text, 'Enter Your Text Message: ' %><i>(<span id="chars_used">0</span>/160 characters used. &nbsp;The following characters count as two characters ~ @ # % + = / \ newline)</i></br />
+		<%=f.text_area :sms_text, :cols => 80, :rows => 4 %>
+	</p>
+
+	<p>
+		<%=f.check_box :acknowledgement %> By checking this box I acknowledge that if I choose to send this campaign now it CAN NOT be cancelled.  I further understand that if I choose to schedule this campaign for future delivery that I may cancel the delivery up to 2 hours before it is scheduled to run and that there is NO REFUND for the cancellation of a campaign once it has been scheduled.
+	</p>
+
+  <p>
+  	<%= f.submit 'Send Campaign Now' %>
+		<% if @sms_campaign.scheduled_at.nil? %>
+		&nbsp;&nbsp;<%= button_to_function 'Schedule Campaign Delivery', 'SchedulingOptionsShow()' %>
+		<% end %>
+  </p>
+
+	<div id="schedule" style="display: <%=@sms_campaign.scheduled_at.nil? ? 'none' : 'inline' %>;">
+	<p>	
+		<%= f.label :scheduled_at, 'Date & Time To Start Your Campaign:' %><br />
+		<%=f.datetime_select(:scheduled_at, :order => [:month, :day, :year], :use_month_numbers => true, :start_year => Time.zone.now.year, :default => { :year => Time.zone.now.year, :month => Time.zone.now.month, :day => Time.zone.now.day }, :minute_step => 15, :twelve_hour => true) %>
+		<%=h @current_user.time_zone.zone %>					
+	</p>
+
+  <p>
+  	<%= f.submit 'Schedule Campaign' %>
+  </p>
+	</div>
+
+<% end %>
+

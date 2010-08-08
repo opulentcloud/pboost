@@ -15,7 +15,7 @@
     	<td align="center"><%=h campaign.campaign_type %>
 			<td align="center"><%=format_date campaign.created_at %>
       <td align="center"><%=h campaign.name %></td>
-      <td align="right"><%=number_with_delimiter(campaign.contact_list.constituent_count) %></td>
+      <td align="right"><%=number_with_delimiter(campaign.voter_count) %></td>
       <td align="center"><%=h campaign.status_display %></td>
       <td>&nbsp;&nbsp;<%= link_to "Show", campaign %></td>
 			<% if campaign.is_deleteable? %>

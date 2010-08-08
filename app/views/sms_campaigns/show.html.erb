@@ -1,0 +1,20 @@
+<% title "SMS Campaign: #{@sms_campaign.name}" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<p>
+  <strong>SMS List: </strong>
+  <%=h @sms_campaign.contact_list.name %>
+	&nbsp; <%=link_to 'Download SMS List', sms_list_report_path(@sms_campaign.contact_list.id, :report_type => 'sms_list', :format => 'csv') %>
+</p>
+
+<h3>TEXT MESSAGE:</h3>
+<p>
+	<%=h @sms_campaign.sms_text %>
+</p>
+
+<h3>STATUS:</h3>
+<p>
+	<strong><%= @sms_campaign.status_display %></strong>
+<p/>
+
