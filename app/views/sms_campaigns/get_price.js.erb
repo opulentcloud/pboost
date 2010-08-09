@@ -1,0 +1,12 @@
+$("#flash_error").remove();
+$("#errorExplanation").remove();
+
+<% if !flash[:error].blank? %>
+
+	$("#new_sms_campaign").before('<div id="flash_error"><%= escape_javascript(flash.delete(:error)) %></div>')
+
+<% end %>
+
+$("span#pricing").html('<%=number_to_currency(@sms_campaign_price) %>');
+
+

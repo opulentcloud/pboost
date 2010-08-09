@@ -3,9 +3,13 @@ function SchedulingOptionsShow() {
 }
 
 function calc_total_price() {
-	$("#pricing").text("calculating...");
-			id = $("#sms_campaign_contact_list_id").val();
- 			jQuery.get('/customer/sms_campaign/get_price_sms.js?sms_list_id='+id +'', function(data) { $("#pricing").text(data); } );
+	if ($("#sms_campaign_contact_list_id").val() == '') {
+		$("span#pricing").text("");
+	} else {
+		$("#pricing").text("calculating...");
+		id = $("#sms_campaign_contact_list_id").val();
+		jQuery.get('/customer/sms_campaign/get_price_sms.js?sms_list_id='+id +'', function(data) { } );
+	}
 }
 
 $(document).ready(function() {
