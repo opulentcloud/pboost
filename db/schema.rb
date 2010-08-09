@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100808201730) do
+ActiveRecord::Schema.define(:version => 20100809211811) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -18,6 +18,17 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
   end
 
   add_index "account_types", ["name"], :name => "index_account_types_on_name", :unique => true
+
+  create_table "accounts", :force => true do |t|
+    t.column "type", :string, :limit => 14
+    t.column "organization_id", :integer
+    t.column "current_balance", :decimal, :precision => 11, :scale => 2, :default => 0.0
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "accounts", ["id", "type"], :name => "index_accounts_on_id_and_type"
+  add_index "accounts", ["organization_id"], :name => "index_accounts_on_organization_id", :unique => true
 
   create_table "addresses", :force => true do |t|
     t.column "street_no", :string, :limit => 5
@@ -415,7 +426,6 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
     t.column "phone", :string, :limit => 10
     t.column "fax", :string, :limit => 10
     t.column "website", :string, :limit => 150
-    t.column "account_type_id", :integer
     t.column "enabled", :boolean, :default => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime

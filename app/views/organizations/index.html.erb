@@ -20,7 +20,7 @@
       <td align="center"><%=h organization.phone %></td>
       <td align="center"><%=h organization.fax %></td>
       <td align="center"><%=h organization.website %></td>
-      <td align="center"><%=h organization.account_type.name %></td>
+      <td align="center"><%=h organization.account.type_display %></td>
       <td align="center"><%=h organization.enabled %></td>
       <td align="center"><%= link_to "Edit", edit_organization_path(organization) %></td>
     </tr>

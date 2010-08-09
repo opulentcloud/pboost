@@ -148,7 +148,6 @@ class UsersController < ApplicationController
 	def create
 	#debugger
     @user = User.new(params[:user])
-		@user.organization.account_type = AccountType.find_by_name('Pre-Pay')
 		@user.roles << Role.find_by_name('Customer')
 		@political_campaign = @user.organization.political_campaigns.first
 		case params[:user][:organization_attributes][:political_campaigns_attributes]["0"][:type]	
