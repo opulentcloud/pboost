@@ -75,6 +75,7 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
+	map.get_price_sms 'get_price_sms.:format', :controller => 'sms_campaigns', :action => 'get_price', :conditions => { :method => :get }, :path_prefix => '/customer/sms_campaign'
 	map.with_options(:controller => 'sms_campaigns', :path_prefix => '/customer') do |site|
 		site.unschedule_sms_campaign 'unschedule_sms_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
 		site.resources :sms_campaigns do |site2|

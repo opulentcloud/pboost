@@ -3,6 +3,23 @@ class SmsCampaignsController < ApplicationController
 	before_filter :get_sms_campaign, :only => [:unschedule, :show, :edit, :update, :destroy]
 	filter_access_to :all
 
+	#price for a new sms campaign that has not been saved.
+	def get_price
+		@sms_campaign = SmsCampaign.new
+		@sms_campaign.contact_list_id = params[:sms_list_id].to_i
+		begin
+			@sms_campaign_price = @sms_campaign.calc_total_price
+		rescue
+			flash[:error] = "Pricing could not be determined at this time. &nbsp;Have you selected a List yet?"
+			@sms_campaign_price = nil
+		end
+		
+		respond_to do |format|
+			format.html { }
+			format.js { render :get_price, :layout => false }
+		end
+	end
+
 	def unschedule
 		if @sms_campaign.status != 'Scheduled'
 			flash[:error] = "We could not cancel the sending of this Campaign because the current status is #{@sms_campaign.status}."

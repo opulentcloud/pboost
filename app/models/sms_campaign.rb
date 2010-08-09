@@ -1,5 +1,7 @@
 class SmsCampaign < Campaign
 
+	PRICE_PER_RECORD = 0.08
+
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
 		[ "n/a",	        	"n/a" ],
@@ -12,6 +14,7 @@ class SmsCampaign < Campaign
 
 	#====== ASSOCIATIONS =======
 	belongs_to :contact_list
+	belongs_to :sms_list, :foreign_key => :contact_list_id
 
 	#====== VALIDATIONS =======
 	validates_datetime :scheduled_at, 
@@ -43,6 +46,10 @@ class SmsCampaign < Campaign
 	end
 
 	#====== INSTANCE METHODS ======
+	def calc_total_price
+		(self.sms_list.constituent_count.to_f * PRICE_PER_RECORD).round(2)
+	end
+	
 	def do_scheduling?
 		!self.scheduled_at.blank?
 	end
@@ -143,6 +150,12 @@ class SmsCampaign < Campaign
 		
 		sms = ClubTexting.new(@sms_campaign.sms_text, @sms_campaign.campaign_smsses.unsent)
 		sms.send_messages!
+	end
+
+	def self.calc_total_price(contact_list_id)
+		sms_campaign = SmsCampaign.new
+		sms_campaign.contact_list_id = contact_list_id
+		sms_campaign.calc_total_price
 	end
 
 end

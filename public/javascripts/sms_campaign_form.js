@@ -2,7 +2,15 @@ function SchedulingOptionsShow() {
 	$('div#schedule').show();
 }
 
+function calc_total_price() {
+	$("#pricing").text("calculating...");
+			id = $("#sms_campaign_contact_list_id").val();
+ 			jQuery.get('/customer/sms_campaign/get_price_sms.js?sms_list_id='+id +'', function(data) { $("#pricing").text(data); } );
+}
+
 $(document).ready(function() {
+
+$('#sms_campaign_contact_list_id').bind("change", calc_total_price);
 
 $('#sms_campaign_schedule').bind("click", SchedulingOptionsShow);
 
