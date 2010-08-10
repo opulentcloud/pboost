@@ -18,6 +18,7 @@ authorization do
 
 	role :customer do
 		has_permission_on [:campaigns], :to => [:unschedule, :index, :new, :create, :edit, :show]
+		has_permission_on [:carts], :to => [:show]
 		has_permission_on :contact_lists, :to => [:age_filter_changed, :sex_filter_changed, :party_filter_add, :party_filter_remove, :voting_history_type_filter_changed, :voting_history_filter_remove, :voting_history_filter_add, :current_voter_count]
 		has_permission_on :customer, :to => [:index]
 		has_permission_on [:gis_regions], :to => [:plot_precinct_cluster, :count_in_poly, :add_vertices, :index, :show, :new, :create, :edit, :update, :destroy]

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 	end
 
   helper :all # include all helpers, all the time
-	helper_method :current_user, :current_user_session, :redirect_back_or_default, :current_controller, :current_political_campaign
+	helper_method :current_user, :current_user_session, :redirect_back_or_default, :current_controller, :current_political_campaign, :current_cart
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
@@ -103,4 +103,15 @@ private
   	@current_user_session = UserSession.find
   end	
 
+	def current_cart
+		if session[:cart_id]
+			@current_cart ||= Cart.find(session[:cart_id])
+			session[:cart_id] = nil if @current_cart.purchased_at
+		end
+		if session[:cart_id].nil?
+			@current_cart = Cart.first(:conditions => "carts.user_id = #{current_user.id} AND carts.purchased_at IS NULL", :order => 'carts.created_at DESC') ||= Cart.create!
+			session[:cart_id] = @current_cart.id
+		end
+		@current_cart
+	end
 end

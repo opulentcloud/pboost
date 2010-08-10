@@ -8,6 +8,10 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
+	map.current_cart 'cart', :controller => 'carts', :action => 'show', :id => 'current'
+
+	map.resources :carts
+
   map.resources :categories
   
 	map.with_options(:controller => 'contact_lists', :path_prefix => '/customer') do |site|
