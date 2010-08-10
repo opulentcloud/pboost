@@ -47,7 +47,12 @@ class SmsCampaign < Campaign
 
 	#====== INSTANCE METHODS ======
 	def calc_total_price
-		(self.sms_list.constituent_count.to_f * PRICE_PER_RECORD).round(2)
+		if self.populated == true
+			sms_count = self.voter_count
+		else
+			sms_count = self.sms_list.constituent_count
+		end
+		(sms_count.to_f * PRICE_PER_RECORD).round(2)
 	end
 	
 	def do_scheduling?

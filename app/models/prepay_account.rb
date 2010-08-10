@@ -1,0 +1,3 @@
+class PrepayAccount < Account
+end
+
