@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 	before_filter :require_user
 	filter_access_to :all
-	before_filter :get_category, :only => [:show,, :edit, :update, :destroy]
+	before_filter :get_category, :only => [:show, :edit, :update, :destroy]
 
 	layout 'admin'
 	

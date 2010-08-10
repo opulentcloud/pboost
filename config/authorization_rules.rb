@@ -7,6 +7,7 @@ authorization do
 		has_permission_on [:federal_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:gis_regions], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:municipal_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
+		has_permission_on [:products], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:political_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:robocall_campaigns], :to => [:unschedule, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:state_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]

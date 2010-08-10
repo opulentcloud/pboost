@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100809211811) do
+ActiveRecord::Schema.define(:version => 20100810173659) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -138,6 +138,14 @@ ActiveRecord::Schema.define(:version => 20100809211811) do
   add_index "campaigns", ["delayed_job_id"], :name => "index_campaigns_on_delayed_job_id"
   add_index "campaigns", ["id", "type"], :name => "index_campaigns_on_id_and_type"
   add_index "campaigns", ["type", "name"], :name => "index_campaigns_on_type_and_name"
+
+  create_table "categories", :force => true do |t|
+    t.column "name", :string, :limit => 100
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "categories", ["name"], :name => "index_categories_on_name", :unique => true
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false
@@ -504,6 +512,18 @@ ActiveRecord::Schema.define(:version => 20100809211811) do
   add_index "precincts", ["code", "name"], :name => "index_precincts_on_name_and_code", :unique => true
   add_index "precincts", ["senate_district_id"], :name => "index_precincts_on_senate_district_id"
   add_index "precincts", ["state_id"], :name => "index_precincts_on_state_id"
+
+  create_table "products", :force => true do |t|
+    t.column "category_id", :integer
+    t.column "name", :string, :limit => 100
+    t.column "price", :decimal, :precision => 13, :scale => 4
+    t.column "description", :text
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "products", ["category_id"], :name => "index_products_on_category_id"
+  add_index "products", ["name"], :name => "index_products_on_name", :unique => true
 
   create_table "roles", :force => true do |t|
     t.column "name", :string, :limit => 50
