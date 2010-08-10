@@ -2,6 +2,7 @@ authorization do
 	role :administrator do
 		has_permission_on [:admin], :to => [:index]
 		has_permission_on [:campaigns], :to => [:unschedule, :index, :new, :create, :edit, :show]
+		has_permission_on [:categories], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:county_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:federal_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:gis_regions], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
