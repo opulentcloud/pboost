@@ -109,7 +109,8 @@ private
 			session[:cart_id] = nil if @current_cart.purchased_at
 		end
 		if session[:cart_id].nil?
-			@current_cart = Cart.first(:conditions => "carts.user_id = #{current_user.id} AND carts.purchased_at IS NULL", :order => 'carts.created_at DESC') ||= Cart.create!
+			@current_cart = Cart.first(:conditions => "carts.user_id = #{current_user.id} AND carts.purchased_at IS NULL", :order => 'carts.created_at DESC')
+			Cart.create! if @current_cart.nil?
 			session[:cart_id] = @current_cart.id
 		end
 		@current_cart

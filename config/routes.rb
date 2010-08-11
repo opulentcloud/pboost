@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
-	map.current_cart 'cart', :controller => 'carts', :action => 'show', :id => 'current'
+	map.current_cart 'cart', :controller => 'carts', :action => 'show', :id => 'current', :path_prefix => '/customer'
 
 	map.resources :carts
 
@@ -48,7 +48,11 @@ ActionController::Routing::Routes.draw do |map|
 #		site.add_vertices 'add_vertices', :action => 'add_vertices', :conditions => { :method => [:post, :get] }
 #	end
 
+	map.resources :line_items, :path_prefix => '/customer'
+
   map.resources :municipal_campaigns, :path_prefix => '/admin'
+
+	map.resources :orders, :path_prefix => '/customer'
 
 	map.resources :organizations, :path_prefix => '/admin'
 

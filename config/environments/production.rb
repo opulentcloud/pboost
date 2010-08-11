@@ -26,3 +26,13 @@ config.log_level = :info
 
 # Enable threaded mode
 # config.threadsafe!
+
+config.after_initialize do
+	ActiveMerchant::Billing::Base.mode = :production
+	::GATEWAY = ActiveMerchant::Billing::PaypalGateway.new(
+		:login => '',
+		:password => '',
+		:signature => ''
+	)
+end
+

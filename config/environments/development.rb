@@ -18,3 +18,12 @@ config.action_mailer.raise_delivery_errors = true
 #config.action_mailer.logger = :debug
 config.action_mailer.delivery_method = :smtp
 
+config.after_initialize do
+	ActiveMerchant::Billing::Base.mode = :test
+	::GATEWAY = ActiveMerchant::Billing::PaypalGateway.new(
+		:login => '',
+		:password => '',
+		:signature => ''
+	)
+end
+
