@@ -1,0 +1,47 @@
+<% title "Checkout" %>
+
+<% form_for @order do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </p>
+
+  <p>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </p>
+
+  <p>
+    <%= f.label :card_type %><br />
+    <%= f.select :card_type, [["Visa", "visa"], ["MasterCard", "master"],
+["Discover", "discover"]] %>
+  </p>
+
+  <p>
+    <%= f.label :card_number %><br />
+    <%= f.text_field :card_number, :size => 20 %>
+  </p>
+
+  <p>
+    <%= f.label :card_verification, "Card Verification Value (CVV)" %><br />
+    <%= f.text_field :card_verification, :size => 3 %>
+  </p>
+
+  <p>
+    <%= f.label :card_expires_on %><br />
+    <%= f.date_select :card_expires_on, :discard_day => true, :start_year =>
+Date.today.year, :end_year => (Date.today.year+10), :use_month_numbers =>
+true, :order => [:month, :year] %>
+  </p>
+
+	<p>
+		<b>Total Due: </b> 
+		<b><%=number_to_currency current_cart.total_price %>
+	</p>
+
+  <p><%= f.submit "Submit Payment Now" %></p>
+
+<% end %>
+

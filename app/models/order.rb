@@ -9,6 +9,18 @@ class Order < ActiveRecord::Base
 	
 	#===== VALIDATIONS ======
 	validate_on_create :validate_card
+
+	#===== INSTANCE METHODS ======	
+	def purchase
+		response = GATEWAY.purchase(price_in_cents, credit_card, purchase_options)
+		transactions.create!(:action => 'purchase', :amount => price_in_cents, :response => response)
+		cart.update_attribute(:purchased_at, Time.now) if response.success?
+		response.success?
+	end
+	
+	def total_price
+		cart.total_price
+	end	
 	
 	def price_in_cents
 		(cart.total_price*100).round
@@ -16,9 +28,10 @@ class Order < ActiveRecord::Base
 	
 private
 
+	#====== PRIVATE INSTANCE METHODS =====
 	def purchase_options
 		{
-			:ip => ip_address
+			:ip => ip_address,
 			:billing_address => {
 				:name => 'Mark Wilson',
 				:address1 => '183 Valley View Terrace',
@@ -45,7 +58,7 @@ private
 			:verification_value => card_verification,
 			:month => card_expires_on.month,
 			:year => card_expires_on.year,
-			:first_name => first_name
+			:first_name => first_name,
 			:last_name => last_name
 		)
 	end

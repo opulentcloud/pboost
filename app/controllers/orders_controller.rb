@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
 	
 	def create
 		@order = current_cart.build_order(params[:order])
-		@order.ip_address => request.remote_ip
+		@order.ip_address = request.remote_ip
 		if @order.save
 			if @order.purchase
 				render :action => 'success'
