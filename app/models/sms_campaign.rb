@@ -1,7 +1,5 @@
 class SmsCampaign < Campaign
 
-	PRICE_PER_RECORD = 0.08
-
 	CAMPAIGN_STATUSES = [
 		# Displayed         stored in db
 		[ "n/a",	        	"n/a" ],
@@ -13,7 +11,6 @@ class SmsCampaign < Campaign
 	]
 
 	#====== ASSOCIATIONS =======
-	belongs_to :contact_list
 	belongs_to :sms_list, :foreign_key => :contact_list_id
 
 	#====== VALIDATIONS =======
@@ -46,13 +43,21 @@ class SmsCampaign < Campaign
 	end
 
 	#====== INSTANCE METHODS ======
-	def calc_total_price
+	def product
+		Product.find_by_name('SMS Message')
+	end
+	
+	def calc_quantity
 		if self.populated == true
-			sms_count = self.voter_count
+			self.voter_count
 		else
-			sms_count = self.sms_list.constituent_count
+			self.sms_list.constituent_count
 		end
-		(sms_count.to_f * PRICE_PER_RECORD).round(2)
+	end
+	
+	def calc_total_price
+		sms_count = self.quantity
+		(sms_count.to_f * product.unit_price).round(2)
 	end
 	
 	def do_scheduling?

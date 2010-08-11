@@ -20,10 +20,8 @@ config.action_mailer.delivery_method = :smtp
 
 config.after_initialize do
 	ActiveMerchant::Billing::Base.mode = :test
-	::GATEWAY = ActiveMerchant::Billing::PaypalGateway.new(
-		:login => '',
-		:password => '',
-		:signature => ''
-	)
+	::GATEWAY = ActiveMerchant::Billing::AuthorizeNetGateway.new(
+		:login => '4Q7F3zQZaBV',
+		:password => '9VP3wUxV6s6e8r53')
 end
 

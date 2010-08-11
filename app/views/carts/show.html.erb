@@ -2,6 +2,7 @@
 
 <table id="line_items">
 	<tr>
+		<th>Description</th>
 		<th>Product</th>
 		<th>Qty</th>
 		<th class="price">Unit Price</th>
@@ -9,6 +10,7 @@
 	</tr>
 	<% for line_item in @cart.line_items %>
 		<tr class="<%= cycle :odd, :even %>">
+			<td><%=h line_item.description %></td>
 			<td><%=h line_item.product.name %></td>
 			<td class="qty"><%= line_item.quantity %></td>
 			<td class="price"><%= number_to_currency(line_item.unit_price) %></td>
@@ -16,12 +18,15 @@
 		</tr>
 	<% end %>
 	<tr>
-		<td class="total price" colspan="4">
+		<td class="total price" colspan="5">
 			Total: <%= number_to_currency @cart.total_price %>
 		</td>
 	</tr>
 	<tr>
-		<%= link_to "Continue Shopping", customer_control_panel_path %>
-		<%= link_to "Checkout", new_order_path %>
+		<p>
+			<%= link_to "Continue Shopping", customer_control_panel_path %>	
+			<%= link_to "Checkout", new_order_path %>
+		</p>	
 	</tr>
 </table>
+

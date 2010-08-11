@@ -63,6 +63,14 @@ class SmsCampaignsController < ApplicationController
 
 	  if @sms_campaign.save
 	    flash[:notice] = notice
+
+			if current_user.organization.account.class.to_s == 'PrepayAccount'
+				@line_item = LineItem.create_line_item!(current_cart, nil, nil, @sms_campaign, nil, nil)
+				flash[:notice] = "Added your SMS Campaign to cart."
+				redirect_to current_cart_url
+				return				
+			end
+	    
 			respond_to do |format|
 				format.html { redirect_to @sms_campaign }
 				format.js

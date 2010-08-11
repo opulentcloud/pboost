@@ -22,6 +22,7 @@ class ContactList < ActiveRecord::Base
 
 	#===== ASSOCIATIONS =====
 	belongs_to :political_campaign
+	has_one :organization, :through => :political_campaign
 	has_one :precinct_filter, :dependent => :destroy
 	accepts_nested_attributes_for :precinct_filter
 	has_one :council_district_filter, :dependent => :destroy

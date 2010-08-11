@@ -48,7 +48,10 @@ ActionController::Routing::Routes.draw do |map|
 #		site.add_vertices 'add_vertices', :action => 'add_vertices', :conditions => { :method => [:post, :get] }
 #	end
 
-	map.resources :line_items, :path_prefix => '/customer'
+	map.with_options(:controller => 'line_items', :path_prefix => '/customer') do |site|
+		site.create_line_item 'line_items/:service/:id(.:format)', :action => 'create', :conditions => { :method => :post }
+		site.resources :line_items
+	end
 
   map.resources :municipal_campaigns, :path_prefix => '/admin'
 

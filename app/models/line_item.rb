@@ -14,6 +14,14 @@ class LineItem < ActiveRecord::Base
 	validates_numericality_of :unit_price, :greater_than_or_equal_to => 0.0001
 
 	#====== INSTANCE METHODS ======
+	def description
+		if self.campaigns
+			self.campaigns.first.name 
+		elsif self.contact_lists
+			self.contact_lists.first.name
+		end
+	end
+
 	def full_price
 		unit_price * quantity
 	end
@@ -21,16 +29,30 @@ class LineItem < ActiveRecord::Base
 	#===== CLASS METHODS ======
 	def self.create_line_item!(the_cart, the_product, the_contact_list, the_campaign, the_quantity, the_unit_price)
 
+		if the_product.nil?
+			if !the_contact_list.nil?
+				the_product = the_contact_list.product
+			elsif !the_campaign.nil?
+				the_product = the_campaign.product
+			else
+				raise 'Unable to find valid Product.'
+			end
+		end
+
 		case the_product.category.name
 			when 'SmsCampaign' then 
 				case the_product.name
-					when 'SMS Message' then	the_quantity = the_campaign.voter_count
+					when 'SMS Message' then	the_quantity = the_campaign.calc_quantity
 				else
-					raise 'Unknown Product Name'
+					raise "No pricing found for Product #{the_product.name}"
 				end
 			else
-				raise 'Unknown Product Category'
+				raise "No pricing found for Product in Category #{the_product.category.name}"
 		end		
+
+		if the_unit_price.nil?
+			the_unit_price = the_product.price
+		end
 		
 		LineItem.transaction do
 			@line_item = LineItem.create!(:cart => the_cart, :product => the_product, :quantity => the_quantity, :unit_price => the_unit_price)
