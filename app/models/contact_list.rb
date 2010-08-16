@@ -54,6 +54,7 @@ class ContactList < ActiveRecord::Base
 	has_many :campaigns
 	has_many :robocall_campaigns
 	has_many :sms_campaigns
+	has_many :contact_list_surveys
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name
@@ -140,13 +141,18 @@ class ContactList < ActiveRecord::Base
 			when 'SmsList' then
 				sql = "DELETE FROM contact_list_smsses WHERE contact_list_id = #{self.id}"
 				ActiveRecord::Base.connection.execute(sql)
+
+			when 'Survey' then
+				sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
+				ActiveRecord::Base.connection.execute(sql)
+
 		end
 
 		true
 	end
 
 	def after_destroy
-		return true unless ['Walksheet','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
+		return true unless ['Walksheet','Survey','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
 		delete_file
 	end
 
@@ -196,6 +202,14 @@ class ContactList < ActiveRecord::Base
 			rescue
 			end		
 		end
+
+		fname = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
+		if File.exists?(fname)
+			begin
+				File.delete(fname)
+			rescue
+			end		
+		end
 		
 	end
 	
@@ -210,7 +224,7 @@ class ContactList < ActiveRecord::Base
 	end
 
 	def populate
-		delete_file if ['Walksheet','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
+		delete_file if ['Walksheet','Survey','SmsList','PhoneBankList','RobocallList'].include?(self.class.to_s)
 
 		#unlink any addresses from this contact_list
 		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"

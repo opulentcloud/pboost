@@ -10,6 +10,7 @@ authorization do
 		has_permission_on [:robocall_campaigns], :to => [:unschedule, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:state_campaigns], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:organizations], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
+		has_permission_on [:surveys], :to => [:index, :show, :new, :edit, :update, :create, :destroy]
 		has_permission_on [:users], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:walksheets], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 	end

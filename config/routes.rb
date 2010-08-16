@@ -93,6 +93,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :state_campaigns, :path_prefix => '/admin'
 
+	map.with_options(:controller => 'surveys', :path_prefix => '/admin') do |site|
+		site.map_fields_survey 'map_fields_survey/:id', :action => 'map_fields', :conditions => { :method => [:get, :post] }
+		site.resources :surveys do |site2|
+			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
+		end	
+	end
+
 	#user signups and users resources
 	map.with_options(:controller => 'users') do |site|
 		site.signup 'signup', :action => 'new'
