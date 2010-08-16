@@ -9,6 +9,10 @@ class SurveysController < ApplicationController
 		@rows = @survey.rows
 		@fields = [['',''],['State File ID', 'state_file_id']]
 
+		@survey.questions.each do |question|
+			@fields.push(["#{question.question_text}","#{question.id}"])
+		end
+
 		if request.post?
 			@have_selection = false
 			params[:fields].each do |key,value|

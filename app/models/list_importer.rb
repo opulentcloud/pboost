@@ -18,6 +18,12 @@ class ListImporter
 				if mappedfields.nil?
 					self.mapped_fields = { :cell_phone => 0 }
 				end
+
+			when 'survey' then
+				if mappedfields.nil?
+					self.mapped_fields = { :state_file_id => 0 }
+				end			
+			
 		end
 		
 	end
@@ -55,6 +61,8 @@ class ListImporter
 				return @row.size != 1
 			when 'sms_list' then
 				return @row.size != 1
+			when 'survey' then
+				return (@row.size - 1) != @list.questions.count
 		end
 
 	end
@@ -73,6 +81,10 @@ class ListImporter
 						cls = ContactListSmss.new
 						cls.cell_phone = valid_phone_number(row[self.mapped_fields[:cell_phone]])
 						@list.contact_list_smsses << cls unless cls.cell_phone.blank? || @list.contact_list_smsses.exists?(:cell_phone => cls.cell_phone)
+					when 'survey' then
+						voter = Voter.find_by_state_file_id(row[self.mapped_fields[:state_file_id]])
+						@list.voters << voter unless @list.voters.exists?(voter) || voter.nil?
+					end
 				end
 			end
 		rescue FasterCSV::MalformedCSVError => e

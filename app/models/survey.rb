@@ -157,7 +157,7 @@ class Survey < ContactList
 		end #end if !self.upload_list == true
 #debugger
 		if self.voters.count > 0 && !self.upload_list == true
-			#build list of robocall phone numbers from voters.
+			#build list of surveys from voters.
 			sql = <<-eot
 				INSERT INTO contact_list_robocalls
 				SELECT
@@ -186,7 +186,7 @@ class Survey < ContactList
 				 importer = ListImporter.new(self.survey_attachment.file_name, 'survey', self.id, (self.mapped_fields.blank? ? nil : instance_eval(self.mapped_fields)))
 				 importer.import!										
 
-				self.constituent_count = self.contact_list_surveys.count
+				self.constituent_count = self.voters.count
 				self.populated = true
 				self.repopulate = false
 				self.save!

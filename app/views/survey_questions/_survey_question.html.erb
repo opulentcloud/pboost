@@ -1,8 +1,8 @@
 <div class="question">
-<% fields_for "survey[question_attributes][]", question do |f| %>
+<% fields_for "survey[questions_attributes][]", survey_question do |f| %>
 	<p>
 		Question: <%= f.text_field :question_text, :index => nil %>
-		<% if question.new_record? %>
+		<% if survey_question.new_record? %>
 			<%= link_to_function "remove", "$(this).up('.question').remove()" %>
 		<% else %>
 			<%= link_to_function "remove", "mark_for_destroy(this)" %>

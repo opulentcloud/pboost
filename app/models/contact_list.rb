@@ -144,8 +144,8 @@ class ContactList < ActiveRecord::Base
 				ActiveRecord::Base.connection.execute(sql)
 
 			when 'Survey' then
-				sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
-				ActiveRecord::Base.connection.execute(sql)
+				#sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
+				#ActiveRecord::Base.connection.execute(sql)
 
 		end
 

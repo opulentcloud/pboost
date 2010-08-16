@@ -46,7 +46,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-	config.active_record.observers = [:county_campaign_observer, :federal_campaign_observer, :gis_region_observer, :municipal_campaign_observer, :phone_bank_list_observer, :robocall_campaign_observer, :robocall_list_observer, :sms_campaign_observer, :sms_list_observer, :state_campaign_observer, :walksheet_observer]
+	config.active_record.observers = [:county_campaign_observer, :federal_campaign_observer, :gis_region_observer, :municipal_campaign_observer, :phone_bank_list_observer, :robocall_campaign_observer, :robocall_list_observer, :sms_campaign_observer, :sms_list_observer, :state_campaign_observer, :survey_observer, :walksheet_observer]
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
