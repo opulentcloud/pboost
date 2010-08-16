@@ -1,5 +1,8 @@
 class PoliticalCampaign < ActiveRecord::Base
 
+	#===== SCOPES ======
+	named_scope :populated, :conditions => 'political_campaigns.populated = true'
+
 	#===== MAPPED VALUES ======
 	POLITICAL_CAMPAIGN_TYPES = [
 		#Displayed				stored in db

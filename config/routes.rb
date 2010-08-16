@@ -54,6 +54,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :political_campaigns, :path_prefix => '/admin'
 
+  map.resources :questions, :controller => 'survey_questions', :path_prefix => '/admin'
+
 	#map.with_options(:controller => 'reports', :path_prefix => '/customer') do |site|
 		#site.csv 'csv/:id', :action => 'csv_list', :conditions => { :method => :get }
 		#site.pdf 'pdf/:id', :action => 'send_pdf_file', :conditions => { :method => :get }
@@ -99,6 +101,8 @@ ActionController::Routing::Routes.draw do |map|
 			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
 		end	
 	end
+
+	map.resources :survey_questions, :path_prefix => '/admin'
 
 	#user signups and users resources
 	map.with_options(:controller => 'users') do |site|

@@ -1,5 +1,5 @@
 class SurveysController < ApplicationController
-	before_filter :require_admin_user
+	before_filter :require_user
 	before_filter :get_survey, :only => [:map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
 
@@ -68,19 +68,10 @@ class SurveysController < ApplicationController
   end
   
   def new
-		@sess_id = UUIDTools::UUID.timestamp_create  
-		
     @survey = Survey.new
-    @gis_region = @survey.build_gis_region
-    @survey.build_age_filter
-    @survey.build_sex_filter
-    @survey.build_gis_region_filter
-    @survey.build_council_district_filter
-    @survey.build_municipal_district_filter
-    @survey.build_precinct_filter
-		@survey.build_voting_history_type_filter
     @survey.build_survey_attachment
-    
+		@survey.upload_list = true
+		@survey.do_mapping = true
   end
   
   def create
@@ -91,18 +82,6 @@ class SurveysController < ApplicationController
 			@survey.errors.add_to_base('You must attach your file to continue.')
 			have_file = false		
 		end
-
-   	vh_filters = params[:voting_history_filter_attributes][:string_val].to_a unless params[:voting_history_filter_attributes].nil?
-
-    @survey.elections.each_with_index do |e,index|
-			a = vh_filters[index]
-			next if a.nil?
-			if a[0].to_i == e.id
-				@survey.voting_history_filters.build(:int_val => e.id, :string_val => a[1])
-			end			
-	  end
-
-		@survey.political_campaign_id = current_political_campaign.id
 
 	  if have_file && @survey.save
 	  	if @survey.do_mapping == true

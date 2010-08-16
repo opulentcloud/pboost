@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100808201730) do
+ActiveRecord::Schema.define(:version => 20100816195515) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -18,6 +18,38 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
   end
 
   add_index "account_types", ["name"], :name => "index_account_types_on_name", :unique => true
+
+  create_table "accounts", :force => true do |t|
+    t.column "type", :string, :limit => 14
+    t.column "organization_id", :integer
+    t.column "current_balance", :decimal, :precision => 11, :scale => 2, :default => 0.0
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "accounts", ["id", "type"], :name => "index_accounts_on_id_and_type"
+  add_index "accounts", ["organization_id"], :name => "index_accounts_on_organization_id", :unique => true
+
+  create_table "address_infos", :force => true do |t|
+    t.column "first_name", :string, :limit => 32, :null => false
+    t.column "last_name", :string, :limit => 32, :null => false
+    t.column "address1", :string, :limit => 64, :null => false
+    t.column "address2", :string, :limit => 64, :default => ""
+    t.column "city", :string, :limit => 32, :null => false
+    t.column "state", :string, :limit => 2, :null => false
+    t.column "country", :string, :limit => 2, :null => false
+    t.column "postal_code", :string, :limit => 10, :null => false
+    t.column "type", :string, :limit => 100
+    t.column "string", :string, :limit => 100
+    t.column "addressable_id", :integer
+    t.column "addressable_type", :string
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "address_infos", ["addressable_id", "addressable_type"], :name => "index_address_infos_on_addressable_id_and_addressable_type"
+  add_index "address_infos", ["id", "type"], :name => "index_address_infos_on_id_and_type", :unique => true
+  add_index "address_infos", ["type"], :name => "index_address_infos_on_type"
 
   create_table "addresses", :force => true do |t|
     t.column "street_no", :string, :limit => 5
@@ -127,6 +159,23 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
   add_index "campaigns", ["delayed_job_id"], :name => "index_campaigns_on_delayed_job_id"
   add_index "campaigns", ["id", "type"], :name => "index_campaigns_on_id_and_type"
   add_index "campaigns", ["type", "name"], :name => "index_campaigns_on_type_and_name"
+
+  create_table "carts", :force => true do |t|
+    t.column "user_id", :integer
+    t.column "purchased_at", :datetime
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "carts", ["user_id"], :name => "index_carts_on_user_id"
+
+  create_table "categories", :force => true do |t|
+    t.column "name", :string, :limit => 100
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "categories", ["name"], :name => "index_categories_on_name", :unique => true
 
   create_table "cities", :force => true do |t|
     t.column "name", :string, :limit => 64, :null => false
@@ -392,6 +441,39 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
 
   add_index "house_districts", ["hd", "state_id"], :name => "index_house_districts_on_state_id_and_hd", :unique => true
 
+  create_table "line_item_campaigns", :force => true do |t|
+    t.column "line_item_id", :integer, :null => false
+    t.column "campaign_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "line_item_campaigns", ["campaign_id"], :name => "index_line_item_campaigns_on_campaign_id"
+  add_index "line_item_campaigns", ["line_item_id"], :name => "index_line_item_campaigns_on_line_item_id"
+  add_index "line_item_campaigns", ["line_item_id", "campaign_id"], :name => "index_line_item_campaigns_on_line_item_id_and_campaign_id", :unique => true
+
+  create_table "line_item_contact_lists", :force => true do |t|
+    t.column "line_item_id", :integer, :null => false
+    t.column "contact_list_id", :integer, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "line_item_contact_lists", ["contact_list_id"], :name => "index_line_item_contact_lists_on_contact_list_id"
+  add_index "line_item_contact_lists", ["line_item_id"], :name => "index_line_item_contact_lists_on_line_item_id"
+
+  create_table "line_items", :force => true do |t|
+    t.column "unit_price", :decimal, :precision => 13, :scale => 4
+    t.column "product_id", :integer
+    t.column "cart_id", :integer
+    t.column "quantity", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "line_items", ["cart_id"], :name => "index_line_items_on_cart_id"
+  add_index "line_items", ["product_id"], :name => "index_line_items_on_product_id"
+
   create_table "municipal_districts", :force => true do |t|
     t.column "code", :string, :limit => 3, :null => false
     t.column "created_at", :datetime
@@ -399,6 +481,33 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
   end
 
   add_index "municipal_districts", ["code"], :name => "index_municipal_districts_on_code", :unique => true
+
+  create_table "order_transactions", :force => true do |t|
+    t.column "order_id", :integer
+    t.column "action", :string
+    t.column "amount", :integer
+    t.column "success", :boolean
+    t.column "authorization", :string
+    t.column "message", :string
+    t.column "params", :text
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "order_transactions", ["order_id"], :name => "index_order_transactions_on_order_id"
+
+  create_table "orders", :force => true do |t|
+    t.column "cart_id", :integer
+    t.column "ip_address", :string, :limit => 50
+    t.column "first_name", :string, :limit => 32, :null => false
+    t.column "last_name", :string, :limit => 32, :null => false
+    t.column "card_type", :string, :limit => 32
+    t.column "card_expires_on", :date
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "orders", ["cart_id"], :name => "index_orders_on_cart_id"
 
   create_table "organization_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -415,10 +524,10 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
     t.column "phone", :string, :limit => 10
     t.column "fax", :string, :limit => 10
     t.column "website", :string, :limit => 150
-    t.column "account_type_id", :integer
     t.column "enabled", :boolean, :default => false
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "account_type_id", :integer
   end
 
   add_index "organizations", ["email"], :name => "index_organizations_on_email", :unique => true
@@ -495,6 +604,18 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
   add_index "precincts", ["senate_district_id"], :name => "index_precincts_on_senate_district_id"
   add_index "precincts", ["state_id"], :name => "index_precincts_on_state_id"
 
+  create_table "products", :force => true do |t|
+    t.column "category_id", :integer
+    t.column "name", :string, :limit => 100
+    t.column "price", :decimal, :precision => 13, :scale => 4
+    t.column "description", :text
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "products", ["category_id"], :name => "index_products_on_category_id"
+  add_index "products", ["name"], :name => "index_products_on_name", :unique => true
+
   create_table "roles", :force => true do |t|
     t.column "name", :string, :limit => 50
     t.column "created_at", :datetime
@@ -544,6 +665,15 @@ ActiveRecord::Schema.define(:version => 20100808201730) do
 
   add_index "states", ["abbrev"], :name => "index_states_on_abbrev", :unique => true
   add_index "states", ["name"], :name => "index_states_on_name", :unique => true
+
+  create_table "survey_questions", :force => true do |t|
+    t.column "question_text", :text, :null => false
+    t.column "contact_list_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "survey_questions", ["contact_list_id"], :name => "index_survey_questions_on_contact_list_id"
 
   create_table "time_zones", :force => true do |t|
     t.column "zone", :string, :limit => 64, :null => false
