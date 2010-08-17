@@ -10,15 +10,18 @@ class SurveysController < ApplicationController
 		@fields = [['',''],['State File ID', 'state_file_id']]
 
 		@survey.questions.each do |question|
-			@fields.push(["#{question.question_text}","#{question.id}"])
+			@fields.push(["#{question.question_text}","question_#{question.id}"])
 		end
 
 		if request.post?
 			@have_selection = false
 			params[:fields].each do |key,value|
-				next if value.blank?
-				@have_selection = true
-				break;
+				if value.blank?
+					@have_selection = false
+					break
+				else
+					@have_selection = true				
+				end
 			end
 
 			if @have_selection == false
@@ -94,7 +97,7 @@ class SurveysController < ApplicationController
 	  		#which field.
 	  		if @survey.need_mapping == true
 	  			#render file for user to make mapping.
-	  			redirect_to map_fields_survey_list_path(@survey)
+	  			redirect_to map_fields_survey_path(@survey)
 	  			return
 	  		end
 	  	end

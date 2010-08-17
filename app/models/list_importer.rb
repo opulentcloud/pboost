@@ -1,5 +1,4 @@
 class ListImporter
-
 	attr_accessor :file_name, :list_type, :contact_list_id, :mapped_fields, :map_fields_error
 
 	def initialize(filename, listtype, list_id, mappedfields = nil)
@@ -22,8 +21,8 @@ class ListImporter
 			when 'survey' then
 				if mappedfields.nil?
 					self.mapped_fields = { :state_file_id => 0 }
-				end			
-			
+				end
+
 		end
 		
 	end
@@ -62,7 +61,8 @@ class ListImporter
 			when 'sms_list' then
 				return @row.size != 1
 			when 'survey' then
-				return (@row.size - 1) != @list.questions.count
+				@list = ContactList.find(self.contact_list_id)
+				return (@mapped_fields.size - 1) != @list.questions.count
 		end
 
 	end
@@ -84,7 +84,6 @@ class ListImporter
 					when 'survey' then
 						voter = Voter.find_by_state_file_id(row[self.mapped_fields[:state_file_id]])
 						@list.voters << voter unless @list.voters.exists?(voter) || voter.nil?
-					end
 				end
 			end
 		rescue FasterCSV::MalformedCSVError => e

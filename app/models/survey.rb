@@ -43,8 +43,8 @@ class Survey < ContactList
 		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
 		sql_result = ActiveRecord::Base.connection.execute(sql)
 
-		sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
-		sql_result = ActiveRecord::Base.connection.execute(sql)
+		#sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
+		#sql_result = ActiveRecord::Base.connection.execute(sql)
 
 		if !self.upload_list == true
 
@@ -193,11 +193,11 @@ class Survey < ContactList
 			end
 		end			
 
-		if self.populated == true && self.repopulate == false
-			full_file_name = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
-			file_name = "survey_#{self.id}.csv"
-			self.contact_list_surveys.report_table(:all, :methods => ['phone_number'], :only => ['phone_number']).save_as(full_file_name)
-		end
+		#if self.populated == true && self.repopulate == false
+		#	full_file_name = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
+		#	file_name = "survey_#{self.id}.csv"
+		#	self.contact_list_surveys.report_table(:all, :methods => ['phone_number'], :only => ['phone_number']).save_as(full_file_name)
+		#end
 
 	end
 
