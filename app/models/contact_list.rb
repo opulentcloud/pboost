@@ -341,7 +341,7 @@ class ContactList < ActiveRecord::Base
 				eot
 		
 		end
-debugger
+
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
