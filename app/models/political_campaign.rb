@@ -386,7 +386,7 @@ class PoliticalCampaign < ActiveRecord::Base
 	end
 
 	def self.sanitizeParam(param)
-		param.gsub("'", "\\")
+		param.gsub("'", "''")
 	end
 	
 end
