@@ -241,6 +241,12 @@ class ContactList < ActiveRecord::Base
 			
 			sql = ''
 
+			if self.id == 267
+				sql += <<-eot
+					AND ("addresses"."hd" IN ('23A','23B','024','025','026','27A')) 
+				eot
+			end
+
 			if self.gis_region
 				sql += <<-eot
 					AND 
@@ -335,7 +341,7 @@ class ContactList < ActiveRecord::Base
 				eot
 		
 		end
-
+debugger
 		sql1 = sql1_header + sql + '; ' + sql2_header
 		logger.debug(sql1)
 		sql_result = ActiveRecord::Base.connection.execute(sql1)
