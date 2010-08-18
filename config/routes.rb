@@ -102,6 +102,8 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
+	map.resources :survey_answers, :path_prefix => '/admin'
+
 	map.resources :survey_questions, :path_prefix => '/admin'
 
 	#user signups and users resources

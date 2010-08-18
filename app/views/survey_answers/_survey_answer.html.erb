@@ -1,0 +1,19 @@
+<div class="answer">
+<% fields_for "survey[questions_attributes[answer_attributes]][]", survey_answer do |f| %>
+	<p>
+		Key: <%= f.text_field :answer_key, :index => nil %>
+	</p>
+
+	<p>
+		Answer: <%= f.text_field :answer_text, :index => nil %>
+		<% if survey_answer.new_record? %>
+			<%= link_to_function "remove", "$(this).up('.answer').remove()" %>
+		<% else %>
+			<%= link_to_function "remove", "mark_for_destroy(this)" %>
+			<%= f.hidden_field :should_destroy, :index => nil %>
+			<%= f.hidden_field :id, :index => nil, :class => 'should_destroy' %>
+		<% end %>
+	</p>
+<% end %>
+</div>
+

@@ -68,7 +68,7 @@ class SurveysController < ApplicationController
 	end
 
   def index
-    @surveys = Surveys.all(:order => 'contact_lists.created_at DESC')
+    @surveys = Survey.all(:order => 'contact_lists.created_at DESC')
   end
   
   def show
@@ -82,6 +82,7 @@ class SurveysController < ApplicationController
   end
   
   def create
+  debugger
     @survey = Survey.new(params[:survey])
 		have_file = true
 
