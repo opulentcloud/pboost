@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100816195515) do
+ActiveRecord::Schema.define(:version => 20100818172555) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -665,6 +665,18 @@ ActiveRecord::Schema.define(:version => 20100816195515) do
 
   add_index "states", ["abbrev"], :name => "index_states_on_abbrev", :unique => true
   add_index "states", ["name"], :name => "index_states_on_name", :unique => true
+
+  create_table "survey_answers", :force => true do |t|
+    t.column "survey_question_id", :integer
+    t.column "answer_key", :string, :limit => 1, :null => false
+    t.column "answer_text", :text, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "survey_answers", ["survey_question_id"], :name => "index_survey_answers_on_survey_question_id"
+  add_index "survey_answers", ["survey_question_id", "answer_key"], :name => "index_survey_answers_on_survey_question_id_and_answer_key", :unique => true
+  add_index "survey_answers", ["survey_question_id", "answer_text"], :name => "index_survey_answers_on_survey_question_id_and_answer_text", :unique => true
 
   create_table "survey_questions", :force => true do |t|
     t.column "question_text", :text, :null => false
