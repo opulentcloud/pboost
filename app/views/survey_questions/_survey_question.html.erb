@@ -1,5 +1,5 @@
 <div class="question">
-<% form.fields_for(survey_question) do |f| %>
+<% fields_for "survey[questions_attributes][]", survey_question do |f| %>
 	<p>
 		Question: <%= f.text_field :question_text, :index => nil %>
 		<% if survey_question.new_record? %>
@@ -9,15 +9,6 @@
 			<%= f.hidden_field :should_destroy, :index => nil %>
 			<%= f.hidden_field :id, :index => nil, :class => 'should_destroy' %>
 		<% end %>
-
-		<p>
-			<div id="answers">
-				<%= render :partial => 'survey_answers/answer', :collection => survey_question.answers %>
-			</div>
-			<p>
-				<%= link_to_function 'Add an answer', 'add_survey_answer()' %>
-			</p>	
-		</p>
 
 	</p>
 <% end %>

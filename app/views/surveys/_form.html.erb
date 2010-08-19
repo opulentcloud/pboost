@@ -20,7 +20,7 @@
 
 	<p>
 		<div id="questions">
-			<%= render :partial => 'survey_questions/question', :collection => @survey.questions, :locals => { :form => f } %>
+			<%= render :partial => 'survey_questions/question', :collection => @survey.questions %>
 		</div>
 		<p>
 			<%= link_to_function 'Add a question', 'add_survey_question()' %>

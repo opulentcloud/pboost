@@ -77,6 +77,8 @@ class SurveysController < ApplicationController
   def new
     @survey = Survey.new
     @survey.build_survey_attachment
+    #@survey.questions.build
+    #@survey.questions.first.answers.build
 		@survey.upload_list = true
 		@survey.do_mapping = true
   end
