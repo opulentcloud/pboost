@@ -54,7 +54,7 @@ class ContactList < ActiveRecord::Base
 	has_many :campaigns
 	has_many :robocall_campaigns
 	has_many :sms_campaigns
-	has_many :questions, :class_name => 'SurveyQuestion'
+	has_many :questions, :class_name => 'SurveyQuestion', :dependent => :destroy
 	accepts_nested_attributes_for :questions
 
 	#===== VALIDATIONS ======

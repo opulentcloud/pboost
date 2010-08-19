@@ -2,7 +2,7 @@ class SurveyQuestion < ActiveRecord::Base
 
 	#===== ASSOCIATIONS =======
 	belongs_to :survey, :foreign_key => :contact_list_id
-	has_many :answers, :class_name => 'SurveyAnswer'
+	has_many :answers, :class_name => 'SurveyAnswer', :dependent => :destroy
 	accepts_nested_attributes_for :answers
 
 	#===== VALIDATIONS =======

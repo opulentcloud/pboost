@@ -1,5 +1,5 @@
 <div class="answer">
-<% form.fields_for(survey_answer) do |f| %>
+<% fields_for "survey[questions_attributes][][answers_attributes][]", survey_answer do |f| %>
 	<p>
 		Key: <%= f.text_field :answer_key, :index => nil %>
 	</p>
