@@ -4,6 +4,7 @@ class SurveyQuestionsController < ApplicationController
   
   def new
 		@survey_question = SurveyQuestion.new
+		@sequence = params[:seq].to_i
   
 		respond_to do |format|
 			format.html { redirect_to @survey_question }

@@ -1,4 +1,4 @@
-<div class="question">
+<div id="question_<%= "#{@sequence}" %>" class="question">
 <% fields_for "survey[questions_attributes][]", survey_question do |f| %>
 	<p>
 		Question: <%= f.text_field :question_text, :index => nil %>
@@ -15,7 +15,7 @@
 				<%= render :partial => 'survey_answers/survey_answer', :collection => survey_question.answers %>
 			</div>
 			<p>
-				<%= link_to_function 'Add an answer', 'add_survey_answer()' %>
+				<%= link_to_function 'Add an answer', "add_survey_answer(#{@sequence})" %>
 			</p>	
 		</p>
 
