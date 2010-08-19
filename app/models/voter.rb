@@ -5,6 +5,8 @@ class Voter < ActiveRecord::Base
 	belongs_to :address
 	has_many :voting_history_voters, :dependent => :destroy
 	has_and_belongs_to_many :gis_regions
+	has_many :survey_results, :class_name => 'VoterSurveyResult'
+	has_many :surveys, :through => :survey_results
 
 	#====== INSTANCE METHODS ======
 	def of_6_to_word(elec_type)

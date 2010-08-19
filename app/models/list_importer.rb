@@ -83,7 +83,14 @@ class ListImporter
 						@list.contact_list_smsses << cls unless cls.cell_phone.blank? || @list.contact_list_smsses.exists?(:cell_phone => cls.cell_phone)
 					when 'survey' then
 						voter = Voter.find_by_state_file_id(row[self.mapped_fields[:state_file_id]])
-						@list.voters << voter unless @list.voters.exists?(voter) || voter.nil?
+						if !(@list.voters.exists?(voter) || voter.nil?)
+							@list.voters << voter
+							self.mapped_fields.each do |map|
+								if map[0].to_s[0,9] == "question_"
+									
+									voter.survey_results.create
+							end
+						end
 				end
 			end
 		rescue FasterCSV::MalformedCSVError => e

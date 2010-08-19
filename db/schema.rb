@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100818172555) do
+ActiveRecord::Schema.define(:version => 20100819220256) do
 
   create_table "account_types", :force => true do |t|
     t.column "name", :string, :limit => 100, :null => false
@@ -723,6 +723,18 @@ ActiveRecord::Schema.define(:version => 20100818172555) do
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
   add_index "users", ["organization_id"], :name => "index_users_on_organization_id"
   add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token", :unique => true
+
+  create_table "voter_survey_results", :force => true do |t|
+    t.column "voter_id", :integer
+    t.column "contact_list_id", :integer
+    t.column "question_id", :integer
+    t.column "answer", :string, :limit => 1, :null => false
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "voter_survey_results", ["contact_list_id"], :name => "index_voter_survey_results_on_contact_list_id"
+  add_index "voter_survey_results", ["voter_id"], :name => "index_voter_survey_results_on_voter_id"
 
   create_table "voters", :force => true do |t|
     t.column "vote_builder_id", :integer, :limit => 8

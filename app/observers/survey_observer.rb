@@ -7,17 +7,17 @@ class SurveyObserver < ActiveRecord::Observer
 			Delayed::Job.enqueue SurveyJob.new(survey.id)
 		else
 			Delayed::Job.enqueue SurveyJob.new(survey.id)
-			#sms_list.populate
+			#survey.populate
 		end
 	end	
 
 	def after_update(survey)
 		return true unless survey.repopulate == true
-		#if @@delayed_job == true
+		if @@delayed_job == true
 			Delayed::Job.enqueue SurveyJob.new(survey.id)
-		#else
-		#	walksheet.populate
-		#end
+		else
+			survey.populate
+		end
 	end	
 
 end
