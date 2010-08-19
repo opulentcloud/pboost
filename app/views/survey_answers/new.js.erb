@@ -1,1 +1,1 @@
-$("#answers").append("<%=escape_javascript(render:partial => @survey_answer) %>");
+$("#answers_<%= "#{@question_id}" %>").append("<%=escape_javascript(render:partial => @survey_answer) %>");

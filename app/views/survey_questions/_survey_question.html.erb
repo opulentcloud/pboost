@@ -11,7 +11,7 @@
 		<% end %>
 
 		<p>
-			<div id="answers">
+			<div id="answers_<%= "#{@sequence}" %>">
 				<%= render :partial => 'survey_answers/survey_answer', :collection => survey_question.answers %>
 			</div>
 			<p>

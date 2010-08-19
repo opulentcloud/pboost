@@ -12,23 +12,34 @@ class SurveysController < ApplicationController
 		@survey.questions.each do |question|
 			@fields.push(["#{question.question_text}","question_#{question.id}"])
 		end
-
+		debugger
 		if request.post?
-			@have_selection = false
-			params[:fields].each do |key,value|
-				if value.blank?
-					@have_selection = false
-					break
-				else
-					@have_selection = true				
+			#each field must be mapped
+			@fields.each do |field|
+				@field_mapped = false
+				params[:fields].each do |key,value|
+					next if field[0] != value
+					@field_mapped = true
 				end
+				@survey.errors.add_to_base("You must map #{field[0]}") unless @field_mapped == true
 			end
 
-			if @have_selection == false
-				flash.now[:error] = "You must map each column to a field in our database."
-				render
-				return
-			end
+			#=== old need? ====
+			#@have_selection = false
+			#params[:fields].each do |key,value|
+			#	if value.blank?
+			#		@have_selection = false
+			#		break
+			#	else
+			#		@have_selection = true				
+			#	end
+			#end
+
+			#if @have_selection == false
+			#	flash.now[:error] = "You must map each column to a field in our database."
+			#	render
+			#	return
+			#end
 
 			params[:fields].each do |key,value|
 				if !value.blank? && @mapped_fields.has_key?(value.to_sym)
