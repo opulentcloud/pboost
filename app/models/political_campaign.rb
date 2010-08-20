@@ -342,7 +342,7 @@ class PoliticalCampaign < ActiveRecord::Base
 				if political_campaign.county
 					sql += <<-eot
 						 AND 
-							("addresses"."county_name" = '#{political_campaign.county.name}') 
+							("addresses"."county_name" = '#{PoliticalCampaign.sanitizeParam(political_campaign.county.name)}') 
 					eot
 
 					if political_campaign.council_district
@@ -386,6 +386,10 @@ class PoliticalCampaign < ActiveRecord::Base
 		political_campaign.populated = true
 		political_campaign.repopulate = false
 		political_campaign.save!
+	end
+
+	def self.sanitizeParam(param)
+		param.gsub("'", "''")
 	end
 	
 end

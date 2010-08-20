@@ -46,7 +46,7 @@ class PhoneBankListsController < ApplicationController
 		@phone_bank_list.political_campaign_id = current_political_campaign.id
 
 	  if @phone_bank_list.save
-	    flash[:notice] = "Successfully created 	ass List."
+	    flash[:notice] = "Successfully created Phone Bank List."
 			respond_to do |format|
 				format.html { redirect_to @phone_bank_list }
 				format.js
