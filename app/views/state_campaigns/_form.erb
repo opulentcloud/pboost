@@ -18,7 +18,7 @@
   </p>
   <p>
     <%= f.label :house_district_id %><br />
-		<%= f.collection_select(:senate_district_id, @state_campaign.state.house_districts, :id, :hd, {:prompt => true}, :class => '') %>
+		<%= f.collection_select(:house_district_id, @state_campaign.state.house_districts, :id, :hd, {:prompt => true}, :class => '') %>
   </p>
   <p>
     <%= f.check_box :repopulate %> <%= f.label :repopulate, 'Re-populate voters for this Campaign?' %>
