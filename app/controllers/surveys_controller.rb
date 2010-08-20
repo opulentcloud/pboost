@@ -75,7 +75,6 @@ class SurveysController < ApplicationController
   end
   
   def create
-  debugger
     @survey = Survey.new(params[:survey])
 		have_file = true
 

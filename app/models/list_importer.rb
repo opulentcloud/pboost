@@ -87,8 +87,10 @@ class ListImporter
 							@list.voters << voter
 							self.mapped_fields.each do |map|
 								if map[0].to_s[0,9] == "question_"
-									
-									voter.survey_results.create
+									question_id = map[0].to_s.gsub('question_','').to_i
+									answer_text = row[map[1]]
+									voter.survey_results.create(:contact_list_id => @list.id, :question_id => question_id, :answer => answer_text)
+								end
 							end
 						end
 				end
