@@ -1,0 +1,24 @@
+<% title "Surveys" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">Date Created</th>
+		<th align="center">Campaign</th>
+    <th align="center">Survey Name</th>
+    <th align="right">Voter Count</th>
+  </tr>
+  <% for survey in @surveys %>
+    <tr>
+			<td align="center"><%=format_date survey.created_at %>
+			<td align="center"><%=h survey.political_campaign.campaign_description %></td>
+      <td align="center"><%=h survey.name %></td>
+      <td align="right"><%=survey.populated? ? number_with_delimiter(survey.constituent_count) : '*Populating' %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", survey %></td>
+      <!--<td> &nbsp;<%= link_to "Edit", edit_survey_path(survey) %></td>-->
+      <td> &nbsp;<%= link_to "Delete", survey, :confirm => 'Are you sure you wish to permanently delete this Survey?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+

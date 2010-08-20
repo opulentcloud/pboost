@@ -56,7 +56,7 @@ class ContactList < ActiveRecord::Base
 	has_many :sms_campaigns
 	has_many :questions, :class_name => 'SurveyQuestion', :dependent => :destroy
 	accepts_nested_attributes_for :questions
-	has_many :voter_survey_results, :dependent => :destroy
+	has_many :results, :class_name => 'VoterSurveyResult', :dependent => :destroy
 
 	#===== VALIDATIONS ======
 	validates_presence_of :name

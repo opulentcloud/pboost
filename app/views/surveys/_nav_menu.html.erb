@@ -1,0 +1,16 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @surveys %>
+		<td><%=link_to 'Create Survey', new_survey_path %></td>
+		<td><%=link_to 'Refresh Surveys List', surveys_path %></td>
+	<% end %>	
+	<% if @survey && !@survey.new_record? %>
+		<td><%=link_to 'List Surveys', surveys_path %></td>
+		<td><%= link_to 'View Survey', @survey %></td>
+		<!--<td><%= link_to 'Edit Phone Bank List', edit_phone_bank_list_path(@phone_bank_list) %></td>-->
+		<td><%= link_to 'Delete Survey', @survey, :confirm => 'Are you sure you want to permanently delete this Survey?', :method => :delete %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

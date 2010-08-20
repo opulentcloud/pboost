@@ -1,0 +1,76 @@
+<% title "Survey: #{@survey.name}" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<p>
+  <strong>Voter Count:</strong>
+  <%=@survey.populated? ? number_with_delimiter(@survey.constituent_count) : '*Populating' %>
+	<% if @survey.populated? %>
+		<%=link_to 'Download Survey Results', survey_report_path(@survey.id, :report_type => 'survey', :format => 'csv') %>
+	<% end %>
+</p>
+
+<h3>GEOGRAPHIC FILTERS:</h3>	
+
+<% if @survey.precinct_filter %>
+	<p>
+		<strong>Precinct:</strong> 
+			<%=h @survey.precinct_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @survey.council_district_filter %>
+	<p>
+		<strong>Council District:</strong> 
+			<%=h @survey.council_district_filter.string_val %>
+	</p>
+<% end %>
+
+<% if @survey.gis_region %>
+	<p>
+		<strong><%=h @survey.gis_region.geom2.size %> Custom Map Routes: </strong> 
+			<%=link_to 'View Routes On Map', gis_region_path(@survey.gis_region), { :target => "_blank" } %>
+	</p>
+<% end %>
+
+<h3>DEMOGRAPHIC FILTERS:</h3>
+
+<% if @survey.age_filter %>
+<p>
+  <strong>Age Range:</strong>
+	  <%= @survey.age_filter.int_val %> to <%= @survey.age_filter.max_int_val %>
+</p>
+<% end %>
+
+<% if @survey.sex_filter %>
+<p>
+  <strong>Sex:</strong>
+	  <%=h @survey.sex_filter.string_val %>
+</p>
+<% end %>
+
+<% if @survey.party_filters.size > 0 %>
+<p>
+	<strong>Party:</strong>
+	<%= @survey.party_filters.map { |f| Party.find(f.int_val).name }.join(',') %>
+</p>
+<% end %>
+
+<h3>VOTING HISTORY FILTERS:</h3>
+
+<% if @survey.voting_history_type_filter %>
+	<p>Include voters who did <%=h @survey.voting_history_type_filter.string_val %> 
+	<% if ['At Least', 'Exactly', 'No More Than'].include?(@survey.voting_history_type_filter.string_val) %>
+	<%= @survey.voting_history_type_filter.int_val %> 
+	<% end %>
+	of the following:</p>
+<% end %>
+
+<% if @survey.voting_history_filters.size > 0 %>
+<p>
+	<% @survey.voting_history_filters.each do |f| %>
+	<strong><%=h f.election.description %></strong> <%=h f.string_val %><br />
+	<% end %>
+</p>
+<% end %>
+
