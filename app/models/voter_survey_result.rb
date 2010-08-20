@@ -1,6 +1,6 @@
 class VoterSurveyResult < ActiveRecord::Base
 
-	named_scope :summary, :group => "question_id, answer", :select => "count(*), question_id, answer"
+	named_scope :summary, :group => "question_id, answer", :select => "count(*), question_id, answer", :order => :answer
 
 	#====== ASSOCIATIONS ======
 	belongs_to :voter
@@ -9,5 +9,9 @@ class VoterSurveyResult < ActiveRecord::Base
 
 	#====== VALIDATIONS =======
 	validates_presence_of :answer
+
+	def response_percent(answer_responders, total_responders)
+		((answer_responders.to_f / total_responders.to_f)*100).round(0)
+	end
 
 end

@@ -1,7 +1,7 @@
 <div id="answer_<%= "#{@sequence}" %>" class="answer">
 <% fields_for "survey[questions_attributes][][answers_attributes][]", survey_answer do |f| %>
 	<p>
-		Key: <%= f.text_field :answer_key, :index => nil %>
+		Key: <%= f.select :answer_key, SurveyAnswer::VALID_KEYS, :index => nil %>
 	</p>
 
 	<p>

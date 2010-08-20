@@ -3,6 +3,8 @@ class SurveysController < ApplicationController
 	before_filter :get_survey, :only => [:map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
 
+	layout 'admin'
+
 	def map_fields
 		@mapped_fields = { }
 		@mapped_fields_string = '{ '
@@ -63,6 +65,7 @@ class SurveysController < ApplicationController
   end
   
   def show
+  	@results = @survey.results.summary
   end
   
   def new
