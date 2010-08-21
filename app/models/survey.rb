@@ -196,10 +196,101 @@ class Survey < ContactList
 	end
 
 	def build_file
-		full_file_name = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
-		file_name = "survey_#{self.id}.csv"
-		self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip5','zip4','county_name','cd','sd','hd','comm_dist_code','precinct_code'] } }, :only => ['first_name','middle_name','last_name','suffix','phone','home_phone','work_phone','work_phone_ext','cell_phone','email','age','sex','party','dob','dor','state_file_id']).save_as(full_file_name)
+#		full_file_name = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
+#		file_name = "survey_#{self.id}.csv"
+#		self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip5','zip4','county_name','cd','sd','hd','comm_dist_code','precinct_code'] } }, :only => ['first_name','middle_name','last_name','suffix','phone','home_phone','work_phone','work_phone_ext','cell_phone','email','age','sex','party','dob','dor','state_file_id']).save_as(full_file_name)
+
+		File.open("#{RAILS_ROOT}/docs/survey_#{self.id}.csv", 'w') do |f|
+			self.voters.all(:include => :address, :select => "addresses.precinct_code").each_with_index do |voter,index|
+				if index==0
+					build_header(f,voter)
+				end
+				write_record(f,voter)
+			end
+		end
+
 	end
+
+def build_header(f, line)
+	s = "\"first_name\"," +
+	 "\"middle_name\","	+
+	 "\"last_name\"," +
+	 "\"suffix\"," +			
+	 "\"phone\"," +
+	 "\"home_phone\"," +
+	 "\"work_phone\"," +
+	 "\"work_phone_ext\"," +
+	 "\"cell_phone\"," +
+	 "\"email\"," +
+	 "age," +
+	 "\"sex\"," +
+	 "\"party\"," +
+	 "\"dob\"," +
+	 "\"dor\"," +
+	 "\"state_file_id\"," +
+	 "\"full_street_address\"," +
+	 "\"city\"," +
+	 "\"state\"," +
+	 "\"zip5\"," +
+	 "\"zip4\"," +
+	 "\"county_name\"," +
+	 "\"cd\"," +
+	 "\"sd\"," +
+	 "\"hd\"," +
+	 "\"comm_dist_code\"," +
+	 "\"precinct_code\"," 
+
+	#now we need to add each question as a column from this survey
+	self.questions.each do |question|
+		 s += "\"#{question.question_text}\","
+	end
+	s = s[0, s.length-1] 
+	 
+	f.puts s	
+	#f.puts "\""+line.attributes.keys.join('","')+"\""
+end
+
+def write_record(f,line)
+	s = "\"#{line.first_name}\"," +
+	 "\"#{line.middle_name}\","	+
+	 "\"#{line.last_name}\"," +
+	 "\"#{line.suffix}\"," +			
+	 "\"#{line.phone}\"," +
+	 "\"#{line.home_phone}\"," +
+	 "\"#{line.work_phone}\"," +
+	 "\"#{line.work_phone_ext}\"," +
+	 "\"#{line.cell_phone}\"," +
+	 "\"#{line.email}\"," +
+	 "#{line.age}," +
+	 "\"#{line.sex}\"," +
+	 "\"#{line.party}\"," +
+	 "\"#{line.dob}\"," +
+	 "\"#{line.dor}\"," +
+	 "\"#{line.state_file_id}\"," +
+	 "\"#{line.address.full_street_address}\"," +
+	 "\"#{line.address.city}\"," +
+	 "\"#{line.address.state}\"," +
+	 "\"#{line.address.zip5}\"," +
+	 "\"#{line.address.zip4}\"," +
+	 "\"#{line.address.county_name}\"," +
+	 "\"#{line.address.cd}\"," +
+	 "\"#{line.address.sd}\"," +
+	 "\"#{line.address.hd}\"," +
+	 "\"#{line.address.comm_dist_code}\"," +
+	 "\"#{line.address.precinct_code}\"," 
+
+	#now we need to add each questions answer from the voter as a column from this survey
+	self.questions.each do |question|
+		a = nil
+		a = line.survey_results.find_by_contact_list_id_and_question_id(self.id, question.id)
+    s += "\"#{question.answers.find_by_answer_key(a.answer).answer_text rescue a.answer}\"," unless a.nil?
+	end
+	s = s[0, s.length-1] 
+
+	f.puts s	
+
+	#f.puts "\""+line.attributes.values.join('","')+"\""
+end
 
 	#===== CLASS METHODS ======
 	
