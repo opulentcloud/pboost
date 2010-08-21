@@ -6,7 +6,7 @@ class OrganizationsController < ApplicationController
 
   def index
   	pg = params[:page] ||= 1
-    @organizations = Organization.paginate :page => pg, :per_page => 10
+    @organizations = Organization.paginate :page => pg, :per_page => 20
     
   end
   

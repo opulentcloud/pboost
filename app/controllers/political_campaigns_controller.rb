@@ -6,7 +6,7 @@ class PoliticalCampaignsController < ApplicationController
 
   def index
   	pg = params[:page] ||= 1
-    @political_campaigns = PoliticalCampaign.paginate :page => pg, :per_page => 10
+    @political_campaigns = PoliticalCampaign.paginate :page => pg, :per_page => 20
   end
   
   def show

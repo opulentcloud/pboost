@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   # GET /users.xml
   def index
   	pg = params[:page] ||= 1
-    @users = User.paginate :page => pg, :per_page => 10
+    @users = User.paginate :page => pg, :per_page => 20
 
     respond_to do |format|
       format.html { render :index, :layout => 'admin' }
