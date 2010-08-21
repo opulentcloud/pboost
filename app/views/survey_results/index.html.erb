@@ -1,0 +1,20 @@
+<% title "Survey Results" %>
+
+<%= render :partial => 'nav_menu' %>
+
+<table border='0' cellpadding='6' cellspacing='0' width="100%">
+  <tr>
+		<th align="center">Date Created</th>
+    <th align="center">Survey Name</th>
+    <th align="right">Voter Count</th>
+  </tr>
+  <% for survey in @surveys %>
+    <tr>
+			<td align="center"><%=format_date survey.created_at %>
+      <td align="center"><%=h survey.name %></td>
+      <td align="right"><%=survey.populated? ? number_with_delimiter(survey.constituent_count) : '*Populating' %></td>
+      <td>&nbsp;&nbsp;<%= link_to "Show", survey_result_path(survey) %></td>
+    </tr>
+  <% end %>
+</table>
+

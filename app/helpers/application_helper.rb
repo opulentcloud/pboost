@@ -13,6 +13,7 @@ module ApplicationHelper
 			when 'sms_campaigns' then customer_control_panel_url
 			when 'sms_lists' then customer_control_panel_url
 			when 'surveys' then admin_control_panel_url
+			when 'survey_results' then customer_control_panel_url
 			when 'walksheets' then customer_control_panel_url
 		end
 	end

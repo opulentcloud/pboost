@@ -1,0 +1,13 @@
+<p align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
+	<tr>
+	<% if @surveys %>
+		<td><%=link_to 'Refresh Surveys', survey_results_path %></td>
+	<% end %>	
+	<% if @survey %>
+		<td><%=link_to 'List Surveys', survey_results_path %></td>
+		<td><%= link_to 'View Survey Results', @survey %></td>
+	</tr>
+  <% end %>
+</table>
+</p>

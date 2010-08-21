@@ -27,6 +27,7 @@ authorization do
 		has_permission_on [:robocall_lists], :to => [:map_fields, :intro, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:sms_campaigns], :to => [:unschedule, :index, :show, :new, :create, :edit, :update, :destroy]
 		has_permission_on [:sms_lists], :to => [:map_fields, :intro, :unschedule, :index, :show, :new, :create, :edit, :update, :destroy]
+		has_permission_on [:survey_results], :to => [:index, :show]
 		has_permission_on [:walksheets], :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 	end
 	

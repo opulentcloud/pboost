@@ -106,6 +106,8 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.resources :survey_questions, :path_prefix => '/admin'
 
+	map.resources :survey_results, :path_prefix => '/customer'
+
 	#user signups and users resources
 	map.with_options(:controller => 'users') do |site|
 		site.signup 'signup', :action => 'new'
