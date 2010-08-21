@@ -2,6 +2,12 @@
 
 <%= render :partial => 'nav_menu' %>
 
+<% if @survey.populated? %>
+	<p>
+		<%=link_to 'Download Survey Results', survey_report_path(@survey.id, :report_type => 'survey', :format => 'csv') %>
+	</p>	
+<% end %>
+
 <table id="survey_questions" width="90%">
 	<tr>
 		<th align="center">Question</th>

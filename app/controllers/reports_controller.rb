@@ -71,6 +71,10 @@ class ReportsController < ApplicationController
 				full_file_name = "#{RAILS_ROOT}/docs/sms_list_#{@contact_list.id}.csv"
 				file_name = "sms_list_#{@contact_list.id}.csv"
 				rendered_report = @contact_list.contact_list_smsses.report_table(:all, :only => ['cell_phone']).save_as(full_file_name) unless File.exists?(full_file_name)
+			when 'survey' then
+				full_file_name = "#{RAILS_ROOT}/docs/survey_#{@contact_list.id}.csv"
+				file_name = "survey_#{@contact_list.id}.csv"
+			
 		end	
 
 		if rendered_report
@@ -137,7 +141,7 @@ protected
 				when 'live_answer' then
 					get_campaign
 				else
-		    	@contact_list = current_political_campaign.contact_lists.find(params[:phone_bank_list_id] ||= params[:robocall_list_id] ||= params[:sms_list_id] ||= params[:walksheet_id] ||= params[:id])
+		    	@contact_list = current_political_campaign.contact_lists.find(params[:phone_bank_list_id] ||= params[:robocall_list_id] ||= params[:sms_list_id] ||= params[:walksheet_id] ||= params[:survey_id] ||= params[:id])
 		  end
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested List was not found."

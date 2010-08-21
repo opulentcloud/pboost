@@ -168,7 +168,7 @@ class Survey < ContactList
 			eot
 	
 			sql_result = ActiveRecord::Base.connection.execute(sql)
-
+			build_file	
 			self.constituent_count = self.contact_list_surveys.count
 			self.populated = true
 			self.repopulate = false
@@ -178,12 +178,13 @@ class Survey < ContactList
 				#build list of survey results from uploaded file.
 				 importer = ListImporter.new(		self.survey_attachments.last.file_name, 'survey', self.id, (self.mapped_fields.blank? ? nil : instance_eval(self.mapped_fields)))
 				 importer.import!										
-
+				build_file
 				self.constituent_count = self.voters.count
 				self.populated = true
 				self.repopulate = false
 				self.save!
 			end
+
 		end			
 
 		#if self.populated == true && self.repopulate == false
@@ -192,6 +193,12 @@ class Survey < ContactList
 		#	self.contact_list_surveys.report_table(:all, :methods => ['phone_number'], :only => ['phone_number']).save_as(full_file_name)
 		#end
 
+	end
+
+	def build_file
+		full_file_name = "#{RAILS_ROOT}/docs/survey_#{self.id}.csv"
+		file_name = "survey_#{self.id}.csv"
+		self.voters.report_table(:all, :include => { :address => { :methods => :full_street_address, :only => ['city','state','zip5','zip4','county_name','cd','sd','hd','comm_dist_code','precinct_code'] } }, :only => ['first_name','middle_name','last_name','suffix','phone','home_phone','work_phone','work_phone_ext','cell_phone','email','age','sex','party','dob','dor','state_file_id']).save_as(full_file_name)
 	end
 
 	#===== CLASS METHODS ======
