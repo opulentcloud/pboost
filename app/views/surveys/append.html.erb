@@ -1,0 +1,19 @@
+<% title "Append Survey Results" %>
+
+<%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
+<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application' %>
+
+<% form_for(@survey, :url => { :action => 'append' }, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => 'survey_attachment', :collection => @survey.survey_attachments, :locals => { :form => f } %>
+
+  <p>
+		<%= f.hidden_field :upload_list %>
+		<%= f.hidden_field :do_mapping %>
+		<%= f.hidden_field :mapped_fields %>
+  	<%= f.submit 'Append Results Now' %></p>
+<% end %>
+
+<p><%= link_to "Cancel and return to Surveys", surveys_path %></p>
+

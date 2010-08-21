@@ -1,9 +1,36 @@
 class SurveysController < ApplicationController
 	before_filter :require_user
-	before_filter :get_survey, :only => [:map_fields, :show, :edit, :update, :destroy]
+	before_filter :get_survey, :only => [:append, :map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
 
 	layout 'admin'
+
+	def append
+		if request.put?
+			if params[:survey][:survey_attachments_attributes].blank?
+				@survey.errors.add_to_base('You must attach your file to continue.')
+			end
+
+			if @survey.update_attributes(params[:survey])
+					flash[:notice] = "File received. Please map your fields."
+				if @survey.do_mapping == true
+					if @survey.need_mapping == true
+						#render file for user to make mapping.
+						redirect_to map_fields_survey_path(@survey)
+						return
+					end
+				end
+				redirect_to @survey
+			else
+				render :action => 'append'
+			end
+		else
+			@survey.survey_attachments.build
+			@survey.upload_list = true
+			@survey.do_mapping = true
+			@survey.mapped_fields = nil
+		end
+	end
 
 	def map_fields
 		@mapped_fields = { }
@@ -70,7 +97,7 @@ class SurveysController < ApplicationController
   
   def new
     @survey = Survey.new
-    @survey.build_survey_attachment
+    @survey.survey_attachments.build
     #@survey.questions.build
     #@survey.questions.first.answers.build
 		@survey.upload_list = true
@@ -81,7 +108,7 @@ class SurveysController < ApplicationController
     @survey = Survey.new(params[:survey])
 		have_file = true
 
-		if params[:survey][:survey_attachment_attributes].blank? && @survey.upload_list == true
+		if params[:survey][:survey_attachments_attributes].blank? && @survey.upload_list == true
 			@survey.errors.add_to_base('You must attach your file to continue.')
 			have_file = false		
 		end
@@ -110,7 +137,7 @@ class SurveysController < ApplicationController
 		  @survey.build_precinct_filter if 		  @survey.precinct_filter.nil?
     @survey.build_municipal_district_filter if     @survey.municipal_district_filter.nil?
 			@survey.build_voting_history_type_filter if @survey.voting_history_type_filter.nil?
-    	@survey.build_survey_attachment unless !@survey.survey_attachment.nil?
+    	@survey.survey_attachments.build unless !@survey.survey_attachments.nil?
 
 			respond_to do |format|
       	format.html { render :action => 'new' }

@@ -2,8 +2,8 @@ class Survey < ContactList
 	acts_as_reportable
 
 	#====== ASSOCIATIONS =======
-	has_one :survey_attachment, :as => :attachable, :dependent => :destroy
-	accepts_nested_attributes_for :survey_attachment
+	has_many :survey_attachments, :as => :attachable, :dependent => :destroy
+	accepts_nested_attributes_for :survey_attachments
 	
 	#====== VALIDATIONS =======
 
@@ -12,15 +12,15 @@ class Survey < ContactList
 	#====== INSTANCE METHODS =======	
 	#determine if we need to map the fields.
 	def rows(x = 10)
-		i = ListImporter.new(self.survey_attachment.file_name, 'survey', self.id)
+		i = ListImporter.new(self.survey_attachments.last.file_name, 'survey', self.id)
 		i.rows(x)
 	end
 
 	def need_mapping
 		return false unless self.upload_list == true
 		return false if self.mapped_fields.blank? == false
-		return true if self.survey_attachment.nil?
-		 i = ListImporter.new(self.survey_attachment.file_name, 'survey', self.id)
+		return true if self.survey_attachments.nil?
+		 i = ListImporter.new(self.survey_attachments.last.file_name, 'survey', self.id)
 		 i.need_mapping
 	end
 	
@@ -35,16 +35,9 @@ class Survey < ContactList
 	def populate
 		delete_file
 
-		#unlink any addresses from this contact_list
-		sql = "DELETE FROM contact_list_addresses WHERE contact_list_id = #{self.id}"
-		sql_result = ActiveRecord::Base.connection.execute(sql)
-				
-		#unlink any voters from this contact_list
-		sql = "DELETE FROM contact_list_voters WHERE contact_list_id = #{self.id}"
-		sql_result = ActiveRecord::Base.connection.execute(sql)
-
-		#sql = "DELETE FROM contact_list_surveys WHERE contact_list_id = #{self.id}"
-		#sql_result = ActiveRecord::Base.connection.execute(sql)
+		self.populated = false
+		self.repopulate = false
+		self.save!
 
 		if !self.upload_list == true
 
@@ -183,7 +176,7 @@ class Survey < ContactList
 		elsif self.upload_list == true
 			if !self.need_mapping == true
 				#build list of survey results from uploaded file.
-				 importer = ListImporter.new(self.survey_attachment.file_name, 'survey', self.id, (self.mapped_fields.blank? ? nil : instance_eval(self.mapped_fields)))
+				 importer = ListImporter.new(		self.survey_attachments.last.file_name, 'survey', self.id, (self.mapped_fields.blank? ? nil : instance_eval(self.mapped_fields)))
 				 importer.import!										
 
 				self.constituent_count = self.voters.count

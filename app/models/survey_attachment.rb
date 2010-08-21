@@ -1,4 +1,6 @@
 class SurveyAttachment < Attachment
+	default_scope :order => :id
+
 	has_attached_file :data,
 		:url => "docs/surveys/:id/:basename.:extension",
 		:path => "docs/surveys/:id/:basename.:extension"

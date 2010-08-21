@@ -1,7 +1,7 @@
 <% form_for(@survey, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
-	<% f.fields_for :survey_attachment do |a| %>
+	<% f.fields_for :survey_attachments do |a| %>
 		<p>
 			Survey Results File: <br />
 			<%= a.file_field :data  %><br /><br /> 

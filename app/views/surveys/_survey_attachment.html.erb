@@ -1,0 +1,8 @@
+<% form.fields_for :survey_attachments, survey_attachment do |a| %>
+	<% next if !survey_attachment.new_record? %>
+	<p>
+		Survey Results File: <br />
+		<%= a.file_field :data %><br /><br /> 
+	</p>
+<% end %>
+

@@ -89,7 +89,7 @@ class ListImporter
 								if map[0].to_s[0,9] == "question_"
 									question_id = map[0].to_s.gsub('question_','').to_i
 									answer_text = row[map[1]]
-									voter.survey_results.create(:contact_list_id => @list.id, :question_id => question_id, :answer => answer_text)
+									voter.survey_results.create(:contact_list_id => @list.id, :question_id => question_id, :answer => answer_text) unless answer_text.blank? || voter.survey_results.exists?(:contact_list_id => @list.id, :question_id => question_id)
 								end
 							end
 						end

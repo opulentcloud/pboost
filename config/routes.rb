@@ -96,6 +96,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :state_campaigns, :path_prefix => '/admin'
 
 	map.with_options(:controller => 'surveys', :path_prefix => '/admin') do |site|
+		site.append_survey 'append_survey/:id', :action => 'append', :conditions => { :method => [:get, :put] }
 		site.map_fields_survey 'map_fields_survey/:id', :action => 'map_fields', :conditions => { :method => [:get, :post] }
 		site.resources :surveys do |site2|
 			site2.report 'report.:format', :controller => 'reports', :action => 'show', :conditions => { :method => :get }
