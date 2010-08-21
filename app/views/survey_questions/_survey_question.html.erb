@@ -3,7 +3,7 @@
 	<p>
 		Question: <%= f.text_field :question_text, :index => nil %>
 		<% if survey_question.new_record? %>
-			<%= link_to_function "remove", "$(this).up('.question').remove()" %>
+			<%= link_to_function "remove", "$('div#question_#{@sequence}').remove()" %>
 		<% else %>
 			<%= link_to_function "remove", "mark_for_destroy(this)" %>
 			<%= f.hidden_field :should_destroy, :index => nil %>

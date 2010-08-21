@@ -7,7 +7,7 @@
 	<p>
 		Answer: <%= f.text_field :answer_text, :index => nil %>
 		<% if survey_answer.new_record? %>
-			<%= link_to_function "remove", "$(this).up('.answer').remove()" %>
+			<%= link_to_function "remove", "$('div#answer_#{@sequence}').remove()" %>
 		<% else %>
 			<%= link_to_function "remove", "mark_for_destroy(this)" %>
 			<%= f.hidden_field :should_destroy, :index => nil %>
