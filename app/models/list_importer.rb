@@ -82,7 +82,7 @@ class ListImporter
 						cls.cell_phone = valid_phone_number(row[self.mapped_fields[:cell_phone]])
 						@list.contact_list_smsses << cls unless cls.cell_phone.blank? || @list.contact_list_smsses.exists?(:cell_phone => cls.cell_phone)
 					when 'survey' then
-						voter = Voter.find_by_state_file_id(row[self.mapped_fields[:state_file_id]])
+						voter = @list.political_campaign.voters.find_by_state_file_id(row[self.mapped_fields[:state_file_id]])
 						if !(@list.voters.exists?(voter) || voter.nil?)
 							@list.voters << voter
 							self.mapped_fields.each do |map|
