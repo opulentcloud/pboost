@@ -2,14 +2,14 @@
 
 <%= render :partial => 'nav_menu' %>
 
-<table id="questions" class="form_table">
-	<tr width="100%">
+<table id="survey_questions" width="90%">
+	<tr>
 		<th align="center">Question</th>
 		<th align="center">Response</th></tr>
 	<% @survey.questions.each do |question| %>
 		<tr valign="top" class="<%= cycle("even","odd") %>"><th><%=h question.question_text %></th>
 			<td>
-				<table class="form_table" width="100%">
+				<table class="form_table" width="80%">
 						<% question.results.summary.each do |result| %>
 					<tr>
 						<th align="right"><%=h question.answers.first(:conditions => ['answer_key = ?', result.answer]).answer_text rescue "Undefined:#{result.answer}" %>
