@@ -1,6 +1,7 @@
 class SurveyAnswersController < ApplicationController
 	before_filter :require_user
 	filter_access_to :all
+  ssl_required :new
   
   def new
 		@survey_answer = SurveyAnswer.new

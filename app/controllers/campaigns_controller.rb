@@ -2,7 +2,7 @@ class CampaignsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_campaign, :only => [:show, :unschedule, :edit]
 	filter_access_to :all
-	ssl_required [:show, :unschedule, :create, :new, :index, :edit]
+	ssl_required :show, :unschedule, :create, :new, :index, :edit
 
 	def show
 		case @campaign.class.to_s
