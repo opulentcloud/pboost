@@ -2,7 +2,7 @@ class RobocallListsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_robocall_list, :only => [:map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
-	ssl_required :map_fields, :index, :show, :new, :create, :edit, :destroy
+	ssl_required :map_fields, :intro, :index, :show, :new, :create, :edit, :destroy
 	
 	def map_fields
 		@mapped_fields = { }
