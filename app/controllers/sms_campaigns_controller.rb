@@ -2,7 +2,8 @@ class SmsCampaignsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_sms_campaign, :only => [:unschedule, :show, :edit, :update, :destroy]
 	filter_access_to :all
-
+	ssl_required :unschedule, :index, :show, :new, :create, :edit, :destroy
+	
 	def unschedule
 		if @sms_campaign.status != 'Scheduled'
 			flash[:error] = "We could not cancel the sending of this Campaign because the current status is #{@sms_campaign.status}."

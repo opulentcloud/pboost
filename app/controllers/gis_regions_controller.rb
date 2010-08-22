@@ -7,7 +7,8 @@ class GisRegionsController < ApplicationController
 	#with a GeoLoc object based on visitors ip address
 #	geocode_ip_address
 #	before_filter :check_geo_location
-
+	ssl_required :plot_precinct_cluster, :count_in_poly, :add_vertices, :index, :show, :new, :create, :edit, :destroy
+	
   def index
   	pg = params[:page] ||= 1
     @gis_regions = current_political_campaign.gis_regions.paginate :page => pg, :per_page => 10

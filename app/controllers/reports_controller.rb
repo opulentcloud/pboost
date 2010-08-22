@@ -1,7 +1,8 @@
 class ReportsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_contact_list, :only => [:show, :printable_list, :csv_list, :send_pdf_file]
-
+	ssl_required :index, :show
+	
 	layout nil
 
 	def index

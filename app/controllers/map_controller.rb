@@ -4,13 +4,13 @@ class MapController < ApplicationController
 	geocode_ip_address
 	before_filter :check_geo_location
 	before_filter :require_user, :on => [:add_polygon, :add_vertices]
-
+	ssl_required :add_polygon, :add_vertices, :add_marker, :index
+	
   def index
 		@session_key = UUIDTools::UUID.timestamp_create
   end  
 
 	def add_polygon
-	debugger
 		logger.debug(params)
 		if request.post?
 			p params[:name]

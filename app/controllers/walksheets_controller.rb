@@ -2,6 +2,7 @@ class WalksheetsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_walksheet, :only => [:show, :edit, :update, :destroy]
 	filter_access_to :all
+	ssl_required :index, :show, :new, :create, :edit, :destroy
 
   def index
     @walksheets = current_political_campaign.walksheets.all(:order => 'contact_lists.created_at DESC')

@@ -1,7 +1,8 @@
 class StateCampaignsController < ApplicationController
 	before_filter :require_user
 	filter_access_to :all
-
+	ssl_required :index, :show, :new, :create, :edit, :destroy
+	
 	layout 'admin'
 
   def index

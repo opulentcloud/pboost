@@ -2,7 +2,8 @@ class ContactListsController < ApplicationController
 	before_filter :require_user, :get_session_filters
 	after_filter :save_session_filters
 	filter_access_to :all
-
+	ssl_required :current_voter_count, :voting_history_filter_remove, :voting_history_filter_add, :party_filter_add, :party_filter_remove, :age_filter_changed, :sex_filter_changed
+	
 	def current_voter_count
 	#debugger
 		@vertices = params[:vertices]

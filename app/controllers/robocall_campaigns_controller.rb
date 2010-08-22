@@ -2,6 +2,7 @@ class RobocallCampaignsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_robocall_campaign, :only => [:unschedule, :show, :edit, :update, :destroy]
 	filter_access_to :all
+	ssl_required :unschedule, :index, :show, :new, :create, :edit, :destroy
 
 	def unschedule
 		if @robocall_campaign.status != 'Scheduled'

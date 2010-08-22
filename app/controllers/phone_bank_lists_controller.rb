@@ -2,7 +2,8 @@ class PhoneBankListsController < ApplicationController
 	before_filter :require_user
 	before_filter :get_phone_bank_list, :only => [:show, :edit, :update, :destroy]
 	filter_access_to :all
-
+	ssl_required :index, :show, :new, :create, :edit, :destroy
+	
   def index
     @phone_bank_lists = current_political_campaign.phone_bank_lists.all(:order => 'contact_lists.created_at DESC')
   end
