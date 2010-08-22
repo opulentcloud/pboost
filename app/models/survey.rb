@@ -283,7 +283,11 @@ def write_record(f,line)
 	self.questions.each do |question|
 		a = nil
 		a = line.survey_results.find_by_contact_list_id_and_question_id(self.id, question.id)
-    s += "\"#{question.answers.find_by_answer_key(a.answer).answer_text rescue a.answer}\"," unless a.nil?
+		if a.nil?
+			s+= "\"\","
+		else
+	    s += "\"#{question.answers.find_by_answer_key(a.answer).answer_text rescue a.answer}\","
+	  end
 	end
 	s = s[0, s.length-1] 
 
