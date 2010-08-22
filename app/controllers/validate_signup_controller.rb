@@ -1,5 +1,5 @@
 class ValidateSignupController < ApplicationController
-	ssl_allowed :update
+	ssl_allowed :validate_signup, :validate_step_1 :validate_step_2, :update
 	before_filter :get_step
 
 	def validate_signup
