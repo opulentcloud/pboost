@@ -2,6 +2,7 @@ class SurveysController < ApplicationController
 	before_filter :require_user
 	before_filter :get_survey, :only => [:append, :map_fields, :show, :edit, :update, :destroy]
 	filter_access_to :all
+	ssl_required :all
 
 	layout 'admin'
 
