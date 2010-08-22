@@ -1,8 +1,5 @@
 <% title "Append Survey Results" %>
 
-<%=stylesheet 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui' %>
-<%=javascript 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js', 'jquery.selectboxes', 'application' %>
-
 <% form_for(@survey, :url => { :action => 'append' }, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
