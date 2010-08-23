@@ -7,6 +7,12 @@ ssl_required :append, :map_fields, :index, :show, :new, :create, :edit, :update,
 	layout 'admin'
 
 	def append
+		if !@survey.populated == true
+			flash[:error] = 'You cannot append results while another file is being imported to this survey.'
+			render
+			return
+		end
+		
 		if @survey.need_mapping == true
 			flash[:error] = 'This survey has a pending file to import.  You cannot append results until you process the file.'
 			render
