@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 	before_filter :get_state, :only => [:populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select, :precints_populate]
 	filter_access_to [:show, :update, :index, :destroy, :edit]
 	ssl_required :new, :show, :update, :index, :destroy, :edit
-	ssl_allowed :populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_municipal_districts_select, :precincts_populate
+	ssl_allowed :populate_sd_select, :populate_hd_select, :populate_cd_select, :populate_counties_select, :populate_cities_select, :populate_council_districts_select, :populate_municipal_districts_select, :precincts_populate
 
   # PUT /users/1
   # PUT /users/1.xml
