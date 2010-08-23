@@ -17,11 +17,17 @@
 		<tr>
 			<th>Date Uploaded</th>
 			<th>File Name</th>
+			<th></th>
 		</tr>
 		<% @survey.survey_attachments.all(:order => 'created_at DESC').each do |attachment| %>
 			<tr>
 				<td><%=format_date_time(attachment.created_at) %></td>
 				<td><%=h attachment.name %></td>
+				<% if @survey.upload_list == true && @survey.need_mapping == true %>
+					<td><%=link_to 'Finish Importing This File (not mapped or imported yet)', map_fields_survey_path(@survey) %></td>
+				<% else %>
+					<td>&nbsp;</td>
+				<% end %>
 			</tr>
 		<% end %>
 	</table>
