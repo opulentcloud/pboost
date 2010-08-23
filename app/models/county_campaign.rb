@@ -48,7 +48,6 @@ class CountyCampaign < PoliticalCampaign
 			return false if c.nil?
 			c.council_districts.count > 0
 		rescue ActiveRecord::RecordNotFound
-			errors.add_to_base('County is required.')
 			false
 		end
 	end
