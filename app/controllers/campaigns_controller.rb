@@ -47,7 +47,11 @@ class CampaignsController < ApplicationController
 	end
 
   def index
-    @campaigns = current_political_campaign.campaigns.all(:order => 'campaigns.created_at DESC')
+    if current_user.is_admin?
+			@campaigns = Campaign.all(:order => "campaigns.type, campaigns.created_at DESC")
+		else	
+	    @campaigns = current_political_campaign.campaigns.all(:order => 'campaigns.created_at DESC')
+	  end  
   end
 
 	def edit

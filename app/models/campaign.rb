@@ -1,5 +1,8 @@
 class Campaign < ActiveRecord::Base
 
+	#===== SCOPES ======
+	named_scope :scheduled, :order => :created_at, :conditions => ["campaigns.scheduled_at IS NOT NULL AND campaigns.scheduled_at >= ?", Time.zone.now]
+
 	#===== CLASS ACCESSORS =====
 	attr_accessor_with_default :repopulate, false
 

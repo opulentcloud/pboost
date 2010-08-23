@@ -142,7 +142,11 @@ private
 	#get the robocall campaign for the current user
 	def get_robocall_campaign
 		begin
-    @robocall_campaign = current_political_campaign.robocall_campaigns.find(params[:id])
+    @robocall_campaign = current_political_campaign.robocall_campaigns.find(params[:id]) unless current_political_campaign.nil?
+	    if current_political_campaign.nil? && current_user.is_admin?
+		    @robocall_campaign = Campaign.find(params[:id])
+		    session[:current_political_campaign] = @robocall_campaign.political_campaign
+			end    
     rescue ActiveRecord::RecordNotFound
     	flash[:error] = "The requested Robocall Campaign was not found."
     	redirect_back_or_default customer_control_panel_url

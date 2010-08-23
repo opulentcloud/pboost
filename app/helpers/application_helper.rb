@@ -2,20 +2,23 @@
 module ApplicationHelper
 
 	def which_control_panel()
-		return case current_controller
-			when 'admin' then admin_control_panel_url
-			when 'campaigns' then customer_control_panel_url
-			when 'customer' then customer_control_panel_url
-			when 'gis_regions' then customer_control_panel_url
-			when 'phone_bank_lists' then customer_control_panel_url
-			when 'robocall_campaigns' then customer_control_panel_url
-			when 'robocall_lists' then customer_control_panel_url
-			when 'sms_campaigns' then customer_control_panel_url
-			when 'sms_lists' then customer_control_panel_url
-			when 'surveys' then admin_control_panel_url
-			when 'survey_results' then customer_control_panel_url
-			when 'walksheets' then customer_control_panel_url
-		end
+		return admin_control_panel_url if current_user && current_user.is_admin?
+		return customer_control_panel_url if current_user
+					
+#		return case current_controller
+#			when 'admin' then admin_control_panel_url
+#			when 'campaigns' then customer_control_panel_url
+#			when 'customer' then customer_control_panel_url
+#			when 'gis_regions' then customer_control_panel_url
+#			when 'phone_bank_lists' then customer_control_panel_url
+#			when 'robocall_campaigns' then customer_control_panel_url
+#			when 'robocall_lists' then customer_control_panel_url
+#			when 'sms_campaigns' then customer_control_panel_url
+#			when 'sms_lists' then customer_control_panel_url
+#			when 'surveys' then admin_control_panel_url
+#			when 'survey_results' then customer_control_panel_url
+#			when 'walksheets' then customer_control_panel_url
+#		end
 	end
 
 	def li_navigation_tag(controller, action)

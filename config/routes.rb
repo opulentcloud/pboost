@@ -8,6 +8,12 @@ ActionController::Routing::Routes.draw do |map|
 		end	
 	end
 
+	map.with_options(:controller => 'campaigns', :path_prefix => '/admin') do |site|
+		site.unschedule_campaign 'unschedule_campaign/:id', :action => 'unschedule', :conditions => { :method => :get }
+		site.resources :campaigns do |site2|
+		end	
+	end
+
 	map.with_options(:controller => 'contact_lists', :path_prefix => '/customer') do |site|
 		site.sex_filter_changed 'sex_filter_changed/:sex', :action => 'sex_filter_changed', :conditions => { :method => :get }
 		site.age_filter_changed 'age_filter_changed/:min_age/:max_age', :action => 'age_filter_changed', :conditions => { :method => :get }

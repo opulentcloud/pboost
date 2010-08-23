@@ -4,6 +4,7 @@ class AdminController < ApplicationController
 	ssl_required :index
 	
 	def index
+		@campaigns = Campaign.scheduled
 	end
 
 end

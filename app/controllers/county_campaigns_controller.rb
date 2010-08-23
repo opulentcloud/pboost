@@ -13,6 +13,7 @@ class CountyCampaignsController < ApplicationController
   def show
     @county_campaign = CountyCampaign.find(params[:id])
     @contact_lists = @county_campaign.contact_lists
+    @campaigns = @county_campaign.campaigns
   end
   
   def new
