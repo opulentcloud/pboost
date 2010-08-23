@@ -43,9 +43,14 @@ class CountyCampaign < PoliticalCampaign
 	#===== INSTANCE METHODS =====	
 	def require_council_district?
 		return false if self.countywide
-		c = County.find(self.county_id)
-		return false if c.nil?
-		c.council_districts.count > 0
+		begin
+			c = County.find(self.county_id)
+			return false if c.nil?
+			c.council_districts.count > 0
+		rescue ActiveRecord::RecordNotFound
+			errors.add_to_base('County is required.')
+			false
+		end
 	end
 
 	#===== CLASS METHODS =====
