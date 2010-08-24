@@ -33,26 +33,24 @@
 	</table>
 </p>
 
-<table id="questions" class="form_table">
-	<tr width="100%">
+<table id="survey_questions" width="90%">
+	<tr>
 		<th align="center">Question</th>
-		<th align="center">Result</th></tr>
+		<th align="center">Response</th></tr>
 	<% @survey.questions.each do |question| %>
-		<tr class="<%= cycle("even","odd") %>"><td><%=h question.question_text %></td>
+		<tr valign="top" class="<%= cycle("even","odd") %>"><th><%=h question.question_text %></th>
 			<td>
-				<table class="form_table" width="100%">
-					<tr>
+				<table class="form_table" width="80%">
 						<% question.results.summary.each do |result| %>
-						<th align="center"><%=h question.answers.first(:conditions => ['answer_key = ?', result.answer]).answer_text rescue "Undefined:#{result.answer}" %>
+					<tr>
+						<th align="right"><%=h question.answers.first(:conditions => ['answer_key = ?', result.answer]).answer_text rescue "Undefined:#{result.answer}" %>
 						</th>
+						<td align="left"><%= number_with_delimiter(result.count.to_i) %> (<%= number_to_percentage(result.response_percent(result.count.to_i, question.total_responders), :precision => 0) %>)</td>
+					</tr>	
 					<% end %>
-						<th align="center">Total Responders</th>
-					</tr>
 					<tr>
-						<% question.results.summary.each do |result| %>
-							<td align="center"><%= number_with_delimiter(result.count.to_i) %> (<%= number_to_percentage(result.response_percent(result.count.to_i, question.total_responders), :precision => 0) %>)</td>
-						<% end %>
-						<td align="center">
+						<th align="right">Total Responders</th>
+						<td align="left">
 							<%= number_with_delimiter(question.total_responders) %>
 						</td>
 					</tr>
