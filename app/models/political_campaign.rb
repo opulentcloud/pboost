@@ -153,12 +153,12 @@ class PoliticalCampaign < ActiveRecord::Base
 			if filters.has_key?(:party_filters)
 				@in = []
 				filters[:party_filters].split(',').each do |f|
-					@in.push(Party.find(f.to_i).code)
+					@in.push("'#{Party.find(f.to_i).code}'")
 				end
 
 				sql += <<-eot
 					AND
-						("voters"."party" IN ('#{@in.join(',')}'))
+						("voters"."party" IN (#{@in.join(',')}))
 				eot
 			end
 
