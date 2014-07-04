@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    meta[name="viewport" content="width=device-width, initial-scale=1.0"]
+    title
+      = content_for?(:title) ? yield(:title) : 'Politicalboost.org'
+    meta name="description" content="#{content_for?(:description) ? yield(:description) : 'Politicalboost.org'}"
+    == stylesheet_link_tag "application", :media => 'all', 'data-turbolinks-track' => true
+    == javascript_include_tag 'application', 'data-turbolinks-track' => true
+    == csrf_meta_tags
+    == yield content_for(:head) if content_for?(:head)
+  body class="#{controller_name} #{action_name}"
+    header
+      == render 'layouts/navigation'
+    main[role="main"]
+      == render 'layouts/messages'
+      == yield

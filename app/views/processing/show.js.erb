@@ -1,0 +1,25 @@
+<%- if @job.present? %>
+  <%- if @job.last_error.present? %>
+    <%- if @respond_with_div == true -%>
+      $('<%= params[:return_url] -%>').html('<%= error -%>');
+    <%- else -%>
+      $("#processing-image").hide();
+      $("div.alert").hide();
+      $("#processing-header").html("Processing finished with the following errors");
+      $("div#processing_error").html('<%= j @job.last_error %>');
+    <%- end %>
+  <%- else %>
+    setRefresh('<%= processing_path(id: params[:id], return_url: params[:return_url]) %>', 2000);
+  <%- end %>
+<%- else %>
+  <%- if @respond_with_div == true -%>
+    $('<%= params[:return_url] -%>').html('success');
+  <%- else -%>
+    <%- if @job_result.present? -%>
+      window.location.href = '<%= URI.decode(params[:return_url]).html_safe %>';
+      window.open("<%= URI.decode(@return_url).html_safe -%>");
+    <%- else -%>
+      window.location.href = '<%= URI.decode(params[:return_url]).html_safe %>';
+    <%- end -%>      
+  <%- end -%>
+<%- end %>

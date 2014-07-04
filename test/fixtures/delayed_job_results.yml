@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_id: 1
+  file_url: MyString
+  string: MyString
+
+two:
+  job_id: 1
+  file_url: MyString
+  string: MyString

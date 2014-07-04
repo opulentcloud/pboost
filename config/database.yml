@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  host: localhost
+  port: 5433
+  pool: 5
+
+development:
+  <<: *default
+  database: poliboost_development
+
+test:
+  <<: *default
+  database: poliboost_test
+
+production:
+  <<: *default
+  database: poliboost_production
+  username: poliboost
+  password: <%= ENV['POLIBOOST_DATABASE_PASSWORD'] %>

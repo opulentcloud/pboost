@@ -1,0 +1,7 @@
+h1 id="processing-header"
+  | Your request is processing...
+.container.pull-left
+.row
+  .div id="processing_error"
+  = image_tag 'loading.gif', style: "width: 75px; height: auto;", id: 'processing-image'
+  = hidden_field_tag :refresh_url, processing_path(id: params[:id], return_url: params[:return_url]), id: "refresh-url"

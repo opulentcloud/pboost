@@ -1,0 +1,14 @@
+/ navigation styled for Bootstrap 3.0
+nav.navbar.navbar-inverse.navbar-fixed-top
+  .container
+    .navbar-header
+      button.navbar-toggle[type="button" data-toggle="collapse" data-target=".navbar-collapse"]
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      = link_to 'Dashboard', dashboard_path, class: 'navbar-brand'
+      = link_to 'Manage Users', admin_users_path, class: 'navbar-brand' if admin_user?
+    .collapse.navbar-collapse.pull-right
+      ul.nav.navbar-nav
+        == render 'layouts/navigation_links'
