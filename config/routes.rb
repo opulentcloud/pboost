@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'verify' => 'customers/voter_verify#new', as: :voter_verify
+  post 'verify' => 'customers/voter_verify#search', as: :search_voter_verify
+
   devise_for :users, :skip => [:sessions], :controllers => { :registrations => "users/registrations" }
   as :user do
     get 'signin' => 'devise/sessions#new', :as => :new_user_session

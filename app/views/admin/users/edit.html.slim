@@ -18,7 +18,7 @@
     = f.input :email, as: :email
     = f.input :password, as: :password, autocomplete: "off", hint: "(leave blank if you don't want to change it)"
     = f.input :password_confirmation, as: :password, autocomplete: "off"
-    = f.input :roles, as: :check_boxes, collection: Role.all.each_with_object([]) { |r,a| a << [r.name,r.id] }
+    = f.input :roles, as: :check_boxes, collection: Role.all.each_with_object([]) { |r,a| a << [r.name,r.id] }, member_value: Proc.new { |r| MySingleton.role_id = r[1].to_s }, input_html: { :"data-id" => "#{MySingleton.role_id}", checked: true }
 
   = f.actions do
     = f.action :submit, label: "Update user information", class: "btn btn-default"

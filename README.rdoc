@@ -1,3 +1,42 @@
 == README
 
+  = This application requires postgresql and postgis for geospacial queries
+  sudo apt-get install postgresql-9.3 postgresql-contrib-9.3 postgresql-server-dev-9.3 postgresql-9.3-postgis-scripts
+
+  = test installation
+  To test your installation, make a database and attempt to enable PostGIS:
+
+  $ psql
+  psql (9.2.4)
+  Type "help" for help.
+
+  mark=# create database postgis_test;
+  CREATE DATABASE
+  mark=# \c postgis_test
+  You are now connected to database "postgis_test" as user "mark".
+  postgis_test=# create extension postgis;
+  CREATE EXTENSION
+  postgis_test=# 
+  If it doesn't complain, it worked!
+  
+
+  = Loading of raw van file
+  Original van file contained invalid utf-8 data \00's
+  discovered this trying to convert the file to utf-8
+  this command failed due to invalid byte sequence
+  $ iconv -f ASCII -t utf-8 voters_maryland.csv > voters_maryland.txt
+
+  # So I tried using sed to replace these invalid byte sequences with tabs
+  $ sed '/\\00/s/\t//g' voters_maryland.txt
+
+  # Load van file into db
+  $ psql -p 5433 poliboost_development
+  $ \copy van_data  (vote_builder_id,last_name,first_name,middle_name,suffix,salutation,street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,apt_no,city,state,zip5,zip4,m_address,m_city,m_state,m_zip5,m_zip4,phone,home_phone,work_phone,work_phone_ext,cell_phone,email,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code,party,sex,age,dob,dor,general_08,general_06,general_04,general02,general_00,general_98,	general_96,general_94,muni_general_07,muni_general_05,muni_general_03,muni_general_02,muni_general_01,muni_general_00,muni_primary_07,muni_primary_05,muni_primary_03,muni_primary_01,muni_primary_99,primary_08,primary_06,primary_04,primary_02,primary_00,primary_98,primary_96,primary_94,state_file_id )  from '/home/mark/Work/pboostv2/db/fixtures/voters_maryland.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+   
+  # Load addresses from van_data table
+  INSERT INTO addresses (street_no, street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
+	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code)
+  SELECT street_no, street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
+	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code
+  FROM van_data LIMIT 100
 

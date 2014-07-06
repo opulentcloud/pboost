@@ -1,0 +1,76 @@
+class VanData < ActiveRecord::Migration
+  def change
+    create_table :van_data, id: false do |t|
+      t.string :vote_builder_id
+      t.string :last_name
+      t.string :first_name
+      t.string :middle_name
+      t.string :suffix
+      t.string :salutation
+      t.string :street_no
+      t.string :street_no_half
+      t.string :street_prefix
+      t.string :street_name
+      t.string :street_type
+      t.string :street_suffix
+      t.string :apt_type
+      t.string :apt_no
+      t.string :city
+      t.string :state
+      t.string :zip5
+      t.string :zip4
+      t.string :m_address
+      t.string :m_city
+      t.string :m_state
+      t.string :m_zip5
+      t.string :m_zip4
+      t.string :phone
+      t.string :home_phone
+      t.string :work_phone
+      t.string :work_phone_ext
+      t.string :cell_phone
+      t.string :email
+      t.string :county_name
+      t.string :precinct_name
+      t.string :precinct_code
+      t.string :cd
+      t.string :sd
+      t.string :hd
+      t.string :comm_dist_code
+      t.string :party
+      t.string :sex
+      t.string :age
+      t.string :dob
+      t.string :dor
+      t.string :general_08
+      t.string :general_06
+      t.string :general_04
+      t.string :general02
+      t.string :general_00
+      t.string :general_98
+      t.string :general_96
+      t.string :general_94
+      t.string :muni_general_07
+      t.string :muni_general_05
+      t.string :muni_general_03
+      t.string :muni_general_02
+      t.string :muni_general_01
+      t.string :muni_general_00
+      t.string :muni_primary_07
+      t.string :muni_primary_05
+      t.string :muni_primary_03
+      t.string :muni_primary_01
+      t.string :muni_primary_99
+      t.string :primary_08
+      t.string :primary_06
+      t.string :primary_04
+      t.string :primary_02
+      t.string :primary_00
+      t.string :primary_98
+      t.string :primary_96
+      t.string :primary_94
+      t.string :state_file_id
+      t.string :address_hash, limit: 32
+    end
+  end
+end

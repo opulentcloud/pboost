@@ -9,8 +9,16 @@ class ApplicationController < ActionController::Base
     %w(staging production).include?(Rails.env)
   end
 
+  def require_customer_user!
+    render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless customer_user?
+  end
+
   def require_admin_user!
     render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless admin_user?
+  end
+
+  def customer_user?
+    user_signed_in? && current_user.is_in_role?('Customer')
   end
 
   def admin_user?

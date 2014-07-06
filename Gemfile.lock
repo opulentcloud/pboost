@@ -21,6 +21,9 @@ GEM
       activemodel (= 4.1.1)
       activesupport (= 4.1.1)
       arel (~> 5.0.0)
+    activerecord-postgis-adapter (2.1.1)
+      activerecord (~> 4.0)
+      rgeo-activerecord (~> 1.0)
     activesupport (4.1.1)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -95,11 +98,14 @@ GEM
     mime-types (1.25.1)
     minitest (5.3.5)
     multi_json (1.10.1)
+    nofxx-georuby (1.9.2)
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyamorous (1.0.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
+    postgis_adapter (0.8.1)
+      nofxx-georuby
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -138,6 +144,10 @@ GEM
       json (~> 1.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rgeo (0.3.20)
+    rgeo-activerecord (1.1.0)
+      activerecord (~> 4.0)
+      rgeo (~> 0.3)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -191,6 +201,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter
   annotate
   autoprefixer-rails
   bootstrap-generators
@@ -209,6 +220,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   pg
+  postgis_adapter
   quiet_assets
   rails (= 4.1.1)
   rails_12factor

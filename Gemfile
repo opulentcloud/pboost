@@ -17,6 +17,9 @@ end
 
 # Use postgresql as the database for Active Record
 gem 'pg'
+gem 'postgis_adapter'
+gem 'activerecord-postgis-adapter'
+
 # Use SCSS for stylesheets
 gem 'bootstrap-sass'
 gem 'sass-rails', '~> 4.0.3'
@@ -62,3 +65,6 @@ gem 'foreigner'
 gem 'will_paginate'
 gem 'devise'
 gem 'devise-async'
+
+group :production do
+end

@@ -1,0 +1,26 @@
+.page-header
+  h1
+    | Verify Voter
+
+= semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
+  = f.inputs do
+    = f.input :search_index, :autofocus => true
+
+  = f.actions do
+    = f.action :submit, label: "Veriy Voter", class: "btn btn-default"
+    | &nbsp; 
+    input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
+br
+br    
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          |
+        th
+          | Name
+        th
+          | Address
+    tbody
+      = render partial: 'voter', :collection => @voters
