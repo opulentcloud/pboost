@@ -40,3 +40,7 @@
 	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code
   FROM van_data LIMIT 100
 
+
+== Running the app
+bundle exec unicorn -E production -c config/unicorn.rb
+

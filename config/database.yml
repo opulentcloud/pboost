@@ -2,19 +2,22 @@ default: &default
   adapter: postgis
   encoding: utf8
   host: localhost
-  port: 5433
   pool: 5
 
 development:
   <<: *default
+  port: 5433
   database: poliboost_development
 
 test:
   <<: *default
+  port: 5433
   database: poliboost_test
 
 production:
   <<: *default
+  port: 5432
   database: poliboost_production
-  username: poliboost
-  password: <%= ENV['POLIBOOST_DATABASE_PASSWORD'] %>
+  username: mark
+  password: luv2luv
+

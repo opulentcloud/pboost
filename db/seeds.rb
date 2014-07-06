@@ -12,7 +12,7 @@ end
 #===== end populate default roles =====
 
 #===== create the default users =====
-if false
+if true
   User.create!(email: 'mark@wilsonsdev.com', first_name: 'Mark', last_name: 'Wilson', password: 'password123', password_confirmation: 'password123') do |u|
     Role.all.each do |r|
       u.roles << r
@@ -40,6 +40,6 @@ INSERT INTO voters (vote_builder_id, last_name, first_name, middle_name, suffix,
 SELECT vote_builder_id::bigint, last_name, first_name, middle_name, suffix, salutation, phone, home_phone, work_phone, work_phone_ext,
 	cell_phone, email, party, sex, age::int, dob::date, dor::date, state_file_id
 FROM van_data}
-results = ActiveRecord::Base.connection.execute(query, :skip_logging) if true
+results = ActiveRecord::Base.connection.execute(query, :skip_logging) if false
 # ==== end load voters from van_data table =====
 

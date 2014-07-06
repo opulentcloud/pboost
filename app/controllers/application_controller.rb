@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   def ssl_configured?
-    %w(staging production).include?(Rails.env)
+    false #%w(staging production).include?(Rails.env)
   end
 
   def require_customer_user!
@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
 
   def require_admin_user!
     render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless admin_user?
+  end
+
+  def employee_user?
+    user_signed_in? && current_user.is_in_role?('Employee')  
   end
 
   def customer_user?

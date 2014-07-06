@@ -13,7 +13,7 @@ class Admin::UsersController < Devise::RegistrationsController
   end
 
   def create
-    build_resource(sign_up_params)
+    build_resource(account_update_params)
 
     resource_saved = resource.save
     yield resource if block_given?
@@ -66,11 +66,10 @@ class Admin::UsersController < Devise::RegistrationsController
   end
   
 private
-
   def account_update_params
     @account_update_params ||= params.require(:user).permit(:first_name, 
       :last_name, :email, :password, :password_confirmation, 
-      :current_password, :role_ids => [])
+      :current_password, role_ids: [], roles_attributes: :id)
     
   end
 end
