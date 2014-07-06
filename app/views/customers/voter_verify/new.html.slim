@@ -4,7 +4,9 @@
 
 = semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
   = f.inputs do
-    = f.input :search_index, :autofocus => true
+    = f.input :last_name, :autofocus => true
+    = f.input :first_name
+    = f.input :street_no
 
   = f.actions do
     = f.action :submit, label: "Veriy Voter", class: "btn btn-default"
@@ -17,10 +19,14 @@ br
     thead
       tr
         th
-          |
+          | State File ID
         th
-          | Name
+          | Full Name
         th
           | Address
+        th
+          | Precinct
+        th
+          | Party
     tbody
       = render partial: 'voter', :collection => @voters

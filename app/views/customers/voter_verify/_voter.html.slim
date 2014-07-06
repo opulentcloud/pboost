@@ -1,10 +1,13 @@
 tr
   td
-    = voter.search_index
+    = voter.state_file_id
   td
     = voter.full_name
   td
     = voter.address.full_street_address
     br
     = voter.address.city_state_zip
-
+  td
+    = voter.address.precinct_code
+  td
+    = voter.party

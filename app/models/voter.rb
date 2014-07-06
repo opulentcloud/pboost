@@ -20,6 +20,13 @@ class Voter < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.build_search_index(first_name, last_name, street_no)
+		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
+		second_four = last_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
+		all = street_no.to_s.strip.upcase rescue ''
+		first_four+second_four+all
+  end
+
   def self.build_search_indexes
     Voter.where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
       Voter.transaction do
