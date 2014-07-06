@@ -23,13 +23,11 @@
       label class="control-label"
         | Roles
       - for role in Role.all
-        = f.fields_for :roles, role do |ur|
-          div class="checkbox"
-            = ur.label role.name, class: "choice"
-              = ur.check_box :id, checked: @user.roles.where(id: role.id).exists?
-              = ur.hidden_field "_destroy", value: "1" unless @user.roles.where(id: role.id).exists?
-              = role.name
-
+        div class="checkbox"
+          = f.label role.name, class: "choice"
+            = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
+            = role.name
+      = hidden_field_tag "user[role_ids][]", ""
   = f.actions do
     = f.action :submit, label: "Update user information", class: "btn btn-default"
 
