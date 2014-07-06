@@ -98,14 +98,11 @@ GEM
     mime-types (1.25.1)
     minitest (5.3.5)
     multi_json (1.10.1)
-    nofxx-georuby (1.9.2)
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyamorous (1.0.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
-    postgis_adapter (0.8.1)
-      nofxx-georuby
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -220,7 +217,6 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   pg
-  postgis_adapter
   quiet_assets
   rails (= 4.1.1)
   rails_12factor

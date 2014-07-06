@@ -17,7 +17,7 @@ end
 
 # Use postgresql as the database for Active Record
 gem 'pg'
-gem 'postgis_adapter'
+#gem 'postgis_adapter'
 gem 'activerecord-postgis-adapter'
 
 # Use SCSS for stylesheets
