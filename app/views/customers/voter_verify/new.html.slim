@@ -17,6 +17,7 @@
   br    
   #results
     - if @voters.present?
+      a id="results" name="aresults"
       = will_paginate @voters 
       .table-responsive
         table.table.table-striped.table-bordered.table-hover
