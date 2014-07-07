@@ -7,26 +7,52 @@
     = f.input :last_name, :autofocus => true
     = f.input :first_name
     = f.input :street_no
+    = f.hidden_field :search_index, value: @search_index if @search_index.present?
 
   = f.actions do
     = f.action :submit, label: "Veriy Voter", class: "btn btn-default"
     | &nbsp; 
     input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
-br
-br    
-.table-responsive
-  table.table.table-striped.table-bordered.table-hover
-    thead
-      tr
-        th
-          | State File ID
-        th
-          | Full Name
-        th
-          | Address
-        th
-          | Precinct
-        th
-          | Party
-    tbody
-      = render partial: 'voter', :collection => @voters
+  br
+  br    
+  #results
+    - if @voters.present?
+      = will_paginate @voters 
+      .table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          - @voters.each do |voter|
+            tr
+              th
+                | State File ID
+            tr
+              td
+                = voter.state_file_id
+            tr
+              th
+                | Name/Address
+            tr
+              td
+                = voter.full_name
+                br
+                = voter.address.full_street_address
+                br
+                = voter.address.city_state_zip
+            tr
+              th
+                | Precinct
+            tr
+              td
+                = voter.address.precinct_code
+            tr            
+              th
+                | Party
+            tr
+              td
+                = voter.party
+            tr            
+              th
+                | D.O.B.
+            tr
+              td
+                = l voter.dob rescue nil
+

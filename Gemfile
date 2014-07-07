@@ -65,6 +65,7 @@ gem 'foreigner'
 gem 'will_paginate'
 gem 'devise'
 gem 'devise-async'
+gem 'will_paginate'
 
 group :production do
 end

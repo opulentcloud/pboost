@@ -31,7 +31,7 @@ class Voter < ActiveRecord::Base
     Voter.where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
       Voter.transaction do
         batch.each do |voter|
-          voter.update_attribute(search_index, voter.build_search)
+          voter.update_attribute(:search_index, voter.build_search)
         end
       end
     end
