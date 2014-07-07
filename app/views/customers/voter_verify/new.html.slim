@@ -9,12 +9,12 @@
     = f.input :street_no
     = f.hidden_field :search_index, value: @search_index if @search_index.present?
 
+  - if @voters.present?
+    a id="results" name="aresults"
   = f.actions do
     = f.action :submit, label: "Veriy Voter", class: "btn btn-default"
     | &nbsp; 
     input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
-  - if @voters.present?
-    a id="results" name="aresults"
   br
   br    
   #results

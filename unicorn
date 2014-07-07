@@ -1,0 +1,63 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides: unicorn
+# Required-Start: $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start daemon at boot time
+# Description: Enable service provided by daemon.
+### END INIT INFO
+
+PATH="/root/.rbenv/shims:/root/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+BUNDLE=/root/.rbenv/shims/bundle
+UNICORN=/usr/bin/unicorn
+KILL=/bin/kill
+APP_ROOT=/var/www/pboostv2
+PID=$APP_ROOT/pids/unicorn.pid
+OLD_PID=$APP_ROOT/pids/unicorn.pid.oldbin
+CONF=$APP_ROOT/config/unicorn.rb
+GEM_HOME=/root/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0
+RAILS_ENV="production"
+
+sig () {
+  test -s "$PID" && kill -$1 `cat $PID`
+}
+
+case "$1" in
+  start)
+    echo "Starting unicorn rails app ..."
+    cd $APP_ROOT
+    #if [ $USER == "root" ]
+    #then
+      $BUNDLE exec unicorn -E $RAILS_ENV -c $CONF
+    #else
+    #  su root -c "$BUNDLE exec unicorn -e $RAILS_ENV -c $CONF"
+    #fi
+    echo "Unicorn rails app started!"
+    ;;
+  stop)
+    echo "Stoping unicorn rails app ..."
+    sig QUIT && exit 0
+    echo "Not running"
+    ;;
+  restart)
+    if [ -f $PID ];
+    then
+      echo "Unicorn PID $PID exists"
+      /bin/kill -s USR2 `/bin/cat $PID`
+      sleep 30
+      echo "Old PID $OLD_PID"
+      /bin/kill -9 `/bin/cat $OLD_PID`
+    else
+      echo "Unicorn rails app is not running. Lets start it up!"
+      $0 start
+    fi
+    ;;
+  status)
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    ;;
+esac

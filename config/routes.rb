@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'admin/dashboard' => 'admin/dashboard#show', :as => :admin_dashboard
   get 'dashboard' => 'dashboard#show', :as => :dashboard
 
-  root 'dashboard#show'
+  #root 'dashboard#show'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
