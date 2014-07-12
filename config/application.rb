@@ -22,5 +22,7 @@ module Pboostv2
     config.i18n.default_locale = :en
     
     config.active_record.schema_format :sql
+    
+    config.assets.initialize_on_precompile = false
   end
 end
