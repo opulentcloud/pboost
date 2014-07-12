@@ -66,6 +66,7 @@ gem 'chronic'
 gem 'will_paginate'
 gem 'devise'
 gem 'devise-async'
+gem 'omniauth-facebook'
 
 group :production do
 end

@@ -6,11 +6,11 @@
   = devise_error_messages!
   = f.inputs do
     = f.hidden_field :reset_password_token
-    = f.input :password, as: :password, autofocus: true, autocomplete: "off"
-    = f.input :password_confirmation, as: :password, autocomplete: "off"
+    = f.input :password, as: :password, input_html: { autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
+    = f.input :password_confirmation, as: :password, input_html: { required: true, autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
 
   = f.actions do
-    = f.action :submit, label: "Change my password", class: "btn btn-default"
+    = f.action :submit, label: "Change my password", button_html: { class: 'btn btn-primary' }
 
 br
 br

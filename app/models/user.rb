@@ -3,8 +3,9 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # not using: :registerable, :rememberable, 
-  devise :async, :database_authenticatable, :lockable, :recoverable, 
-        :timeoutable, :trackable, :validatable, :registerable
+  devise :async, :confirmable, :database_authenticatable, :lockable, 
+    :recoverable, :timeoutable, :trackable, :validatable, :registerable,
+    :rememberable, :omniauthable
 
   # begin validations
   validates :first_name, presence: true
@@ -18,6 +19,7 @@ class User < ActiveRecord::Base
   # end associations
 
   # begin callbacks
+  after_create :check_for_roles
   before_destroy :confirm_other_admin_exists
   # end callbacks
   
@@ -33,6 +35,12 @@ class User < ActiveRecord::Base
   
   # begin private instance methods
 private
+  # A new user should be given the customer role unless they have roles defined
+  def check_for_roles
+    return if roles.exists?
+    roles << Role.where(name: 'Customer').first
+  end
+
   def confirm_other_admin_exists
     return User.where("users.id != ?", id).includes(:roles).where("roles.name = ?", 'Administrator').exists?
   end

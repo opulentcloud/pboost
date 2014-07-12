@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
-  before_action :authenticate_user!
 
   def ssl_configured?
     false #%w(staging production).include?(Rails.env)
@@ -20,10 +19,12 @@ class ApplicationController < ActionController::Base
   def employee_user?
     user_signed_in? && current_user.is_in_role?('Employee')  
   end
+  helper_method :employee_user?
 
   def customer_user?
     user_signed_in? && current_user.is_in_role?('Customer')
   end
+  helper_method :customer_user?
 
   def admin_user?
     user_signed_in? && current_user.is_in_role?('Administrator')

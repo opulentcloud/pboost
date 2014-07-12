@@ -4,13 +4,15 @@
 
 = semantic_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
   = f.inputs do
-    = f.input :email, as: :email, :autofocus => true
-    = f.input :password, as: :password
+    = f.input :email, as: :email, input_html: { autofocus: true, required: true }
+    = f.input :password, as: :password, input_html: { required: true }
     - if devise_mapping.rememberable?
-      = f.input :remember_me
+      = f.label :remember_me, class: "choice"
+        = f.check_box :remember_me
+        |  Remember me on this computer
 
   = f.actions do
-    = f.action :submit, label: "Sign in", class: "btn btn-default"
+    = f.action :submit, label: "Sign in", button_html: { class: 'btn btn-primary' }
 
 br
 br

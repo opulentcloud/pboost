@@ -8,11 +8,11 @@
 = semantic_form_for resource, as: resource_name, url: admin_users_path, html: { method: :post } do |f|
   = devise_error_messages!
   = f.inputs do
-    = f.input :first_name, :autofocus => true
+    = f.input :first_name, input_html: { autofocus: true }
     = f.input :last_name
     = f.input :email, as: :email
-    = f.input :password, as: :password, autocomplete: "off"
-    = f.input :password_confirmation, as: :password, autocomplete: "off"
+    = f.input :password, as: :password, input_html: { autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
+    = f.input :password_confirmation, as: :password, input_html: { required: true, autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
     = f.input :roles, as: :check_boxes, collection: Role.all.each_with_object([]) { |r,a| a << [r.name,r.id] }
 
   = f.actions do

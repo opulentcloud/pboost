@@ -1,4 +1,4 @@
-class ProcessingController < ApplicationController
+class ProcessingController < AuthenticatedUsersController
   before_action :set_job
 
   def show

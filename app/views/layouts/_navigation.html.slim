@@ -1,6 +1,8 @@
 / navigation styled for Bootstrap 3.0
 nav.navbar.navbar-inverse.navbar-fixed-top
-  == image_tag 'pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left', style: "margin-right: 20px;"
+  = link_to image_tag('pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left', style: "margin-left: 20px; margin-right: 20px;"), '/'
+  - unless user_signed_in?
+    h1 Client Portal
   .container
     .navbar-header
       button.navbar-toggle[type="button" data-toggle="collapse" data-target=".navbar-collapse"]
@@ -8,9 +10,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      = link_to 'Dashboard', dashboard_path, class: 'navbar-brand'
-      = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand' if user_signed_in?
-      = link_to 'Manage Users', admin_users_path, class: 'navbar-brand' if admin_user?
+      - if user_signed_in?
+        = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
+        = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
+      - if admin_user?
+        = link_to 'Manage Users', admin_users_path, class: 'navbar-brand'
     .collapse.navbar-collapse.pull-right
       ul.nav.navbar-nav
         == render 'layouts/navigation_links'

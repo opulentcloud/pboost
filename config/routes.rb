@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   get 'verify' => 'customers/voter_verify#new', as: :voter_verify
   post 'verify' => 'customers/voter_verify#search', as: :search_voter_verify
 
-  devise_for :users, :skip => [:sessions], :controllers => { :registrations => "users/registrations" }
+  devise_for :users, :skip => [:sessions], :controllers => { :registrations => "users/registrations" }, :path_names => { :signup => "register" }
   as :user do
     get 'signin' => 'devise/sessions#new', :as => :new_user_session
     post 'signin' => 'devise/sessions#create', :as => :user_session
     delete 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session
+    get 'dashboard' => 'users/dashboard#show', :as => :users_dashboard
+  end
+
+  devise_scope :user do
+    get "/signup" => "users/registrations#new", :as => :signup
   end
 
   namespace :admin do
@@ -17,7 +22,10 @@ Rails.application.routes.draw do
   end
 
   get 'admin/dashboard' => 'admin/dashboard#show', :as => :admin_dashboard
-  get 'dashboard' => 'dashboard#show', :as => :dashboard
+
+  authenticated :user do
+    root :to => "users/dashboard#show", :as => "authenticated_user_root"
+  end
 
   #root 'dashboard#show'
 

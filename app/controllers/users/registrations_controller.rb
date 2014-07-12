@@ -1,3 +1,14 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_filter :require_admin_user!, :only => [:new, :create, :destroy]
+
+# begin protected class methods
+protected
+
+  def after_sign_up_path_for(resource)
+    '/signin'
+  end
+  
+  def after_inactive_sign_up_path_for(resource)
+    '/signin'
+  end
+# end protected class methods  
 end

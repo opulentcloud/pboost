@@ -10,7 +10,7 @@
       Currently waiting confirmation for: #{resource.unconfirmed_email}
 
   = f.inputs do
-    = f.input :first_name, :autofocus => true
+    = f.input :first_name, input_html: { autofocus: true }
     = f.input :last_name
     = f.input :email, as: :email
     = f.input :password, as: :password, autocomplete: "off", hint: "(leave blank if you don't want to change it)"
@@ -18,5 +18,5 @@
     = f.input :current_password, as: :password, autocomplete: "off", hint: "(we need your current password to confirm your changes)"
 
   = f.actions do
-    = f.action :submit, label: "Update your information", class: "btn btn-default"
+    = f.action :submit, label: "Update your information", button_html: { class: 'btn btn-primary' }
 

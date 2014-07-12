@@ -1,4 +1,4 @@
-class Customers::VoterVerifyController < ApplicationController
+class Customers::VoterVerifyController < AuthenticatedUsersController
   before_filter :require_customer_user!
   
   def new
