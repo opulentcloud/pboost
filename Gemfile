@@ -13,6 +13,8 @@ group :development do
   gem 'annotate'
   gem 'byebug'
   gem 'quiet_assets'
+  gem 'capistrano'
+  gem 'capistrano3-unicorn'
 end
 
 # Use postgresql as the database for Active Record
