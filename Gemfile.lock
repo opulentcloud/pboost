@@ -73,8 +73,6 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
-    foreigner (1.6.1)
-      activerecord (>= 3.0.0)
     formtastic (2.2.1)
       actionpack (>= 3.0)
     formtastic-bootstrap (3.0.0)
@@ -210,7 +208,6 @@ DEPENDENCIES
   devise
   devise-async
   figaro
-  foreigner
   formtastic
   formtastic-bootstrap
   jbuilder (~> 2.0)
