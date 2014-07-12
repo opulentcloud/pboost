@@ -14,6 +14,7 @@ group :development do
   gem 'byebug'
   gem 'quiet_assets'
   gem 'capistrano'
+  gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
 end
