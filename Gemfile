@@ -15,6 +15,7 @@ group :development do
   gem 'quiet_assets'
   gem 'capistrano'
   gem 'capistrano3-unicorn'
+  gem 'capistrano-bundler'
 end
 
 # Use postgresql as the database for Active Record
