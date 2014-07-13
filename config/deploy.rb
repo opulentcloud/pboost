@@ -34,6 +34,8 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+set :unicorn_config_path, "config/unicorn.rb"
+
 set :rails_env, "production"
 set :deploy_via, :copy
 set :rbenv_type, :user
@@ -51,9 +53,9 @@ namespace :assets do
         with rails_env: fetch(:stage) do
           execute :bundle, "exec rake assets:precompile"
         end
-        execute "rsync -av --delete ./public/assets/ #{fetch(:user)}@#{rsync_host}:#{shared_path}/public/assets/"
+        execute "rsync -av --delete ./public/assets/ root@#{rsync_host}:#{shared_path}/public/assets/"
         execute "rm -rf public/assets"
-        # execute "rm -rf tmp/cache/assets" # in case you are not seeing changes
+        execute "rm -rf tmp/cache/assets" # in case you are not seeing changes
       end
     end
   end
