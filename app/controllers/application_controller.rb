@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   force_ssl if: :ssl_configured?
 
   def ssl_configured?
-    false #%w(staging production).include?(Rails.env)
+    %w(staging production).include?(Rails.env)
   end
 
   def require_customer_user!
