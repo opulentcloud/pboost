@@ -22,6 +22,8 @@ after_fork do |server, worker|
     puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
   end
 
-  defined?(ActiveRecord::Base) and
+  if defined?(ActiveRecord::Base)
+    config = Rails.application.config.database_configuration[Rails.env]
+    config['adapter'] = 'postgis'
     ActiveRecord::Base.establish_connection
 end
