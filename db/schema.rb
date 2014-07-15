@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140705205638) do
+ActiveRecord::Schema.define(version: 20140715060829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,51 @@ ActiveRecord::Schema.define(version: 20140705205638) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "registered_voters_data", id: false, force: true do |t|
+    t.string "vtrid"
+    t.string "lastname"
+    t.string "firstname"
+    t.string "middlename"
+    t.string "suffix"
+    t.string "dob"
+    t.string "gender"
+    t.string "party"
+    t.string "house_number"
+    t.string "house_suffix"
+    t.string "street_predirection"
+    t.string "streetname"
+    t.string "streettype"
+    t.string "street_postdirection"
+    t.string "unittype"
+    t.string "unitnumber"
+    t.string "address"
+    t.string "non_std_address"
+    t.string "residentialcity"
+    t.string "residentialstate"
+    t.string "residentialzip5"
+    t.string "residentialzip4"
+    t.string "mailingaddress"
+    t.string "mailingcity"
+    t.string "mailingstate"
+    t.string "mailingzip5"
+    t.string "mailingzip4"
+    t.string "country"
+    t.string "status_code"
+    t.string "state_registration_date"
+    t.string "county_registration_date"
+    t.string "precinct"
+    t.string "split"
+    t.string "county"
+    t.string "congressional_districts"
+    t.string "legislative_districts"
+    t.string "councilmanic_districts"
+    t.string "ward_districts"
+    t.string "municipal_districts"
+    t.string "commissioner_districts"
+    t.string "school_districts"
+    t.string "address_hash",             limit: 32
+  end
 
   create_table "roles", force: true do |t|
     t.string   "name",       null: false
@@ -218,8 +263,11 @@ ActiveRecord::Schema.define(version: 20140705205638) do
     t.string "primary_98"
     t.string "primary_96"
     t.string "primary_94"
-    t.string "state_file_id"
+    t.string "state_file_id",              null: false
+    t.string "address_hash",    limit: 32
   end
+
+  add_index "van_data", ["state_file_id", "address_hash"], :name => "idx_address_hash"
 
   create_table "voters", force: true do |t|
     t.integer  "vote_builder_id", limit: 8
@@ -234,7 +282,7 @@ ActiveRecord::Schema.define(version: 20140705205638) do
     t.string   "work_phone_ext",  limit: 10
     t.string   "cell_phone",      limit: 10
     t.string   "email",           limit: 100
-    t.string   "party",           limit: 1
+    t.string   "party",           limit: 5
     t.string   "sex",             limit: 1
     t.integer  "age",             limit: 2
     t.date     "dob"
