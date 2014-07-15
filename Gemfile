@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.2'
+ruby '2.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
@@ -71,6 +71,9 @@ gem 'will_paginate'
 gem 'devise'
 gem 'devise-async'
 gem 'omniauth-facebook'
+gem 'memcachier'
+gem 'dalli'
 
 group :production do
+  gem 'rails_12factor'
 end
