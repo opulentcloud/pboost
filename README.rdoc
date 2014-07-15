@@ -32,6 +32,10 @@
   # Load van file into db
   $ psql -p 5433 poliboost_development
   $ \copy van_data  (vote_builder_id,last_name,first_name,middle_name,suffix,salutation,street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,apt_no,city,state,zip5,zip4,m_address,m_city,m_state,m_zip5,m_zip4,phone,home_phone,work_phone,work_phone_ext,cell_phone,email,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code,party,sex,age,dob,dor,general_08,general_06,general_04,general02,general_00,general_98,	general_96,general_94,muni_general_07,muni_general_05,muni_general_03,muni_general_02,muni_general_01,muni_general_00,muni_primary_07,muni_primary_05,muni_primary_03,muni_primary_01,muni_primary_99,primary_08,primary_06,primary_04,primary_02,primary_00,primary_98,primary_96,primary_94,state_file_id )  from '/home/mark/Work/pboostv2/db/fixtures/voters_maryland.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+
+  # Convert van version of comm_dist_code into proper format to match the registered voters data
+  # which is how we store it in our database.
+  UPDATE van_data SET comm_dist_code = LPAD(comm_dist_code,3,'0') WHERE comm_dist_code NOT IN ('A','B','C','D','E','F')  
    
   # Load addresses from van_data table
   INSERT INTO addresses (street_no, street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
@@ -43,13 +47,27 @@
   # Load Maryland State Board of Elections Raw data file
   $ \copy registered_voters_data (vtrid,lastname,firstname,middlename,suffix,dob,gender,party,house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,unitnumber,address,non_std_address,residentialcity,residentialstate,residentialzip5,residentialzip4,mailingaddress,mailingcity,mailingstate,mailingzip5,mailingzip4,country,status_code,state_registration_date,county_registration_date,precinct,split,county,congressional_districts,legislative_districts,councilmanic_districts,ward_districts,municipal_districts,commissioner_districts,school_districts) from '/home/mark/Work/pboostv2/db/fixtures/Stinnie/RegisteredVoters.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
 
-  # Load addresses from registered_voters_data
-  INSERT INTO addresses (street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
-	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code)
-  SELECT house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,
-	  unitnumber,residentialcity,residentialstate,residentialzip5,residentialzip4,county,precinct,precinct,congressional_districts,legislative_districts,hd,comm_dist_code
-  FROM registered_voters_data LIMIT 100
+  # Build the addresses hashes
+  RegisteredVoterData.build_address_hashes
+
+  # If you already have existing addresses table populated run this to convert any existing
+  # comm_dist_codes to the proper format.
+  UPDATE addresses SET comm_dist_code = LPAD(comm_dist_code,3,'0') WHERE comm_dist_code NOT IN ('A','B','C','D','E','F')  
+
+  # Update existing addresses table from registered_voters_data table
+  RegisteredVotersData.update_addresses
+
+  # Insert any new addresses into addresses table from registered_voters_data
+  RegisteredVotersData.insert_new_addresses
   
+  # Update current voters table data
+  RegisteredVotersData.update_voter_info(last_datetime = Time.now)
+  
+  # Insert any new voter records from registered_voters_data table
+  RegisteredVotersData.insert_new_voters
+
+  # Link any voters with no address to their address
+  Voter.link_addresses_from_registered_voters_data      
 
 == Running the app
 bundle exec unicorn -E production -c config/unicorn.rb

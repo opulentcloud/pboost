@@ -44,5 +44,6 @@ class CreateRegisteredVotersData < ActiveRecord::Migration
       t.string :school_districts
       t.string :address_hash, limit: 32
     end
+    execute "ALTER TABLE registered_voters_data ADD PRIMARY KEY (vtrid);"
   end
 end

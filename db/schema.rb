@@ -11,56 +11,64 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140715060829) do
+ActiveRecord::Schema.define(version: 20140715205031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
 
   create_table "addresses", force: true do |t|
-    t.string   "street_no",      limit: 10
-    t.string   "street_no_half", limit: 3
-    t.string   "street_prefix",  limit: 2
-    t.string   "street_name",    limit: 32
-    t.string   "street_type",    limit: 4
-    t.string   "street_suffix",  limit: 2
-    t.string   "apt_type",       limit: 5
-    t.string   "apt_no",         limit: 8
-    t.string   "city",           limit: 32
-    t.string   "state",          limit: 2
-    t.string   "zip5",           limit: 5
-    t.string   "zip4",           limit: 4
-    t.string   "county_name",    limit: 32
-    t.string   "precinct_name",  limit: 32
-    t.string   "precinct_code",  limit: 32
-    t.string   "cd",             limit: 3
-    t.string   "sd",             limit: 3
-    t.string   "hd",             limit: 3
-    t.string   "comm_dist_code", limit: 2
-    t.decimal  "lat",                                                  precision: 15, scale: 10
-    t.decimal  "lng",                                                  precision: 15, scale: 10
+    t.string   "street_no",             limit: 10
+    t.string   "street_no_half",        limit: 10
+    t.string   "street_prefix",         limit: 10
+    t.string   "street_name",           limit: 50
+    t.string   "street_type",           limit: 4
+    t.string   "street_suffix",         limit: 10
+    t.string   "apt_type",              limit: 10
+    t.string   "apt_no",                limit: 20
+    t.string   "city",                  limit: 32
+    t.string   "state",                 limit: 2
+    t.string   "zip5",                  limit: 5
+    t.string   "zip4",                  limit: 4
+    t.string   "county_name",           limit: 32
+    t.string   "precinct_name",         limit: 32
+    t.string   "precinct_code",         limit: 32
+    t.string   "cd",                    limit: 3
+    t.string   "sd",                    limit: 3
+    t.string   "hd",                    limit: 3
+    t.string   "comm_dist_code",        limit: 3
+    t.decimal  "lat",                                                         precision: 15, scale: 10
+    t.decimal  "lng",                                                         precision: 15, scale: 10
     t.boolean  "geo_failed"
-    t.string   "address_hash",   limit: 32
+    t.string   "address_hash",          limit: 32
     t.boolean  "is_odd"
     t.integer  "street_no_int"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",           limit: {:srid=>4326, :type=>"point"}
+    t.spatial  "geom",                  limit: {:srid=>4326, :type=>"point"}
+    t.string   "ward_district",         limit: 10
+    t.string   "municipal_district",    limit: 10
+    t.string   "commissioner_district", limit: 10
+    t.string   "school_district",       limit: 10
   end
 
   add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash"
   add_index "addresses", ["cd"], :name => "index_addresses_on_cd"
   add_index "addresses", ["city"], :name => "index_addresses_on_city"
   add_index "addresses", ["comm_dist_code"], :name => "index_addresses_on_comm_dist_code"
+  add_index "addresses", ["commissioner_district"], :name => "index_addresses_on_commissioner_district"
   add_index "addresses", ["county_name"], :name => "index_addresses_on_county_name"
   add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial => true
   add_index "addresses", ["hd"], :name => "index_addresses_on_hd"
   add_index "addresses", ["id"], :name => "index_addresses_on_id"
   add_index "addresses", ["is_odd"], :name => "index_addresses_on_is_odd"
   add_index "addresses", ["lat", "lng"], :name => "index_addresses_on_lat_and_lng"
+  add_index "addresses", ["municipal_district"], :name => "index_addresses_on_municipal_district"
   add_index "addresses", ["precinct_code"], :name => "index_addresses_on_precinct_code"
+  add_index "addresses", ["school_district"], :name => "index_addresses_on_school_district"
   add_index "addresses", ["sd"], :name => "index_addresses_on_sd"
   add_index "addresses", ["state"], :name => "index_addresses_on_state"
+  add_index "addresses", ["ward_district"], :name => "index_addresses_on_ward_district"
 
   create_table "delayed_job_results", force: true do |t|
     t.integer  "job_id",     null: false
@@ -87,7 +95,7 @@ ActiveRecord::Schema.define(version: 20140715060829) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "registered_voters_data", id: false, force: true do |t|
-    t.string "vtrid"
+    t.string "vtrid",                               null: false
     t.string "lastname"
     t.string "firstname"
     t.string "middlename"

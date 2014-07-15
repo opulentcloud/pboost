@@ -32,6 +32,7 @@ class Voter < ActiveRecord::Base
   # begin associations
   belongs_to :address
   has_many :votes, class_name: 'VotingHistory'
+  has_one :registered_voters_data, foreign_key: :vtrid, primary_key: :state_file_id
   # end associations
 
   # begin public instance methods  
@@ -65,8 +66,21 @@ class Voter < ActiveRecord::Base
       end
     end
   end
+ 
+  def self.link_addresses_from_registered_voters_data
+    query = %{
+      UPDATE voters 
+        SET address_id = result.address_id
+      FROM
+        (SELECT addresses.id as address_id, voters.id as voter_id FROM registered_voters_data 
+          INNER JOIN voters on voters.state_file_id = registered_voters_data.vtrid 
+          INNER JOIN addresses ON addresses.address_hash = registered_voters_data.address_hash
+          WHERE registered_voters_data.address_hash IS NOT NULL) AS result
+      WHERE voters.id = result.voter_id}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
   
-  def self.link_addresses
+  def self.link_addresses_from_van_data
     query = %{
       UPDATE voters 
         SET address_id = result.address_id

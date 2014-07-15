@@ -2,7 +2,7 @@
 #
 # Table name: registered_voters_data
 #
-#  vtrid                    :string(255)
+#  vtrid                    :string(255)      not null, primary key
 #  lastname                 :string(255)
 #  firstname                :string(255)
 #  middlename               :string(255)
@@ -53,19 +53,19 @@ class RegisteredVotersData < ActiveRecord::Base
     'registered_voters_data'
   end
   
-  self.primary_key = 'state_file_id'
+  self.primary_key = 'vtrid'
 
   # begin public instance methods
 	def full_address
-	 	if zip4.blank?
-			"#{full_street_address}, #{city}, #{state}, #{zip5}"
+	 	if residentialzip4.blank?
+			"#{full_street_address}, #{residentialcity}, #{residentialstate}, #{residentialzip5}"
 		else
-	    "#{full_street_address}, #{city}, #{state}, #{zip5}-#{zip4}"
+	    "#{full_street_address}, #{residentialcity}, #{residentialstate}, #{residentialzip5}-#{residentialzip4}"
 	  end
   end
 
   def full_street_address
-    "#{street_no} #{street_no_half} #{street_prefix} #{street_name} #{street_type} #{street_suffix} #{apt_type} #{apt_no}".squeeze(" ").strip
+    "#{house_number} #{house_suffix} #{street_predirection} #{streetname} #{streettype} #{street_postdirection} #{unittype} #{unitnumber}".squeeze(" ").strip
   end
 
 	def hash_full_address
@@ -75,10 +75,81 @@ class RegisteredVotersData < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.update_addresses
+    query = %{UPDATE addresses
+	    SET street_no = result.house_number,
+	    street_no_int = result.street_no_int,
+	    is_odd = result.is_odd,
+	    street_no_half = result.house_suffix,
+	    street_prefix = result.street_predirection,
+	    street_name = result.streetname,
+	    street_type = result.streettype,
+	    street_suffix = result.street_postdirection,
+	    apt_type = result.unittype,
+	    apt_no = result.unitnumber,
+	    city = result.residentialcity,
+	    state = result.residentialstate,
+	    zip5 = result.residentialzip5,
+	    zip4 = result.residentialzip4,
+	    county_name = result.county,
+	    precinct_name = result.precinct_name,
+	    precinct_code = result.precinct_code,
+	    cd = result.congressional_districts,
+	    hd = result.legislative_districts,
+	    sd = result.sd,
+	    comm_dist_code = result.councilmanic_districts,
+	    ward_district = result.ward_districts,
+	    municipal_district = result.municipal_districts,
+	    school_district = result.school_districts
+    FROM
+	    (SELECT r.house_number,COALESCE(r.house_number, '0')::int as street_no_int,mod(COALESCE(r.house_number, '0')::int,2) = 1 as is_odd,r.house_suffix,r.street_predirection,r.streetname,r.streettype,r.street_postdirection,r.unittype,r.unitnumber,r.residentialcity,r.residentialstate,r.residentialzip5,r.residentialzip4,r.county,r.precinct as precinct_name,r.precinct as precinct_code,LPAD(r.congressional_districts,3,'0') as congressional_districts,LPAD(r.legislative_districts,3,'0') as legislative_districts,LPAD(r.legislative_districts,3,'0') as sd,r.councilmanic_districts,r.ward_districts,r.municipal_districts,r.school_districts,r.address_hash
+		    FROM registered_voters_data r) AS result
+	    WHERE addresses.address_hash = result.address_hash}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+  
+  def self.insert_new_addresses
+    query = %{INSERT INTO addresses (street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
+	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code,ward_district,municipal_district,school_district,address_hash)
+      SELECT r.house_number,r.house_suffix,r.street_predirection,r.streetname,r.streettype,r.street_postdirection,r.unittype,
+	      r.unitnumber,r.residentialcity,r.residentialstate,r.residentialzip5,r.residentialzip4,r.county,r.precinct as precint_name,r.precinct as precinct_code,LPAD(r.congressional_districts,3,'0') as congressional_districts,LPAD(r.legislative_districts,3,'0') as sd,LPAD(r.legislative_districts,3,'0') as legislative_districts,r.councilmanic_districts,r.ward_districts,r.municipal_districts,r.school_districts,r.address_hash
+      FROM registered_voters_data r
+      LEFT OUTER JOIN addresses a ON a.address_hash = r.address_hash
+      WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)    
+  end
+
+  def self.insert_new_voters
+    query = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
+      SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, r.gender, r.dob::date, r.state_registration_date::date, r.vtrid FROM registered_voters_data r
+      LEFT OUTER JOIN voters ON voters.state_file_id = r.vtrid
+      WHERE voters.id IS NULL}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)    
+  end
+  
+  def self.update_voter_info(last_datetime = Time.now)
+    Voter.joins(:registered_voters_data).where("voters.updated_at < ?", last_datetime).find_in_batches(:batch_size => 1000) do |batch|
+      Voter.transaction do
+        batch.each do |voter|
+          voter.last_name = voter.registered_voters_data.lastname
+          voter.first_name = voter.registered_voters_data.firstname
+          voter.middle_name = voter.registered_voters_data.middlename
+          voter.suffix = voter.registered_voters_data.suffix
+          voter.party = voter.registered_voters_data.party
+          voter.sex = voter.registered_voters_data.gender
+          voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date
+          voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
+          voter.search_index = voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
+          voter.save!
+        end
+      end
+    end
+  end
+  
   def self.build_address_hashes(break_after = false)
-    while VanData.where(address_hash: nil).exists? do
-      VanData.transaction do
-        VanData.where(address_hash: nil).limit(1000).each do |address|
+    while RegisteredVotersData.where(address_hash: nil).exists? do
+      RegisteredVotersData.transaction do
+        RegisteredVotersData.where(address_hash: nil).limit(1000).each do |address|
           address.update_attribute(:address_hash, address.hash_full_address)
         end
       end
