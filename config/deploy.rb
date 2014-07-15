@@ -68,7 +68,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       #invoke "unicorn: start"
-      run "/etc/init.d/service unicorn restart"
+      run "/etc/init.d/unicorn restart"
     end
   end
 
