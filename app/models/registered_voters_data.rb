@@ -155,7 +155,6 @@ class RegisteredVotersData < ActiveRecord::Base
         voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
         voter.updated_at = Time.now
         voter.created_at = Time.now unless voter.created_at.present?
-        voter.search_index = Voter.build_search_index(voter.first_name,voter.last_name,voter.address.street_no_int)
         voter.save!
       end
     end
