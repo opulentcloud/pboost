@@ -36,7 +36,7 @@
       </Table>
     </Worksheet>
   <% end %>
-  <% if 1 == 0 %>
+  <% if 1 == 1 %>
     <Worksheet ss:Name="Voter Details">
       <Table>
         <Row>
@@ -73,7 +73,7 @@
           <Cell><Data ss:Type="String">Commissioner Dist</Data></Cell>
           <Cell><Data ss:Type="String">School Dist</Data></Cell>
         </Row>
-        <% @voters.each do |voter| %>
+        <% @voters.for_each do |voter| %>
           <Row>
             <Cell><Data ss:Type="String"><%= voter.state_file_id %></Data></Cell>
             <Cell><Data ss:Type="String"><%= voter.last_name %></Data></Cell>
