@@ -57,13 +57,15 @@ class Voter < ActiveRecord::Base
 		first_four+second_four+all
   end
 
+  def self.build_search_indexes_by_batch(voter_ids)
+    Voter.where(id: voter_ids).each do |voter|
+      voter.update_attribute(:search_index, voter.build_search)    
+    end
+  end
+
   def self.build_search_indexes
-    Voter.where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
-      Voter.transaction do
-        batch.each do |voter|
-          voter.update_attribute(:search_index, voter.build_search)
-        end
-      end
+    Voter.select(:id).where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
+      Voter.delay.build_search_indexes_by_batch(batch.map(&:id))
     end
   end
  

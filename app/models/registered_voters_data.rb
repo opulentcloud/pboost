@@ -142,21 +142,19 @@ class RegisteredVotersData < ActiveRecord::Base
   end
 
   def self.update_voter_info_by_batch(voter_ids)
-    Voter.transaction do
-      Voter.joins(:registered_voters_data).where(id: voter_ids).each do |voter|
-        voter.last_name = voter.registered_voters_data.lastname
-        voter.first_name = voter.registered_voters_data.firstname
-        voter.middle_name = voter.registered_voters_data.middlename
-        voter.suffix = voter.registered_voters_data.suffix
-        voter.party = voter.registered_voters_data.party
-        voter.sex = voter.registered_voters_data.gender
-        voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date
-        voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
-        voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
-        voter.updated_at = Time.now
-        voter.created_at = Time.now unless voter.created_at.present?
-        voter.save!
-      end
+    Voter.joins(:registered_voters_data).where(id: voter_ids).each do |voter|
+      voter.last_name = voter.registered_voters_data.lastname
+      voter.first_name = voter.registered_voters_data.firstname
+      voter.middle_name = voter.registered_voters_data.middlename
+      voter.suffix = voter.registered_voters_data.suffix
+      voter.party = voter.registered_voters_data.party
+      voter.sex = voter.registered_voters_data.gender
+      voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date
+      voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
+      voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
+      voter.updated_at = Time.now
+      voter.created_at = Time.now unless voter.created_at.present?
+      voter.save!
     end
   end
   
