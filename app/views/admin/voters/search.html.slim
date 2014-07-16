@@ -18,9 +18,16 @@
                 = link_to admin_dashboard_path, :class => 'btn btn-default' do 
                   span.glyphicon.glyphicon-remove-sign
                   |  Clear
+              .pull-right
+                = check_box_tag "party_breakdown", "1", params[:party_breakdown].present?
+                |  Include Party Affiliation Breakdown?
+                br
+                = check_box_tag "precinct_breakdown", "1", params[:precinct_breakdown].present?
+                |  Include Precinct Voter Breakdown?
               div style="display: none;"
                 = f.sort_fields do |s|
                   = s.sort_select associations: [:address]
+
   .row
     h2
       | Voter Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
@@ -28,41 +35,43 @@
         span.glyphicon.glyphicon-export
         |  Export
 
-  .row
-    .h3 Party Affiliation Breakdown
-    table.table-responsive
-      table.table.table-striped.table-bordered.table-hover
-        thead
-          tr
-            th
-              Party
-            th
-              Total Voters
-        tbody
-          - @party_breakdown.each do |pb|
+  - if @party_breakdown.present?
+    .row
+      .h3 Party Affiliation Breakdown
+      table.table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          thead
             tr
-              td
-                = pb[:party] 
-              td
-                = number_with_delimiter pb[:voter_count]
+              th
+                Party
+              th
+                Total Voters
+          tbody
+            - @party_breakdown.each do |pb|
+              tr
+                td
+                  = pb[:party] 
+                td
+                  = number_with_delimiter pb[:voter_count]
 
-  .row
-    .h3 Precinct Breakdown
-    table.table-responsive
-      table.table.table-striped.table-bordered.table-hover
-        thead
-          tr
-            th
-              Precinct
-            th
-              Total Voters
-        tbody
-          - @precinct_breakdown.each do |pb|
+  - if @precinct_breakdown.present?
+    .row
+      .h3 Precinct Breakdown
+      table.table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          thead
             tr
-              td
-                = pb[:precinct_code] 
-              td
-                = number_with_delimiter pb[:voter_count]
+              th
+                Precinct
+              th
+                Total Voters
+          tbody
+            - @precinct_breakdown.each do |pb|
+              tr
+                td
+                  = pb[:precinct_code] 
+                td
+                  = number_with_delimiter pb[:voter_count]
 
   .row
     .h3 Voters Details

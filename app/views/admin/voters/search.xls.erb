@@ -57,8 +57,8 @@
           <Cell><Data ss:Type="String"><%= voter.party %></Data></Cell>          
           <Cell><Data ss:Type="String"><%= voter.sex %></Data></Cell>          
           <Cell><Data ss:Type="Number"><%= voter.age %></Data></Cell>
-          <Cell><Data ss:Type="Date"><%= l voter.dob %></Data></Cell>
-          <Cell><Data ss:Type="Date"><%= l voter.dor %></Data></Cell>
+          <Cell><Data ss:Type="Date"><%= l voter.dob rescue nil %></Data></Cell>
+          <Cell><Data ss:Type="Date"><%= l voter.dor rescue nil %></Data></Cell>
           <Cell><Data ss:Type="String"><%= voter.address.full_street_address %></Data></Cell>            
           <Cell><Data ss:Type="String"><%= voter.address.city %></Data></Cell>
           <Cell><Data ss:Type="String"><%= voter.address.state %></Data></Cell>                    

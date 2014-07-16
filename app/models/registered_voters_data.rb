@@ -149,8 +149,8 @@ class RegisteredVotersData < ActiveRecord::Base
       voter.suffix = voter.registered_voters_data.suffix
       voter.party = voter.registered_voters_data.party
       voter.sex = voter.registered_voters_data.gender
-      voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date
-      voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
+      voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date rescue nil
+      voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date rescue nil
       voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
       voter.updated_at = Time.now
       voter.created_at = Time.now unless voter.created_at.present?
