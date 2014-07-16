@@ -161,7 +161,7 @@ class RegisteredVotersData < ActiveRecord::Base
   end
   
   def self.update_voter_info(last_datetime = Time.now)
-    Voter.joins(:registered_voters_data).find_in_batches(:batch_size => 1000) do |batch|
+    Voter.select(:id).find_in_batches(:batch_size => 1000) do |batch|
       Voter.delay.update_voter_info_by_batch(batch.map(&:id))
     end
   end
