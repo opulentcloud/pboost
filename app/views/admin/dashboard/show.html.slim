@@ -1,3 +1,28 @@
-h2
-  | Administrator Dashboard
+.container
+  .row style="margin-top: 15px;"
+    = search_form_for @q, url: search_admin_voters_path, html: { method: :post } do |f|
+      ul class="list-unstyled"
+        - index = 0
+        = f.condition_fields do |c|
+          - index += 1
+          li class="field"
+            = render partial: "voters/condition_fields", locals: { f: c, idx: index }
+            - if index == 1
+              button type="submit" class="btn btn-primary" style="margin-left: 10px;"
+                i class="glyphicon glyphicon-search"
+                | &nbsp;Search Voters
+              | &nbsp;  
+              = link_to_add_fields '', f, :condition
+              | &nbsp;  
+              - if action_name == 'search'
+                = link_to admin_dashboard_path, :class => 'btn btn-default' do 
+                  span.glyphicon.glyphicon-remove-sign
+                  |  Clear
+              div style="display: none;"
+                = f.sort_fields do |s|
+                  = s.sort_select associations: [:address]
+  .row
+    h2
+      | Admin Dashboard
+
 

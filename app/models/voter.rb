@@ -29,6 +29,15 @@
 
 class Voter < ActiveRecord::Base
 
+  DATE_SEARCH_FIELDS =  %w{dob dor}
+
+  #exclude some fields from ransack search  
+  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id','search_index','created_at','updated_at']
+
+  def self.ransackable_attributes auth_object = nil
+    (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
+  end
+
   # begin associations
   belongs_to :address
   has_many :votes, class_name: 'VotingHistory'
@@ -50,6 +59,16 @@ class Voter < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |order|
+        csv << voter.attributes.values_at(*column_names)
+      end
+    end
+  end
+  # end public class methods
+
   def self.build_search_index(first_name, last_name, street_no)
 		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
 		second_four = last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''

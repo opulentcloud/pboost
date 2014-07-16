@@ -15,6 +15,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
       - if admin_user?
         = link_to 'Manage Users', admin_users_path, class: 'navbar-brand'
+        = link_to 'Admin Dashboard', admin_dashboard_path, class: 'navbar-brand'
     .collapse.navbar-collapse.pull-right
       ul.nav.navbar-nav
         == render 'layouts/navigation_links'

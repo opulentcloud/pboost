@@ -33,6 +33,7 @@ class CreateAddresses < ActiveRecord::Migration
     add_index :addresses, [:lat, :lng]
     add_index :addresses, :address_hash, unique: true
     add_index :addresses, :cd
+    add_index :addresses, :street_name
     add_index :addresses, :city
     add_index :addresses, :comm_dist_code
     add_index :addresses, :county_name

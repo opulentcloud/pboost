@@ -1,0 +1,28 @@
+= f.attribute_fields do |a|
+  - the_select = a.attribute_select associations: [:address]
+
+  - new_select = the_select.html_safe
+  - fragment = Nokogiri::HTML.fragment(new_select)
+  - fragment.css('select').each do |sel|
+    - if sel.attributes['id'].value.starts_with?('q_c_')
+      - sel.set_attribute('class', 'form-control')
+      - sel.set_attribute('style', 'display: inline-block; width: 20%')
+      - break
+  = fragment.to_html.html_safe
+
+- the_select = f.predicate_select compounds: false, only: [:date_equals, :equals, :lt, :lteq, :gt, :gteq, :cont]
+
+- new_select = the_select.html_safe
+- fragment = Nokogiri::HTML.fragment(new_select)
+- fragment.css('select').each do |sel|
+  - if sel.attributes['id'].value.ends_with?('_p')
+    - sel.set_attribute('class', 'form-control')
+    - sel.set_attribute('style', 'display: inline-block; width: 15%;')
+    - break
+= fragment.to_html.html_safe
+
+= f.value_fields do |v|
+  = v.text_field :value, class: 'form-control', style: 'display: inline-block; width: 20%;'
+
+= link_to "#", :class => 'remove_fields btn btn-default', :"data-no-turbolink" => "", :title => "Remove Search Condition" do 
+  span.glyphicon.glyphicon-minus-sign

@@ -67,11 +67,13 @@ gem 'chronic'
 # Does not support postgis
 #gem 'foreigner'
 gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 gem 'devise'
 gem 'devise-async'
 gem 'omniauth-facebook'
 gem 'memcachier'
 gem 'dalli'
+gem 'nokogiri'
 
 group :production do
   gem 'rails_12factor'

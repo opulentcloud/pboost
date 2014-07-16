@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Voters">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">State File Id</Data></Cell>
+        <Cell><Data ss:Type="String">Last Name</Data></Cell>
+        <Cell><Data ss:Type="String">First Name</Data></Cell>
+        <Cell><Data ss:Type="String">Middle Name</Data></Cell>
+        <Cell><Data ss:Type="String">Suffix</Data></Cell>
+        <Cell><Data ss:Type="String">Salutation</Data></Cell>
+        <Cell><Data ss:Type="String">Phone</Data></Cell>
+        <Cell><Data ss:Type="String">Home Phone</Data></Cell>
+        <Cell><Data ss:Type="String">Work Phone</Data></Cell>
+        <Cell><Data ss:Type="String">Work Phone Ext</Data></Cell>
+        <Cell><Data ss:Type="String">Cell Phone</Data></Cell>
+        <Cell><Data ss:Type="String">Email</Data></Cell>
+        <Cell><Data ss:Type="String">Party</Data></Cell>
+        <Cell><Data ss:Type="String">Sex</Data></Cell>
+        <Cell><Data ss:Type="String">Age</Data></Cell>
+        <Cell><Data ss:Type="String">D.O.B.</Data></Cell>
+        <Cell><Data ss:Type="String">D.O.R.</Data></Cell>
+        <Cell><Data ss:Type="String">Address</Data></Cell>
+        <Cell><Data ss:Type="String">City</Data></Cell>
+        <Cell><Data ss:Type="String">State</Data></Cell>
+        <Cell><Data ss:Type="String">Zip5</Data></Cell>
+        <Cell><Data ss:Type="String">Zip4</Data></Cell>
+        <Cell><Data ss:Type="String">County</Data></Cell>
+        <Cell><Data ss:Type="String">Precinct</Data></Cell>
+        <Cell><Data ss:Type="String">CD</Data></Cell>
+        <Cell><Data ss:Type="String">SD</Data></Cell>
+        <Cell><Data ss:Type="String">HD</Data></Cell>
+        <Cell><Data ss:Type="String">Comm Dist</Data></Cell>
+        <Cell><Data ss:Type="String">Ward Dist</Data></Cell>
+        <Cell><Data ss:Type="String">Municipal Dist</Data></Cell>
+        <Cell><Data ss:Type="String">Commissioner Dist</Data></Cell>
+        <Cell><Data ss:Type="String">School Dist</Data></Cell>
+      </Row>
+      <% @voters.each do |voter| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= voter.state_file_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.last_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.first_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.middle_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.suffix %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.salutation %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.phone %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.home_phone %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.work_phone %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.work_phone_ext %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.cell_phone %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.email %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.party %></Data></Cell>          
+          <Cell><Data ss:Type="String"><%= voter.sex %></Data></Cell>          
+          <Cell><Data ss:Type="Number"><%= voter.age %></Data></Cell>
+          <Cell><Data ss:Type="Date"><%= l voter.dob %></Data></Cell>
+          <Cell><Data ss:Type="Date"><%= l voter.dor %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.address.full_street_address %></Data></Cell>            
+          <Cell><Data ss:Type="String"><%= voter.address.city %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.address.state %></Data></Cell>                    
+          <Cell><Data ss:Type="String"><%= voter.address.zip5 %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.address.zip4 %></Data></Cell>                    
+          <Cell><Data ss:Type="String"><%= voter.address.county_name %></Data></Cell>                    
+          <Cell><Data ss:Type="String"><%= voter.address.precinct_code %></Data></Cell>           
+          <Cell><Data ss:Type="String"><%= voter.address.cd %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.address.sd %></Data></Cell>                                                     
+          <Cell><Data ss:Type="String"><%= voter.address.hd %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= voter.address.comm_dist_code %></Data></Cell>                             
+          <Cell><Data ss:Type="String"><%= voter.address.ward_district %></Data></Cell>                             
+          <Cell><Data ss:Type="String"><%= voter.address.municipal_district %></Data></Cell>                             
+          <Cell><Data ss:Type="String"><%= voter.address.commissioner_district %></Data></Cell>     
+          <Cell><Data ss:Type="String"><%= voter.address.school_district %></Data></Cell>                             
+        </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

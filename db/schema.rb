@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140715205031) do
+ActiveRecord::Schema.define(version: 20140716150101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20140715205031) do
   add_index "addresses", ["school_district"], :name => "index_addresses_on_school_district"
   add_index "addresses", ["sd"], :name => "index_addresses_on_sd"
   add_index "addresses", ["state"], :name => "index_addresses_on_state"
+  add_index "addresses", ["street_name"], :name => "index_addresses_on_street_name"
   add_index "addresses", ["ward_district"], :name => "index_addresses_on_ward_district"
 
   create_table "delayed_job_results", force: true do |t|
@@ -282,7 +283,7 @@ ActiveRecord::Schema.define(version: 20140715205031) do
     t.string   "last_name",       limit: 32
     t.string   "first_name",      limit: 32
     t.string   "middle_name",     limit: 32
-    t.string   "suffix",          limit: 4
+    t.string   "suffix",          limit: 30
     t.string   "salutation",      limit: 32
     t.string   "phone",           limit: 10
     t.string   "home_phone",      limit: 10

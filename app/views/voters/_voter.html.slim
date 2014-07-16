@@ -1,0 +1,16 @@
+tr
+  td
+    = check_box_tag "checked_voters_#{voter_counter}_id", voter.id, false, class: "voter_cb", name: "checked_voters[#{voter_counter}][id]"
+  td
+    = link_to voter.state_file_id, admin_voter_path(voter), title: 'Click To View This Voter'
+  td
+    = voter.party
+  td
+    = voter.last_name
+  td
+    = voter.first_name
+  td
+    = voter.address.county_name rescue nil
+  td
+    = voter.address.precinct_code rescue nil
+
