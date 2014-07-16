@@ -46,7 +46,6 @@ class Admin::VotersController < ApplicationController
         @voters = @voters.paginate(:page => @pg, :per_page => @per_pg)
         @q.build_condition if @q.conditions.empty?
         @q.build_sort if @q.sorts.empty?
-        render stream: true
       }
       format.csv { 
         send_data @voters.to_csv, 
