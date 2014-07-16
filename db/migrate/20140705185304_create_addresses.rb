@@ -22,7 +22,7 @@ class CreateAddresses < ActiveRecord::Migration
 			t.string :comm_dist_code, limit: 2
       t.decimal  :lat, precision: 15, scale: 10
       t.decimal  :lng, precision: 15, scale: 10
-      t.point 	 :geom, srid: 4326, null: true
+      #t.point 	 :geom, srid: 4326, null: true
 			t.boolean :geo_failed
     	t.string :address_hash, limit: 32
     	t.boolean :is_odd
