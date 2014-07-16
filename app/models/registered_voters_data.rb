@@ -142,7 +142,7 @@ class RegisteredVotersData < ActiveRecord::Base
   end
   
   def self.update_voter_info(last_datetime = Time.now)
-    Voter.joins(:registered_voters_data).where("voters.updated_at < ?", last_datetime).find_in_batches(:batch_size => 1000) do |batch|
+    Voter.joins(:registered_voters_data).find_in_batches(:batch_size => 1000) do |batch|
       Voter.transaction do
         batch.each do |voter|
           voter.last_name = voter.registered_voters_data.lastname
