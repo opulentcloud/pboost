@@ -61,9 +61,9 @@ class Voter < ActiveRecord::Base
   # begin public class methods
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |voter|
-        csv << voter.attributes.values_at(*column_names)
+      csv << (column_names + Address.column_names)
+      all.includes(:address).each do |voter|
+        csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names))
       end
     end
   end
