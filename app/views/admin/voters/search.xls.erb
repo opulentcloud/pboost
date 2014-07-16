@@ -20,6 +20,22 @@
       </Table>
     </Worksheet>
   <% end %>
+  <% if @precinct_breakdown.present? %>
+    <Worksheet ss:Name="Precinct Voters Summary">
+      <Table>
+        <Row>
+          <Cell><Data ss:Type="String">Precinct</Data></Cell>
+          <Cell><Data ss:Type="String">Voters</Data></Cell>
+        </Row>
+        <% @precinct_breakdown.each do |pb| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= pb[:precinct_code] %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= pb[:voter_count] %></Data></Cell>
+          </Row>
+        <% end %>
+      </Table>
+    </Worksheet>
+  <% end %>
   <% if 1 == 0 %>
     <Worksheet ss:Name="Voter Details">
       <Table>
