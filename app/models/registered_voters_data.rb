@@ -111,11 +111,11 @@ class RegisteredVotersData < ActiveRecord::Base
   def self.insert_new_addresses
     query = %{INSERT INTO addresses (street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
 	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code,ward_district,municipal_district,school_district,address_hash)
-      SELECT r.house_number,r.house_suffix,r.street_predirection,r.streetname,r.streettype,r.street_postdirection,r.unittype,
+      SELECT DISTINCT (r.address_hash) ON r.house_number,r.house_suffix,r.street_predirection,r.streetname,r.streettype,r.street_postdirection,r.unittype,
 	      r.unitnumber,r.residentialcity,r.residentialstate,r.residentialzip5,r.residentialzip4,r.county,r.precinct as precint_name,r.precinct as precinct_code,LPAD(r.congressional_districts,3,'0') as congressional_districts,LPAD(r.legislative_districts,3,'0') as sd,LPAD(r.legislative_districts,3,'0') as legislative_districts,r.councilmanic_districts,r.ward_districts,r.municipal_districts,r.school_districts,r.address_hash
       FROM registered_voters_data r
       LEFT OUTER JOIN addresses a ON a.address_hash = r.address_hash
-      WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL}
+      WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL GROUP BY r.address_hash}
     ActiveRecord::Base.connection.execute(query, :skip_logging)    
   end
 
@@ -139,7 +139,7 @@ class RegisteredVotersData < ActiveRecord::Base
           voter.sex = voter.registered_voters_data.gender
           voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date
           voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
-          voter.search_index = voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
+          voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
           voter.save!
         end
       end
