@@ -162,7 +162,7 @@ class RegisteredVotersData < ActiveRecord::Base
   
   def self.update_voter_info(last_datetime = Time.now)
     Voter.select(:id).find_in_batches(:batch_size => 1000) do |batch|
-      Voter.delay.update_voter_info_by_batch(batch.map(&:id))
+      RegisteredVotersData.delay.update_voter_info_by_batch(batch.map(&:id))
     end
   end
   
