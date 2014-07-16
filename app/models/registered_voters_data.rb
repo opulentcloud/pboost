@@ -143,7 +143,7 @@ class RegisteredVotersData < ActiveRecord::Base
 
   def self.update_voter_info_by_batch(voter_ids)
     Transaction do
-      Voter.where(id: voter_ids).each do |voter|
+      Voter.join(:registered_voters_data).where(id: voter_ids).each do |voter|
         voter.last_name = voter.registered_voters_data.lastname
         voter.first_name = voter.registered_voters_data.firstname
         voter.middle_name = voter.registered_voters_data.middlename
