@@ -1,6 +1,6 @@
-listen 8080
+listen 8080, :tcp_nopush => false
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 4)
-timeout 15
+timeout 120
 preload_app true
 
 @delayed_job_pid = nil
