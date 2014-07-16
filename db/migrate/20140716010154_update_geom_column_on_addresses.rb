@@ -5,6 +5,6 @@ class UpdateGeomColumnOnAddresses < ActiveRecord::Migration
   end
   
   def self.down
-    add_column :addresses, :geom, :point, srid: 4326
+    remove_column :addresses, :geom
   end
 end
