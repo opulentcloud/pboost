@@ -115,7 +115,7 @@ class RegisteredVotersData < ActiveRecord::Base
 	      r.unitnumber,r.residentialcity,r.residentialstate,r.residentialzip5,r.residentialzip4,r.county,r.precinct as precint_name,r.precinct as precinct_code,LPAD(r.congressional_districts,3,'0') as congressional_districts,LPAD(r.legislative_districts,3,'0') as sd,LPAD(r.legislative_districts,3,'0') as legislative_districts,r.councilmanic_districts,r.ward_districts,r.municipal_districts,r.school_districts,r.address_hash
       FROM registered_voters_data r
       LEFT OUTER JOIN addresses a ON a.address_hash = r.address_hash
-      WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL GROUP BY r.address_hash}
+      WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL}
     ActiveRecord::Base.connection.execute(query, :skip_logging)    
   end
 
