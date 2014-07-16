@@ -41,8 +41,8 @@ class Voter < ActiveRecord::Base
 	end
 
 	def build_search
-		first_four = self.first_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
-		second_four = self.last_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
+		first_four = self.first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		second_four = self.last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
 		all = self.address.street_no.to_s.strip.upcase rescue ''
 		first_four+second_four+all
 	end
@@ -51,8 +51,8 @@ class Voter < ActiveRecord::Base
   
   # begin public class methods
   def self.build_search_index(first_name, last_name, street_no)
-		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
-		second_four = last_name.to_s.strip.upcase.gsub(/[^A-Z|\s]/,'')[0,4].ljust(4,'X') rescue ''
+		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		second_four = last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
 		all = street_no.to_s.strip.upcase rescue ''
 		first_four+second_four+all
   end
