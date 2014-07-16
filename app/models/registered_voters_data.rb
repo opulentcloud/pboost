@@ -119,6 +119,20 @@ class RegisteredVotersData < ActiveRecord::Base
     ActiveRecord::Base.connection.execute(query, :skip_logging)    
   end
 
+  def self.update_voters_addresses
+    query =%{UPDATE voters
+	      SET address_id = result.new_address_id
+      FROM
+      (SELECT DISTINCT ON (v.id) v.id, a.address_hash as old_address_hash, an.address_hash as new_address_hash, an.id as new_address_id from registered_voters_data rvd
+      INNER JOIN voters v ON v.state_file_id = rvd.vtrid
+      INNER JOIN addresses a ON a.id = v.address_id AND a.id = (SELECT MIN(id) FROM addresses WHERE addresses.address_hash = a.address_hash)
+      INNER JOIN addresses an ON an.address_hash = rvd.address_hash
+      WHERE 
+      rvd.address_hash != a.address_hash) AS result
+      WHERE voters.id = result.id}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
   def self.insert_new_voters
     query = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
       SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, r.gender, r.dob::date, r.state_registration_date::date, r.vtrid FROM registered_voters_data r
