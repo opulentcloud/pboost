@@ -48,7 +48,7 @@ class Admin::VotersController < ApplicationController
         @q.build_sort if @q.sorts.empty?
       }
       format.csv { 
-        send_data @voters.to_csv, 
+        send_data @voters.to_csv(col_sep: "\t"), 
           filename: "voter-export-#{Time.now.to_i}.csv",
           type: :csv,
           disposition: "#{ENV['PDF_DISPOSITION']}"
