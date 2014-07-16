@@ -4,6 +4,7 @@ class UpdateColumnsOnAddresses < ActiveRecord::Migration
     change_column :addresses, :street_prefix, :string, limit: 10
     change_column :addresses, :street_suffix, :string, limit: 10
     change_column :addresses, :street_name, :string, limit: 50
+    change_column :addresses, :street_type, :string, limit: 10
     change_column :addresses, :apt_type, :string, limit: 10
     change_column :addresses, :apt_no, :string, limit: 20
   end
@@ -12,6 +13,7 @@ class UpdateColumnsOnAddresses < ActiveRecord::Migration
     change_column :addresses, :street_prefix, :string, limit: 10
     change_column :addresses, :street_suffix, :string, limit: 10
     change_column :addresses, :street_name, :string, limit: 50
+    change_column :addresses, :street_type, :string, limit: 10
     change_column :addresses, :apt_type, :string, limit: 10
     change_column :addresses, :apt_no, :string, limit: 20
   end

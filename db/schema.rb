@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140715205031) do
     t.string   "street_no_half",        limit: 10
     t.string   "street_prefix",         limit: 10
     t.string   "street_name",           limit: 50
-    t.string   "street_type",           limit: 4
+    t.string   "street_type",           limit: 10
     t.string   "street_suffix",         limit: 10
     t.string   "apt_type",              limit: 10
     t.string   "apt_no",                limit: 20
