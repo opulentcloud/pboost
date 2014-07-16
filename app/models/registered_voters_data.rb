@@ -155,6 +155,7 @@ class RegisteredVotersData < ActiveRecord::Base
           voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date
           voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
           voter.updated_at = Time.now
+          voter.created_at = Time.now unless voter.created_at.present?
           voter.save!
         end
       end
