@@ -32,20 +32,21 @@ class Admin::VotersController < ApplicationController
       Rails.logger.debug(ex.backtrace)    
     end
 
-    @q = Voter.joins(:address).search(params[:q])
+    @q = Voter.includes(:address).search(params[:q])
     session[:last_search] = params[:q]
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
     @voters = @q.result
 
-    @party_breakdown = @voters.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
-    @precinct_breakdown = @voters.reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
+    @party_breakdown = @voters.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc").scoped if params[:party_breakdown].present?
+    @precinct_breakdown = @voters.reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc").scoped if params[:precinct_breakdown].present?
 
     respond_to do |format|
       format.html {
         @voters = @voters.paginate(:page => @pg, :per_page => @per_pg)
         @q.build_condition if @q.conditions.empty?
         @q.build_sort if @q.sorts.empty?
+        render stream: true
       }
       format.csv { 
         send_data @voters.to_csv, 
