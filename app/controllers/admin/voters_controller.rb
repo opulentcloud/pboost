@@ -56,7 +56,7 @@ class Admin::VotersController < ApplicationController
       format.xlsx { }
       format.xls { 
         send_data @voters.to_csv(col_sep: "\t"),
-          filename: "order-export-#{Time.now.to_i}.xls",
+          filename: "voter-export-#{Time.now.to_i}.xls",
           type: :xls,
           disposition: "#{ENV['PDF_DISPOSITION']}"
       }
