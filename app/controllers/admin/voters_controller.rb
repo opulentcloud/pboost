@@ -38,8 +38,8 @@ class Admin::VotersController < ApplicationController
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
     @voters = @q.result
 
-    @party_breakdown = @voters.select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
-    @precinct_breakdown = @voters.select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
+    @party_breakdown = @voters.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
+    @precinct_breakdown = @voters.reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
 
     respond_to do |format|
       format.html {
