@@ -31,7 +31,7 @@
   .row
     h2
       | Voter Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
-      - search_args = { format: :xls }
+      - search_args = { format: :xlsx }
       - search_args.merge!(party_breakdown: "1") if params[:party_breakdown].present?
       - search_args.merge!(precinct_breakdown: "1") if params[:precinct_breakdown].present?      
       = link_to search_admin_voters_path(search_args), :class => 'btn btn-default', target: '_blank' do 

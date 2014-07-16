@@ -53,6 +53,7 @@ class Admin::VotersController < ApplicationController
           type: :csv,
           disposition: "#{ENV['PDF_DISPOSITION']}"
       }
+      format.xlsx { }
       format.xls #{ 
         #send_data @orders.to_csv(col_sep: "\t"),
         #  filename: "order-export-#{Time.now.to_i}.xls",
