@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716150101) do
+ActiveRecord::Schema.define(version: 20140717125507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "postgis"
 
   create_table "addresses", force: true do |t|
@@ -37,28 +38,52 @@ ActiveRecord::Schema.define(version: 20140716150101) do
     t.string   "sd",                    limit: 3
     t.string   "hd",                    limit: 3
     t.string   "comm_dist_code",        limit: 3
-    t.decimal  "lat",                                                         precision: 15, scale: 10
-    t.decimal  "lng",                                                         precision: 15, scale: 10
+    t.decimal  "lat",                              precision: 15, scale: 10
+    t.decimal  "lng",                              precision: 15, scale: 10
     t.boolean  "geo_failed"
     t.string   "address_hash",          limit: 32
     t.boolean  "is_odd"
     t.integer  "street_no_int"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",                  limit: {:srid=>4326, :type=>"point"}
     t.string   "ward_district",         limit: 10
     t.string   "municipal_district",    limit: 10
     t.string   "commissioner_district", limit: 10
     t.string   "school_district",       limit: 10
   end
 
-  add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash"
+  add_index "addresses", ["address_hash"], :name => "index_addresses_on_address_hash", :unique => true
   add_index "addresses", ["cd"], :name => "index_addresses_on_cd"
   add_index "addresses", ["city"], :name => "index_addresses_on_city"
   add_index "addresses", ["comm_dist_code"], :name => "index_addresses_on_comm_dist_code"
   add_index "addresses", ["commissioner_district"], :name => "index_addresses_on_commissioner_district"
+  add_index "addresses", ["county_name"], :name => "ac_allegany_idx"
+  add_index "addresses", ["county_name"], :name => "ac_anne_arundel_idx"
+  add_index "addresses", ["county_name"], :name => "ac_baltimore_city_idx"
+  add_index "addresses", ["county_name"], :name => "ac_baltimore_county_idx"
+  add_index "addresses", ["county_name"], :name => "ac_baltimore_idx"
+  add_index "addresses", ["county_name"], :name => "ac_calvert_idx"
+  add_index "addresses", ["county_name"], :name => "ac_caroline_idx"
+  add_index "addresses", ["county_name"], :name => "ac_carroll_idx"
+  add_index "addresses", ["county_name"], :name => "ac_cecil_idx"
+  add_index "addresses", ["county_name"], :name => "ac_charles_idx"
+  add_index "addresses", ["county_name"], :name => "ac_dorchester_idx"
+  add_index "addresses", ["county_name"], :name => "ac_frederick_idx"
+  add_index "addresses", ["county_name"], :name => "ac_garrett_idx"
+  add_index "addresses", ["county_name"], :name => "ac_harford_idx"
+  add_index "addresses", ["county_name"], :name => "ac_howard_idx"
+  add_index "addresses", ["county_name"], :name => "ac_kent_idx"
+  add_index "addresses", ["county_name"], :name => "ac_montgomery_idx"
+  add_index "addresses", ["county_name"], :name => "ac_prince_george_s_idx"
+  add_index "addresses", ["county_name"], :name => "ac_queen_anne_s_idx"
+  add_index "addresses", ["county_name"], :name => "ac_saint_mary_s_idx"
+  add_index "addresses", ["county_name"], :name => "ac_somerset_idx"
+  add_index "addresses", ["county_name"], :name => "ac_st__mary_s_idx"
+  add_index "addresses", ["county_name"], :name => "ac_talbot_idx"
+  add_index "addresses", ["county_name"], :name => "ac_washington_idx"
+  add_index "addresses", ["county_name"], :name => "ac_wicomico_idx"
+  add_index "addresses", ["county_name"], :name => "ac_worcester_idx"
   add_index "addresses", ["county_name"], :name => "index_addresses_on_county_name"
-  add_index "addresses", ["geom"], :name => "index_addresses_on_geom", :spatial => true
   add_index "addresses", ["hd"], :name => "index_addresses_on_hd"
   add_index "addresses", ["id"], :name => "index_addresses_on_id"
   add_index "addresses", ["is_odd"], :name => "index_addresses_on_is_odd"

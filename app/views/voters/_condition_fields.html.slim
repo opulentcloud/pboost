@@ -10,7 +10,7 @@
       - break
   = fragment.to_html.html_safe
 
-- the_select = f.predicate_select compounds: false, only: [:date_equals, :equals, :lt, :lteq, :gt, :gteq, :cont]
+- the_select = f.predicate_select compounds: false, only: [:date_equals, :equals, :lt, :lteq, :gt, :gteq, :cont, :matches]
 
 - new_select = the_select.html_safe
 - fragment = Nokogiri::HTML.fragment(new_select)

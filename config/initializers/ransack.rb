@@ -1,7 +1,7 @@
 Ransack.configure do |config|
   config.add_predicate 'equals', # Name your predicate
                        # What non-compound ARel predicate will it use? (eq, matches, etc)
-                       :arel_predicate => 'matches',
+                       :arel_predicate => 'eq',
                        # Format incoming values as you see fit. (Default: Don't do formatting)
                        #:formatter => proc {|v| Chronic.parse(v).to_date.to_s(:db) },
                        # Validate a value. An "invalid" value won't be used in a search.

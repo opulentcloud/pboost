@@ -16,6 +16,7 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
+  gem 'bullet'
 end
 
 # Use postgresql as the database for Active Record
