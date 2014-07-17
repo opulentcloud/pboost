@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140717125507) do
+ActiveRecord::Schema.define(version: 20140717140238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,21 @@ ActiveRecord::Schema.define(version: 20140717125507) do
   add_index "addresses", ["state"], :name => "index_addresses_on_state"
   add_index "addresses", ["street_name"], :name => "index_addresses_on_street_name"
   add_index "addresses", ["ward_district"], :name => "index_addresses_on_ward_district"
+
+  create_table "attachments", force: true do |t|
+    t.string   "type",            null: false
+    t.string   "attachable_type", null: false
+    t.integer  "attachable_id",   null: false
+    t.string   "mime_type",       null: false
+    t.string   "origin_url",      null: false
+    t.string   "description",     null: false
+    t.string   "attached_file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachments", ["attachable_type", "attachable_id"], :name => "idx_attachable_type_and_id"
+  add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
   create_table "delayed_job_results", force: true do |t|
     t.integer  "job_id",     null: false

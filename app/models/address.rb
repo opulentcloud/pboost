@@ -40,7 +40,7 @@
 class Address < ActiveRecord::Base
 
   #exclude some fields from ransack search  
-  UNRANSACKABLE_ATTRIBUTES = ['id','lat','lng','geo_failed','address_hash','street_no_int','geom','created_at','updated_at']
+  UNRANSACKABLE_ATTRIBUTES = ['id','precinct_name','lat','lng','geo_failed','address_hash','street_no_int','geom','created_at','updated_at']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys

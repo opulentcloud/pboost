@@ -75,6 +75,9 @@ gem 'omniauth-facebook'
 gem 'memcachier'
 gem 'dalli'
 gem 'nokogiri'
+gem 'fog'
+gem 'carrierwave'
+gem 'prawn'
 
 group :production do
   gem 'rails_12factor'
