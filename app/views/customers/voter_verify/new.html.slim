@@ -4,9 +4,9 @@
 
 = semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
   = f.inputs do
-    = f.input :last_name, input_html: { autofocus: true, autocomplete: "off", pattern: "/\w+/", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
-    = f.input :first_name, input_html: { autocomplete: "off", pattern: "/\w+/", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
-    = f.input :street_no, input_html: { autocomplete: "off", pattern: "/\d+/", oninvalid: "this.setCustomValidity('Please input the street number (numbers only).')" }
+    = f.input :last_name, input_html: { autofocus: true, autocomplete: "off", pattern: "[A-Za-z]{1,}", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
+    = f.input :first_name, input_html: { autocomplete: "off", pattern: "[A-Za-z]{1,}", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
+    = f.input :street_no, input_html: { autocomplete: "off", pattern: "[0-9]{1,}", oninvalid: "this.setCustomValidity('Please input the street number (numbers only).')" }
     = f.hidden_field :search_index, value: @search_index if @search_index.present?
 
   - if @voters.present?
