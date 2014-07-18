@@ -47,7 +47,7 @@ private
 
   def signature_row(voter, row_number)
     stroke_horizontal_rule
-    move_down 2
+    move_down 4
     font_size(10) do
       text_box "First Name", kerning: false, at: [70, cursor]
       text_box "Middle Name", kerning: false, at: [169, cursor]
@@ -55,7 +55,7 @@ private
       text_box "Month", kerning: false, at: [427, cursor]
       text_box "Date", kerning: false, at: [479, cursor]
       text_box "Year", kerning: false, at: [524, cursor]
-      move_down 10
+      move_down 14
       text_box "#{voter.first_name}", kerning: true, at: [70, cursor]
       text_box "#{voter.middle_name}", kerning: true, at: [169, cursor]
       text_box "#{voter.last_name}", kerning: true, at: [279, cursor]
@@ -63,7 +63,54 @@ private
       text_box "#{voter.dob.day.to_s.rjust(2, '0') rescue nil}", kerning: false, at: [479, cursor]
       text_box "#{voter.dob.year rescue nil}", kerning: false, at: [524, cursor]
     end
-    move_down 40
+    font_size 9
+    bounding_box([bounds.left, cursor+6], at: 0, width: 30) do
+      text "Print"
+      move_up 2
+      text "Name:"
+    end    
+    text_box "Birth Date:", kerning: false, at: [361, cursor+10]
+    move_up 11
+    font_size 10
+    text "#{'_' * 102}"
+    text_box "Month", kerning: false, at: [427, cursor]
+    text_box "Date", kerning: false, at: [479, cursor]
+    text_box "Year", kerning: false, at: [524, cursor]
+    move_down 12
+    font_size(9) do
+      text_box "Signature", kerning: false, at: [0, cursor]
+      bounding_box([361, cursor+6], at: 0, width: 42) do
+        text "Date of"
+        move_up 2
+        text "Signature:"
+      end    
+    end
+    move_up 10
+    text "#{'_' * 102}"
+    font_size(10) do
+      text_box "Street Number", kerning: false, at: [94, cursor]
+      text_box "Street Name", kerning: false, at: [193, cursor]
+      text_box "Apt. No.", kerning: false, at: [348, cursor]
+      text_box "City or Town", kerning: false, at: [415, cursor]
+      text_box "Zip", kerning: false, at: [530, cursor]
+      move_down 15
+      text_box "#{voter.address.full_street_number}", kerning: true, at: [94, cursor]
+      text_box "#{voter.address.full_street_name}", kerning: true, at: [193, cursor]
+      text_box "#{voter.address.full_apt_number}", kerning: true, at: [348, cursor]
+      text_box "#{voter.address.city}", kerning: false, at: [415, cursor]
+      text_box "#{voter.address.zip5}", kerning: false, at: [530, cursor]
+    end
+    move_up 1
+    font_size 9
+    bounding_box([bounds.left, cursor+13], at: 0, width: 45) do
+      text "Maryland"
+      move_up 2
+      text "Residence"
+      move_up 2
+      text "Address:"
+    end    
+    stroke_horizontal_rule
+    move_down 1
     return
 
     text "                First Name               Middle Name            Last Name                      Month           Date           Year"

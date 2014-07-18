@@ -67,6 +67,18 @@ class Address < ActiveRecord::Base
     "#{street_no} #{street_no_half} #{street_prefix} #{street_name} #{street_type} #{street_suffix} #{apt_type} #{apt_no}".squeeze(" ").strip
   end
 
+  def full_street_number
+    "#{street_no} #{street_no_half}".squeeze(" ").strip    
+  end
+
+  def full_street_name
+    "#{street_prefix} #{street_name} #{street_type} #{street_suffix}".squeeze(" ").strip
+  end
+
+  def full_apt_number
+    "#{apt_type} #{apt_no}".squeeze(" ").strip  
+  end
+
 	def hash_full_address
 		Digest::MD5.hexdigest(full_address.downcase)
 	end
