@@ -109,7 +109,10 @@ private
       move_up 2
       text "Address:"
     end    
-    stroke_horizontal_rule
+    stroke do
+      self.line_width = 3
+      horizontal_rule
+    end
     move_down 1
     return
 
