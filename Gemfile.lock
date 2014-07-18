@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/bdogger/prawn-blank
+  revision: 67bf2315848b29ce1bfb5801307ddd8eba44467e
+  specs:
+    prawn-blank (0.0.3)
+      prawn
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -319,6 +326,7 @@ DEPENDENCIES
   omniauth-facebook
   pg
   prawn
+  prawn-blank!
   quiet_assets
   rails (= 4.1.1)
   rails_12factor
