@@ -46,7 +46,10 @@ class CandidatePetitionFormReportPdf < Prawn::Document
 private
 
   def signature_row(voter, row_number)
-    stroke_horizontal_rule
+    stroke do
+      self.line_width = 1
+      horizontal_rule
+    end
     move_down 4
     font_size(10) do
       text_box "First Name", kerning: false, at: [70, cursor]
@@ -115,30 +118,16 @@ private
       self.line_width = 1
       vertical_line cursor, cursor + 85, at: bounds.right
     end
+    bounding_box([bounds.left, cursor+85], at: 0, width: 23, height: 85) do
+      move_down 34
+      text "#{row_number}", size: 15, style: :bold, indent_paragraphs: 3
+      #transparent(0.5) { stroke_bounds }
+      stroke do
+        self.line_width = 8
+        vertical_line 0, 85, at: bounds.right - 4
+      end
+    end
     move_down 1
-    return
-
-    text "                First Name               Middle Name            Last Name                      Month           Date           Year"
-    
-    bounding_box([bounds.left, cursor], width: 10, height: 20) do
-      text "#{row_number}", size: 14, style: :bold, valign: :middle
-    end
-    stroke do
-      horizontal_rule
-    end
-    text "Print"
-    text "Name:"
-    stroke do
-      horizontal_rule
-    end
-    text "Signature"
-    horizontal_rule
-    text "Maryland   Street Number   Street Name"
-    text "Residence"
-    text "Address:"
-    stroke do
-      horizontal_rule
-    end
   end
 
   def build_signatures
@@ -170,6 +159,7 @@ private
       ], align: :justify, leading: -2
       text "SBE 6-201-2C  (Rev 7-2011)", size: 8, align: :right
       stroke do
+        self.line_width = 1
         vertical_line 3, 155, at: -3
       end
     end
@@ -202,6 +192,7 @@ private
       text "Address: __________________________________________", align: :left
     end
     stroke do
+      self.line_width = 1    
       horizontal_rule
     end
     move_down 3
@@ -226,6 +217,7 @@ private
       text "_________________________________________________________", align: :left
       text "Telephone (including area code)", align: :left
       stroke do
+        self.line_width = 1
         vertical_line 0, bounds.top, at: bounds.right
       end
     end
