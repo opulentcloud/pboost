@@ -6,6 +6,9 @@ require 'prawn/blank'
 #tempfile = Tempfile.new(["praw-doc-#{Time.now.to_i}","pdf"])
 #tempfile.write(CandidatePetitionFormReportPdf.new(Voter.limit(5)).render.force_encoding("UTF-8"))
 
+#voter_ids = Voter.limit(5).each_with_object([]) { |v,arr| arr << v.id }
+#tempfile.write(CandidatePetitionFormReportPdf.new(Voter.where(id: voter_ids)).render.force_encoding("UTF-8"))
+
 class CandidatePetitionFormReportPdf < Prawn::Document
   # Often-Used Constants
   TABLE_ROW_COLORS = ["FFFFFF","FFFFFF"]
@@ -15,33 +18,50 @@ class CandidatePetitionFormReportPdf < Prawn::Document
   CHECKED_CHECKBOX = "\u2611" # checked
   EXED_CHECKBOX = "\u2612" # x'd
   
-  def initialize(voters = [], default_prawn_options = {})
+  def initialize(voters, default_prawn_options = {})
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
     @voters = voters
 
-    # Write Header
-    header
-
+    first = true
     # Write in 5 signature blocks
-    5.times do |x|
-      signature_row(x)
+    @voters.find_in_batches(batch_size: 5) do |batch|
+      start_new_page unless first == true
+      first = false
+      # Write Header
+      header
+
+      batch.each_with_index do |voter, index|
+        signature_row(voter, index+1)
+      end
+
+      footer
     end
     # Write Footer
     #repeat :all do
-      footer
+#      footer
     #end
   end
 
 private
 
-  def signature_row(row_number)
+  def signature_row(voter, row_number)
     stroke_horizontal_rule
     move_down 2
     font_size(10) do
       text_box "First Name", kerning: false, at: [70, cursor]
-      text_box "Middle Name", kerning: false, at: [168, cursor]
+      text_box "Middle Name", kerning: false, at: [169, cursor]
       text_box "Last Name", kerning: false, at: [279, cursor]
+      text_box "Month", kerning: false, at: [427, cursor]
+      text_box "Date", kerning: false, at: [479, cursor]
+      text_box "Year", kerning: false, at: [524, cursor]
+      move_down 10
+      text_box "#{voter.first_name}", kerning: true, at: [70, cursor]
+      text_box "#{voter.middle_name}", kerning: true, at: [169, cursor]
+      text_box "#{voter.last_name}", kerning: true, at: [279, cursor]
+      text_box "#{voter.dob.month.to_s.rjust(2, '0') rescue nil}", kerning: false, at: [427, cursor]
+      text_box "#{voter.dob.day.to_s.rjust(2, '0') rescue nil}", kerning: false, at: [479, cursor]
+      text_box "#{voter.dob.year rescue nil}", kerning: false, at: [524, cursor]
     end
     move_down 40
     return
