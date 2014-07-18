@@ -44,7 +44,7 @@ class CandidatePetitionFormReportPdf < Prawn::Document
         index += 1 if index == 0
         # Write Header
         header
-        signature_row(voter, index+1)
+        signature_row(voter, index)
         footer
         index = 0 if index == 5
       end
