@@ -112,6 +112,8 @@ private
     stroke do
       self.line_width = 3
       horizontal_rule
+      self.line_width = 1
+      vertical_line cursor, cursor + 85, at: bounds.right
     end
     move_down 1
     return
