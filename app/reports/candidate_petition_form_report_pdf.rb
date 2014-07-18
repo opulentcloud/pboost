@@ -24,15 +24,68 @@ class CandidatePetitionFormReportPdf < Prawn::Document
     header
 
     # Write in 5 signature blocks
-    #build_signatures
-    
-    # Write Footer
-    repeat :all do
-      footer
+    5.times do |x|
+      signature_row(x)
     end
+    # Write Footer
+    #repeat :all do
+      footer
+    #end
   end
 
 private
+
+  def signature_row(row_number)
+    stroke_horizontal_rule
+    move_down 2
+    font_size(10) do
+      text_box "First Name", kerning: false, at: [70, cursor]
+      text_box "Middle Name", kerning: false, at: [168, cursor]
+      text_box "Last Name", kerning: false, at: [279, cursor]
+    end
+    move_down 40
+    return
+
+    text "                First Name               Middle Name            Last Name                      Month           Date           Year"
+    
+    bounding_box([bounds.left, cursor], width: 10, height: 20) do
+      text "#{row_number}", size: 14, style: :bold, valign: :middle
+    end
+    stroke do
+      horizontal_rule
+    end
+    text "Print"
+    text "Name:"
+    stroke do
+      horizontal_rule
+    end
+    text "Signature"
+    horizontal_rule
+    text "Maryland   Street Number   Street Name"
+    text "Residence"
+    text "Address:"
+    stroke do
+      horizontal_rule
+    end
+  end
+
+  def build_signatures
+    move_down 200
+    if signatures_table_data.empty?
+      text ""
+    else
+      table signatures_table_data,
+        header: false,
+        width: bounds.width,
+        #column_widths: [100,100,100,100,30,30,30],
+        row_colors: TABLE_ROW_COLORS,
+        cell_style: { size: TABLE_FONT_SIZE }
+    end
+  end
+
+  def signatures_table_data 
+    @signatures_table_data ||= @voters.all.map { |v| [v.first_name, v.middle_name, v.last_name,"", (v.dob.month rescue nil),(v.dob.day rescue nil),(v.dob.year rescue nil)] }
+  end
 
   def header
     text "State of Maryland - General Election Candidate Nomination Petition", size: 13, style: :bold, font: "Arial", align: :center
@@ -83,24 +136,6 @@ private
     formatted_text [ { text: "Please Note: ", size: 9, styles: [:bold, :italic] },
                      { text: "The information you provide on this petition is public information and may be used to change your voter registration address.", size: 9, styles: [:italic] }    
     ], align: :justify
-  end
-
-  def build_signatures
-    move_down 200
-    if signatures_table_data.empty?
-      text ""
-    else
-      table signatures_table_data,
-        header: false,
-        width: bounds.width,
-        #column_widths: [100,100,100,100,30,30,30],
-        row_colors: TABLE_ROW_COLORS,
-        cell_style: { size: TABLE_FONT_SIZE }
-    end
-  end
-
-  def signatures_table_data 
-    @signatures_table_data ||= @voters.all.map { |v| [v.first_name, v.middle_name, v.last_name,"", (v.dob.month rescue nil),(v.dob.day rescue nil),(v.dob.year rescue nil)] }
   end
 
   def footer
