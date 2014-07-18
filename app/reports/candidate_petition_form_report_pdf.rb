@@ -104,17 +104,18 @@ private
   end
 
   def footer
-    bounding_box [bounds.left, bounds.bottom + 86], width: 262, valign: :bottom do
+    bounding_box [bounds.left, bounds.bottom + 93], width: 262 do
       font_size 8
+      move_down 3
       text "_________________________________________________________", align: :left
       text "Individual Cirulator's printed or typed name", align: :left
       move_down 3
       text "_________________________________________________________", align: :left
       text "Residence Address", align: :left
-      move_down 3
+      move_down 4
       text "_________________________________________________________", align: :left
       text "City                                                                  State                   Zip", align: :left
-      move_down 3
+      move_down 5
       text "_________________________________________________________", align: :left
       text "Telephone (including area code)", align: :left
       stroke do
@@ -122,8 +123,8 @@ private
       end
     end
 
-    bounding_box [bounds.left + 265, bounds.bottom + 100], width: 290 do
-      formatted_text [ { text: "Circulator's Affidavit ", styles: [:bold], size: 10 },
+    bounding_box [bounds.left + 265, bounds.bottom + 93], width: 290 do
+      formatted_text [ { text: "Circulator's Affidavit ", styles: [:bold], size: 9 },
         { text: "Under penalties of perjury, I swear (or affirm) that: (a) I was at least 18 years old when each signature was obtained; (b) the information given to the left identifiying me is true and correct; (c) I personally observed each signer as he or she signed this page; and (d) to the best of my knowledge and belief; (i) all signatures on this page are genuine; and (ii) all signers are registered voters of Maryland.", size: 9 }
       ], align: :justify, leading: -1
       text "(Sign and Date when signature collection is completed)", style: :italic
