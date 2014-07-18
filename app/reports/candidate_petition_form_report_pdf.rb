@@ -75,7 +75,7 @@ private
     text_box "Birth Date:", kerning: false, at: [361, cursor+10]
     move_up 11
     font_size 10
-    text "#{'_' * 102}"
+    text "#{'_' * 98}", indent_paragraphs: 23
     text_box "Month", kerning: false, at: [427, cursor]
     text_box "Date", kerning: false, at: [479, cursor]
     text_box "Year", kerning: false, at: [524, cursor]
@@ -89,7 +89,7 @@ private
       end    
     end
     move_up 10
-    text "#{'_' * 102}"
+    text "#{'_' * 98}", indent_paragraphs: 23
     font_size(10) do
       text_box "Street Number", kerning: false, at: [94, cursor]
       text_box "Street Name", kerning: false, at: [193, cursor]
