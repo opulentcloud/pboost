@@ -64,7 +64,7 @@ private
       text_box "#{voter.dob.year rescue nil}", kerning: false, at: [524, cursor]
     end
     font_size 9
-    bounding_box([bounds.left, cursor+6], at: 0, width: 30) do
+    bounding_box([bounds.left+25, cursor+6], at: 0, width: 28) do
       text "Print"
       move_up 2
       text "Name:"
@@ -78,7 +78,7 @@ private
     text_box "Year", kerning: false, at: [524, cursor]
     move_down 12
     font_size(9) do
-      text_box "Signature", kerning: false, at: [0, cursor]
+      text_box "Signature:", kerning: false, at: [bounds.left+25, cursor]
       bounding_box([361, cursor+6], at: 0, width: 42) do
         text "Date of"
         move_up 2
@@ -102,7 +102,7 @@ private
     end
     move_up 1
     font_size 9
-    bounding_box([bounds.left, cursor+13], at: 0, width: 45) do
+    bounding_box([bounds.left+25, cursor+13], at: 0, width: 45) do
       text "Maryland"
       move_up 2
       text "Residence"
