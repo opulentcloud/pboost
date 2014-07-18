@@ -40,13 +40,24 @@ class CandidatePetitionFormReportPdf < Prawn::Document
       # Write in 5 signature blocks
       Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").each do |voter|
         index += 1
-        start_new_page if index == 1
-        index += 1 if index == 0
-        # Write Header
-        header
+        if index == 1
+          start_new_page 
+          # Write Header
+          header
+        end          
+        if index == 0
+          # Write Header
+          header
+          index += 1 
+        end
         signature_row(voter, index)
+        if index == 5
+          footer
+          index = 0 
+        end
+      end
+      if index < 5
         footer
-        index = 0 if index == 5
       end
     end
   end
