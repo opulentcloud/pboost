@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     get "/signup" => "users/registrations#new", :as => :signup
   end
 
+  get 'processing/:id' => 'processing#show', :as => :processing
+
   namespace :admin do
     devise_scope :user do
       resources :voters do

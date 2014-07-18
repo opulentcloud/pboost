@@ -37,6 +37,10 @@
       = link_to search_admin_voters_path(search_args), :class => 'btn btn-default', target: '_blank' do 
         span.glyphicon.glyphicon-export
         |  Export
+        - search_args = { petitions: '1' }
+      = link_to search_admin_voters_path(search_args), :class => 'btn btn-default', target: '_blank' do 
+        span.glyphicon.glyphicon-print
+        |  Print Candidate Petition Form
 
   - if @party_breakdown.present?
     .row

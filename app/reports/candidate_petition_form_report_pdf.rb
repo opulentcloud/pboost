@@ -18,23 +18,20 @@ class CandidatePetitionFormReportPdf < Prawn::Document
   CHECKED_CHECKBOX = "\u2611" # checked
   EXED_CHECKBOX = "\u2612" # x'd
   
-  def initialize(voters, default_prawn_options = {})
+  def initialize(voter_ids, default_prawn_options = {})
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
-    @voters = voters
 
-    first = true
     # Write in 5 signature blocks
-    @voters.find_in_batches(batch_size: 5) do |batch|
+    Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").find_in_batches(batch_size: 5) do |batch|
+      first = true
       start_new_page unless first == true
       first = false
       # Write Header
       header
-
       batch.each_with_index do |voter, index|
         signature_row(voter, index+1)
       end
-
       footer
     end
     # Write Footer
