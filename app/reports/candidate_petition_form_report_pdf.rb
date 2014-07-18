@@ -22,22 +22,33 @@ class CandidatePetitionFormReportPdf < Prawn::Document
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
 
-    # Write in 5 signature blocks
-    Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").find_in_batches(batch_size: 5) do |batch|
-      first = true
-      start_new_page unless first == true
-      first = false
-      # Write Header
-      header
-      batch.each_with_index do |voter, index|
-        signature_row(voter, index+1)
+    if 1 == 0 # batch ignores the ordering
+      # Write in 5 signature blocks
+      Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").find_in_batches(batch_size: 5) do |batch|
+        first = true
+        start_new_page unless first == true
+        first = false
+        # Write Header
+        header
+        batch.each_with_index do |voter, index|
+          signature_row(voter, index+1)
+        end
+        footer
       end
-      footer
+    else # manually doing 5 at a time
+      index = -1
+      # Write in 5 signature blocks
+      Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").each do |voter|
+        index += 1
+        start_new_page if index == 1
+        index += 1 if index == 0
+        # Write Header
+        header
+        signature_row(voter, index+1)
+        footer
+        index = 0 if index == 5
+      end
     end
-    # Write Footer
-    #repeat :all do
-#      footer
-    #end
   end
 
 private
