@@ -21,6 +21,9 @@ class CandidatePetitionFormReportPdf < Prawn::Document
   def initialize(voter_ids, default_prawn_options = {})
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
+    blank_voter = Voter.new
+    blank_voter.build_address
+
 
     if 1 == 0 # batch ignores the ordering
       # Write in 5 signature blocks
@@ -56,8 +59,14 @@ class CandidatePetitionFormReportPdf < Prawn::Document
           index = 0 
         end
       end
-      if index < 5
-        footer
+
+      # print any blank rows before footer if needed.
+      while index < 5 do
+        index += 1
+        signature_row(blank_voter, index)
+        if index == 5
+          footer
+        end
       end
     end
   end
