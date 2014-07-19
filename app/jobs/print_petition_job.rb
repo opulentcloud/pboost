@@ -1,4 +1,4 @@
-PPetitionJob = Struct.new(:voter_ids) do
+PPetitionJob = Struct.new(:voter_ids, :petition_header_id) do
   def error(job, exception)
   end
 end
@@ -10,7 +10,7 @@ class PrintPetitionJob < PPetitionJob
   
   def perform
     tempfile = Tempfile.new(["candidate-petition-form",".pdf"])
-    tempfile.write(CandidatePetitionFormReportPdf.new(voter_ids).render.force_encoding("UTF-8"))
+    tempfile.write(CandidatePetitionFormReportPdf.new(petition_header_id, voter_ids).render.force_encoding("UTF-8"))
     result = DelayedJobResult.new(job_id: @job.id)
     result.build_batch_file(mime_type: 'applicaton/pdf', 
       origin_url: 'na',

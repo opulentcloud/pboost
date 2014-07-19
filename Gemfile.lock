@@ -132,13 +132,13 @@ GEM
       fog-core
       fog-json
     formatador (0.2.5)
-    formtastic (2.2.1)
+    formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
     formtastic-bootstrap (3.0.0)
       formtastic (>= 2.2)
     hashie (3.2.0)
     hike (1.2.3)
-    i18n (0.6.9)
+    i18n (0.6.11)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     jbuilder (2.1.1)
@@ -159,7 +159,7 @@ GEM
     memcachier (0.0.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
-    minitest (5.3.5)
+    minitest (5.4.0)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -316,7 +316,7 @@ DEPENDENCIES
   devise-async
   figaro
   fog
-  formtastic
+  formtastic (~> 2.3.0.rc3)
   formtastic-bootstrap
   jbuilder (~> 2.0)
   jquery-rails

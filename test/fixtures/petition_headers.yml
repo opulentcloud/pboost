@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  voters_of: MyString
+  baltimore_city: false
+  party_affilication_string: MyString
+  unaffiliated: false
+  name: MyString
+  address: MyString
+  office_and_district: MyString
+  ltgov_name: MyString
+  ltgov_address: MyString
+
+two:
+  voters_of: MyString
+  baltimore_city: false
+  party_affilication_string: MyString
+  unaffiliated: false
+  name: MyString
+  address: MyString
+  office_and_district: MyString
+  ltgov_name: MyString
+  ltgov_address: MyString

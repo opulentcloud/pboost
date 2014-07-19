@@ -1,0 +1,14 @@
+= semantic_form_for @petition_header, url: (@petition_header.new_record? ? admin_petition_headers_path : admin_petition_header_path(@petition_header)), method: @petition_header.new_record? ? :post : :put do |f|
+  = f.inputs do
+    = f.input :voters_of
+    = f.input :baltimore_city
+    = f.input :party_affiliation
+    = f.input :unaffiliated
+    = f.input :name
+    = f.input :address
+    = f.input :office_and_district
+    = f.input :ltgov_name
+    = f.input :ltgov_address
+
+  = f.actions do
+    = f.action :submit, class: "btn btn-default"    

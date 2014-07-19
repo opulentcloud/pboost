@@ -37,7 +37,7 @@ class Admin::VotersController < ApplicationController
     session[:last_search] = params[:q]
 
     if params[:petitions].present?
-      delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result.reorder("").map(&:id))
+      delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result.reorder("").map(&:id), params[:petition_header_id])
       redirect_to processing_path(id: delayed_job.id, return_url: admin_dashboard_url), notice: "Building Candidate Petition Form." and return
     end
 

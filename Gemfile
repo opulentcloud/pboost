@@ -58,7 +58,7 @@ gem 'unicorn'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem 'slim-rails'
-gem 'formtastic'
+gem 'formtastic', '~> 2.3.0.rc3'
 gem 'formtastic-bootstrap'
 gem 'bootstrap-generators'
 gem 'delayed_job_active_record'

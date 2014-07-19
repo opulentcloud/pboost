@@ -18,12 +18,13 @@ class CandidatePetitionFormReportPdf < Prawn::Document
   CHECKED_CHECKBOX = "\u2611" # checked
   EXED_CHECKBOX = "\u2612" # x'd
   
-  def initialize(voter_ids, default_prawn_options = {})
+  def initialize(petition_header_id, voter_ids, default_prawn_options = {})
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
     blank_voter = Voter.new
     blank_voter.build_address
 
+    @petition_header = PetitionHeader.where(id: petition_header_id.to_i).first || PetitionHeader.new
 
     if 1 == 0 # batch ignores the ordering
       # Write in 5 signature blocks
@@ -190,7 +191,7 @@ private
   def header
     text "State of Maryland - General Election Candidate Nomination Petition", size: 13, style: :bold, font: "Arial", align: :center
     text "We, the undersigned voters of ___________________________ County or     Baltimore City, hereby nominate the candidate(s) named below to appear on the General Election ballot.", size: 11, font: "Verdana", align: :left
-    checkbox(name: "baltimore_city", at: [368,727], checked: @check_baltimore_city)
+    checkbox(name: "baltimore_city", at: [368,727], checked: @petition_header.baltimore_city?)
 
     bounding_box [285, 710], width: 285 do
       formatted_text [ { text: "NOTICE TO SIGNERS:  Sign and print your name (1)  as  it  appears  on  the  voter registration list, OR  (2) your surname of registration AND at least one full given name AND the initial of any other names. ", size: 12, styles: [:bold] }, 
@@ -213,7 +214,7 @@ private
       move_down 4
       font_size 11
       text "or check for      Unaffiliated", align: :left
-      checkbox(name: "cb2", at: [62,4], checked: false)
+      checkbox(name: "cb-unaffiliated", at: [62,4], checked: @petition_header.unaffiliated?)
       move_down 6
       font_size 10
       text "Name: ____________________________________________", align: :left

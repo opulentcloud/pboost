@@ -1,0 +1,46 @@
+.page-header
+  = link_to admin_petition_headers_path, :class => 'btn btn-default' do 
+    span.glyphicon.glyphicon-list-alt
+    |  Back 
+  = link_to edit_admin_petition_header_path(@petition_header), :class => 'btn btn-primary' do 
+    span.glyphicon.glyphicon-pencil
+    |  Edit 
+  h1
+    | Show Petition Header
+dl.dl-horizontal
+  dt
+    | Voters of:
+  dd
+    = @petition_header.voters_of
+  dt
+    | Baltimore city:
+  dd
+    = @petition_header.baltimore_city
+  dt
+    | Party affiliation
+  dd
+    = @petition_header.party_affiliation
+  dt
+    | Unaffiliated:
+  dd
+    = @petition_header.unaffiliated
+  dt
+    | Name:
+  dd
+    = @petition_header.name
+  dt
+    | Address:
+  dd
+    = @petition_header.address
+  dt
+    | Office and district:
+  dd
+    = @petition_header.office_and_district
+  dt
+    | Ltgov name:
+  dd
+    = @petition_header.ltgov_name
+  dt
+    | Ltgov address:
+  dd
+    = @petition_header.ltgov_address

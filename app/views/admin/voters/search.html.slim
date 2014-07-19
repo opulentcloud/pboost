@@ -38,9 +38,10 @@
         span.glyphicon.glyphicon-export
         |  Export
         - search_args = { petitions: '1' }
-      = link_to search_admin_voters_path(search_args), :class => 'btn btn-default' do 
+      = link_to search_admin_voters_path(search_args), :class => 'btn btn-default', id: 'print-candidate-petition' do 
         span.glyphicon.glyphicon-print
         |  Print Candidate Petition
+      = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name"), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
 
   - if @party_breakdown.present?
     .row

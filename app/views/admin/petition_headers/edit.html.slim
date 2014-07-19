@@ -1,0 +1,12 @@
+.page-header
+  = link_to admin_petition_headers_path, :class => 'btn btn-default' do
+    span.glyphicon.glyphicon-list-alt
+    |  Back 
+  = link_to admin_petition_header_path(@petition_header), :class => 'btn btn-primary' do
+    span.glyphicon.glyphicon-info-sign
+    |  Show 
+  h1
+    | Editing 
+    | Petition Header
+
+= render 'form'

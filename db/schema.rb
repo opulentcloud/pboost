@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140717140238) do
+ActiveRecord::Schema.define(version: 20140719175516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,20 @@ ActiveRecord::Schema.define(version: 20140717140238) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "petition_headers", force: true do |t|
+    t.string   "voters_of",           default: ""
+    t.boolean  "baltimore_city",      default: false
+    t.string   "party_affiliation",   default: ""
+    t.boolean  "unaffiliated",        default: false
+    t.string   "name",                default: ""
+    t.string   "address",             default: ""
+    t.string   "office_and_district", default: ""
+    t.string   "ltgov_name",          default: ""
+    t.string   "ltgov_address",       default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "registered_voters_data", id: false, force: true do |t|
     t.string "vtrid",                               null: false
