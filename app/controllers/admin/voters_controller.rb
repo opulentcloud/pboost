@@ -1,5 +1,11 @@
 class Admin::VotersController < ApplicationController
   before_filter :require_admin_user!
+  before_action :set_voter, only: [:show, :edit, :update, :destroy]
+
+  def show
+    @use_modal = params[:use_modal] == 'true'
+    render 'show_modal', layout: false and return if @use_modal
+  end
   
   def search
     cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } if params[:petitions].present?
@@ -68,6 +74,12 @@ class Admin::VotersController < ApplicationController
           disposition: "#{ENV['PDF_DISPOSITION']}"
       }
     end
+  end
+
+private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_voter
+    @voter = Voter.find(params[:id])
   end
 
 end

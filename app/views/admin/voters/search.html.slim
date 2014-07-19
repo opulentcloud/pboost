@@ -100,6 +100,10 @@
           tbody
             = render partial: 'voters/voter', collection: @voters, locals: { use_modal: true }
 
+#voter-Modal.modal.fade aria-hidden="true" aria-labelledby="voter-Modal" role="dialog" tabindex="-1" 
+  .modal-dialog.modal-lg
+    .modal-content
+
 = search_form_for @q, url: search_admin_voters_path, html: { method: :post, id: "search_sort", style: "display: none;" } do |f|
   = f.sort_fields do |s|
     = s.sort_select associations: [:address]

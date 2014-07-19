@@ -1,0 +1,111 @@
+.page-header
+  = link_to admin_dashboard_path, :class => 'btn btn-default' do 
+    span.glyphicon.glyphicon-list-alt
+    |  Back 
+  h1
+    | Voter: #{@voter.full_name}
+.container.pull-left
+  .row
+    .col-md-5
+      dl.dl-horizontal
+        dt
+          | State File ID:
+        dd
+          = @voter.state_file_id
+        dt
+          | Affiliation
+        dd
+          = @voter.party
+        dt
+          | D.O.R.
+        dd
+          = l @voter.dor rescue nil
+        dt
+          | Address
+        dd
+          = @voter.address.full_street_address
+          br
+          = @voter.address.city_state_zip
+        dt
+          | Phone
+        dd
+          = @voter.phone
+        dt
+          | Home Phone
+        dd
+          = @voter.home_phone
+        dt
+          | Work Phone
+        dd
+          #{@voter.work_phone} #{@voter.work_phone_ext}
+        dt
+          | Cell Phone
+        dd
+          = @voter.cell_phone
+        dt
+          | Email
+        dd
+          = link_to @voter.email, "mail_to:" if @voter.email.present?     
+        dt
+          | Gender
+        dd
+          = @voter.sex
+        dt
+          | D.O.B.
+        dd
+          = l @voter.dob rescue nil
+        dt
+          | Age
+        dd
+          = @voter.age
+
+
+    .col-md-5
+      dl.dl-horizontal
+        dt
+          | County
+        dd
+          = @voter.address.county_name
+        dt
+          | Precinct
+        dd
+          = @voter.address.precinct_code
+        dt
+          | Congressional District
+        dd
+          = @voter.address.cd
+        dt
+          | Legislative District
+        dd
+          = @voter.address.hd
+        dt
+          | Community District
+        dd
+          = @voter.address.comm_dist_code
+        dt
+          | Ward District
+        dd
+          = @voter.address.ward_district          
+        dt
+          | Municipal District
+        dd
+          = @voter.address.municipal_district         
+        dt
+          | Commission District
+        dd
+          = @voter.address.commissioner_district
+        dt
+          | School District
+        dd
+          = @voter.address.school_district
+
+  - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
+    .row
+      legend Other Voters At This Address
+      .col-md-10
+        dl.dl-horizontal
+        - @voter.address.voters.where("voters.id != ?", @voter.id).each do |ot|
+          dt
+          dd
+            = link_to ot.full_name, admin_voter_path(ot)
+
