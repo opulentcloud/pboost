@@ -40,18 +40,28 @@ class CandidatePetitionFormReportPdf < Prawn::Document
       end
     else # manually doing 5 at a time
       index = -1
+      odd = nil # fill signature with blanks and start a new page when
+                # street numbers switch from odd/even
       # Write in 5 signature blocks
       Voter.includes(:address).where(id: voter_ids).order("addresses.street_name, addresses.is_odd, addresses.street_no, addresses.apt_no").each do |voter|
         index += 1
-        if index == 1
+        if index == 1 # start a new page and write the header
           start_new_page 
-          # Write Header
           header
-        end          
-        if index == 0
-          # Write Header
+        elsif index == 0 # Our very 1st iteration so only write the header
           header
           index += 1 
+          odd == voter.address.is_odd?
+        elsif !odd == voter.address.is_odd?  # Break if the street's switch from odd to even
+          while index < 6
+            signature_row(blank_voter, index)
+            index += 1
+          end
+          footer
+          start_new_page
+          header
+          odd = voter.address.is_odd?
+          index = 1
         end
         signature_row(voter, index)
         if index == 5

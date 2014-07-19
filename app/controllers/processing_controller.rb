@@ -18,7 +18,7 @@ class ProcessingController < AuthenticatedUsersController
     def prepare_return_url
       return params[:return_url] if @respond_with_div == true
       return params[:return_url] unless @job_result.present?
-      return @job_result.batch_file.attached_file.url
+      return URI.encode(@job_result.batch_file.attached_file.url)
       # no longer used
       uri = URI.parse(params[:return_url])
       new_query = URI.decode_www_form((uri.query || '')) << ["jrid", "#{@job_result.id}"]
