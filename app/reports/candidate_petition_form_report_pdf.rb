@@ -216,20 +216,27 @@ private
       text "or check for      Unaffiliated", align: :left
       checkbox(name: "cb-unaffiliated", at: [62,4], checked: @petition_header.unaffiliated?)
       move_down 6
-      font_size 10
-      text "Name: ____________________________________________", align: :left
-      move_down 6
-      text "Address: __________________________________________", align: :left
-      move_down 6
-      text "Office and District: ___________________________________", align: :left
-      move_down 3
+      font_size(10) do
+        text_box "#{@petition_header.name}", kerning: true, at: [32, cursor]
+        text "Name: ____________________________________________", align: :left
+        move_down 6
+        text_box @petition_header.address, kerning: true, at: [42, cursor]
+        text "Address: __________________________________________", align: :left
+        move_down 6
+        text_box @petition_header.office_and_district, kerning: true, at: [85, cursor]
+        text "Office and District: ___________________________________", align: :left
+        move_down 3
+      end
       font_size 11
       text "If Applicable, Lt. Governor Information:", style: :bold, align: :left
       move_down 4
-      font_size 10
-      text "Name: ____________________________________________", align: :left
-      move_down 6
-      text "Address: __________________________________________", align: :left
+      font_size(10) do
+        text_box "#{@petition_header.ltgov_name}", kerning: true, at: [32, cursor]
+        text "Name: ____________________________________________", align: :left
+        move_down 6
+        text_box @petition_header.ltgov_address, kerning: true, at: [42, cursor]
+        text "Address: __________________________________________", align: :left
+      end
     end
     stroke do
       self.line_width = 1    
