@@ -5,6 +5,7 @@ class ProcessingController < AuthenticatedUsersController
     @respond_with_div = params[:return_url].start_with?("div#") if params[:return_url].present?
     @job_result = DelayedJobResult.where(job_id: params[:id].to_i).first unless @job
     @return_url = prepare_return_url
+    session[:last_print_job] = @job_result.id if @job_result.present?
     respond_to do |format| 
       format.html { 
         redirect_to @job_result.batch_file.attached_file.url and return if @job_result.present? && @job_result.try(:batch_file).try(:attached_file).try(:url).present?

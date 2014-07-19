@@ -2,6 +2,8 @@ class Admin::DashboardController < ApplicationController
   before_filter :require_admin_user!
   
   def show
+    @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
+    session[:last_print_job] = nil
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
     
