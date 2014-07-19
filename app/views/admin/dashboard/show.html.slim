@@ -29,7 +29,7 @@
                   = s.sort_select associations: [:address]
   .row
     h2
-      | Admin Dashboard
+      | Search Voters
     - if @job_result.present?
       = link_to 'download your candidate petition form',     @job_result.batch_file.attached_file.url, target: "_blank"
       - session[:last_printed_url] = nil

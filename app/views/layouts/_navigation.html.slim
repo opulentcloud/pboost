@@ -1,31 +1,32 @@
-nav.navbar.navbar-inverse.navbar-fixed-top
-  = link_to image_tag('pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left navbar', style: "margin-left: 20px; margin-right: 20px;"), '/'
-  - unless user_signed_in?
-    h1 Client Portal  
-  - if user_signed_in?
-    .navbar-inner
-      ul.nav.navbar-nav role="navigation" 
-        li
-          = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
-        li
-          = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
-        - if admin_user?
+nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important"
+  .container-fluid
+    = link_to image_tag('pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left navbar', style: "margin-left: 20px; margin-right: 20px;"), '/'
+    - unless user_signed_in?
+      h1 Client Portal  
+    - if user_signed_in?
+      .navbar-inner
+        ul.nav.navbar-nav role="navigation" 
+          li
+            = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
+          li
+            = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
+          - if admin_user?
+            li.dropdown
+              a.dropdown-toggle data-toggle="dropdown" href="#" 
+                | Admin Options
+                b.caret
+              ul.dropdown-menu
+                li
+                  = link_to 'Search Voters', admin_dashboard_path, class: 'navbar-brand'
+                li
+                  = link_to 'Manage Users', admin_users_path, class: 'navbar-brand'
+                li
+                  = link_to 'Manage Petition Headers', admin_petition_headers_path, class: 'navbar-brand'
+        ul.nav.navbar-nav.pull-right id="right-side-nav"
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" href="#" 
-              | Admin Options
+              | #{current_user.name}
               b.caret
             ul.dropdown-menu
-              li
-                = link_to 'Admin Dashboard', admin_dashboard_path, class: 'navbar-brand'
-              li
-                = link_to 'Manage Users', admin_users_path, class: 'navbar-brand'
-              li
-                = link_to 'Manage Petition Headers', admin_petition_headers_path, class: 'navbar-brand'
-      ul.nav.navbar-nav.pull-right
-        li.dropdown
-          a.dropdown-toggle data-toggle="dropdown" href="#" 
-            | #{current_user.name}
-            b.caret
-          ul.dropdown-menu
-            = render 'layouts/navigation_links'
+              = render 'layouts/navigation_links'
 
