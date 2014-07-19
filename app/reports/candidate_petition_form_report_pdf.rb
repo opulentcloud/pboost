@@ -49,6 +49,7 @@ class CandidatePetitionFormReportPdf < Prawn::Document
           start_new_page 
           header
         elsif index == 0 # Our very 1st iteration so only write the header
+          @check_baltimore_city = voter.address.county_name.downcase == 'baltimore city'
           header
           index += 1 
           odd == voter.address.is_odd?
@@ -189,7 +190,7 @@ private
   def header
     text "State of Maryland - General Election Candidate Nomination Petition", size: 13, style: :bold, font: "Arial", align: :center
     text "We, the undersigned voters of ___________________________ County or     Baltimore City, hereby nominate the candidate(s) named below to appear on the General Election ballot.", size: 11, font: "Verdana", align: :left
-    checkbox(name: "cb1", at: [368,727], checked: false)
+    checkbox(name: "baltimore_city", at: [368,727], checked: @check_baltimore_city)
 
     bounding_box [285, 710], width: 285 do
       formatted_text [ { text: "NOTICE TO SIGNERS:  Sign and print your name (1)  as  it  appears  on  the  voter registration list, OR  (2) your surname of registration AND at least one full given name AND the initial of any other names. ", size: 12, styles: [:bold] }, 
