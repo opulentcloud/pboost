@@ -190,6 +190,7 @@ private
 
   def header
     text "State of Maryland - General Election Candidate Nomination Petition", size: 13, style: :bold, font: "Arial", align: :center
+    text_box @petition_header.voters_of, kerning: true, at: [148, cursor]
     text "We, the undersigned voters of ___________________________ County or     Baltimore City, hereby nominate the candidate(s) named below to appear on the General Election ballot.", size: 11, font: "Verdana", align: :left
     checkbox(name: "baltimore_city", at: [368,727], checked: @petition_header.baltimore_city?)
 
@@ -207,6 +208,7 @@ private
     bounding_box [0, 710], width: 280 do
       font_size 11
       text "Candidate Information:", style: :bold, align: :left
+      text_box @petition_header.party_affiliation, kerning: true, at: [80, cursor]
       text "Party Affiliation: ________________________________", align: :left
       move_down 7
       font_size 10
