@@ -5,8 +5,9 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
       h1 Client Portal  
     - if user_signed_in?
       .navbar-inner
-        = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
-        = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
+        .navbar-header
+          = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
+          = link_to 'Verify Voter', voter_verify_path, class: 'navbar-brand'
         ul.nav.navbar-nav role="navigation" 
           - if admin_user?
             li.dropdown
