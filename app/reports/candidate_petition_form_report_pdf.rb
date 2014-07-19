@@ -53,7 +53,7 @@ class CandidatePetitionFormReportPdf < Prawn::Document
           @check_baltimore_city = voter.address.county_name.downcase == 'baltimore city'
           header
           index += 1 
-          odd == voter.address.is_odd?
+          odd = voter.address.is_odd?
         elsif !odd == voter.address.is_odd?  # Break if the street's switch from odd to even
           while index < 6
             signature_row(blank_voter, index)

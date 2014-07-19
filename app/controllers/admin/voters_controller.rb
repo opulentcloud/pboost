@@ -2,6 +2,7 @@ class Admin::VotersController < ApplicationController
   before_filter :require_admin_user!
   
   def search
+    cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } if params[:petitions].present?
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
     
