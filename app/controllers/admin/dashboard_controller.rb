@@ -2,6 +2,10 @@ class Admin::DashboardController < ApplicationController
   before_filter :require_admin_user!
   
   def show
+    if params[:clear].present?
+      session[:last_search] = nil 
+      session[:last_sort] = nil
+    end
     @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
     session[:last_print_job] = nil
   	@pg = params[:page] ||= 1
@@ -23,7 +27,7 @@ class Admin::DashboardController < ApplicationController
 
     @q = Voter.search(params['q2'])
     @q.build_condition unless @q.conditions.present?
-    @q.build_sort #(:name => 'last_name', :dir => 'asc') unless @q.sorts.present?
+    #@q.build_sort #(:name => 'last_name', :dir => 'asc') unless @q.sorts.present?
 
     session[:last_sort] = params['q']['s']
     session[:last_search]['s'] = session[:last_sort]

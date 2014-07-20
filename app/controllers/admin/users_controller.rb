@@ -69,6 +69,6 @@ private
   def account_update_params
     @account_update_params ||= params.require(:user).permit(:first_name, 
       :last_name, :email, :password, :password_confirmation, 
-      :current_password)
+      :current_password, :role_ids => [])
   end
 end

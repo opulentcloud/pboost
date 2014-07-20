@@ -16,8 +16,8 @@
     = f.input :first_name, :autofocus => true
     = f.input :last_name
     = f.input :email, as: :email
-    = f.input :password, as: :password, autocomplete: "off", hint: "(leave blank if you don't want to change it)"
-    = f.input :password_confirmation, as: :password, autocomplete: "off"
+    = f.input :password, as: :password, required: false, autocomplete: "off", hint: "(leave blank if you don't want to change it)"
+    = f.input :password_confirmation, as: :password, required: false, autocomplete: "off"
 
     div class="check_boxes input optional from-group" id="user_roles_input"
       label class="control-label"
