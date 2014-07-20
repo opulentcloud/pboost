@@ -97,3 +97,11 @@ section {
   display: none;
 }
 
+#search-list li:last-child .add_fields:last-of-type {
+  display: inline-block;
+}
+
+#search-list li:only-child .add_fields:last-of-type {
+  display: inline-block;
+}
+
