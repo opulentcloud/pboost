@@ -32,7 +32,7 @@ class Voter < ActiveRecord::Base
   DATE_SEARCH_FIELDS =  %w{dob dor}
 
   #exclude some fields from ransack search  
-  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id','search_index','created_at','updated_at']
+  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id','search_index','search_index2','created_at','updated_at']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
@@ -55,6 +55,13 @@ class Voter < ActiveRecord::Base
 		all = self.address.street_no.to_s.strip.upcase rescue ''
 		first_four+second_four+all
 	end
+
+	def build_search2
+		first_four = self.first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		second_four = self.last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		last_four = "#{self.dob.month.to_s.rjust(2,'0')}#{self.dob.day.to_s.rjust(2,'0')}" rescue "0000"
+		first_four+second_four+last_four
+	end
   
   # end public instance methods
   
@@ -76,6 +83,19 @@ class Voter < ActiveRecord::Base
 		first_four+second_four+all
   end
 
+  def self.build_search_index2(first_name, last_name, dob)
+		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		second_four = last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
+		last_four = "#{dob.month.to_s.rjust(2,'0')}#{dob.day.to_s.rjust(2,'0')}" rescue "0000"
+		first_four+second_four+last_four
+  end
+
+  def self.build_search_indexes2_by_batch(voter_ids)
+    Voter.where(id: voter_ids).each do |voter|
+      voter.update_attribute(:search_index2, voter.build_search2)    
+    end
+  end
+
   def self.build_search_indexes_by_batch(voter_ids)
     Voter.where(id: voter_ids).each do |voter|
       voter.update_attribute(:search_index, voter.build_search)    
@@ -85,6 +105,12 @@ class Voter < ActiveRecord::Base
   def self.build_search_indexes
     Voter.select(:id).where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
       Voter.delay.build_search_indexes_by_batch(batch.map(&:id))
+    end
+  end
+
+  def self.build_search_indexes2
+    Voter.select(:id).where(search_index2: nil).find_in_batches(:batch_size => 1000) do |batch|
+      Voter.delay.build_search_indexes2_by_batch(batch.map(&:id))
     end
   end
  

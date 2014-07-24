@@ -1,5 +1,5 @@
 listen 8080, :tcp_nopush => false
-worker_processes Integer(ENV["WEB_CONCURRENCY"] || 4)
+worker_processes Integer(ENV["WEB_CONCURRENCY"] || 1)
 timeout 120
 preload_app true
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140719175516) do
+ActiveRecord::Schema.define(version: 20140724005207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,6 +355,7 @@ ActiveRecord::Schema.define(version: 20140719175516) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "address_id"
+    t.string   "search_index2",   limit: 12
   end
 
   add_index "voters", ["address_id"], :name => "index_voters_on_address_id"
@@ -362,6 +363,7 @@ ActiveRecord::Schema.define(version: 20140719175516) do
   add_index "voters", ["id"], :name => "index_voters_on_id"
   add_index "voters", ["party"], :name => "index_voters_on_party"
   add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
+  add_index "voters", ["search_index2"], :name => "index_voters_on_search_index2"
   add_index "voters", ["sex"], :name => "index_voters_on_sex"
   add_index "voters", ["state_file_id"], :name => "index_voters_on_state_file_id", :unique => true
 
