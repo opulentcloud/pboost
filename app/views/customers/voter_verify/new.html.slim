@@ -4,9 +4,19 @@
 
 = semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
   = f.inputs do
-    = f.input :last_name, input_html: { autofocus: true, autocomplete: "off", pattern: "[A-Za-z]{1,}", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
-    = f.input :first_name, input_html: { autocomplete: "off", pattern: "[A-Za-z]{1,}", oninvalid: "this.setCustomValidity('Please input a minimum 1 characters.')" }
-    = f.input :dob, label: "Month and Day of Birth (mmdd)", input_html: { autocomplete: "off", pattern: "[0-9]{4,4}", oninvalid: "this.setCustomValidity('Please input the month and day of birth as mmdd.')" }
+    .row
+      .col-md-6
+        = f.input :last_name, input_html: { autofocus: true, autocomplete: "off" }
+    .row
+      .col-md-6
+        = f.input :first_name, input_html: { autocomplete: "off" }
+    .row
+      .col-md-2.pull-left
+        = f.label "Birth Month"
+        = f.input :birth_month, label: false, as: :select, collection: Hash[Date::MONTHNAMES.map.with_index{|k,i| [i,k]}].invert
+      .col-md-2
+        = f.label "Day"
+        = f.input :birth_day, label: false, as: :select, collection: Hash['',''].merge(Hash[(1..31).map { |num| [num, "#{num}"] }])
     = f.hidden_field :search_index2, value: @search_index2 if @search_index2.present?
 
   - if @voters.present?
