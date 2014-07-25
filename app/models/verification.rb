@@ -28,7 +28,7 @@ class Verification < ActiveRecord::Base
       if voters_results.size > 0
         # Try an isolate a match to one voter...
         voters_results.each do |voter|
-          voters << [voter.state_file_id, voter.address.county_name] if voter.first_name.upcase == old_row['First Name'].to_s.upcase && voter.last_name.upcase == old_row['Last Name'].to_s.upcase && (old_row['County'].to_s.upcase == voter.address.county_name.upcase || !old_row['County'].present?)
+          voters << [voter.state_file_id, voter.address.county_name] if voter.first_name.upcase == old_row['First Name'].to_s.upcase && voter.last_name.upcase == old_row['Last Name'].to_s.upcase && old_row['DOB'] == (voter.dob.to_s(:db) rescue "") && (old_row['County'].to_s.upcase == voter.address.county_name.upcase || !old_row['County'].present?)
         end
       else
         voters << [(voters_results.first.state_file_id rescue ""), (voters_results.first.address.county_name rescue "")] # add back any not found!
@@ -36,7 +36,7 @@ class Verification < ActiveRecord::Base
       state_file_ids = voters.map { |v| v[0] }.join(',') rescue voters[0]
       state_file_ids = "\"#{state_file_ids}\"" if !(state_file_ids =~ /,/).nil?
       counties = voters.map { |v| v[1] }.join(',') rescue voters[1]
-      counties = "\"#{state_file_ids}\"" if !(counties =~ /,/).nil?
+      counties = "\"#{counties}\"" if !(counties =~ /,/).nil?
       new_row = old_row.merge("State File ID" => state_file_ids, "County" => counties)
       new_data << new_row
 		end
