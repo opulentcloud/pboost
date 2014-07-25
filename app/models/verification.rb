@@ -38,12 +38,12 @@ class Verification < ActiveRecord::Base
       state_file_ids = "\"#{state_file_ids}\"" if !(state_file_ids =~ /,/).nil?
       counties = voters.map { |v| v[1] }.join(',') rescue voters[1]
       counties = "\"#{counties}\"" if !(counties =~ /,/).nil?
-      new_row = old_row.merge("State File ID" => state_file_ids, "County" => counties)
+      new_row = old_row.merge("State File ID" => state_file_ids, "Current County" => counties)
       new_data << new_row
 		end
 		
 		# write the new rows back out to an export file.
-		column_names = data.first.keys + ["State File ID", "County"]
+		column_names = data.first.keys + ["State File ID", "Current County"]
 		s = CSV.generate do |csv|
       csv << column_names
       new_data.each do |row|
