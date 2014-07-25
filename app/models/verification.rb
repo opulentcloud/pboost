@@ -17,15 +17,29 @@ class Verification < ActiveRecord::Base
 		new_data = []
 		
 		data.each do |old_row|
+      if old_row.size == 0
+        new_data << old_row
+        next
+      end
       voter_dob = Date.parse(old_row['DOB']) rescue ""
       search_index2 = Voter.build_search_index2(old_row['First Name'][0,4], old_row['Last Name'][0,4],voter_dob)
-      voters = Voter.includes(:address).where(search_index2: search_index2)
-      voters.each do |voter|
-        new_row = old_row.merge("State File ID" => voter.state_file_id, "County" => voter.address.county_name)
-        new_data << new_row
-      end		  
+      voters = []
+      voters_results = Voter.includes(:address).where(search_index2: search_index2)
+      if voters_results.size > 0
+        # Try an isolate a match to one voter...
+        voters_results.each do |voter|
+          voters << [voter.state_file_id, voter.address.county_name] if voter.first_name.upcase == old_row['First Name'].to_s.upcase && voter.last_name.upcase == old_row['Last Name'].to_s.upcase && (old_row['County'].to_s.upcase == voter.address.county_name.upcase || !old_row['County'].present?)
+        end
+      else
+        voters << [(voters_results.first.state_file_id rescue ""), (voters_results.first.address.county_name rescue "")] # add back any not found!
+      end
+      state_file_ids = voters.map { |v| v[0] }.join(',') rescue voters[0]
+      state_file_ids = "\"#{state_file_ids}\"" if !(state_file_ids =~ /,/).nil?
+      counties = voters.map { |v| v[1] }.join(',') rescue voters[1]
+      counties = "\"#{state_file_ids}\"" if !(counties =~ /,/).nil?
+      new_row = old_row.merge("State File ID" => state_file_ids, "County" => counties)
+      new_data << new_row
 		end
-		
 		
 		# write the new rows back out to an export file.
 		column_names = data.first.keys + ["State File ID", "County"]

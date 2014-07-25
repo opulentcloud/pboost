@@ -11,7 +11,12 @@ class VotersBulkVerifyJob < VVerifyJob
   def perform
     verification = Verification.find(verification_id)
     verification.update_attribute(:status, 'Processing')
-    verification.build_export!
+    begin
+      verification.build_export!
+    rescue Exception => ex
+      verification.update_attribute(:status, 'Failed')
+      raise ex
+    end
   end
   
   def max_runtime
