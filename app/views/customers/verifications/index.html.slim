@@ -1,0 +1,38 @@
+.page-header
+  = link_to new_verification_path, :class => 'btn btn-primary' do 
+    span.glyphicon.glyphicon-cloud-upload
+    |  Upload Bulk Verify File
+  h1
+    | Bulk Verify Files
+
+= will_paginate @verifications, renderer: BootstrapPagination::Rails
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          | Upload Date
+        th
+          | File Name
+        th
+          | Status
+        th
+    tbody
+      - @verifications.each do | verification |
+        tr
+          td
+            = l verification.created_at
+          td
+            = verification.import.attached_file.file.filename
+          td
+            = verification.status + '  '
+            - if verification.status == 'Processed'
+              = link_to verification.export.attached_file.url, :class => 'btn btn-primary', target: "_blank" do 
+                span.glyphicon.glyphicon-cloud-download
+                |  Download
+
+          td
+            = link_to verification_path(verification), :class => 'btn btn-warning', method: :delete, data: { confirm: 'Are you sure you want to delete this file?' } do 
+              span.glyphicon.glyphicon-trash
+              |  Delete
+

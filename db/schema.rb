@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724005207) do
+ActiveRecord::Schema.define(version: 20140724234511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,6 +331,17 @@ ActiveRecord::Schema.define(version: 20140724005207) do
   end
 
   add_index "van_data", ["state_file_id", "address_hash"], :name => "idx_address_hash"
+
+  create_table "verifications", force: true do |t|
+    t.string   "impfile"
+    t.string   "expfile"
+    t.string   "status",     limit: 50
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "verifications", ["user_id"], :name => "index_verifications_on_user_id"
 
   create_table "voters", force: true do |t|
     t.integer  "vote_builder_id", limit: 8

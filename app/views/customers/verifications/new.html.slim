@@ -1,0 +1,17 @@
+.page-header
+  h1
+    | Bulk Voter Verification Via File Upload
+
+.row
+  .col-md-10
+    i File must be .csv format with only three columns labeled exactly as: Last Name, First Name, DOB
+    br
+    i DOB format must be YYYY-MM-DD
+
+= semantic_form_for @verification, url: verifications_path, html: { multipart: true} do |f|
+  = f.inputs do
+    = f.input :attached_file, label: "Choose your file", as: :file, for: :import
+
+  = f.actions do
+    = f.action :submit, label: "Verify Voters", button_html: { class: 'btn btn-primary' }
+
