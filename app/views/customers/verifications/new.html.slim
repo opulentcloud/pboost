@@ -4,10 +4,13 @@
 
 .row
   .col-md-10
-    i File must be .csv format with only three columns labeled exactly as: Last Name, First Name, DOB
+    i File must be .csv format with a minimum three columns labeled exactly as: Last Name, First Name, DOB
+    br
+    i You may optionally add a County column to your header row (helps lower duplicates rate)
     br
     i DOB format must be YYYY-MM-DD
-
+    br
+    br
 = semantic_form_for @verification, url: verifications_path, html: { multipart: true} do |f|
   = f.inputs do
     = f.input :attached_file, label: "Choose your file", as: :file, for: :import
