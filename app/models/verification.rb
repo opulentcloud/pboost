@@ -33,6 +33,7 @@ class Verification < ActiveRecord::Base
       else
         voters << [(voters_results.first.state_file_id rescue "not found"), (voters_results.first.address.county_name rescue "not found")] # add back any not found!
       end
+      voters << ["not found", "not found"] if voters.size == 0
       state_file_ids = voters.map { |v| v[0] }.join(',') rescue voters[0]
       state_file_ids = "\"#{state_file_ids}\"" if !(state_file_ids =~ /,/).nil?
       counties = voters.map { |v| v[1] }.join(',') rescue voters[1]
