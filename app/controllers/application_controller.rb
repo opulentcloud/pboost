@@ -8,16 +8,20 @@ class ApplicationController < ActionController::Base
     %w(staging production).include?(Rails.env)
   end
 
+  def access_denied
+    render file: "#{Rails.root}/public/403.html", status: 403, layout: false
+  end
+
   def require_customer_user!
-    render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless customer_user?
+     access_denied unless customer_user?
   end
 
   def require_employee_user!
-    render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless employee_user? || customer_user?
+    access_denied unless employee_user? || customer_user?
   end
 
   def require_admin_user!
-    render file: "#{Rails.root}/public/403.html", status: 403, layout: false unless admin_user?
+    access_denied unless admin_user?
   end
 
   def employee_user?

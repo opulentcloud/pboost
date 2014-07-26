@@ -27,11 +27,6 @@ Rails.application.routes.draw do
   namespace :admin do
     devise_scope :user do
       resources :petition_headers
-      resources :voters do
-        collection do
-          match 'search' => 'voters#search', via: [:get, :post], as: :search
-        end
-      end
       resources :users
     end
   end

@@ -61,13 +61,15 @@ class VotersController < ApplicationController
         @q.build_sort if @q.sorts.empty?
       }
       format.csv { 
+        access_denied and return unless admin_user?
         send_data @voters.to_csv, 
           filename: "voter-export-#{Time.now.to_i}.csv",
           type: :csv,
           disposition: "#{ENV['PDF_DISPOSITION']}"
       }
-      format.xlsx { }
+      format.xlsx { access_denied unless admin_user? }
       format.xls { 
+        throw access_denied and return unless admin_user?
         send_data @voters.to_csv(col_sep: "\t"),
           filename: "voter-export-#{Time.now.to_i}.xls",
           type: :xls,
