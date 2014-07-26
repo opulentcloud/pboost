@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     post 'signin' => 'devise/sessions#create', :as => :user_session
     delete 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session
     get 'dashboard' => 'users/dashboard#show', :as => :users_dashboard
+    resources :voters do
+      collection do
+        match 'search' => 'voters#search', via: [:get, :post], as: :search
+      end
+    end
   end
 
   devise_scope :user do

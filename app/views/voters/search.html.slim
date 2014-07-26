@@ -1,0 +1,110 @@
+.container
+  .row style="margin-top: 15px;"
+    = search_form_for @q, url: search_voters_path, html: { method: :post } do |f|
+      ul#search-list.list-unstyled
+        - index = 0
+        = f.condition_fields do |c|
+          - index += 1
+          li class="field"
+            = render partial: "voters/condition_fields", locals: { f: c, idx: index }
+            - if index == 1
+              = link_to_add_fields '', f, :condition
+              | &nbsp;  
+              button type="submit" class="btn btn-primary" style="margin-left: 10px;"
+                i class="glyphicon glyphicon-search"
+                | &nbsp;Search Voters
+              | &nbsp;  
+              - if action_name == 'search'
+                = link_to users_dashboard_path(clear: 1), :class => 'btn btn-default' do 
+                  span.glyphicon.glyphicon-remove-sign
+                  |  Clear
+              .pull-right
+                = check_box_tag "party_breakdown", "1", params[:party_breakdown].present?
+                |  Include Party Affiliation Breakdown?
+                br
+                = check_box_tag "precinct_breakdown", "1", params[:precinct_breakdown].present?
+                |  Include Precinct Voter Breakdown?
+              div style="display: none;"
+                = f.sort_fields do |s|
+                  = s.sort_select associations: [:address]
+
+  .row
+    h2
+      | Voter Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
+      - search_args = { format: :xls }
+      - search_args.merge!(party_breakdown: "1") if params[:party_breakdown].present?
+      - search_args.merge!(precinct_breakdown: "1") if params[:precinct_breakdown].present?      
+      - if admin_user?
+        = link_to search_voters_path(search_args), :class => 'btn btn-default', target: '_blank' do 
+          span.glyphicon.glyphicon-export
+          |  Export
+          - search_args = { petitions: '1' }
+        = link_to search_voters_path(search_args), :class => 'btn btn-default', id: 'print-candidate-petition' do 
+          span.glyphicon.glyphicon-print
+          |  Print Candidate Petition
+        = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
+
+  - if @party_breakdown.present?
+    .row
+      .h3 Party Affiliation Breakdown
+      table.table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          thead
+            tr
+              th
+                Party
+              th
+                Total Voters
+          tbody
+            - @party_breakdown.each do |pb|
+              tr
+                td
+                  = pb[:party] 
+                td
+                  = number_with_delimiter pb[:voter_count]
+
+  - if @precinct_breakdown.present?
+    .row
+      .h3 Precinct Breakdown
+      table.table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          thead
+            tr
+              th
+                Precinct
+              th
+                Total Voters
+          tbody
+            - @precinct_breakdown.each do |pb|
+              tr
+                td
+                  = pb[:precinct_code] 
+                td
+                  = number_with_delimiter pb[:voter_count]
+
+  .row
+    .h3 Voters Details
+    .col-md-10
+      = will_paginate @voters, renderer: BootstrapPagination::Rails
+      #voters-table.table-responsive
+        table.table.table-striped.table-bordered.table-hover
+          thead
+            tr
+              th
+                = check_box_tag "select_all", "select_all", false, class: 'action_checkbox'
+              = content_tag :th, sort_link(@q, :state_file_id, "State File Id")
+              = content_tag :th, sort_link(@q, :party, "Party")
+              = content_tag :th, sort_link(@q, :last_name, "Last Name")
+              = content_tag :th, sort_link(@q, :first_name, "First Name")
+              = content_tag :th, sort_link(@q, :county_name, "County")
+              = content_tag :th, sort_link(@q, :precinct_code, "Precinct")
+          tbody
+            = render partial: 'voters/voter', collection: @voters, locals: { use_modal: true }
+
+#voter-Modal.modal.fade aria-hidden="true" aria-labelledby="voter-Modal" role="dialog" tabindex="-1" 
+  .modal-dialog.modal-lg
+    .modal-content
+
+= search_form_for @q, url: search_voters_path, html: { method: :post, id: "search_sort", style: "display: none;" } do |f|
+  = f.sort_fields do |s|
+    = s.sort_select associations: [:address]

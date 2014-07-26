@@ -3,7 +3,7 @@ tr
     = check_box_tag "checked_voters_#{voter_counter}_id", voter.id, false, class: "voter_cb", name: "checked_voters[#{voter_counter}][id]"
   td
     div data-no-turbolink=""
-      = link_to voter.state_file_id, admin_voter_path(id: voter.id, use_modal: true), :"data-toggle"=>"modal", :"data-target"=>"#voter-Modal", :"data-backdrop" => true, :"data-keyboard" => true
+      = link_to voter.state_file_id, voter_path(id: voter.id, use_modal: true), :"data-toggle"=>"modal", :"data-target"=>"#voter-Modal", :"data-backdrop" => true, :"data-keyboard" => true
   td
     = voter.party
   td
