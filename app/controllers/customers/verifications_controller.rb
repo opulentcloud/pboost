@@ -1,5 +1,5 @@
 class Customers::VerificationsController < AuthenticatedUsersController
-  before_filter :require_customer_user!
+  before_filter :require_admin_user!
   before_filter :set_vars, only: [:destroy]
 
   def index

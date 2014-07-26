@@ -15,9 +15,10 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
             ul.dropdown-menu
               li
                 = link_to 'Manual Input', voter_verify_path, class: 'navbar-brand'
-              li
-                = link_to 'Bulk Verify', verifications_path, class: 'navbar-brand'
-        ul.nav.navbar-nav role="navigation" 
+              - if admin_user?
+                li
+                  = link_to 'Bulk Verify', verifications_path, class: 'navbar-brand'
+        ul.nav.navbar-nav role="navigation"
           - if admin_user?
             li.dropdown
               a.dropdown-toggle data-toggle="dropdown" href="#" 
