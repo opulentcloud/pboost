@@ -2,6 +2,38 @@ class VotersController < ApplicationController
 #  before_filter :require_customer_user!
   before_action :set_voter, only: [:show, :edit, :update, :destroy]
 
+  def index
+    if params[:clear].present?
+      session[:last_search] = nil 
+      session[:last_sort] = nil
+    end
+    @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
+    session[:last_print_job] = nil
+  	@pg = params[:page] ||= 1
+  	@pg = @pg.to_i
+    
+    #get list per page settings from form, session or cookie
+	  @per_pg = 100
+
+    #params['q2'] ||= session[:last_search] ||= {"c"=>{"0"=>{"a"=>{"0"=>{"name"=>"last_name"}}, "p"=>"eq", "v"=>{"0"=>{"value"=>""}}}}, "s"=>session[:last_sort] ||= {"0"=>{"name"=>"last_name", "dir"=>"desc"}}} unless params['q'].present?
+
+    params['q2'] ||= session[:last_search] ||= {"c"=>{"0"=>{"a"=>{"0"=>{"name"=>"last_name"}}, "p"=>"eq", "v"=>{"0"=>{"value"=>""}}}}, "s"=>session[:last_sort] ||= {"0"=>{"name"=>"", "dir"=>""}}} unless params['q'].present?
+
+    if params['q'].present?
+      params['q2'] = params['q']
+    else
+      params['q'] = {} #{"s"=>"last_name asc"}    
+      params['q']['s'] = params['q2']['s']
+    end
+
+    @q = Voter.search(params['q2'])
+    @q.build_condition unless @q.conditions.present?
+    #@q.build_sort #(:name => 'last_name', :dir => 'asc') unless @q.sorts.present?
+
+    session[:last_sort] = params['q']['s']
+    session[:last_search]['s'] = session[:last_sort]
+  end
+
   def show
     @use_modal = params[:use_modal] == 'true'
     render 'show_modal', layout: false and return if @use_modal
@@ -45,7 +77,7 @@ class VotersController < ApplicationController
 
     if params[:petitions].present?
       delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result.reorder("").map(&:id), params[:petition_header_id])
-      redirect_to processing_path(id: delayed_job.id, return_url: users_dashboard_url), notice: "Building Candidate Petition Form." and return
+      redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil

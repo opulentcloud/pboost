@@ -15,7 +15,7 @@
                 | &nbsp;Search Voters
               | &nbsp;  
               - if action_name == 'search'
-                = link_to users_dashboard_path(clear: 1), :class => 'btn btn-default' do 
+                = link_to voters_path(clear: 1), :class => 'btn btn-default' do 
                   span.glyphicon.glyphicon-remove-sign
                   |  Clear
               .pull-right
@@ -30,7 +30,7 @@
 
   .row
     h2
-      | Voter Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
+      | Voter Verify - Advanced Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
       - search_args = { format: :xls }
       - search_args.merge!(party_breakdown: "1") if params[:party_breakdown].present?
       - search_args.merge!(precinct_breakdown: "1") if params[:precinct_breakdown].present?      

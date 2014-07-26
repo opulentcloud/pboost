@@ -1,37 +1,4 @@
 .container
-  .row style="margin-top: 15px;"
-    = search_form_for @q, url: search_voters_path, html: { method: :post } do |f|
-      ul#search-list.list-unstyled
-        - index = 0
-        = f.condition_fields do |c|
-          - index += 1
-          li class="field"
-            = render partial: "voters/condition_fields", locals: { f: c, idx: index }
-            - if index == 1
-              = link_to_add_fields '', f, :condition
-              | &nbsp;  
-              button type="submit" class="btn btn-primary" style="margin-left: 10px;"
-                i class="glyphicon glyphicon-search"
-                | &nbsp;Search Voters
-              | &nbsp;  
-              - if action_name == 'search'
-                = link_to admin_dashboard_path, :class => 'btn btn-default' do 
-                  span.glyphicon.glyphicon-remove-sign
-                  |  Clear
-              .pull-right
-                = check_box_tag "party_breakdown", "1", params[:party_breakdown].present?
-                |  Include Party Affiliation Breakdown?
-                br
-                = check_box_tag "precinct_breakdown", "1", params[:precinct_breakdown].present?
-                |  Include Precinct Voter Breakdown?
-              div style="display: none;"
-                = f.sort_fields do |s|
-                  = s.sort_select associations: [:address]
   .row
     h2
-      | Search Voters
-    - if @job_result.present?
-      = link_to 'download your candidate petition form',     @job_result.batch_file.attached_file.url, target: "_blank"
-      - session[:last_printed_url] = nil
-      
-
+      | Dashboard
