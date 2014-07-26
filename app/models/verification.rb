@@ -28,7 +28,7 @@ class Verification < ActiveRecord::Base
       if voters_results.size > 0
         # Try an isolate a match to one voter...
         voters_results.each do |voter|
-          voters << [voter.state_file_id, voter.address.county_name] if voter.last_name.upcase == old_row['Last Name'].to_s.upcase && old_row['DOB'] == (voter.dob.to_s(:db) rescue "") && (old_row['County'].to_s.upcase == voter.address.county_name.upcase || !old_row['County'].present?)
+          voters << [voter.state_file_id, voter.address.county_name] if voter.last_name.upcase == old_row['Last Name'].to_s.upcase && (voter_dob == voter.dob rescue "") && (old_row['County'].to_s.upcase == voter.address.county_name.upcase || !old_row['County'].present?)
         end
       else
         voters << [(voters_results.first.state_file_id rescue "not found"), (voters_results.first.address.county_name rescue "not found")] # add back any not found!
