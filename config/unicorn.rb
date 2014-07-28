@@ -1,5 +1,5 @@
 listen 8080, :tcp_nopush => false
-worker_processes Integer(ENV["WEB_CONCURRENCY"] || 1)
+worker_processes Integer(ENV["WEB_CONCURRENCY"] || 2)
 timeout 120
 preload_app true
 
@@ -14,7 +14,7 @@ before_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
 
-  @delayed_job_pid ||= spawn("bundle exec rake jobs:work")
+  #@delayed_job_pid ||= spawn("bundle exec rake jobs:work")
 end
 
 after_fork do |server, worker|
