@@ -22,7 +22,7 @@ class Verification < ActiveRecord::Base
         next
       end
       voter_dob = Date.parse(old_row['DOB']) rescue ""
-      search_index2 = Voter.build_search_index2(old_row['First Name'][0,4], old_row['Last Name'][0,4],voter_dob)
+      search_index2 = Voter.build_search_index2(old_row['First Name'], old_row['Last Name'],voter_dob)
       voters = []
       voters_results = Voter.includes(:address).where(search_index2: search_index2)
       if voters_results.size > 0
