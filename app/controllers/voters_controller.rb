@@ -40,6 +40,8 @@ class VotersController < ApplicationController
   end
   
   def search
+    @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
+    session[:last_print_job] = nil
     cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } if params[:petitions].present?
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
@@ -75,7 +77,12 @@ class VotersController < ApplicationController
     @q2 = Voter.search(params[:q])
     session[:last_search] = params[:q]
 
-    if params[:petitions].present?
+    if params[:export].present? && admin_user?
+      dj = Delayed::Job.enqueue VotersExportJob.new(params[:q])
+      redirect_to processing_path(return_url: search_voters_path, id: dj.id) and return
+    end
+
+    if params[:petitions].present? && admin_user?
       delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result.reorder("").map(&:id), params[:petition_header_id])
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end

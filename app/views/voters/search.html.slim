@@ -31,11 +31,11 @@
   .row
     h2
       | Voter Verify - Advanced Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
-      - search_args = { format: :xls }
-      - search_args.merge!(party_breakdown: "1") if params[:party_breakdown].present?
-      - search_args.merge!(precinct_breakdown: "1") if params[:precinct_breakdown].present?      
+      - search_args = { export: '1' } #search_args = { format: :xls }
+      - search_args.merge!(party_breakdown: '1') if params[:party_breakdown].present?
+      - search_args.merge!(precinct_breakdown: '1') if params[:precinct_breakdown].present?      
       - if admin_user?
-        = link_to search_voters_path(search_args), :class => 'btn btn-default', target: '_blank' do 
+        = link_to search_voters_path(search_args), :class => 'btn btn-default' do 
           span.glyphicon.glyphicon-export
           |  Export
           - search_args = { petitions: '1' }
@@ -43,6 +43,12 @@
           span.glyphicon.glyphicon-print
           |  Print Candidate Petition
         = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
+    - if @job_result.present?
+      - if !(@job_result.batch_file.attached_file.url =~ /voters-export/).nil?
+        = link_to 'download your voters export file', @job_result.batch_file.attached_file.url, target: "_blank"
+      - else
+        = link_to 'download your candidate petition form',     @job_result.batch_file.attached_file.url, target: "_blank"
+      - session[:last_printed_url] = nil
 
   - if @party_breakdown.present?
     .row

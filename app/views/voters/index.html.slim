@@ -31,7 +31,10 @@
     h2
       | Voter Verify - Advanced Search
     - if @job_result.present?
-      = link_to 'download your candidate petition form',     @job_result.batch_file.attached_file.url, target: "_blank"
+      - if !(@job_result.batch_file.attached_file.url =~ /voters-export/).nil?
+        = link_to 'download your voters export file', @job_result.batch_file.attached_file.url, target: "_blank"
+      - else
+        = link_to 'download your candidate petition form',     @job_result.batch_file.attached_file.url, target: "_blank"
       - session[:last_printed_url] = nil
       
 
