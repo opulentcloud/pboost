@@ -11,8 +11,10 @@ class VotersExportJob < VExportJob
   def perform
     @q = Voter.includes(:address).search(query)
     @voters = @q.result
-    tempfile = Tempfile.new(["voters-export-#{Time.now.to_i}",".xls"])
-    tempfile.write(@voters.to_csv(col_sep: "\t"))
+    
+    #tempfile = Tempfile.new(["voters-export-#{Time.now.to_i}",".xls"])
+    #tempfile.write(@voters.to_csv(col_sep: "\t"))
+    tempfile = @voters.to_csv({ col_sep: "\t" }, true)
     result = DelayedJobResult.new(job_id: @job.id)
     result.build_batch_file(mime_type: 'applicaton/xls', 
       origin_url: 'na',

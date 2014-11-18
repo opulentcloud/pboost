@@ -66,11 +66,22 @@ class Voter < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << (column_names + Address.column_names)
-      all.includes(:address).each do |voter|
-        csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names))
+  def self.to_csv(options = {}, to_file = false)
+    if to_file == true
+      tempfile = Tempfile.new(["voters-export-#{Time.now.to_i}",".xls"])
+      CSV.open(tempfile.path, "wb") do |csv|
+        csv << (column_names + Address.column_names)
+        all.includes(:address).find_each do |voter|
+          csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names))
+        end
+      end
+      return File.new(tempfile.path, "r")
+    else
+      CSV.generate(options) do |csv|
+        csv << (column_names + Address.column_names)
+        all.includes(:address).find_each do |voter|
+          csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names))
+        end
       end
     end
   end
