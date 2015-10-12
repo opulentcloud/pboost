@@ -91,7 +91,7 @@ class VotersController < ApplicationController
     @voters = @q.result
 
     @party_breakdown = @q2.result.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
-    @precinct_breakdown = @q2.result.reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
+    @precinct_breakdown = @q2.result.joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
 
     respond_to do |format|
       format.html {

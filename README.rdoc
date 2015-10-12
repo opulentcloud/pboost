@@ -48,7 +48,7 @@
   $ \copy registered_voters_data (vtrid,lastname,firstname,middlename,suffix,dob,gender,party,house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,unitnumber,address,non_std_address,residentialcity,residentialstate,residentialzip5,residentialzip4,mailingaddress,mailingcity,mailingstate,mailingzip5,mailingzip4,country,status_code,state_registration_date,county_registration_date,precinct,split,county,congressional_districts,legislative_districts,councilmanic_districts,ward_districts,municipal_districts,commissioner_districts,school_districts) from '/home/mark/Work/pboostv2/db/fixtures/Stinnie/RegisteredVoters.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
 
   # Build the addresses hashes
-  RegisteredVoterData.build_address_hashes
+  RegisteredVotersData.build_address_hashes
 
   # If you already have existing addresses table populated run this to convert any existing
   # comm_dist_codes to the proper format.
