@@ -38,7 +38,9 @@ class WalksheetReportPdf < Prawn::Document
         header
       end
     end
-    display_voters_table
+    display_voters_table(:even)
+    start_new_page
+    display_voters_table(:odd)
     # display_total
     number_pages "page <page> of <total>", { at: [bounds.right - 150, 0],
       width: 150,
@@ -75,13 +77,13 @@ class WalksheetReportPdf < Prawn::Document
     end
   end
 
-  def display_voters_table
+  def display_voters_table(street_side)
     table_headers = @@Headers
     bounding_box([0, bounds.top-45], width: bounds.width) do
-      if voters_table_data.empty?
-        text "No Data Found"
+      if voters_table_data(street_side).empty?
+        text "No #{street_side} addresses found."
       else
-        table(voters_table_data.unshift(table_headers),
+        table(voters_table_data(street_side).unshift(table_headers),
           header: true,
           #width: 739, #bounds.width,
           width: @@Widths.sum, # 692,
@@ -103,9 +105,9 @@ class WalksheetReportPdf < Prawn::Document
     end
   end
 
-  def voters_table_data
-    @voters = Voter.select("(REGEXP_REPLACE(TRIM(CONCAT(addresses.street_no, ' ', addresses.street_no_half, ' ', addresses.street_prefix, ' ', addresses.street_name, ' ', addresses.street_type, ' ', addresses.street_suffix, ' ', addresses.apt_type, ' ', addresses.apt_no)), '\s+', ' ', 'g')) AS full_street_address, (REGEXP_REPLACE(TRIM(CONCAT(voters.last_name, ', ', voters.first_name, ' ', voters.middle_name)), '\s+', ' ', 'g')) AS printable_name, voters.dob, addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no, addresses.apt_no").joins(:address).where(id: @voter_ids).order("addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no::int, addresses.apt_no")
-    @voters_table_data ||= voter_rows(@voters)
+  def voters_table_data(street_side)
+    @voters = Voter.select("(REGEXP_REPLACE(TRIM(CONCAT(addresses.street_no, ' ', addresses.street_no_half, ' ', addresses.street_prefix, ' ', addresses.street_name, ' ', addresses.street_type, ' ', addresses.street_suffix, ' ', addresses.apt_type, ' ', addresses.apt_no)), '\s+', ' ', 'g')) AS full_street_address, (REGEXP_REPLACE(TRIM(CONCAT(voters.last_name, ', ', voters.first_name, ' ', voters.middle_name)), '\s+', ' ', 'g')) AS printable_name, voters.dob, addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no, addresses.apt_no").joins(:address).where(id: @voter_ids).where("addresses.is_odd = ?", street_side == :odd).order("addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no::int, addresses.apt_no")
+    voter_rows(@voters)
   end
 
   def voter_rows(voters)
