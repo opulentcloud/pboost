@@ -87,7 +87,7 @@ class VotersController < ApplicationController
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end
 
-    if params[:walklists].present? && admn_user?
+    if params[:walklists].present? && admin_user?
       delayed_job = Delayed::Job.enqueue PrintWalksheetJob.new(@q2.result.reorder("").map(&:id))
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Walksheet." and return
     end

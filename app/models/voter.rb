@@ -49,6 +49,10 @@ class Voter < ActiveRecord::Base
 		"#{first_name} #{middle_name} #{last_name} #{suffix}".upcase.squeeze(' ')
 	end
 
+	def printable_name
+		"#{last_name}, #{first_name} #{middle_name}".upcase
+	end
+
 	def build_search
 		first_four = self.first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
 		second_four = self.last_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''
