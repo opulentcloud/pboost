@@ -73,7 +73,7 @@ class VotersController < ApplicationController
       Rails.logger.debug(ex.backtrace)    
     end
 
-    @q = Voter.includes(:address).search(params[:q])
+    @q = Voter.search(params[:q])
     @q2 = Voter.search(params[:q])
     session[:last_search] = params[:q]
 
@@ -87,8 +87,13 @@ class VotersController < ApplicationController
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end
 
+    if params[:walklists].present? && admn_user?
+      delayed_job = Delayed::Job.enqueue PrintWalksheetJob.new(@q2.result.reorder("").map(&:id))
+      redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Walksheet." and return
+    end
+
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
-    @voters = @q.result
+    @voters = @q.result.includes(:address)
 
     @party_breakdown = @q2.result.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
     @precinct_breakdown = @q2.result.joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
