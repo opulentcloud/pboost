@@ -40,15 +40,16 @@
             = link_to search_voters_path(search_args.merge(export: '1')), :class => 'btn btn-default' do 
               span.glyphicon.glyphicon-export
               |  Export
-          li
-            = link_to search_voters_path(search_args.merge(petitions: '1')), :class => 'btn btn-default', id: 'print-candidate-petition' do 
-              span.glyphicon.glyphicon-print
-              |  Print Candidate Petition
         li
           = link_to search_voters_path(search_args.merge(walklists: '1')), :class => 'btn btn-default', id: 'print-walk-list' do 
             span.glyphicon.glyphicon-print
             |  Print Walk-List
-        = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
+        - if admin_user?
+          li
+            = link_to search_voters_path(search_args.merge(petitions: '1')), :class => 'btn btn-default', id: 'print-candidate-petition' do 
+              span.glyphicon.glyphicon-print
+              |  Print Candidate Petition
+            = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
     - if @job_result.present?
       - if !(@job_result.batch_file.attached_file.url =~ /voters-export/).nil?
         = link_to 'download your Voters Export File', @job_result.batch_file.attached_file.url, target: "_blank"
