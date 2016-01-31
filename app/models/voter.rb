@@ -7,7 +7,7 @@
 #  last_name       :string(32)
 #  first_name      :string(32)
 #  middle_name     :string(32)
-#  suffix          :string(4)
+#  suffix          :string(30)
 #  salutation      :string(32)
 #  phone           :string(10)
 #  home_phone      :string(10)
@@ -25,6 +25,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  address_id      :integer
+#  search_index2   :string(12)
 #
 
 class Voter < ActiveRecord::Base

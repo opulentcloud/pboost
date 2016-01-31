@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.9'
+gem 'rails', '4.1.14'
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 group :development do
@@ -78,6 +78,7 @@ gem 'nokogiri'
 gem 'fog'
 gem 'carrierwave'
 gem 'prawn'
+gem 'prawn-table'
 gem 'prawn-blank', :git => 'git://github.com/bdogger/prawn-blank'
 
 group :production do

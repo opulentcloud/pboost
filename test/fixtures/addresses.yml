@@ -30,7 +30,6 @@
 #  street_no_int         :integer
 #  created_at            :datetime
 #  updated_at            :datetime
-#  geom                  :spatial          point, 4326
 #  ward_district         :string(10)
 #  municipal_district    :string(10)
 #  commissioner_district :string(10)
