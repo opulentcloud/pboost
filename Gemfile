@@ -79,7 +79,7 @@ gem 'fog'
 gem 'carrierwave'
 gem 'prawn'
 gem 'prawn-table'
-gem 'prawn-blank', :git => 'git://github.com/bdogger/prawn-blank'
+gem 'prawn-blank' #, :git => 'git://github.com/bdogger/prawn-blank'
 
 group :production do
   gem 'rails_12factor'
