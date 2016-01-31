@@ -89,7 +89,7 @@ class VotersController < ApplicationController
 
     if params[:walklists].present? && admin_user?
       delayed_job = Delayed::Job.enqueue PrintWalksheetJob.new(@q2.result.reorder("").map(&:id))
-      redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Walksheet." and return
+      redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Walk-List." and return
     end
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil

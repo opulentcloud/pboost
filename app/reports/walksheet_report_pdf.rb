@@ -35,15 +35,15 @@ class WalksheetReportPdf < Prawn::Document
 
     repeat(:all) do
       bounding_box([0, bounds.top], width: bounds.width) do
-        header
+        header 'Walk-Sheet', Time.zone.now.strftime("%m/%d/%Y %I:%M %p")
       end
     end
     display_voters_table(:even)
     start_new_page
     display_voters_table(:odd)
     # display_total
-    number_pages "page <page> of <total>", { at: [bounds.right - 150, 0],
-      width: 150,
+    number_pages "PoliticalBoost.com Page <page> of <total>", { at: [bounds.right - 250, 0],
+      #width: 250,
       align: :right,
       start_count_at: 1,
       color: "333333" }
@@ -106,14 +106,14 @@ class WalksheetReportPdf < Prawn::Document
   end
 
   def voters_table_data(street_side)
-    @voters = Voter.select("(REGEXP_REPLACE(TRIM(CONCAT(addresses.street_no, ' ', addresses.street_no_half, ' ', addresses.street_prefix, ' ', addresses.street_name, ' ', addresses.street_type, ' ', addresses.street_suffix, ' ', addresses.apt_type, ' ', addresses.apt_no)), '\s+', ' ', 'g')) AS full_street_address, (REGEXP_REPLACE(TRIM(CONCAT(voters.last_name, ', ', voters.first_name, ' ', voters.middle_name)), '\s+', ' ', 'g')) AS printable_name, voters.dob, addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no, addresses.apt_no").joins(:address).where(id: @voter_ids).where("addresses.is_odd = ?", street_side == :odd).order("addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no::int, addresses.apt_no")
+    @voters = Voter.select("(REGEXP_REPLACE(TRIM(CONCAT(addresses.street_no, ' ', addresses.street_no_half, ' ', addresses.street_prefix, ' ', addresses.street_name, ' ', addresses.street_type, ' ', addresses.street_suffix, ' ', addresses.apt_type, ' ', addresses.apt_no)), '\s+', ' ', 'g')) AS full_street_address, (REGEXP_REPLACE(TRIM(CONCAT(voters.last_name, ', ', voters.first_name, ' ', voters.middle_name)), '\s+', ' ', 'g')) AS printable_name, (SELECT name_list FROM voters_names WHERE voter_address_id = addresses.id), voters.dob, addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no, addresses.apt_no, voters.last_name").joins(:address).where(id: @voter_ids).where("addresses.is_odd = ?", street_side == :odd).where("voters.dob = (SELECT MIN(v2.dob) FROM voters as v2 WHERE v2.address_id = addresses.id)").order("addresses.street_name, addresses.street_type, addresses.is_odd, addresses.street_no::int, addresses.apt_no, voters.dob")
     voter_rows(@voters)
   end
 
   def voter_rows(voters)
     voters_arr = []
     voters.each do |voter|
-      voters_arr << [voter['full_street_address'], voter['printable_name'], (voter.dob.strftime("%m/%d/%Y") rescue ''), '', 'Y / N', 'Y / N', 'Y / N / U', 'Y / N']
+      voters_arr << [voter['full_street_address'], voter['printable_name'], (voter.dob.strftime("%m/%d/%Y") rescue ''), voter['name_list'].to_s.gsub("#{voter.last_name}, ", ''), 'Y / N', 'Y / N', 'Y / N / U', 'Y / N']
     end
     voters_arr
   end

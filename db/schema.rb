@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724234511) do
+ActiveRecord::Schema.define(version: 20160131000200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 20140724234511) do
   add_index "addresses", ["county_name"], :name => "ac_anne_arundel_idx"
   add_index "addresses", ["county_name"], :name => "ac_baltimore_city_idx"
   add_index "addresses", ["county_name"], :name => "ac_baltimore_county_idx"
-  add_index "addresses", ["county_name"], :name => "ac_baltimore_idx"
   add_index "addresses", ["county_name"], :name => "ac_calvert_idx"
   add_index "addresses", ["county_name"], :name => "ac_caroline_idx"
   add_index "addresses", ["county_name"], :name => "ac_carroll_idx"
@@ -78,7 +77,6 @@ ActiveRecord::Schema.define(version: 20140724234511) do
   add_index "addresses", ["county_name"], :name => "ac_queen_anne_s_idx"
   add_index "addresses", ["county_name"], :name => "ac_saint_mary_s_idx"
   add_index "addresses", ["county_name"], :name => "ac_somerset_idx"
-  add_index "addresses", ["county_name"], :name => "ac_st__mary_s_idx"
   add_index "addresses", ["county_name"], :name => "ac_talbot_idx"
   add_index "addresses", ["county_name"], :name => "ac_washington_idx"
   add_index "addresses", ["county_name"], :name => "ac_wicomico_idx"
@@ -149,8 +147,7 @@ ActiveRecord::Schema.define(version: 20140724234511) do
     t.datetime "updated_at"
   end
 
-  create_table "registered_voters_data", id: false, force: true do |t|
-    t.string "vtrid",                               null: false
+  create_table "registered_voters_data", primary_key: "vtrid", force: true do |t|
     t.string "lastname"
     t.string "firstname"
     t.string "middlename"
@@ -257,7 +254,7 @@ ActiveRecord::Schema.define(version: 20140724234511) do
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id", :unique => true
   add_index "users_roles", ["users_id"], :name => "index_users_roles_on_users_id"
 
-  create_table "van_data", id: false, force: true do |t|
+  create_table "van_data", primary_key: "state_file_id", force: true do |t|
     t.string "vote_builder_id"
     t.string "last_name"
     t.string "first_name"
@@ -326,7 +323,6 @@ ActiveRecord::Schema.define(version: 20140724234511) do
     t.string "primary_98"
     t.string "primary_96"
     t.string "primary_94"
-    t.string "state_file_id",              null: false
     t.string "address_hash",    limit: 32
   end
 
