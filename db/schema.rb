@@ -2064,6 +2064,7 @@ ActiveRecord::Schema.define(version: 20160131211819) do
     t.string   "state_file_id",  limit: 10
   end
 
+  add_index "voting_histories", ["state_file_id", "election_type", "election_year"], :name => "uniq_voting_histories_idx", :unique => true
   add_index "voting_histories", ["state_file_id"], :name => "index_voting_histories_on_state_file_id"
 
 end
