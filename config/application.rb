@@ -37,8 +37,6 @@ module Pboostv2
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += %W(#{config.root}/lib)
 
-    config.assets.precompile += %w( *.png *.jpg *.jpeg *.gif *.eot *.svg *.ttf *.woff *.woff2 )
-
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Eastern Time (US & Canada)'

@@ -26,7 +26,7 @@ gem 'activerecord-postgis-adapter'
 
 # Use SCSS for stylesheets
 gem 'bootstrap-sass'
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 5.0'
 gem 'autoprefixer-rails'
 
 # Use Uglifier as compressor for JavaScript assets
