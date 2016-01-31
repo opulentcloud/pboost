@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131014641) do
+ActiveRecord::Schema.define(version: 20160131211819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2061,9 +2061,9 @@ ActiveRecord::Schema.define(version: 20160131014641) do
     t.string   "voter_type",     limit: 1
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "voter_id"
+    t.string   "state_file_id",  limit: 10
   end
 
-  add_index "voting_histories", ["voter_id"], :name => "index_voting_histories_on_voter_id"
+  add_index "voting_histories", ["state_file_id"], :name => "index_voting_histories_on_state_file_id"
 
 end

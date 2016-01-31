@@ -77,6 +77,11 @@
 # Raw imported data from VAN system file
 class VanData < ActiveRecord::Base
 
+  GENERAL_ELECTIONS =['general_08','general_06','general_04','general_02','general_00','general_98','general_96','general_94'].freeze
+  MUNI_GENERAL_ELECTIONS = ['muni_general_07','muni_general_05','muni_general_03','muni_general_02','muni_general_01','muni_general_00'].freeze
+  MUNI_PRIMARY_ELECTIONS = ['muni_primary_07','muni_primary_05','muni_primary_03','muni_primary_01','muni_primary_99'].freeze
+  PRIMARY_ELECTIONS = ['primary_08','primary_06','primary_04','primary_02','primary_00','primary_98','primary_96','primary_94'].freeze
+
   def table_name
     'van_data'
   end
@@ -111,6 +116,43 @@ class VanData < ActiveRecord::Base
         end
       end
       break if break_after == true
+    end
+  end
+
+  def self.voting_histories_populate!
+    @elections = [GENERAL_ELECTIONS, MUNI_GENERAL_ELECTIONS, MUNI_PRIMARY_ELECTIONS, PRIMARY_ELECTIONS]
+
+    @election_type = nil
+    @elections.each_with_index do |elections,index|
+      case index
+        when 0 then @election_type = 'G'
+        when 1 then @election_type = 'MG'
+        when 2 then @election_type = 'MP'
+        when 3 then @election_type = 'P'
+      end
+      
+      elections.each do |election|
+        @election_year = election.split('_').last.to_i
+        @election_year += @election_year > 8 ? 1900 : 2000
+
+        puts "Populating #{@election_year} #{@election_type} #{election}..."
+
+        result = nil
+        cnt = 0
+        while result.nil? || result.try(:cmd_tuples) > 0
+          puts cnt += 1
+          VotingHistory.transaction do
+            result = ActiveRecord::Base.connection.execute( %{
+              INSERT INTO voting_histories (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at) \
+              SELECT state_file_id, CASE WHEN COALESCE(#{election}, 'N') = '' THEN 'N' ELSE COALESCE(#{election}, 'N') END AS #{election}, \
+              #{@election_year} as election_year, null as election_month, '#{@election_type}' as election_type, current_date as created_at, current_date as updated_at \
+              FROM van_data \
+              WHERE NOT EXISTS (SELECT h.id FROM voting_histories h WHERE h.state_file_id = van_data.state_file_id AND h.election_year = #{@election_year} AND h.election_type = '#{@election_type}') \
+              LIMIT 1000;
+            }, :skip_logging)
+          end
+        end
+      end
     end
   end
   # end public class methods
