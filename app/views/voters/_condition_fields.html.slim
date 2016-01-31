@@ -1,5 +1,5 @@
 = f.attribute_fields do |a|
-  - the_select = a.attribute_select associations: [:address]
+  - the_select = a.attribute_select associations: [:address, :votes]
 
   - new_select = the_select.html_safe
   - fragment = Nokogiri::HTML.fragment(new_select)

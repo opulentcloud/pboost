@@ -14,6 +14,13 @@
 
 class VotingHistory < ActiveRecord::Base
 
+  #exclude some fields from ransack search  
+  UNRANSACKABLE_ATTRIBUTES = ['id','voter_id','created_at','updated_at']
+
+  def self.ransackable_attributes auth_object = nil
+    (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
+  end
+
   # begin associations
   belongs_to :voter
   # end associations
