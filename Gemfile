@@ -10,7 +10,6 @@ group :development do
   gem 'spring'
   gem 'rails_layout'
   gem 'annotate'
-  gem 'byebug'
   gem 'quiet_assets'
   gem 'capistrano'
   gem 'capistrano-rbenv'
