@@ -141,6 +141,7 @@ class VanData < ActiveRecord::Base
         cnt = 0
         while result.nil? || result.try(:cmd_tuples) > 0
           puts cnt += 1
+          max_state_file_id = VotingHistory.where(election_type: @election_type).where(election_year: @election_year).maximum(:state_file_id) || 0
           VotingHistory.transaction do
             result = ActiveRecord::Base.connection.execute( %{
               INSERT INTO voting_histories (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at) \
@@ -148,8 +149,9 @@ class VanData < ActiveRecord::Base
               #{@election_year} as election_year, null as election_month, '#{@election_type}' as election_type, current_date as created_at, current_date as updated_at \
               FROM van_data \
               WHERE \
-              COALESCE(#{election}, '') != '' AND \
-              NOT EXISTS (SELECT h.id FROM voting_histories h WHERE h.state_file_id = van_data.state_file_id AND h.election_type = '#{@election_type}' AND h.election_year = #{@election_year}) \
+              COALESCE(#{election}, '') != '' \
+              AND van_data.state_file_id > #{max_state_file_id} \
+              ORDER BY van_data.state_file_id \
               LIMIT 10000;
             }, :skip_logging)
           end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201071946) do
+ActiveRecord::Schema.define(version: 20160201163026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1828,7 +1828,7 @@ ActiveRecord::Schema.define(version: 20160201071946) do
   end
 
   create_table "registered_voter_histories", force: true do |t|
-    t.string   "vtrid"
+    t.integer  "vtrid",                 null: false
     t.string   "election_date"
     t.string   "election_description"
     t.string   "election_type"
@@ -1952,78 +1952,80 @@ ActiveRecord::Schema.define(version: 20160201071946) do
   add_index "users_roles", ["users_id"], :name => "index_users_roles_on_users_id"
 
   create_table "van_data", primary_key: "state_file_id", force: true do |t|
-    t.string "vote_builder_id"
-    t.string "last_name"
-    t.string "first_name"
-    t.string "middle_name"
-    t.string "suffix"
-    t.string "salutation"
-    t.string "street_no"
-    t.string "street_no_half"
-    t.string "street_prefix"
-    t.string "street_name"
-    t.string "street_type"
-    t.string "street_suffix"
-    t.string "apt_type"
-    t.string "apt_no"
-    t.string "city"
-    t.string "state"
-    t.string "zip5"
-    t.string "zip4"
-    t.string "m_address"
-    t.string "m_city"
-    t.string "m_state"
-    t.string "m_zip5"
-    t.string "m_zip4"
-    t.string "phone"
-    t.string "home_phone"
-    t.string "work_phone"
-    t.string "work_phone_ext"
-    t.string "cell_phone"
-    t.string "email"
-    t.string "county_name"
-    t.string "precinct_name"
-    t.string "precinct_code"
-    t.string "cd"
-    t.string "sd"
-    t.string "hd"
-    t.string "comm_dist_code"
-    t.string "party"
-    t.string "sex"
-    t.string "age"
-    t.string "dob"
-    t.string "dor"
-    t.string "general_08"
-    t.string "general_06"
-    t.string "general_04"
-    t.string "general02"
-    t.string "general_00"
-    t.string "general_98"
-    t.string "general_96"
-    t.string "general_94"
-    t.string "muni_general_07"
-    t.string "muni_general_05"
-    t.string "muni_general_03"
-    t.string "muni_general_02"
-    t.string "muni_general_01"
-    t.string "muni_general_00"
-    t.string "muni_primary_07"
-    t.string "muni_primary_05"
-    t.string "muni_primary_03"
-    t.string "muni_primary_01"
-    t.string "muni_primary_99"
-    t.string "primary_08"
-    t.string "primary_06"
-    t.string "primary_04"
-    t.string "primary_02"
-    t.string "primary_00"
-    t.string "primary_98"
-    t.string "primary_96"
-    t.string "primary_94"
-    t.string "address_hash",    limit: 32
+    t.integer "vote_builder_id",            null: false
+    t.string  "last_name"
+    t.string  "first_name"
+    t.string  "middle_name"
+    t.string  "suffix"
+    t.string  "salutation"
+    t.string  "street_no"
+    t.string  "street_no_half"
+    t.string  "street_prefix"
+    t.string  "street_name"
+    t.string  "street_type"
+    t.string  "street_suffix"
+    t.string  "apt_type"
+    t.string  "apt_no"
+    t.string  "city"
+    t.string  "state"
+    t.string  "zip5"
+    t.string  "zip4"
+    t.string  "m_address"
+    t.string  "m_city"
+    t.string  "m_state"
+    t.string  "m_zip5"
+    t.string  "m_zip4"
+    t.string  "phone"
+    t.string  "home_phone"
+    t.string  "work_phone"
+    t.string  "work_phone_ext"
+    t.string  "cell_phone"
+    t.string  "email"
+    t.string  "county_name"
+    t.string  "precinct_name"
+    t.string  "precinct_code"
+    t.string  "cd"
+    t.string  "sd"
+    t.string  "hd"
+    t.string  "comm_dist_code"
+    t.string  "party"
+    t.string  "sex"
+    t.string  "age"
+    t.string  "dob"
+    t.string  "dor"
+    t.string  "general_08"
+    t.string  "general_06"
+    t.string  "general_04"
+    t.string  "general02"
+    t.string  "general_00"
+    t.string  "general_98"
+    t.string  "general_96"
+    t.string  "general_94"
+    t.string  "muni_general_07"
+    t.string  "muni_general_05"
+    t.string  "muni_general_03"
+    t.string  "muni_general_02"
+    t.string  "muni_general_01"
+    t.string  "muni_general_00"
+    t.string  "muni_primary_07"
+    t.string  "muni_primary_05"
+    t.string  "muni_primary_03"
+    t.string  "muni_primary_01"
+    t.string  "muni_primary_99"
+    t.string  "primary_08"
+    t.string  "primary_06"
+    t.string  "primary_04"
+    t.string  "primary_02"
+    t.string  "primary_00"
+    t.string  "primary_98"
+    t.string  "primary_96"
+    t.string  "primary_94"
+    t.string  "address_hash",    limit: 32
   end
 
   add_index "van_data", ["state_file_id", "address_hash"], :name => "idx_address_hash"
+  add_index "van_data", ["state_file_id"], :name => "index_van_data_on_state_file_id"
+  add_index "van_data", ["vote_builder_id"], :name => "index_van_data_on_vote_builder_id"
 
   create_table "verifications", force: true do |t|
     t.string   "impfile"
@@ -2054,7 +2056,7 @@ ActiveRecord::Schema.define(version: 20160201071946) do
     t.integer  "age",             limit: 2
     t.date     "dob"
     t.date     "dor"
-    t.string   "state_file_id",   limit: 10
+    t.integer  "state_file_id",               null: false
     t.string   "search_index",    limit: 13
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -2070,6 +2072,7 @@ ActiveRecord::Schema.define(version: 20160201071946) do
   add_index "voters", ["search_index2"], :name => "index_voters_on_search_index2"
   add_index "voters", ["sex"], :name => "index_voters_on_sex"
   add_index "voters", ["state_file_id"], :name => "index_voters_on_state_file_id", :unique => true
+  add_index "voters", ["vote_builder_id"], :name => "index_voters_on_vote_builder_id", :unique => true
 
   create_table "voting_histories", force: true do |t|
     t.integer  "election_year"
@@ -2078,7 +2081,7 @@ ActiveRecord::Schema.define(version: 20160201071946) do
     t.string   "voter_type",     limit: 1
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "state_file_id",  limit: 10
+    t.integer  "state_file_id",            null: false
   end
 
   add_index "voting_histories", ["state_file_id", "election_type", "election_year"], :name => "uniq_voting_histories_idx", :unique => true
