@@ -42,7 +42,7 @@ class VotingHistory < ActiveRecord::Base
 		['Didn\'t Vote', 'N'],
 		['Abs', 'A'],
 		['Polls', 'P'],
-    ['Early Voter', 'E']
+    ['Early Voter', 'E'],
 		['Provisional', 'V']
 	]
 
