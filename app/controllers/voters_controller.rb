@@ -133,20 +133,20 @@ class VotersController < ApplicationController
     end
 
     if params[:petitions].present? && admin_user?
-      delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result.reorder("").map(&:id), params[:petition_header_id])
+      delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result(distinct: true).includes(:address, :votes).reorder("").map(&:id), params[:petition_header_id])
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end
 
     if params[:walklists].present? # && admin_user?
-      delayed_job = Delayed::Job.enqueue PrintWalksheetJob.new(@q2.result.reorder("").map(&:id))
+      delayed_job = Delayed::Job.enqueue PrintWalksheetJob.new(@q2.result(distinct: true).includes(:address, :votes).reorder("").map(&:id))
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Walk-List." and return
     end
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
-    @voters = @q.result.includes(:address, :votes)
+    @voters = @q.result(distinct: true).includes(:address, :votes)
 
-    @party_breakdown = @q2.result.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
-    @precinct_breakdown = @q2.result.joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
+    @party_breakdown = @q2.result(distinct: true).includes(:address, :votes).reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
+    @precinct_breakdown = @q2.result(distinct: true).includes(:address, :votes).joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
 
     respond_to do |format|
       format.html {
