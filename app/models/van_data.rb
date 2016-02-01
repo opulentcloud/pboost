@@ -147,8 +147,8 @@ class VanData < ActiveRecord::Base
               SELECT state_file_id, CASE WHEN COALESCE(#{election}, 'N') = '' THEN 'N' ELSE COALESCE(#{election}, 'N') END AS #{election}, \
               #{@election_year} as election_year, null as election_month, '#{@election_type}' as election_type, current_date as created_at, current_date as updated_at \
               FROM van_data \
-              WHERE NOT EXISTS (SELECT h.id FROM voting_histories h WHERE h.state_file_id = van_data.state_file_id AND h.election_year = #{@election_year} AND h.election_type = '#{@election_type}') \
-              LIMIT 1000;
+              WHERE NOT EXISTS (SELECT h.id FROM voting_histories h WHERE h.state_file_id = van_data.state_file_id AND h.election_type = '#{@election_type}' AND h.election_year = #{@election_year}) \
+              LIMIT 10000;
             }, :skip_logging)
           end
         end
