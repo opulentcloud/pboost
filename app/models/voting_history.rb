@@ -25,7 +25,11 @@ class VotingHistory < ActiveRecord::Base
 		['General',	'G'],
 		['Primary',	'P'],
 		['Municipal General',	'MG'],
-		['Municipal Primary', 'MP']
+		['Municipal Primary', 'MP'],
+		['Gubernatorial General', 'GG'],
+		['Gubernatorial Primary', 'GP'],
+		['Presidential General', 'G'],
+		['Presidential Primary', 'P']
 	]
 	
 	ELECTION_TYPE_CHOICES = [
@@ -34,10 +38,11 @@ class VotingHistory < ActiveRecord::Base
 	]
 
 	VOTING_TYPES = [
-		['Voted', 'Y'],
+    ['Federal Write-In Absentee Ballot', 'F'],
 		['Didn\'t Vote', 'N'],
 		['Abs', 'A'],
 		['Polls', 'P'],
+    ['Early Voter', 'E']
 		['Provisional', 'V']
 	]
 
