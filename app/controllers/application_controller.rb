@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   force_ssl if: :ssl_configured?
 
   def ssl_configured?
-    %w(staging production).include?(Rails.env)
+    false #%w(staging production).include?(Rails.env)
   end
 
   def access_denied
