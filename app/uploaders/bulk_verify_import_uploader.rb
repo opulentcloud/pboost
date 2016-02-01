@@ -1,7 +1,7 @@
 class BulkVerifyImportUploader < CarrierWave::Uploader::Base
-  storage :fog
+  storage :file #:fog
   def store_dir
-    "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   def extension_white_list
