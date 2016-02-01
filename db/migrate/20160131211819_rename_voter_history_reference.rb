@@ -8,7 +8,7 @@ class RenameVoterHistoryReference < ActiveRecord::Migration
 
   def self.down
     add_reference :voting_histories, :voter, index: true
-    remove_index :voting_histories, [:state_file_id, :election_type, :election_year]
+    remove_index :voting_histories, name: :uniq_voting_histories_idx
     remove_index :voting_histories, :state_file_id
     remove_column :voting_histories, :state_file_id
   end
