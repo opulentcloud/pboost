@@ -14,6 +14,7 @@
 
 # Ignore the default SQLite database.
 /db/*.dump
+/db/*.old
 /db/*.out
 /db/*.gz
 /db/*.sqlite3
