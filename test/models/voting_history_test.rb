@@ -9,7 +9,7 @@
 #  voter_type     :string(1)
 #  created_at     :datetime
 #  updated_at     :datetime
-#  voter_id       :integer
+#  state_file_id  :integer          not null
 #
 
 require 'test_helper'

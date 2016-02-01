@@ -5,11 +5,11 @@
 #  id             :integer          not null, primary key
 #  election_year  :integer
 #  election_month :integer
-#  election_type  :string(2) # G-General, MG-Muni General, MP-Muni Primary, P-Primary
+#  election_type  :string(2)
 #  voter_type     :string(1)
 #  created_at     :datetime
 #  updated_at     :datetime
-#  voter_id       :integer
+#  state_file_id  :integer          not null
 #
 
 class VotingHistory < ActiveRecord::Base

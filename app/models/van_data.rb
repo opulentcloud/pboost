@@ -2,7 +2,7 @@
 #
 # Table name: van_data
 #
-#  vote_builder_id :string(255)
+#  vote_builder_id :integer          not null
 #  last_name       :string(255)
 #  first_name      :string(255)
 #  middle_name     :string(255)
@@ -70,7 +70,7 @@
 #  primary_98      :string(255)
 #  primary_96      :string(255)
 #  primary_94      :string(255)
-#  state_file_id   :string(255)      not null, primary key
+#  state_file_id   :integer          not null, primary key
 #  address_hash    :string(32)
 #
 

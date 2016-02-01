@@ -20,7 +20,7 @@
 #  age             :integer
 #  dob             :date
 #  dor             :date
-#  state_file_id   :string(10)
+#  state_file_id   :integer          not null
 #  search_index    :string(13)
 #  created_at      :datetime
 #  updated_at      :datetime
