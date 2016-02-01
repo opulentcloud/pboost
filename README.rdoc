@@ -69,6 +69,9 @@
   # Link any voters with no address to their address
   Voter.link_addresses_from_registered_voters_data      
 
+  # Load Maryland State Board of Elections Raw voting history data file
+  $ \copy registered_voter_histories (vtrid,election_date,election_description,election_type,political_party,election_code,voting_method,date_of_voting,precinct,early_voting_location,juristiction_code,county_name) from '/home/mark/Work/pboostv2/db/fixtures/Stinnie/StinnieHistory.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+
 == Running the app
 bundle exec unicorn -E production -c config/unicorn.rb
 

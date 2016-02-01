@@ -77,7 +77,7 @@
 # Raw imported data from VAN system file
 class VanData < ActiveRecord::Base
 
-  GENERAL_ELECTIONS =['general_08','general_06','general_04','general_02','general_00','general_98','general_96','general_94'].freeze
+  GENERAL_ELECTIONS =['general_08','general_06','general_04','general02','general_00','general_98','general_96','general_94'].freeze
   MUNI_GENERAL_ELECTIONS = ['muni_general_07','muni_general_05','muni_general_03','muni_general_02','muni_general_01','muni_general_00'].freeze
   MUNI_PRIMARY_ELECTIONS = ['muni_primary_07','muni_primary_05','muni_primary_03','muni_primary_01','muni_primary_99'].freeze
   PRIMARY_ELECTIONS = ['primary_08','primary_06','primary_04','primary_02','primary_00','primary_98','primary_96','primary_94'].freeze
@@ -132,7 +132,7 @@ class VanData < ActiveRecord::Base
       end
       
       elections.each do |election|
-        @election_year = election.split('_').last.to_i
+        @election_year = election.gsub('general02','general_02').split('_').last.to_i
         @election_year += @election_year > 8 ? 1900 : 2000
 
         puts "Populating #{@election_year} #{@election_type} #{election}..."

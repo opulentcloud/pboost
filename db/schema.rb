@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131211819) do
+ActiveRecord::Schema.define(version: 20160201071946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1823,6 +1823,23 @@ ActiveRecord::Schema.define(version: 20160131211819) do
     t.string   "office_and_district", default: ""
     t.string   "ltgov_name",          default: ""
     t.string   "ltgov_address",       default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "registered_voter_histories", force: true do |t|
+    t.string   "vtrid"
+    t.string   "election_date"
+    t.string   "election_description"
+    t.string   "election_type"
+    t.string   "political_party"
+    t.string   "election_code"
+    t.string   "voting_method"
+    t.string   "date_of_voting"
+    t.string   "precinct"
+    t.string   "early_voting_location"
+    t.string   "juristiction_code"
+    t.string   "county_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
