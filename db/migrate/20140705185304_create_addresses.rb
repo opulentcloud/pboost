@@ -37,7 +37,7 @@ class CreateAddresses < ActiveRecord::Migration
     add_index :addresses, :city
     add_index :addresses, :comm_dist_code
     add_index :addresses, :county_name
-    add_index :addresses, :geom, spatial: true
+    #add_index :addresses, :geom, spatial: true
     add_index :addresses, :hd
     add_index :addresses, :id
     add_index :addresses, :is_odd
