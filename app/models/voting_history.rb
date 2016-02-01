@@ -42,6 +42,6 @@ class VotingHistory < ActiveRecord::Base
 	]
 
   # begin associations
-  belongs_to :voter
+  belongs_to :voter, foreign_key: :state_file_id
   # end associations
 end

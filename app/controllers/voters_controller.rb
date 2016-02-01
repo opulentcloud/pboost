@@ -80,11 +80,26 @@ class VotersController < ApplicationController
 	  @per_pg = 100
 
     params[:q] ||= session[:last_search]
+    new_keys = []
     begin
       params[:q].each do |qry|
         next unless qry[0].to_s == 'c'
         qry[1].each do |cnd|
           Rails.logger.debug(cnd)
+          if cnd[1]['p'] == 'in' # ['votes_election_type'].include?(cnd[1]['a'].first[1]['name'])
+            unless cnd[1]['v'].size > 1
+              temp_in = cnd[1]['v'].first[1]['value'].split(',')
+              new_keys << ["#{cnd[1]['a'].first[1]['name']}_in".to_sym, temp_in, cnd]
+            end
+          #  params[:q][:combinator] = 'or'
+          #  params[:q][:groupings] = []
+            #temp_in.each_with_index do |word,index|
+              #params[:q][:votes_election_type][index] = word
+            #  cnd[1]['v'].first[1]['values'][index] = word
+            #  cnd[1]['v'].first[1].delete('value')
+            #end
+            #cnd[1]['v'].first[1]['values'] = temp_in and cnd[1]['v'].first[1]['value'] = '' if cnd[1]['p'] == 'in'
+          end
           if Voter::DATE_SEARCH_FIELDS.include?(cnd[1]['a'].first[1]['name'])
             temp_dt = cnd[1]['v'].first[1]['value']
             cnd[1]['p'] = "date_equals" if cnd[1]['p'] == 'equals'
@@ -101,6 +116,11 @@ class VotersController < ApplicationController
     rescue Exception => ex
       debugger if Rails.env.development?
       Rails.logger.debug(ex.backtrace)    
+    end
+
+    new_keys.each do |arr|
+      params[:q][arr[0]] = arr[1]
+      params[:q][:c].delete(arr[2][0])
     end
 
     @q = Voter.search(params[:q])
@@ -123,7 +143,7 @@ class VotersController < ApplicationController
     end
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
-    @voters = @q.result.includes(:address)
+    @voters = @q.result.includes(:address, :votes)
 
     @party_breakdown = @q2.result.reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
     @precinct_breakdown = @q2.result.joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?

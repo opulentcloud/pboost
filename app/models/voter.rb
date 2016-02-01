@@ -33,7 +33,7 @@ class Voter < ActiveRecord::Base
   DATE_SEARCH_FIELDS =  %w{dob dor}
 
   #exclude some fields from ransack search  
-  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id','search_index','search_index2','created_at','updated_at']
+  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','state_file_id','address_id','search_index','search_index2','created_at','updated_at']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
@@ -41,7 +41,7 @@ class Voter < ActiveRecord::Base
 
   # begin associations
   belongs_to :address
-  has_many :votes, class_name: 'VotingHistory'
+  has_many :votes, class_name: 'VotingHistory', foreign_key: :state_file_id, primary_key: :state_file_id
   has_one :registered_voters_data, foreign_key: :vtrid, primary_key: :state_file_id
   # end associations
 

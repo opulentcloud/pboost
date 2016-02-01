@@ -10,7 +10,7 @@
       - break
   = fragment.to_html.html_safe
 
-- the_select = f.predicate_select compounds: false, only: [:date_equals, :equals, :lt, :lteq, :gt, :gteq, :cont, :matches]
+- the_select = f.predicate_select compounds: false, only: [:date_equals, :equals, :lt, :lteq, :gt, :gteq, :cont, :matches, :in]
 
 - new_select = the_select.html_safe
 - fragment = Nokogiri::HTML.fragment(new_select)
@@ -21,9 +21,18 @@
     - break
 = fragment.to_html.html_safe
 
-= f.value_fields do |v|
-  = v.text_field :value, class: 'form-control', style: 'display: inline-block; width: 20%;'
+- idx = 0
+- f.value_fields do |v|
+  - idx += 1
 
+- cnt = 0
+= f.value_fields do |v|
+  - cnt += 1
+  - if idx > 1 and cnt > 1
+    div style="display: inline-block; width: 20%;"
+    div style="display: inline-block; width: 15%;"
+  = v.text_field :value, class: 'form-control', style: 'display: inline-block; width: 20%;'
+  = "<br />".html_safe if cnt < idx
 = link_to "#", :class => 'remove_fields btn btn-default', :"data-no-turbolink" => "", :title => "Remove Search Condition" do 
   span.glyphicon.glyphicon-minus-sign
 

@@ -14,7 +14,7 @@
                 i class="glyphicon glyphicon-search"
                 | &nbsp;Search Voters
               | &nbsp;  
-              - if action_name == 'search'
+              - if action_name == 'search' || @job_result.present?
                 = link_to admin_dashboard_path, :class => 'btn btn-default' do 
                   span.glyphicon.glyphicon-remove-sign
                   |  Clear

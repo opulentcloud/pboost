@@ -1,3 +1,4 @@
+- @delete = false
 .container
   .row style="margin-top: 15px;"
     = search_form_for @q, url: search_voters_path, html: { method: :post } do |f|
@@ -14,7 +15,7 @@
                 i class="glyphicon glyphicon-search"
                 | &nbsp;Search Voters
               | &nbsp;  
-              - if action_name == 'search'
+              - if action_name == 'search' || @job_result.present?
                 = link_to voters_path(clear: 1), :class => 'btn btn-default' do 
                   span.glyphicon.glyphicon-remove-sign
                   |  Clear
