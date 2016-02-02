@@ -29,7 +29,7 @@ class WalksheetReportPdf < Prawn::Document
   @@Headers = ['Address', 'Voter Name', 'DOB', 'Additional Voters', 'Home?', 'Dropped Literature?', 'Supporter?', 'Wants Yard Sign?']
 
   def initialize(voter_ids, default_prawn_options = {})
-    @voter_ids = voter_ids
+    @voter_ids = voter_ids || [0]
 #    super(page_layout: :landscape, left_margin: 50, right_margin: 50, bottom_margin: 25, top_margin: 25)
     super(default_prawn_options.merge(page_layout: :landscape, left_margin: 25, right_margin: 25))
 
