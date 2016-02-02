@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201163026) do
+ActiveRecord::Schema.define(version: 20160202230238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1887,6 +1887,18 @@ ActiveRecord::Schema.define(version: 20160201163026) do
     t.string "school_districts"
     t.string "address_hash",             limit: 32
   end
+
+  create_table "registered_voters_history_updates", force: true do |t|
+    t.integer  "state_file_id"
+    t.string   "voter_type"
+    t.integer  "election_year"
+    t.integer  "election_month"
+    t.string   "election_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "registered_voters_history_updates", ["state_file_id"], :name => "index_registered_voters_history_updates_on_state_file_id"
 
   create_table "roles", force: true do |t|
     t.string   "name",       null: false
