@@ -1,6 +1,6 @@
 nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important"
   .container-fluid
-    = link_to image_tag('pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left navbar', style: "margin-left: 20px; margin-right: 20px;"), '/'
+    = link_to image_tag('pblogo.gif', alt: 'PoliticalBoost.org', class: 'img-responsive pull-left navbar', style: "margin-left: 20px; margin-right: 20px;"), 'http://www.politicalboost.org'
     - unless user_signed_in?
       h1 Client Portal  
     - if user_signed_in?
