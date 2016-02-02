@@ -15,7 +15,8 @@
                 | &nbsp;Search Voters
               | &nbsp;  
               - if action_name == 'search' || @job_result.present?
-                = link_to admin_dashboard_path, :class => 'btn btn-default' do 
+                - clear_path = admin_user? ? admin_dashboard_path : users_dashboard_path
+                = link_to clear_path, :class => 'btn btn-default' do 
                   span.glyphicon.glyphicon-remove-sign
                   |  Clear
               .pull-right
