@@ -23,7 +23,7 @@
   - if @voters.present?
     a id="results" name="aresults"
   = f.actions do
-    = f.action :submit, label: "Verify Voter", input_html: "btn btn-primary"
+    = f.action :submit, label: "Verify Voter", input_html: { class: "btn btn-primary" }
     | &nbsp; 
     input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
   br
