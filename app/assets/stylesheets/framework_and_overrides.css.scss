@@ -47,35 +47,35 @@ section {
   }
 
 @media only screen
-and (min-device-width: 320px)
-and (min-device-width: 480px)
+and (max-device-width: 320px)
+and (max-device-width: 480px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
 
 @media only screen
-and (min-device-width: 320px)
-and (min-device-width: 568px)
+and (max-device-width: 320px)
+and (max-device-width: 568px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
 
 @media only screen
-and (min-device-width: 375px)
-and (min-device-width: 667px)
+and (max-device-width: 375px)
+and (max-device-width: 667px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
 
 @media only screen
-and (min-device-width: 414px)
-and (min-device-width: 736px)
+and (max-device-width: 414px)
+and (max-device-width: 736px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
 
 /* make sidebar nav vertical */ 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
     max-height: none;
