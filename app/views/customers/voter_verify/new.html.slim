@@ -2,70 +2,72 @@
   h1
     | Verify Voter - Quick Lookup
 
-= semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
-  = f.inputs do
-    .row
-      .col-md-6
-        = f.input :last_name, input_html: { autofocus: true, autocomplete: "off" }
-    .row
-      .col-md-6
-        = f.input :first_name, input_html: { autocomplete: "off" }
-    .row
-      .col-md-6.col-xs-12
-        .col-md-3.col-xs-6
-          = f.label "Birth Month"
-          = f.input :birth_month, label: false, as: :select, collection: Hash[Date::MONTHNAMES.map.with_index{|k,i| [i,k]}].invert
-        .col-md-3.col-xs-6
-          = f.label "Day"
-          = f.input :birth_day, label: false, as: :select, collection: Hash['',''].merge(Hash[(1..31).map { |num| [num, "#{num}"] }])
-    = f.hidden_field :search_index2, value: @search_index2 if @search_index2.present?
+.row
+  .container-fluid
+    = semantic_form_for :voter, url: search_voter_verify_path, html: { method: :post } do |f|
+      = f.inputs do
+        .row
+          .col-md-6
+            = f.input :last_name, input_html: { autofocus: true, autocomplete: "off" }
+        .row
+          .col-md-6
+            = f.input :first_name, input_html: { autocomplete: "off" }
+        .row
+          .col-md-6.col-xs-12
+            .col-md-3.col-xs-6
+              = f.label "Birth Month"
+              = f.input :birth_month, label: false, as: :select, collection: Hash[Date::MONTHNAMES.map.with_index{|k,i| [i,k]}].invert
+            .col-md-3.col-xs-6
+              = f.label "Day"
+              = f.input :birth_day, label: false, as: :select, collection: Hash['',''].merge(Hash[(1..31).map { |num| [num, "#{num}"] }])
+        = f.hidden_field :search_index2, value: @search_index2 if @search_index2.present?
 
-  - if @voters.present?
-    a id="results" name="aresults"
-  = f.actions do
-    = f.action :submit, label: "Verify Voter", button_html: { class: "btn btn-primary" }
-    | &nbsp; 
-    input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
-  br
-  br    
-  #results
-    - if @voters.present?
-      = will_paginate @voters 
-      .table-responsive
-        table.table.table-striped.table-bordered.table-hover
-          - @voters.each do |voter|
-            tr
-              th
-                | State File ID
-            tr
-              td
-                = voter.state_file_id
-            tr
-              th
-                | Name/Address
-            tr
-              td
-                = voter.full_name
-                br
-                = voter.address.full_street_address
-                br
-                = voter.address.city_state_zip
-            tr
-              th
-                | Precinct
-            tr
-              td
-                = voter.address.precinct_code
-            tr            
-              th
-                | Party
-            tr
-              td
-                = voter.party
-            tr            
-              th
-                | D.O.B.
-            tr
-              td
-                = l voter.dob rescue nil
+      - if @voters.present?
+        a id="results" name="aresults"
+      = f.actions do
+        = f.action :submit, label: "Verify Voter", button_html: { class: "btn btn-primary" }
+        | &nbsp; 
+        input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
+      br
+      br    
+      #results
+        - if @voters.present?
+          = will_paginate @voters 
+          .table-responsive
+            table.table.table-striped.table-bordered.table-hover
+              - @voters.each do |voter|
+                tr
+                  th
+                    | State File ID
+                tr
+                  td
+                    = voter.state_file_id
+                tr
+                  th
+                    | Name/Address
+                tr
+                  td
+                    = voter.full_name
+                    br
+                    = voter.address.full_street_address
+                    br
+                    = voter.address.city_state_zip
+                tr
+                  th
+                    | Precinct
+                tr
+                  td
+                    = voter.address.precinct_code
+                tr            
+                  th
+                    | Party
+                tr
+                  td
+                    = voter.party
+                tr            
+                  th
+                    | D.O.B.
+                tr
+                  td
+                    = l voter.dob rescue nil
 

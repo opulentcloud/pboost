@@ -48,6 +48,7 @@ section {
   
 /* make sidebar nav vertical */ 
 @media (min-width: 768px) {
+  h1, h2, h3 { font-size: smaller; }
   .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
     max-height: none;
