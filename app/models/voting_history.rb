@@ -28,9 +28,7 @@ class VotingHistory < ActiveRecord::Base
 		['Municipal General',	'MG'],
 		['Municipal Primary', 'MP'],
 		['Gubernatorial General', 'GG'],
-		['Gubernatorial Primary', 'GP'],
-		['Presidential General', 'G'],
-		['Presidential Primary', 'P']
+		['Gubernatorial Primary', 'GP']
 	]
 	
 	ELECTION_TYPE_CHOICES = [
