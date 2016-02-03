@@ -96,8 +96,8 @@
         dd
           = @voter.address.school_district
 
-  - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
-    .row
+  .row
+    - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
       .col-md-5
         legend Other Voters At This Address
         .table-responsive
@@ -106,23 +106,23 @@
             dt
             dd
               = ot.full_name
-      .col-md-5
-        legend Voting History
-        .table-responsive style="max-height: 200px;"
-          table.table.table-striped.table-bordered.table-condensed.table-hover
-            thead
+    .col-md-5
+      legend Voting History
+      .table-responsive style="max-height: 200px;"
+        table.table.table-striped.table-bordered.table-condensed.table-hover
+          thead
+            tr
+              th Election Year
+              th Election Month
+              th Election Type
+              th Voter Type
+          tbdoy
+            - @voter.votes.order(election_year: :desc).order(election_month: :desc).order(:election_type).each do |vote|
               tr
-                th Election Year
-                th Election Month
-                th Election Type
-                th Voter Type
-            tbdoy
-              - @voter.votes.order(election_year: :desc).order(election_month: :desc).order(:election_type).each do |vote|
-                tr
-                  td = vote.election_year
-                  td = vote.election_month
-                  td = vote.election_type
-                  td = vote.voter_type
+                td = vote.election_year
+                td = vote.election_month
+                td = vote.election_type
+                td = vote.voter_type
 .modal-footer
   button.btn.btn-default data-dismiss="modal" type="button"  Close
 
