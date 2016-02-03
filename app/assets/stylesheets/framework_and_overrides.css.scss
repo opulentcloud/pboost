@@ -143,3 +143,6 @@ and (max-device-width: 736px)
   display: inline-block;
 }
 
+button.navbar-toggle.collapsed {
+  background-color: #333 !important;
+}
