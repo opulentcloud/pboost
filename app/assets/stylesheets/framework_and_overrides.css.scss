@@ -50,28 +50,36 @@ section {
 and (max-device-width: 320px)
 and (max-device-width: 480px)
 {
-  h1, h2, h3 { font-size: smaller; }
+  h1 { font-size: 5.9vw; }
+  h2 { font-size: 3.0vh; }
+  h3 { font-size: 2vmin; }
 }  
 
 @media only screen
 and (max-device-width: 320px)
 and (max-device-width: 568px)
 {
-  h1, h2, h3 { font-size: smaller; }
+  h1 { font-size: 5.9vw; }
+  h2 { font-size: 3.0vh; }
+  h3 { font-size: 2vmin; }
 }  
 
 @media only screen
 and (max-device-width: 375px)
 and (max-device-width: 667px)
 {
-  h1, h2, h3 { font-size: smaller; }
+  h1 { font-size: 5.9vw; }
+  h2 { font-size: 3.0vh; }
+  h3 { font-size: 2vmin; }
 }  
 
 @media only screen
 and (max-device-width: 414px)
 and (max-device-width: 736px)
 {
-  h1, h2, h3 { font-size: smaller; }
+  h1 { font-size: 5.9vw; }
+  h2 { font-size: 3.0vh; }
+  h3 { font-size: 2vmin; }
 }  
 
 /* make sidebar nav vertical */ 
