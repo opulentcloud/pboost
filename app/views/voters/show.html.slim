@@ -98,6 +98,30 @@
           | School District
         dd
           = @voter.address.school_district
+        dt
+          | Presidential Primary Voting Frequency
+        dd
+          = @voter.presidential_primary_voting_frequency
+        dt
+          | Presidential General Voting Frequency
+        dd
+          = @voter.presidential_general_voting_frequency
+        dt
+          | Gubernatorial Primary Voting Frequency
+        dd
+          = @voter.gubernatorial_primary_voting_frequency
+        dt
+          | Gubernatorial General Voting Frequency
+        dd
+          = @voter.gubernatorial_general_voting_frequency
+        dt
+          | Municipal Primary Voting Frequency
+        dd
+          = @voter.municipal_primary_voting_frequency
+        dt
+          | municipal General Voting Frequency
+        dd
+          = @voter.municipal_general_voting_frequency
 
   .row
     - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
