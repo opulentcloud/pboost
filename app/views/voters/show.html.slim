@@ -119,16 +119,6 @@
           dd
             = @voter.gubernatorial_general_voting_frequency
             |  of 3
-          dt
-            | Municipal Primary
-          dd
-            = @voter.municipal_primary_voting_frequency
-            |  of 3
-          dt
-            | Municipal General
-          dd
-            = @voter.municipal_general_voting_frequency
-            |  of 3
   .row
     - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
       .col-md-5

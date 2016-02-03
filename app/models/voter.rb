@@ -77,6 +77,7 @@ class Voter < ActiveRecord::Base
   #exclude some fields from ransack search  
   UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id',
     'suffix','salutation', 'phone' 'home_phone', 'work_phone', 'work_phone_ext','dor',
+    'municipal_primary_voting_frequency', 'municipal_general_voting_frequency',
     'email', 'cell_phone', 'search_index','search_index2','created_at','updated_at']
 
   def self.ransackable_attributes auth_object = nil
