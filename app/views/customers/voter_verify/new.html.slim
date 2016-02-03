@@ -11,11 +11,11 @@
       .col-md-6
         = f.input :first_name, input_html: { autocomplete: "off" }
     .row
-      .col-md-6
-        .col-md-2
+      .col-md-6.col-xs-6
+        .col-md-3.col-xs-3
           = f.label "Birth Month"
           = f.input :birth_month, label: false, as: :select, collection: Hash[Date::MONTHNAMES.map.with_index{|k,i| [i,k]}].invert
-        .col-md-2
+        .col-md-3.col-xs-3
           = f.label "Day"
           = f.input :birth_day, label: false, as: :select, collection: Hash['',''].merge(Hash[(1..31).map { |num| [num, "#{num}"] }])
     = f.hidden_field :search_index2, value: @search_index2 if @search_index2.present?
