@@ -53,7 +53,7 @@ and (max-device-width: 480px)
   h1 { font-size: 5.9vw; }
   h2 { font-size: 3.0vh; }
   h3 { font-size: 2vmin; }
-  .header-logo { max-width: 70% important!; }
+  .header-logo { max-width: 70% !important; }
 }  
 
 @media only screen
@@ -63,7 +63,7 @@ and (max-device-width: 568px)
   h1 { font-size: 5.9vw; }
   h2 { font-size: 3.0vh; }
   h3 { font-size: 2vmin; }
-  .header-logo { max-width: 70% important!; }
+  .header-logo { max-width: 70% !important; }
 }  
 
 @media only screen
@@ -73,7 +73,7 @@ and (max-device-width: 667px)
   h1 { font-size: 5.9vw; }
   h2 { font-size: 3.0vh; }
   h3 { font-size: 2vmin; }
-  .header-logo { max-width: 70% important!; }
+  .header-logo { max-width: 70% !important; }
 }  
 
 @media only screen
@@ -83,7 +83,7 @@ and (max-device-width: 736px)
   h1 { font-size: 5.9vw; }
   h2 { font-size: 3.0vh; }
   h3 { font-size: 2vmin; }
-  .header-logo { max-width: 70% important!; }
+  .header-logo { max-width: 70% !important; }
 }  
 
 /* make sidebar nav vertical */ 
