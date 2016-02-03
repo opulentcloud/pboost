@@ -47,8 +47,15 @@ section {
   }
 
 @media only screen
-and (min-device-width: 414px)
-and (min-device-width: 736px)
+and (min-device-width: 320px)
+and (min-device-width: 480px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
+@media only screen
+and (min-device-width: 320px)
+and (min-device-width: 568px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
@@ -63,20 +70,6 @@ and (min-device-width: 667px)
 @media only screen
 and (min-device-width: 414px)
 and (min-device-width: 736px)
-{
-  h1, h2, h3 { font-size: smaller; }
-}  
-
-@media only screen
-and (min-device-width: 320px)
-and (min-device-width: 568px)
-{
-  h1, h2, h3 { font-size: smaller; }
-}  
-
-@media only screen
-and (min-device-width: 320px)
-and (min-device-width: 480px)
 {
   h1, h2, h3 { font-size: smaller; }
 }  
