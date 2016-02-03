@@ -45,10 +45,44 @@ section {
   @extend .row;
   margin-top: 20px;
   }
-  
+
+@media only screen
+and (min-device-width: 414px)
+and (min-device-width: 736px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
+@media only screen
+and (min-device-width: 375px)
+and (min-device-width: 667px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
+@media only screen
+and (min-device-width: 414px)
+and (min-device-width: 736px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
+@media only screen
+and (min-device-width: 320px)
+and (min-device-width: 568px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
+@media only screen
+and (min-device-width: 320px)
+and (min-device-width: 480px)
+{
+  h1, h2, h3 { font-size: smaller; }
+}  
+
 /* make sidebar nav vertical */ 
 @media (min-width: 768px) {
-  h1, h2, h3 { font-size: smaller; }
   .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
     max-height: none;
