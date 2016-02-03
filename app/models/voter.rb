@@ -30,10 +30,54 @@
 
 class Voter < ActiveRecord::Base
 
+  PARTY_TYPES = [
+    ['ALL OTHER PARTIES',	'OTH'],
+    ['DEMOCRAT', 'DEM'],
+    ['NO DATA', 'NDA'],
+    ['OTHERS - ALLIANCE', 'OAL'],
+    ['OTHERS - AMERICAN', 'OAM'],
+    ['OTHERS - AMERICAN INDEPENDENT', 'OAI'],
+    ['OTHERS - AMERICAN SOCIALIST', 'OAS'],
+    ['OTHERS - ANARCHIST', 'OAN'],
+    ['OTHERS - BULL MOOSE', 'OBM'],
+    ['OTHERS - CHRISTIAN', 'OCH'],
+    ['OTHERS - COMMUNIST', 'OCO'],
+    ['OTHERS - CONSERVATIVE', 'OCN'],
+    ['OTHERS - CONSTITUTION', 'OCS'],
+    ['OTHERS - CONSTITUTIONAL', 'OCON'],
+    ['OTHERS - FREE CHOICE', 'OFCH'],
+    ['OTHERS - FREEDOM', 'OFR'],
+    ['OTHERS - GRASS ROOTS', 'OGRT'],
+    ['OTHERS - GREEN LIBERTARIAN', 'OGL'],
+    ['OTHERS - INDEPENDENT', 'OID'],
+    ['OTHERS - INDIVIDUALIST', 'OIN'],
+    ['OTHERS - LEAGUE OF THE SOUTH', 'OLS'],
+    ['OTHERS - LIBERALS', 'OLIB'],
+    ['OTHERS - LIBERTARIAN', 'OLIR'],
+    ['OTHERS - NATIONAL SOCIALIST', 'ONAS'],
+    ['OTHERS - NATURAL LAW', 'ONL'],
+    ['OTHERS - NATURAL PARTY', 'ONP'],
+    ['OTHERS - PATRIOT', 'OPAT'],
+    ['OTHERS - PEOPLES', 'OPE'],
+    ['OTHERS - POPULIST', 'OPOP'],
+    ['OTHERS - REFORM', 'ORE'],
+    ['OTHERS - RIGHT-TO-LIFE', 'ORL'],
+    ['OTHERS - SOCIAL DEMOCRAT', 'OSD'],
+    ['OTHERS - SOCIALIST', 'OSC'],
+    ['OTHERS - TAX', 'OTX'],
+    ['OTHERS - TAXPAYERS', 'OTP'],
+    ['OTHERS - WHIG', 'OWH'],
+    ['OTHERS - WORKERS', 'OWO'],
+    ['REPUBLICAN', 'REP'],
+    ['UNAFFILIATED', 'UNA']
+  ].freeze
+
   DATE_SEARCH_FIELDS =  %w{dob dor}
 
   #exclude some fields from ransack search  
-  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','state_file_id','address_id','search_index','search_index2','created_at','updated_at']
+  UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id',
+    'suffix','salutation', 'phone' 'home_phone', 'work_phone', 'work_phone_ext','dor',
+    'email', 'cell_phone', 'search_index','search_index2','created_at','updated_at']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys

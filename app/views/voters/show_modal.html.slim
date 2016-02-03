@@ -12,7 +12,7 @@
         dt
           | Affiliation
         dd
-          = @voter.party
+          = "(#{@voter.party}) #{Voter::PARTY_TYPES.select { |t| t[1] == @voter.party }.first[0] rescue ''}"
         dt
           | D.O.R.
         dd

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202230238) do
+ActiveRecord::Schema.define(version: 20160203014132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2074,6 +2074,7 @@ ActiveRecord::Schema.define(version: 20160202230238) do
     t.datetime "updated_at"
     t.integer  "address_id"
     t.string   "search_index2",   limit: 12
+    t.integer  "yor"
   end
 
   add_index "voters", ["address_id"], :name => "index_voters_on_address_id"

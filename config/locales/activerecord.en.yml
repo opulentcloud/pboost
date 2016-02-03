@@ -1,0 +1,17 @@
+---
+en:
+  activerecord:
+    errors:
+      models:
+        voter:
+          attributes:
+            state_file_id:
+              state_file_id_unique: "has already been taken."
+    models:
+      voter_history:
+        one: "Vote"
+        other: "Votes"        
+    attributes:
+      voter:
+        state_file_id: "State file id"
+
