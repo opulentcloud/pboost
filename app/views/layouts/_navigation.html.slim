@@ -6,7 +6,7 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
     - if user_signed_in?
       .navbar-inner
         .navbar-header
-          = link_to 'Dashboard', users_dashboard_path, class: 'navbar-brand'
+          = link_to 'Dashboard', users_dashboard_path
         ul.nav.navbar-nav role="navigation" 
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" href="#" 
@@ -14,12 +14,12 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
               b.caret
             ul.dropdown-menu
               li
-                = link_to 'Quick Lookup', voter_verify_path, class: 'navbar-brand'
+                = link_to 'Quick Lookup', voter_verify_path
               li
-                = link_to 'Advanced Search', voters_path, class: 'navbar-brand'
+                = link_to 'Advanced Search', voters_path
               - if admin_user?
                 li
-                  = link_to 'Bulk Verify', verifications_path, class: 'navbar-brand'
+                  = link_to 'Bulk Verify', verifications_path
         ul.nav.navbar-nav role="navigation"
           - if admin_user?
             li.dropdown
@@ -28,9 +28,9 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
                 b.caret
               ul.dropdown-menu
                 li
-                  = link_to 'Manage Users', admin_users_path, class: 'navbar-brand'
+                  = link_to 'Manage Users', admin_users_path
                 li
-                  = link_to 'Manage Petition Headers', admin_petition_headers_path, class: 'navbar-brand'
+                  = link_to 'Manage Petition Headers', admin_petition_headers_path
         ul.nav.navbar-nav.pull-right id="right-side-nav"
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" href="#" 
