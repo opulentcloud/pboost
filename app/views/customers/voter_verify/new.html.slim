@@ -24,8 +24,9 @@
 
       - if @voters.present?
         a id="results" name="aresults"
-      .col-md-6.col-sm-12.col-xs-12.pull-right
-        = f.actions do
+      = f.actions do
+      .col-md-6.col-sm-12.col-xs-12
+        .pull-right
           = f.action :submit, label: "Verify Voter", button_html: { class: "btn btn-primary" }
           | &nbsp; 
           input id="reset_button" name="reset" type="reset" value="Reset" class="btn btn-secondary"
