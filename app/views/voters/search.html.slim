@@ -45,12 +45,14 @@
           = link_to search_voters_path(search_args.merge(walklists: '1')), :class => 'btn btn-default', id: 'print-walk-list' do 
             span.glyphicon.glyphicon-print
             |  Print Walk-List
-        - if admin_user?
+        - if @petition_headers
           li
             = link_to search_voters_path(search_args.merge(petitions: '1')), :class => 'btn btn-default', id: 'print-candidate-petition' do 
               span.glyphicon.glyphicon-print
               |  Print Candidate Petition
-            = select_tag :petition_header, options_from_collection_for_select(PetitionHeader.order(:name),"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
+            = select_tag :petition_header, options_from_collection_for_select(@petition_headers,"id","name", cookies[:last_petition_header]), prompt: "(Choose a petition header or leave blank)", class: 'form-control', id: "petition-header"
+            = select_tag :circulator, options_from_collection_for_select(@petition_header.try(:users) || User.where("1=0"),"id","name", @petition_header.try(:circulator)), prompt: "(Choose a circulator or leave blank)", class: 'form-control', id: "petition-header-circulator"
+            
     - if @job_result.present?
       - if !(@job_result.batch_file.attached_file.url =~ /voters-export/).nil?
         = link_to 'download your Voters Export File', @job_result.batch_file.attached_file.url, target: "_blank"

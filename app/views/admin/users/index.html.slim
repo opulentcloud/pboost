@@ -5,33 +5,4 @@
   h1
     | Listing users
 
-.table-responsive
-  table.table.table-striped.table-bordered.table-hover
-    thead
-      tr
-        th
-          | First Name
-        th
-          | Last Name
-        th
-          | Email Address
-        th
-          | Created On
-        th
-          | Roles
-        th
-    tbody
-      - @users.each do | user |
-        tr
-          td
-            = user.first_name
-          td
-            = user.last_name
-          td
-            = link_to user.email, edit_admin_user_path(user)
-          td
-            = l user.created_at
-          td
-            = user.roles.map(&:name).join(', ')
-          td
-            = link_to 'delete', admin_user_path(id: user.id), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }
+= render 'users'

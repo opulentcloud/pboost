@@ -5,7 +5,7 @@ class Admin::PetitionHeadersController < ApplicationController
   # GET /petition_headers
   # GET /petition_headers.json
   def index
-    @petition_headers = PetitionHeader.all
+    @petition_headers = PetitionHeader.order(:name)
   end
 
   # GET /petition_headers/1
@@ -70,6 +70,8 @@ class Admin::PetitionHeadersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def petition_header_params
-      params.require(:petition_header).permit(:voters_of, :baltimore_city, :party_affiliation, :unaffiliated, :name, :address, :office_and_district, :ltgov_name, :ltgov_address)
+      params.require(:petition_header).permit(:voters_of, :baltimore_city, :party_affiliation, 
+        :unaffiliated, :name, :address, :office_and_district, :ltgov_name, :ltgov_address,
+        user_ids: [])
     end
 end

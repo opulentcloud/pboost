@@ -14,6 +14,7 @@
     = f.input :password, as: :password, input_html: { autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
     = f.input :password_confirmation, as: :password, input_html: { required: true, autocomplete: "off", pattern: ".{6,}", oninvalid: "this.setCustomValidity('Must be a minimum of 6 characters.')" }
     = f.input :roles, as: :check_boxes, collection: Role.all.each_with_object([]) { |r,a| a << [r.name,r.id] }
+    = f.input :petition_headers, as: :check_boxes, collection: PetitionHeader.order(:name).pluck(:name, :id)
 
   = f.actions do
     = f.action :submit, label: "Create user", class: "btn btn-default"

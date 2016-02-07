@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     get "/signup" => "users/registrations#new", :as => :signup
   end
 
+  get 'petition_headers/:id', to: 'petition_headers#select_circulators', as: :select_circulators
+
   get 'processing/:id' => 'processing#show', :as => :processing
 
   namespace :admin do

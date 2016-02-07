@@ -10,3 +10,14 @@ jQuery ->
       $(this).removeData "bs.modal"
       return
 
+    $('select#petition-header').change (e) ->
+      $.ajax '../petition_headers/' + Number($(e.target).val()),
+        type: 'GET'
+        dataType: 'script'
+        #data: {
+        #  center_id: $(e.target).val()
+        #}
+        error: (jqXHR, textStatus, error) ->
+          #console.log("AJAX Error: #{textStatus}")
+        success: (data, textStatus, jqXHR) ->
+          #console.log("AJAX Success!")

@@ -44,3 +44,10 @@ dl.dl-horizontal
     | Ltgov address:
   dd
     = @petition_header.ltgov_address
+
+.row-fluid
+  .container-fluid
+    .col-md-12
+      legend Users
+      - @users = @petition_header.users.order(:last_name).order(:first_name)
+      = render 'admin/users/users'

@@ -3,7 +3,7 @@ class Admin::UsersController < Devise::RegistrationsController
   before_filter :require_admin_user!
   
   def index
-    @users = User.all
+    @users = User.order(:last_name).order(:first_name)
   end
   
   def new
@@ -69,6 +69,6 @@ private
   def account_update_params
     @account_update_params ||= params.require(:user).permit(:first_name, 
       :last_name, :email, :password, :password_confirmation, 
-      :current_password, :role_ids => [])
+      :current_password, :role_ids => [], :petition_header_ids => [])
   end
 end

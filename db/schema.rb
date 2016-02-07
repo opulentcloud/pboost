@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203014132) do
+ActiveRecord::Schema.define(version: 20160207203604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1827,8 +1827,18 @@ ActiveRecord::Schema.define(version: 20160203014132) do
     t.datetime "updated_at"
   end
 
-  create_table "registered_voter_histories", force: true do |t|
-    t.integer  "vtrid",                 null: false
+  create_table "petition_headers_users", id: false, force: true do |t|
+    t.integer "petition_header_id"
+    t.integer "user_id"
+  end
+
+  add_index "petition_headers_users", ["petition_header_id", "user_id"], :name => "uniq_pet_head_idx", :unique => true
+  add_index "petition_headers_users", ["petition_header_id"], :name => "index_petition_headers_users_on_petition_header_id"
+  add_index "petition_headers_users", ["user_id"], :name => "index_petition_headers_users_on_user_id"
+
+  create_table "registered_voter_histories", id: false, force: true do |t|
+    t.integer  "id",                    default: "nextval('registered_voter_histories_id_seq'::regclass)", null: false
+    t.integer  "vtrid",                                                                                    null: false
     t.string   "election_date"
     t.string   "election_description"
     t.string   "election_type"
@@ -2051,30 +2061,36 @@ ActiveRecord::Schema.define(version: 20160203014132) do
   add_index "verifications", ["user_id"], :name => "index_verifications_on_user_id"
 
   create_table "voters", force: true do |t|
-    t.integer  "vote_builder_id", limit: 8
-    t.string   "last_name",       limit: 32
-    t.string   "first_name",      limit: 32
-    t.string   "middle_name",     limit: 32
-    t.string   "suffix",          limit: 30
-    t.string   "salutation",      limit: 32
-    t.string   "phone",           limit: 10
-    t.string   "home_phone",      limit: 10
-    t.string   "work_phone",      limit: 10
-    t.string   "work_phone_ext",  limit: 10
-    t.string   "cell_phone",      limit: 10
-    t.string   "email",           limit: 100
-    t.string   "party",           limit: 5
-    t.string   "sex",             limit: 1
-    t.integer  "age",             limit: 2
+    t.integer  "vote_builder_id",                        limit: 8
+    t.string   "last_name",                              limit: 32
+    t.string   "first_name",                             limit: 32
+    t.string   "middle_name",                            limit: 32
+    t.string   "suffix",                                 limit: 30
+    t.string   "salutation",                             limit: 32
+    t.string   "phone",                                  limit: 10
+    t.string   "home_phone",                             limit: 10
+    t.string   "work_phone",                             limit: 10
+    t.string   "work_phone_ext",                         limit: 10
+    t.string   "cell_phone",                             limit: 10
+    t.string   "email",                                  limit: 100
+    t.string   "party",                                  limit: 5
+    t.string   "sex",                                    limit: 1
+    t.integer  "age",                                    limit: 2
     t.date     "dob"
     t.date     "dor"
-    t.integer  "state_file_id",               null: false
-    t.string   "search_index",    limit: 13
+    t.integer  "state_file_id",                                                  null: false
+    t.string   "search_index",                           limit: 13
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "address_id"
-    t.string   "search_index2",   limit: 12
+    t.string   "search_index2",                          limit: 12
     t.integer  "yor"
+    t.integer  "presidential_primary_voting_frequency",              default: 0
+    t.integer  "presidential_general_voting_frequency",              default: 0
+    t.integer  "gubernatorial_primary_voting_frequency",             default: 0
+    t.integer  "gubernatorial_general_voting_frequency",             default: 0
+    t.integer  "municipal_primary_voting_frequency",                 default: 0
+    t.integer  "municipal_general_voting_frequency",                 default: 0
   end
 
   add_index "voters", ["address_id"], :name => "index_voters_on_address_id"
@@ -2097,7 +2113,8 @@ ActiveRecord::Schema.define(version: 20160203014132) do
     t.integer  "state_file_id",            null: false
   end
 
-  add_index "voting_histories", ["state_file_id", "election_type", "election_year"], :name => "uniq_voting_histories_idx", :unique => true
+  add_index "voting_histories", ["election_type"], :name => "index_voting_histories_on_election_type"
+  add_index "voting_histories", ["election_year"], :name => "index_voting_histories_on_election_year"
   add_index "voting_histories", ["state_file_id"], :name => "index_voting_histories_on_state_file_id"
 
 end

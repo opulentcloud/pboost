@@ -70,9 +70,13 @@ class VotersController < ApplicationController
   end
   
   def search
+    @petition_headers = (current_user.is_in_role?("Administrator") || current_user.is_in_role("Employee")) ? PetitionHeader.order(:name) : current_user.petition_headers.order(:name)
     @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
     session[:last_print_job] = nil
-    cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } if params[:petitions].present?
+    if params[:petitions].present?
+      cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } 
+    end
+    @petition_header = PetitionHeader.find(cookies[:last_petition_header]) rescue nil
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
     
