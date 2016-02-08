@@ -18,13 +18,14 @@ class CandidatePetitionFormReportPdf < Prawn::Document
   CHECKED_CHECKBOX = "\u2611" # checked
   EXED_CHECKBOX = "\u2612" # x'd
   
-  def initialize(petition_header_id, voter_ids, default_prawn_options = {})
+  def initialize(petition_header_id, petition_header_circulator_id, voter_ids, default_prawn_options = {})
     super(default_prawn_options.merge(margin: 20))
     #super(page_layout: :landscape, margin: 25)
     blank_voter = Voter.new
     blank_voter.build_address
 
     @petition_header = PetitionHeader.where(id: petition_header_id.to_i).first || PetitionHeader.new
+    @circulator = @petition_header.circulators.find(petition_header_circulator_id.to_i) rescue Circulator.new
 
     if 1 == 0 # batch ignores the ordering
       # Write in 5 signature blocks
@@ -253,15 +254,29 @@ private
   def footer
     bounding_box [bounds.left, bounds.bottom + 93], width: 262 do
       font_size 8
+      font_size 11
+      text_box "#{@circulator.name}", kerning: true, at: [3, cursor]
+      font_size 8
       move_down 3
       text "_________________________________________________________", align: :left
       text "Individual Cirulator's printed or typed name", align: :left
+      font_size 11
+      text_box "#{@circulator.address}", kerning: true, at: [3, cursor]
+      font_size 8
       move_down 3
       text "_________________________________________________________", align: :left
       text "Residence Address", align: :left
+      font_size 11
+      text_box "#{@circulator.city}", kerning: true, at: [3, cursor]
+      text_box "#{@circulator.state}", kerning: true, at: [160, cursor]
+      text_box "#{@circulator.zip}", kerning: true, at: [208, cursor]
+      font_size 8
       move_down 4
       text "_________________________________________________________", align: :left
       text "City                                                                  State                   Zip", align: :left
+      font_size 11
+      text_box "#{@circulator.phone_number_formatted}", kerning: true, at: [3, cursor]
+      font_size 8
       move_down 5
       text "_________________________________________________________", align: :left
       text "Telephone (including area code)", align: :left

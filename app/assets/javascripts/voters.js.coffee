@@ -3,7 +3,7 @@ jQuery ->
 
     $('a#print-candidate-petition').on 'click', (event) ->
       event.preventDefault()
-      url = $(this).prop('href') + '&petition_header_id=' + $('select#petition-header').val()
+      url = $(this).prop('href') + '&petition_header_id=' + $('select#petition-header').val() + '&petition_header_circulator_id=' + $('select#petition-header-circulator').val()
       window.location.href = url
 
     $("#voter-Modal").on "hidden.bs.modal", ->
