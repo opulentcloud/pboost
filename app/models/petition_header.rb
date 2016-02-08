@@ -19,7 +19,7 @@
 class PetitionHeader < ActiveRecord::Base
 
   # begin associations
-  has_many :petition_headers_users, dependent: :destroy
-  has_many :circulators, class_name: 'User', through: :petition_headers_users, source: :user
+  has_many :petition_headers_circulators, dependent: :destroy
+  has_many :circulators, through: :petition_headers_circulators
   # end associations
 end

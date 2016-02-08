@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160207203604) do
+ActiveRecord::Schema.define(version: 20160207234332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1789,6 +1789,19 @@ ActiveRecord::Schema.define(version: 20160207203604) do
   add_index "attachments", ["attachable_type", "attachable_id"], :name => "idx_attachable_type_and_id"
   add_index "attachments", ["type"], :name => "index_attachments_on_type"
 
+  create_table "circulators", force: true do |t|
+    t.string   "first_name",   limit: 32
+    t.string   "last_name",    limit: 32
+    t.string   "name",         limit: 65,  null: false
+    t.string   "address",      limit: 100, null: false
+    t.string   "city",         limit: 32,  null: false
+    t.string   "state",        limit: 2,   null: false
+    t.string   "zip",          limit: 5,   null: false
+    t.string   "phone_number", limit: 10,  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "delayed_job_results", force: true do |t|
     t.integer  "job_id",     null: false
     t.datetime "created_at"
@@ -1827,14 +1840,14 @@ ActiveRecord::Schema.define(version: 20160207203604) do
     t.datetime "updated_at"
   end
 
-  create_table "petition_headers_users", id: false, force: true do |t|
+  create_table "petition_headers_circulators", id: false, force: true do |t|
     t.integer "petition_header_id"
-    t.integer "user_id"
+    t.integer "circulator_id"
   end
 
-  add_index "petition_headers_users", ["petition_header_id", "user_id"], :name => "uniq_pet_head_idx", :unique => true
-  add_index "petition_headers_users", ["petition_header_id"], :name => "index_petition_headers_users_on_petition_header_id"
-  add_index "petition_headers_users", ["user_id"], :name => "index_petition_headers_users_on_user_id"
+  add_index "petition_headers_circulators", ["circulator_id"], :name => "index_petition_headers_circulators_on_circulator_id"
+  add_index "petition_headers_circulators", ["petition_header_id", "circulator_id"], :name => "uniq_pet_head_idx", :unique => true
+  add_index "petition_headers_circulators", ["petition_header_id"], :name => "index_petition_headers_circulators_on_petition_header_id"
 
   create_table "registered_voter_histories", id: false, force: true do |t|
     t.integer  "id",                    default: "nextval('registered_voter_histories_id_seq'::regclass)", null: false

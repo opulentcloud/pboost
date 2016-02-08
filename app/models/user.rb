@@ -45,8 +45,6 @@ class User < ActiveRecord::Base
   has_many :roles, through: :users_roles
   accepts_nested_attributes_for :roles, allow_destroy: true
   has_many :verifications, dependent: :destroy
-  has_many :petition_headers_users, dependent: :destroy
-  has_many :petition_headers, through: :petition_headers_users
   # end associations
 
   # begin callbacks

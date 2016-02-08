@@ -72,6 +72,6 @@ class Admin::PetitionHeadersController < ApplicationController
     def petition_header_params
       params.require(:petition_header).permit(:voters_of, :baltimore_city, :party_affiliation, 
         :unaffiliated, :name, :address, :office_and_district, :ltgov_name, :ltgov_address,
-        user_ids: [])
+        circulator_ids: [])
     end
 end

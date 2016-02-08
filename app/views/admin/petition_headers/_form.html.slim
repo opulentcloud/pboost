@@ -10,15 +10,15 @@
     = f.input :ltgov_name
     = f.input :ltgov_address
 
-    div class="check_boxes input optional from-group" id="users_input"
+    div class="check_boxes input optional from-group" id="circulators_input"
       label class="control-label"
-        | Users
-      - for user in User.order(:last_name).order(:first_name)
+        | Circulators
+      - for circulator in Circulator.order(:last_name).order(:first_name)
         div class="checkbox"
-          = f.label user.name, class: "choice"
-            = check_box_tag "petition_header[user_ids][]", user.id, @petition_header.users.include?(user)
-            = user.name
-      = hidden_field_tag "petition_header[user_ids][]", ""
+          = f.label circulator.name, class: "choice"
+            = check_box_tag "petition_header[circulator_ids][]", circulator.id, @petition_header.circulators.include?(circulator)
+            = circulator.name
+      = hidden_field_tag "petition_header[circulator_ids][]", ""
 
   = f.actions do
     = f.action :submit, class: "btn btn-default"    

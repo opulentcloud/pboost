@@ -1,0 +1,15 @@
+tr
+  td
+    = link_to circulator.name, admin_circulator_path(circulator)
+  td
+    = circulator.address
+  td
+    = circulator.city
+  td
+    = circulator.state
+  td
+    = circulator.zip
+  td
+    = circulator.phone_number_formatted
+  td
+    = link_to 'delete', admin_circulator_path(id: circulator.id), method: :delete, data: { confirm: 'Are you sure you want to delete this Circulator?' }

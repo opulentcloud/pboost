@@ -1,0 +1,25 @@
+tr
+  td
+    = petition_header.voters_of
+  td
+    = petition_header.baltimore_city
+  td
+    = petition_header.party_affiliation
+  td
+    = petition_header.unaffiliated
+  td
+    = petition_header.name
+  td
+    = petition_header.address
+  td
+    = petition_header.office_and_district
+  td
+    = petition_header.ltgov_name
+  td
+    = petition_header.ltgov_address
+  td
+    = link_to 'Show', admin_petition_header_path(petition_header)
+  td
+    = link_to 'Edit', edit_admin_petition_header_path(petition_header) 
+  td
+    = link_to 'Delete', admin_petition_header_path(petition_header), method: :delete, data: { confirm: 'Are you sure?' } 

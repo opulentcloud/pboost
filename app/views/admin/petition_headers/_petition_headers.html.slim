@@ -1,0 +1,28 @@
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          | Voters of
+        th
+          | Baltimore city?
+        th
+          | Party affiliation
+        th
+          | Unaffiliated?
+        th
+          | Name
+        th
+          | Address
+        th
+          | Office and district
+        th
+          | Ltgov name
+        th
+          | Ltgov address
+        th
+        th
+        th
+    tbody
+      - @petition_headers.each do | petition_header |
+        = render petition_header

@@ -1,0 +1,20 @@
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          | Name
+        th
+          | Address
+        th
+          | City
+        th
+          | ST
+        th
+          | Zip
+        th
+          | Phone
+        th
+    tbody
+      - @circulators.each do |circulator|
+        = render circulator

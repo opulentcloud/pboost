@@ -1,7 +1,7 @@
-class PetitionHeadersUser < ActiveRecord::Base
+class PetitionHeadersCirculator < ActiveRecord::Base
 
   # begin associations
   belongs_to :petition_header
-  belongs_to :user
+  belongs_to :circulator
   # end associations
 end

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     devise_scope :user do
+      resources :circulators
       resources :petition_headers
       resources :users
     end
