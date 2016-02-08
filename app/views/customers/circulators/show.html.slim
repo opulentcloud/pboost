@@ -1,0 +1,41 @@
+.page-header
+  = link_to circulators_path, :class => 'btn btn-default' do 
+    span.glyphicon.glyphicon-list-alt
+    |  Back 
+  = link_to edit_circulator_path(@circulator), :class => 'btn btn-primary' do 
+    span.glyphicon.glyphicon-pencil
+    |  Edit 
+  h1
+    | Show Circulator
+dl.dl-horizontal
+  dt
+    | Name:
+  dd
+    = @circulator.name
+  dt
+    | Address:
+  dd
+    = @circulator.address
+  dt
+    | City:
+  dd
+    = @circulator.city
+  dt
+    | State:
+  dd
+    = @circulator.state
+  dt
+    | Zip:
+  dd
+    = @circulator.zip
+  dt
+    | Phone Number:
+  dd
+    = @circulator.phone_number_formatted
+
+.row-fluid
+  .container-fluid
+    .col-md-12
+      legend Petition Headers
+      - @petition_headers = @circulator.petition_headers.merge(current_user.petition_headers).order(:name)
+      = render 'customers/petition_headers/petition_headers'

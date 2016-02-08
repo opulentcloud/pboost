@@ -77,11 +77,16 @@ class VotersController < ApplicationController
   end
   
   def search
-    @petition_headers = (current_user.is_in_role?("Administrator") || current_user.is_in_role("Employee")) ? PetitionHeader.order(:name) : current_user.petition_headers.order(:name)
+    @petition_headers = (current_user.is_in_role?("Administrator") || current_user.is_in_role?("Employee")) ? PetitionHeader.order(:name) : current_user.petition_headers.order(:name)
     @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
     session[:last_print_job] = nil
     if params[:petitions].present?
       cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } 
+    end
+    if cookies[:last_petition_header].present?
+      unless @petition_headers.pluck(:id).include?(cookies[:last_petition_header].to_i)
+        cookies.delete(:last_petition_header)
+      end
     end
     @petition_header = PetitionHeader.find(cookies[:last_petition_header]) rescue nil
   	@pg = params[:page] ||= 1
@@ -143,7 +148,7 @@ class VotersController < ApplicationController
       redirect_to processing_path(return_url: search_voters_path, id: dj.id) and return
     end
 
-    if params[:petitions].present? && admin_user?
+    if params[:petitions].present? && @petition_header
       delayed_job = Delayed::Job.enqueue PrintPetitionJob.new(@q2.result(distinct: true).includes(:address, :votes).reorder("").map(&:id), params[:petition_header_id], params[:petition_header_circulator_id])
       redirect_to processing_path(id: delayed_job.id, return_url: voters_url), notice: "Building Candidate Petition Form." and return
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160207234332) do
+ActiveRecord::Schema.define(version: 20160208013549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1848,6 +1848,15 @@ ActiveRecord::Schema.define(version: 20160207234332) do
   add_index "petition_headers_circulators", ["circulator_id"], :name => "index_petition_headers_circulators_on_circulator_id"
   add_index "petition_headers_circulators", ["petition_header_id", "circulator_id"], :name => "uniq_pet_head_idx", :unique => true
   add_index "petition_headers_circulators", ["petition_header_id"], :name => "index_petition_headers_circulators_on_petition_header_id"
+
+  create_table "petition_headers_users", id: false, force: true do |t|
+    t.integer "petition_header_id"
+    t.integer "user_id"
+  end
+
+  add_index "petition_headers_users", ["petition_header_id", "user_id"], :name => "uniq_pet_head_users_idx", :unique => true
+  add_index "petition_headers_users", ["petition_header_id"], :name => "index_petition_headers_users_on_petition_header_id"
+  add_index "petition_headers_users", ["user_id"], :name => "index_petition_headers_users_on_user_id"
 
   create_table "registered_voter_histories", id: false, force: true do |t|
     t.integer  "id",                    default: "nextval('registered_voter_histories_id_seq'::regclass)", null: false

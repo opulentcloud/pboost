@@ -14,8 +14,7 @@
           | Zip
         th
           | Phone
-        - unless @index_manage_circulators == false
-          th
+        th
     tbody
       - @circulators.each do |circulator|
         = render circulator

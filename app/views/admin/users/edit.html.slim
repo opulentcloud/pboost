@@ -29,6 +29,16 @@
             = role.name
       = hidden_field_tag "user[role_ids][]", ""
 
+    div class="check_boxes input optional from-group" id="user_petition_headers_input"
+      label class="control-label"
+        | Petition Headers
+      - for petition_header in PetitionHeader.order(:name)
+        div class="checkbox"
+          = f.label petition_header.name, class: "choice"
+            = check_box_tag "user[petition_header_ids][]", petition_header.id, @user.petition_headers.include?(petition_header)
+            = petition_header.name
+      = hidden_field_tag "user[petition_header_ids][]", ""
+
   = f.actions do
     = f.action :submit, label: "Update user information", class: "btn btn-default"
 

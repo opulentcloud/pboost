@@ -17,10 +17,3 @@ tr
     = petition_header.ltgov_name
   td
     = petition_header.ltgov_address
-  - unless @index_manage_petition_headers == false
-    td
-      = link_to 'Show', admin_petition_header_path(petition_header)
-    td
-      = link_to 'Edit', edit_admin_petition_header_path(petition_header) 
-    td
-      = link_to 'Delete', admin_petition_header_path(petition_header), method: :delete, data: { confirm: 'Are you sure?' } 

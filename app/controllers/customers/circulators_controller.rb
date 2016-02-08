@@ -1,5 +1,5 @@
-class Admin::CirculatorsController < ApplicationController
-  before_filter :require_admin_user!
+class Customers::CirculatorsController < ApplicationController
+  before_filter :require_customer_user!
   before_action :set_circulator, only: [:show, :edit, :update, :destroy]
 
   # GET /circulators
@@ -11,7 +11,6 @@ class Admin::CirculatorsController < ApplicationController
   # GET /circulators/1
   # GET /circulators/1.json
   def show
-    @index_manage_petition_headers = false
   end
 
   # GET /circulators/new
@@ -30,7 +29,7 @@ class Admin::CirculatorsController < ApplicationController
 
     respond_to do |format|
       if @circulator.save
-        format.html { redirect_to admin_circulator_path(@circulator), notice: 'Circulator was successfully created.' }
+        format.html { redirect_to circulator_path(@circulator), notice: 'Circulator was successfully created.' }
         format.json { render :show, status: :created, location: @circulator }
       else
         format.html { render :new }
@@ -44,7 +43,7 @@ class Admin::CirculatorsController < ApplicationController
   def update
     respond_to do |format|
       if @circulator.update(circulator_params)
-        format.html { redirect_to admin_circulator_path(@circulator), notice: 'Circulator was successfully updated.' }
+        format.html { redirect_to circulator_path(@circulator), notice: 'Circulator was successfully updated.' }
         format.json { render :show, status: :ok, location: @circulator }
       else
         format.html { render :edit }
@@ -58,7 +57,7 @@ class Admin::CirculatorsController < ApplicationController
   def destroy
     @circulator.destroy
     respond_to do |format|
-      format.html { redirect_to admin_circulators_url, notice: 'Circulator was successfully destroyed.' }
+      format.html { redirect_to circulators_url, notice: 'Circulator was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -66,7 +65,7 @@ class Admin::CirculatorsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_circulator
-      @circulator = Circulator.find(params[:id])
+      @circulator = current_user.circulators.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

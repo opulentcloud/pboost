@@ -27,6 +27,9 @@ nav.navbar.navbar-inverse role="navigation" style="margin-top: -80px; !important
               - if admin_user?
                 li
                   = link_to 'Bulk Verify', verifications_path
+          - if customer_user? && current_user.petition_headers.exists?
+            li
+              = link_to 'Manage Circulators', circulators_path
         ul.nav.navbar-nav role="navigation"
           - if admin_user?
             li.dropdown

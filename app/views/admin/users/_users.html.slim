@@ -12,7 +12,8 @@
           | Created On
         th
           | Roles
-        th
+        - unless @index_manage_users == false
+          th
     tbody
       - @users.each do |user|
         = render user

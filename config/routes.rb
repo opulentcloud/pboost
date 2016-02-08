@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     post 'signin' => 'devise/sessions#create', :as => :user_session
     delete 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session
     get 'dashboard' => 'users/dashboard#show', :as => :users_dashboard
+    scope 'customers' do
+      resources :circulators, controller: 'customers/circulators'
+      resources :petition_headers, only: [:index, :show], controller: 'customers/petition_headers'
+    end
     resources :voters do
       collection do
         match 'search' => 'voters#search', via: [:get, :post], as: :search

@@ -20,10 +20,6 @@
           | Ltgov name
         th
           | Ltgov address
-        - unless @index_manage_petition_headers == false
-          th
-          th
-          th
     tbody
       - @petition_headers.each do | petition_header |
         = render petition_header

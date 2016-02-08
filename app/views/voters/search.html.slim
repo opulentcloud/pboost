@@ -45,7 +45,7 @@
           = link_to search_voters_path(search_args.merge(walklists: '1')), :class => 'btn btn-default', id: 'print-walk-list' do 
             span.glyphicon.glyphicon-print
             |  Print Walk-List
-        - if @petition_headers
+        - if @petition_headers.exists?
           li
             = link_to search_voters_path(search_args.merge(petitions: '1')), :class => 'btn btn-default', id: 'print-candidate-petition' do 
               span.glyphicon.glyphicon-print

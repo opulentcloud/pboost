@@ -11,6 +11,8 @@ class Admin::PetitionHeadersController < ApplicationController
   # GET /petition_headers/1
   # GET /petition_headers/1.json
   def show
+    @index_manage_users = false
+    @index_manage_circulators = false
   end
 
   # GET /petition_headers/new
@@ -72,6 +74,6 @@ class Admin::PetitionHeadersController < ApplicationController
     def petition_header_params
       params.require(:petition_header).permit(:voters_of, :baltimore_city, :party_affiliation, 
         :unaffiliated, :name, :address, :office_and_district, :ltgov_name, :ltgov_address,
-        circulator_ids: [])
+        circulator_ids: [], user_ids: [])
     end
 end

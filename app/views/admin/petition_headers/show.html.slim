@@ -48,6 +48,13 @@ dl.dl-horizontal
 .row-fluid
   .container-fluid
     .col-md-12
+      legend Users
+      - @users = @petition_header.users.order(:last_name).order(:first_name)
+      = render 'admin/users/users'
+      
+.row-fluid
+  .container-fluid
+    .col-md-12
       legend Circulators
       - @circulators = @petition_header.circulators.order(:last_name).order(:first_name)
       = render 'admin/circulators/circulators'

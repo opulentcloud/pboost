@@ -11,5 +11,6 @@ tr
     = circulator.zip
   td
     = circulator.phone_number_formatted
-  td
-    = link_to 'delete', admin_circulator_path(id: circulator.id), method: :delete, data: { confirm: 'Are you sure you want to delete this Circulator?' }
+  - unless @index_manage_circulators == false
+    td
+      = link_to 'delete', admin_circulator_path(id: circulator.id), method: :delete, data: { confirm: 'Are you sure you want to delete this Circulator?' }

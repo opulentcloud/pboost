@@ -9,5 +9,6 @@ tr
     = l user.created_at
   td
     = user.roles.map(&:name).join(', ')
-  td
-    = link_to 'delete', admin_user_path(id: user.id), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }
+  - unless @index_manage_users == false
+    td
+      = link_to 'delete', admin_user_path(id: user.id), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }

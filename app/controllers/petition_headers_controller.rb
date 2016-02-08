@@ -18,7 +18,12 @@
 
 class PetitionHeadersController < AuthenticatedUsersController
   def select_circulators
-    @petition_header = params[:id].to_i > 0 ? PetitionHeader.find(params[:id]) : PetitionHeader.new
+    @petition_header = PetitionHeader.new
+    if current_user.is_in_role?("Administrator") || current_user.is_in_role?("Employee")
+      @petition_header = PetitionHeader.find(params[:id]) if params[:id].to_i > 0
+    elsif current_user.is_in_role?("Customer")
+      @petition_header = current_user.petition_headers.find(params[:id]) if params[:id].to_i > 0
+    end
     @circulators = @petition_header.circulators.order(:last_name).order(:first_name)
     
     respond_to do |format|
