@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
 #    else
 #      Circulator.where("1=0")
 #    end
-  end
+#  end
   # end associations
 
   # begin callbacks
