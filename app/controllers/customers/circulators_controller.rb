@@ -5,7 +5,7 @@ class Customers::CirculatorsController < ApplicationController
   # GET /circulators
   # GET /circulators.json
   def index
-    @circulators = Circulator.order(:last_name).order(:first_name)
+    @circulators = current_user.circulator.order(:last_name).order(:first_name)
   end
 
   # GET /circulators/1
