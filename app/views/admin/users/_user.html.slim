@@ -8,7 +8,10 @@ tr
   td
     = l user.created_at
   td
-    = user.roles.map(&:name).join(', ')
+    = user.roles.map(&:name).join('<br />').html_safe
   - unless @index_manage_users == false
+    td
+      = user.petition_headers.order(:name).pluck(:name).join('<br />').html_safe
+  
     td
       = link_to 'delete', admin_user_path(id: user.id), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }

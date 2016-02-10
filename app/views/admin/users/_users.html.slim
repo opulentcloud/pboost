@@ -13,6 +13,8 @@
         th
           | Roles
         - unless @index_manage_users == false
+          th 
+            | Petition Headers
           th
     tbody
       - @users.each do |user|
