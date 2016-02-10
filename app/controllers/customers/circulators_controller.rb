@@ -52,6 +52,7 @@ class Customers::CirculatorsController < ApplicationController
     end
   end
 
+=begin
   # DELETE /circulators/1
   # DELETE /circulators/1.json
   def destroy
@@ -61,6 +62,7 @@ class Customers::CirculatorsController < ApplicationController
       format.json { head :no_content }
     end
   end
+=end
 
   private
     # Use callbacks to share common setup or constraints between actions.

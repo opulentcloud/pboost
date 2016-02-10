@@ -8,15 +8,18 @@
     = f.input :zip
     = f.input :phone_number
 
-    div class="check_boxes input optional from-group" id="petition_headers_input"
-      label class="control-label"
-        | Petition Headers
-      - for petition_header in current_user.petition_headers.order(:name)
-        div class="checkbox"
-          = f.label petition_header.name, class: "choice"
-            = check_box_tag "circulator[petition_header_ids][]", petition_header.id, @circulator.petition_headers.merge(current_user.petition_headers).include?(petition_header)
-            = petition_header.name
-      = hidden_field_tag "circulator[petition_header_ids][]", ""
+    - if @circulator.new_record? && current_user.petition_headers.count > 1
+      div class="check_boxes input optional from-group" id="petition_headers_input"
+        label class="control-label"
+          | Petition Headers
+        - for petition_header in current_user.petition_headers.order(:name)
+          div class="checkbox"
+            = f.label petition_header.name, class: "choice"
+              = check_box_tag "circulator[petition_header_ids][]", petition_header.id, @circulator.petition_headers.merge(current_user.petition_headers).include?(petition_header)
+              = petition_header.name
+        = hidden_field_tag "circulator[petition_header_ids][]", ""
+    - else
+        = hidden_field_tag "circulator[petition_header_ids][]", current_user.petition_headers.first.id
 
   = f.actions do
     = f.action :submit, class: "btn btn-default"    
