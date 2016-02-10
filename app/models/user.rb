@@ -47,14 +47,15 @@ class User < ActiveRecord::Base
   has_many :verifications, dependent: :destroy
   has_many :petition_headers_users, dependent: :destroy
   has_many :petition_headers, through: :petition_headers_users
-  def circulators
-    if is_in_role?("Administator") || is_in_role?("Employee")
-      Circulator.order(:last_name).order(:first_name)
-    elsif is_in_role?("Customer")
-      Circulator.joins(:petition_headers).where("petition_headers.id IN (?)", petition_headers.pluck(:id)).order("circulators.last_name, circulators.first_name")
-    else
-      Circulator.where("1=0")
-    end
+  has_many :circulators, through: :petition_headers
+#  def circulators
+#    if is_in_role?("Administator") || is_in_role?("Employee")
+#      Circulator.order(:last_name).order(:first_name)
+#    elsif is_in_role?("Customer")
+#      Circulator.joins(:petition_headers).where("petition_headers.id IN (?)", petition_headers.pluck(:id)).order("circulators.last_name, circulators.first_name")
+#    else
+#      Circulator.where("1=0")
+#    end
   end
   # end associations
 

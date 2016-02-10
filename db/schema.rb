@@ -1858,9 +1858,8 @@ ActiveRecord::Schema.define(version: 20160208013549) do
   add_index "petition_headers_users", ["petition_header_id"], :name => "index_petition_headers_users_on_petition_header_id"
   add_index "petition_headers_users", ["user_id"], :name => "index_petition_headers_users_on_user_id"
 
-  create_table "registered_voter_histories", id: false, force: true do |t|
-    t.integer  "id",                    default: "nextval('registered_voter_histories_id_seq'::regclass)", null: false
-    t.integer  "vtrid",                                                                                    null: false
+  create_table "registered_voter_histories", force: true do |t|
+    t.integer  "vtrid",                 null: false
     t.string   "election_date"
     t.string   "election_description"
     t.string   "election_type"
