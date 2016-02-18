@@ -48,4 +48,57 @@ class VotingHistory < ActiveRecord::Base
   # begin associations
   belongs_to :voter, foreign_key: :state_file_id
   # end associations
+
+  # begin public class methods
+  def self.update_voting_frequencies
+    gub_general_query = %{
+      UPDATE voters SET gubernatorial_general_voting_frequency = result.gubernatorial_general_voting_frequency
+      FROM
+      (SELECT v.state_file_id, COUNT(vh.election_year) as gubernatorial_general_voting_frequency FROM voters v
+      INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
+      WHERE vh.election_year IN (2006, 2010, 2014)
+      AND vh.election_type = 'GG'
+      GROUP BY v.state_file_id) as result
+      WHERE voters.state_file_id = result.state_file_id
+    }
+    ActiveRecord::Base.connection.execute(gub_general_query, :skip_logging)
+    puts "Gubernatorial General History updated..."
+    gub_primary_query = %{
+      UPDATE voters SET gubernatorial_primary_voting_frequency = result.gubernatorial_primary_voting_frequency
+      FROM
+      (SELECT v.state_file_id, COUNT(vh.election_year) as gubernatorial_primary_voting_frequency FROM voters v
+      INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
+      WHERE vh.election_year IN (2006, 2010, 2014)
+      AND vh.election_type = 'GP'
+      GROUP BY v.state_file_id) as result
+      WHERE voters.state_file_id = result.state_file_id
+    }
+    ActiveRecord::Base.connection.execute(gub_primary_query, :skip_logging)
+    puts "Gubernatorial Primary history updated..."
+    pres_general_query = %{
+      UPDATE voters SET presidential_general_voting_frequency = result.presidential_general_voting_frequency
+      FROM
+      (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_general_voting_frequency FROM voters v
+      INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
+      WHERE vh.election_year IN (2004, 2008, 2012)
+      AND vh.election_type = 'G'
+      GROUP BY v.state_file_id) as result
+      WHERE voters.state_file_id = result.state_file_id
+    }
+    ActiveRecord::Base.connection.execute(pres_general_query, :skip_logging)
+    puts "Presidential General history updated...."
+    pres_primary_query = %{
+      UPDATE voters SET presidential_primary_voting_frequency = result.presidential_primary_voting_frequency
+      FROM
+      (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_primary_voting_frequency FROM voters v
+      INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
+      WHERE vh.election_year IN (2004, 2008, 2012)
+      AND vh.election_type = 'P'
+      GROUP BY v.state_file_id) as result
+      WHERE voters.state_file_id = result.state_file_id
+    }
+    ActiveRecord::Base.connection.execute(pres_primary_query, :skip_logging)
+    puts "Presidential Primary history updated..."
+  end
+  # end public class methods
 end

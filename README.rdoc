@@ -45,7 +45,7 @@
   FROM van_data LIMIT 100
 
   # Load Maryland State Board of Elections Raw data file
-  $ \copy registered_voters_data (vtrid,lastname,firstname,middlename,suffix,dob,gender,party,house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,unitnumber,address,non_std_address,residentialcity,residentialstate,residentialzip5,residentialzip4,mailingaddress,mailingcity,mailingstate,mailingzip5,mailingzip4,country,status_code,state_registration_date,county_registration_date,precinct,split,county,congressional_districts,legislative_districts,councilmanic_districts,ward_districts,municipal_districts,commissioner_districts,school_districts) from '/home/mark/Work/pboostv2/db/fixtures/Stinnie/RegisteredVoters.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+  $ \copy registered_voters_data (vtrid,lastname,firstname,middlename,suffix,dob,gender,party,house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,unitnumber,address,non_std_address,residentialcity,residentialstate,residentialzip5,residentialzip4,mailingaddress,mailingcity,mailingstate,mailingzip5,mailingzip4,country,status_code,state_registration_date,county_registration_date,precinct,split,county,congressional_districts,legislative_districts,councilmanic_districts,ward_districts,municipal_districts,commissioner_districts,school_districts) from '/vagrant/db/fixtures/Stinnie/VoterList.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
 
   # Build the addresses hashes
   RegisteredVotersData.build_address_hashes
@@ -70,7 +70,7 @@
   Voter.link_addresses_from_registered_voters_data      
 
   # Load Maryland State Board of Elections Raw voting history data file
-  $ \copy registered_voter_histories (vtrid,election_date,election_description,election_type,political_party,election_code,voting_method,date_of_voting,precinct,early_voting_location,juristiction_code,county_name) from '/home/mark/Work/pboostv2/db/fixtures/Stinnie/StinnieHistory.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+  $ \copy registered_voter_histories (vtrid,election_date,election_description,election_type,political_party,election_code,voting_method,date_of_voting,precinct,early_voting_location,juristiction_code,county_name) from '/vagrant/db/fixtures/Stinnie/History.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
 
 == Running the app
 bundle exec unicorn -E production -c config/unicorn.rb

@@ -75,6 +75,33 @@ class RegisteredVotersData < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.prepare_history_update
+    query = %{      
+      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+        SELECT registered_voter_histories.vtrid AS state_file_id, 
+        CASE voting_method WHEN 'ABSENTEE' THEN 'A' WHEN 'EARLY VOTING' THEN 'E' WHEN 'FWAB' THEN 'F' WHEN 'POLLING PLACE' THEN 'P' WHEN 'PROVISIONAL' THEN 'V' END AS voter_type,
+        split_part(election_date, '/', 3)::int AS election_year, 
+        split_part(election_date, '/', 1)::int AS election_month, 
+        CASE election_type WHEN 'Gubernatorial General' THEN 'GG' WHEN 'Gubernatorial Primary' THEN 'GP' WHEN 'Presidential General' THEN 'G' WHEN 'Presidential Primary' THEN 'P' END AS election_type,
+        current_date as created_at, current_date as updated_at
+        FROM registered_voter_histories 
+        ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
+  def self.history_update
+    query = %{
+      INSERT INTO voting_histories (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+        SELECT u.state_file_id, u.voter_type, u.election_year, u.election_month, u.election_type, u.created_at, u.updated_at FROM registered_voters_history_updates u
+        INNER JOIN voters v ON v.state_file_id = u.state_file_id
+        LEFT OUTER JOIN voting_histories h ON h.state_file_id = u.state_file_id  AND h.election_type = u.election_type AND h.election_year = u.election_year AND h.election_month = u.election_month
+        WHERE h.id IS NULL
+        LIMIT 1000;
+    }
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
   def self.update_addresses
     query = %{UPDATE addresses
 	    SET street_no = result.house_number,
@@ -124,7 +151,7 @@ class RegisteredVotersData < ActiveRecord::Base
 	      SET address_id = result.new_address_id
       FROM
       (SELECT DISTINCT ON (v.id) v.id, a.address_hash as old_address_hash, an.address_hash as new_address_hash, an.id as new_address_id from registered_voters_data rvd
-      INNER JOIN voters v ON v.state_file_id = rvd.vtrid
+      INNER JOIN voters v ON v.state_file_id = rvd.vtrid::int
       INNER JOIN addresses a ON a.id = v.address_id AND a.id = (SELECT MIN(id) FROM addresses WHERE addresses.address_hash = a.address_hash)
       INNER JOIN addresses an ON an.address_hash = rvd.address_hash
       WHERE 
@@ -135,14 +162,25 @@ class RegisteredVotersData < ActiveRecord::Base
 
   def self.insert_new_voters
     query = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
-      SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, r.gender, r.dob::date, r.state_registration_date::date, r.vtrid FROM registered_voters_data r
-      LEFT OUTER JOIN voters ON voters.state_file_id = r.vtrid
+      SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, r.gender, r.dob::date, r.state_registration_date::date, r.vtrid::int FROM registered_voters_data r
+      LEFT OUTER JOIN voters ON voters.state_file_id = r.vtrid::int
       WHERE voters.id IS NULL}
     ActiveRecord::Base.connection.execute(query, :skip_logging)    
   end
 
+  # Remove any voters no longer in the new raw data file.
+  def self.remove_old_voters
+    query = %{
+      DELETE FROM voters WHERE ID IN (
+        SELECT v.id FROM voters v
+        LEFT OUTER JOIN registered_voters_data d ON d.vtrid::int = v.state_file_id
+        WHERE d.vtrid IS NULL)
+    }
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
   def self.update_voter_info_by_batch(voter_ids)
-    Voter.joins(:registered_voters_data).where(id: voter_ids).each do |voter|
+    Voter.joins("INNER JOIN registered_voters_data d ON d.vtrid::int = voters.state_file_id").where(id: voter_ids).each do |voter|
       voter.last_name = voter.registered_voters_data.lastname
       voter.first_name = voter.registered_voters_data.firstname
       voter.middle_name = voter.registered_voters_data.middlename
@@ -151,7 +189,9 @@ class RegisteredVotersData < ActiveRecord::Base
       voter.sex = voter.registered_voters_data.gender
       voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date rescue nil
       voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date rescue nil
+      voter.yor = voter.dor.year rescue nil
       voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
+      voter.search_index2 = voter.build_search2 #Voter.build_search_index2(voter.first_name, voter.last_name, voter.registered_voters_data.dob)
       voter.updated_at = Time.now
       voter.created_at = Time.now unless voter.created_at.present?
       voter.save!
@@ -159,17 +199,21 @@ class RegisteredVotersData < ActiveRecord::Base
   end
   
   def self.update_voter_info(last_datetime = Time.now)
-    Voter.select(:id).where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
+    #Voter.select(:id).where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
+    Voter.select(:id).find_in_batches(:batch_size => 1000) do |batch|
       RegisteredVotersData.delay.update_voter_info_by_batch(batch.map(&:id))
     end
   end
   
   def self.build_address_hashes(break_after = false)
+    cnt = 0
     while RegisteredVotersData.where(address_hash: nil).exists? do
       RegisteredVotersData.transaction do
         RegisteredVotersData.where(address_hash: nil).limit(1000).each do |address|
           address.update_attribute(:address_hash, address.hash_full_address)
         end
+        cnt += 1000
+        puts cnt
       end
       break if break_after == true
     end

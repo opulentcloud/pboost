@@ -2,7 +2,7 @@
 #
 # Table name: registered_voter_histories
 #
-#  id                    :integer          not null
+#  id                    :integer          not null, primary key
 #  vtrid                 :integer          not null
 #  election_date         :string(255)
 #  election_description  :string(255)

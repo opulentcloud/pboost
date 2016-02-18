@@ -182,19 +182,57 @@ class Voter < ActiveRecord::Base
     end
   end
  
+  def self.update_age
+    ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob))")
+  end
+
   def self.link_addresses_from_registered_voters_data
     query = %{
       UPDATE voters 
         SET address_id = result.address_id
       FROM
         (SELECT addresses.id as address_id, voters.id as voter_id FROM registered_voters_data 
-          INNER JOIN voters on voters.state_file_id = registered_voters_data.vtrid 
+          INNER JOIN voters on voters.state_file_id = registered_voters_data.vtrid::int 
           INNER JOIN addresses ON addresses.address_hash = registered_voters_data.address_hash
           WHERE registered_voters_data.address_hash IS NOT NULL) AS result
       WHERE voters.id = result.voter_id}
     ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
   
+  def self.correct_address_links
+    query = %{
+      UPDATE voters SET address_id = result.a1_id
+      FROM
+      (SELECT a1.id as a1_id, a1.zip4, a2.id as a2_id FROM addresses a1
+      INNER JOIN addresses a2 ON a2.id != a1.id 
+      AND COALESCE(a2.street_no,'') = COALESCE(a1.street_no,'')
+      AND COALESCE(a2.street_no_half,'') = COALESCE(a1.street_no_half, '')
+      AND COALESCE(a2.street_prefix,'') = COALESCE(a1.street_prefix,'')
+      AND COALESCE(a2.street_name,'') = COALESCE(a1.street_name,'')
+      AND COALESCE(a2.street_type,'') = COALESCE(a1.street_type,'')
+      AND COALESCE(a2.street_suffix,'') = COALESCE(a1.street_suffix,'')
+      AND COALESCE(a2.apt_type,'') = COALESCE(a1.apt_type,'')
+      AND COALESCE(a2.apt_no,'') = COALESCE(a1.apt_no,'')
+      AND COALESCE(a2.city,'') = COALESCE(a1.city,'')
+      AND COALESCE(a2.state,'') = COALESCE(a1.state,'')
+      AND COALESCE(a2.zip5,'') = COALESCE(a1.zip5,'')
+      AND COALESCE(a2.zip4,'') != COALESCE(a1.zip4,'')
+      WHERE 
+      COALESCE(a1.zip4,'') != '') as result
+      WHERE voters.address_id = result.a2_id
+    }
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
+  def self.delete_unused_addresses
+    query = %{
+      DELETE FROM addresses a
+      WHERE
+      NOT EXISTS (SELECT voters.id from voters WHERE voters.address_id = a.id)
+    }
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
+  end
+
   def self.link_addresses_from_van_data
     query = %{
       UPDATE voters 

@@ -9,6 +9,7 @@
 .env
 .ruby-version
 .ruby-gemset
+.vagrant
 
 # Ignore bundler config.
 /.bundle
