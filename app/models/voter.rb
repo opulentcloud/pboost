@@ -183,7 +183,7 @@ class Voter < ActiveRecord::Base
   end
  
   def self.update_age
-    ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob))")
+    ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob))", :skip_logging)
   end
 
   def self.link_addresses_from_registered_voters_data
