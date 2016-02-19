@@ -1,4 +1,4 @@
-class ReportsController < ApplicationController
+class ReportsController < AuthenticatedUsersController
   before_filter :set_order
 
   def candidate_petition_form

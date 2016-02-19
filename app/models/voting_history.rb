@@ -50,13 +50,15 @@ class VotingHistory < ActiveRecord::Base
   # end associations
 
   # begin public class methods
+
+  # Calculate X of 4
   def self.update_voting_frequencies
     gub_general_query = %{
       UPDATE voters SET gubernatorial_general_voting_frequency = result.gubernatorial_general_voting_frequency
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as gubernatorial_general_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2006, 2010, 2014)
+      WHERE vh.election_year IN (2002, 2006, 2010, 2014)
       AND vh.election_type = 'GG'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id
@@ -68,7 +70,7 @@ class VotingHistory < ActiveRecord::Base
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as gubernatorial_primary_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2006, 2010, 2014)
+      WHERE vh.election_year IN (2002, 2006, 2010, 2014)
       AND vh.election_type = 'GP'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id
@@ -80,7 +82,7 @@ class VotingHistory < ActiveRecord::Base
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_general_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2004, 2008, 2012)
+      WHERE vh.election_year IN (2000, 2004, 2008, 2012)
       AND vh.election_type = 'G'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id
@@ -92,7 +94,7 @@ class VotingHistory < ActiveRecord::Base
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_primary_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2004, 2008, 2012)
+      WHERE vh.election_year IN (2000, 2004, 2008, 2012)
       AND vh.election_type = 'P'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id
