@@ -35,7 +35,7 @@
 #  municipal_general_voting_frequency     :integer          default(0)
 #
 
-class VotersController < ApplicationController
+class VotersController < AuthenticatedUsersController
 #  before_filter :require_customer_user!
   before_action :set_voter, only: [:show, :edit, :update, :destroy]
 
