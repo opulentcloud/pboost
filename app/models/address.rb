@@ -46,6 +46,9 @@ class Address < ActiveRecord::Base
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
   end
 
+  def self.client_column_names
+    ['street_no','street_no_half','street_prefix','street_name','street_type','street_suffix','apt_type','apt_no','city','state','zip5']
+  end
   # begin associations
   has_many :voters
   # end associations

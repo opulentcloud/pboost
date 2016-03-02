@@ -36,11 +36,10 @@
       - search_args.merge!(party_breakdown: '1') if params[:party_breakdown].present?
       - search_args.merge!(precinct_breakdown: '1') if params[:precinct_breakdown].present?      
       ul class="pull-right" style="list-style-type: none;"
-        - if admin_user?
-          li
-            = link_to search_voters_path(search_args.merge(export: '1')), :class => 'btn btn-default' do 
-              span.glyphicon.glyphicon-export
-              |  Export
+        li
+          = link_to search_voters_path(search_args.merge(export: '1')), :class => 'btn btn-default' do 
+            span.glyphicon.glyphicon-export
+            |  Export
         li
           = link_to search_voters_path(search_args.merge(walklists: '1')), :class => 'btn btn-default', id: 'print-walk-list' do 
             span.glyphicon.glyphicon-print

@@ -143,8 +143,13 @@ class VotersController < AuthenticatedUsersController
     @q2 = Voter.search(params[:q])
     session[:last_search] = params[:q]
 
-    if params[:export].present? && admin_user?
-      dj = Delayed::Job.enqueue VotersExportJob.new(params[:q])
+    if params[:export].present?
+      dj = nil;
+      if admin_user?
+        dj = Delayed::Job.enqueue VotersExportJob.new(params[:q])
+      else
+        dj = Delayed::Job.enqueue ClientVotersExportJob.new(params[:q])
+      end
       redirect_to processing_path(return_url: search_voters_path, id: dj.id) and return
     end
 

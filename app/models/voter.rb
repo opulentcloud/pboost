@@ -91,6 +91,10 @@ class Voter < ActiveRecord::Base
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
   end
 
+  def self.client_column_names
+      ['state_file_id','first_name','middle_name','last_name','sufix','age','phone','party']
+  end
+
   # begin associations
   belongs_to :address
   has_many :votes, class_name: 'VotingHistory', foreign_key: :state_file_id, primary_key: :state_file_id
@@ -123,13 +127,15 @@ class Voter < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
-  def self.to_csv(options = {}, to_file = false)
+  def self.to_csv(options = {}, to_file = false, version = :admin)
     if to_file == true
       tempfile = Tempfile.new(["voters-export-#{Time.now.to_i}",".xls"])
       CSV.open(tempfile.path, "wb") do |csv|
-        csv << (column_names + Address.column_names)
+        csv << (column_names + Address.column_names) if version == :admin
+        csv << (client_column_names + Address.client_column_names) if version == :client
         all.includes(:address).find_each do |voter|
-          csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names))
+          csv << (voter.attributes.values_at(*column_names) + voter.address.attributes.values_at(*Address.column_names)) if version == :admin
+          csv << (voter.attributes.values_at(*client_column_names) + voter.address.attributes.values_at(*Address.client_column_names)) if version == :client
         end
       end
       return File.new(tempfile.path, "r")
