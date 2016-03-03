@@ -40,14 +40,14 @@ class Address < ActiveRecord::Base
 
   #exclude some fields from ransack search  
   UNRANSACKABLE_ATTRIBUTES = ['id','precinct_name','lat','lng','geo_failed','address_hash',
-  'apt_type', 'is_odd', 'zip4', 'street_no_int','geom','created_at','updated_at']
+  'apt_type', 'is_odd', 'zip4', 'street_no_int','geom','created_at','updated_at','street_address']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
   end
 
   def self.client_column_names
-    ['street_no','street_no_half','street_prefix','street_name','street_type','street_suffix','apt_type','apt_no','city','state','zip5']
+    ['street_address','city','state','zip5']
   end
   # begin associations
   has_many :voters
@@ -89,13 +89,15 @@ class Address < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.populate_street_addresses_by_batch(address_ids)
+    Address.where(id: address_ids).each do |address|
+      address.update_attribute(:street_address, address.full_street_address)
+    end
+  end
+
   def self.populate_street_addresses
     Address.where(street_address: nil).find_in_batches(:batch_size => 1000) do |batch|
-      Address.transaction do
-        batch.each do |address|
-          address.update_attribute(:street_address, address.full_street_address)
-        end
-      end
+      Address.delay(priority: 10).populate_street_addresses_by_batch(batch.map(&:id))
     end
   end
 

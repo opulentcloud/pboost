@@ -85,14 +85,14 @@ class Voter < ActiveRecord::Base
   UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id',
     'suffix','salutation', 'phone' 'home_phone', 'work_phone', 'work_phone_ext','dor',
     'municipal_primary_voting_frequency', 'municipal_general_voting_frequency',
-    'email', 'cell_phone', 'search_index','search_index2','created_at','updated_at']
+    'email', 'cell_phone', 'search_index','search_index2','created_at','updated_at','full_name']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
   end
 
   def self.client_column_names
-      ['state_file_id','first_name','middle_name','last_name','sufix','age','phone','party']
+      ['state_file_id','full_name','sufix','age','phone','party']
   end
 
   # begin associations
@@ -102,7 +102,7 @@ class Voter < ActiveRecord::Base
   # end associations
 
   # begin public instance methods  
-	def full_name
+	def build_full_name
 		"#{first_name} #{middle_name} #{last_name} #{suffix}".upcase.squeeze(' ')
 	end
 
@@ -149,6 +149,18 @@ class Voter < ActiveRecord::Base
     end
   end
   # end public class methods
+
+  def self.populate_full_names_by_batch(voter_ids)
+    Voter.where(id: voter_ids).each do |voter|
+      voter.update_attribute(:full_name, voter.build_full_name)
+    end
+  end
+
+  def self.populate_full_names
+    Voter.where(full_name: nil).find_in_batches(:batch_size => 1000) do |batch|
+      Voter.delay(priority: 20).populate_full_names_by_batch(batch.map(&:id))
+    end
+  end
 
   def self.build_search_index(first_name, last_name, street_no)
 		first_four = first_name.to_s.strip.upcase.gsub(/[^A-Z]/,'')[0,4].ljust(4,'X') rescue ''

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303014001) do
+ActiveRecord::Schema.define(version: 20160303021640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2116,6 +2116,7 @@ ActiveRecord::Schema.define(version: 20160303014001) do
     t.integer  "gubernatorial_general_voting_frequency",             default: 0
     t.integer  "municipal_primary_voting_frequency",                 default: 0
     t.integer  "municipal_general_voting_frequency",                 default: 0
+    t.string   "full_name"
   end
 
   add_index "voters", ["address_id"], :name => "index_voters_address_id"
