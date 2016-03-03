@@ -89,6 +89,16 @@ class Address < ActiveRecord::Base
   # end public instance methods
   
   # begin public class methods
+  def self.populate_street_addresses
+    Address.where(street_address: nil).find_in_batches(:batch_size => 1000) do |batch|
+      Address.transaction do
+        batch.each do |address|
+          address.update_attribute(:street_address, address.full_street_address)
+        end
+      end
+    end
+  end
+
   def self.build_address_hashes
     Address.where(address_hash: nil).find_in_batches(:batch_size => 1000) do |batch|
       Address.transaction do
