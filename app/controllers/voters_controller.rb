@@ -37,18 +37,19 @@
 
 class VotersController < AuthenticatedUsersController
 #  before_filter :require_customer_user!
+  before_filter :require_admin_user!, only: [:edit, :update, :destroy]
   before_action :set_voter, only: [:show, :edit, :update, :destroy]
 
   def index
     if params[:clear].present?
-      session[:last_search] = nil 
+      session[:last_search] = nil
       session[:last_sort] = nil
     end
     @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
     session[:last_print_job] = nil
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
-    
+
     #get list per page settings from form, session or cookie
 	  @per_pg = 100
 
@@ -59,7 +60,7 @@ class VotersController < AuthenticatedUsersController
     if params['q'].present?
       params['q2'] = params['q']
     else
-      params['q'] = {} #{"s"=>"last_name asc"}    
+      params['q'] = {} #{"s"=>"last_name asc"}
       params['q']['s'] = params['q2']['s']
     end
 
@@ -75,13 +76,24 @@ class VotersController < AuthenticatedUsersController
     @use_modal = params[:use_modal] == 'true'
     render 'show_modal', layout: false and return if @use_modal
   end
-  
+
+  def edit
+  end
+
+  def update
+    if @voter.update(voter_params)
+      redirect_to @voter, notice: "Voter saved successfully."
+    else
+      render :edit
+    end
+  end
+
   def search
     @petition_headers = (current_user.is_in_role?("Administrator") || current_user.is_in_role?("Employee")) ? PetitionHeader.order(:name) : current_user.petition_headers.order(:name)
     @job_result = DelayedJobResult.find(session[:last_print_job].to_i) if session[:last_print_job].present?
     session[:last_print_job] = nil
     if params[:petitions].present?
-      cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc } 
+      cookies[:last_petition_header] = { :value => params[:petition_header_id], :expires => 365.days.from_now.utc }
     end
     if cookies[:last_petition_header].present?
       unless @petition_headers.pluck(:id).include?(cookies[:last_petition_header].to_i)
@@ -91,7 +103,7 @@ class VotersController < AuthenticatedUsersController
     @petition_header = PetitionHeader.find(cookies[:last_petition_header]) rescue nil
   	@pg = params[:page] ||= 1
   	@pg = @pg.to_i
-    
+
     #get list per page settings from form, session or cookie
 	  @per_pg = 100
 
@@ -131,7 +143,7 @@ class VotersController < AuthenticatedUsersController
       end
     rescue Exception => ex
       debugger if Rails.env.development?
-      Rails.logger.debug(ex.backtrace)    
+      Rails.logger.debug(ex.backtrace)
     end
 
     new_keys.each do |arr|
@@ -175,15 +187,15 @@ class VotersController < AuthenticatedUsersController
         @q.build_condition if @q.conditions.empty?
         @q.build_sort if @q.sorts.empty?
       }
-      format.csv { 
+      format.csv {
         access_denied and return unless admin_user?
-        send_data @voters.to_csv, 
+        send_data @voters.to_csv,
           filename: "voter-export-#{Time.now.to_i}.csv",
           type: :csv,
           disposition: "#{ENV['PDF_DISPOSITION']}"
       }
       format.xlsx { access_denied unless admin_user? }
-      format.xls { 
+      format.xls {
         throw access_denied and return unless admin_user?
         send_data @voters.to_csv(col_sep: "\t"),
           filename: "voter-export-#{Time.now.to_i}.xls",
@@ -197,6 +209,10 @@ private
   # Use callbacks to share common setup or constraints between actions.
   def set_voter
     @voter = Voter.find(params[:id])
+  end
+
+  def voter_params
+    params.require(:voter).permit(:phone, :home_phone, :work_phone, :work_phone_ext, :cell_phone, :email)
   end
 
 end

@@ -146,5 +146,7 @@
                 td = vote.election_type
                 td = vote.voter_type
 .modal-footer
+  - if current_user.is_in_role?("Administrator")
+    = link_to 'Edit', edit_voter_path(@voter), :class => 'btn btn-primary'
   button.btn.btn-default data-dismiss="modal" type="button"  Close
 

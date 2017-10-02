@@ -1,7 +1,11 @@
 .page-header
-  = link_to dashboard_path, :class => 'btn btn-default' do 
+  = link_to search_voters_path, :class => 'btn btn-default' do 
     span.glyphicon.glyphicon-list-alt
     |  Back 
+  - if current_user.is_in_role?('Administrator')
+    = link_to edit_voter_path(@voter), :class => 'btn btn-primary' do 
+      span.glyphicon.glyphicon-pencil
+      |  Edit
   h1
     | Voter: #{@voter.full_name}
 .container.pull-left

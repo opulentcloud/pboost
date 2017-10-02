@@ -1,0 +1,158 @@
+.page-header
+  = link_to _back_url, :class => 'btn btn-default' do 
+    span.glyphicon.glyphicon-list-alt
+    |  Back 
+  = link_to @voter, :class => 'btn btn-primary' do
+    span.glyphicon.glyphicon-info-sign
+    |  Show 
+  h1
+    | Editing Voter: #{@voter.full_name}
+
+= semantic_form_for @voter do |f|
+  .container.pull-left
+    .row
+      .col-md-5
+        dl.dl-horizontal
+          dt
+            | State File ID:
+          dd
+            = @voter.state_file_id
+          dt
+            | Affiliation
+          dd
+            = "(#{@voter.party}) #{Voter::PARTY_TYPES.select { |t| t[1] == @voter.party }.first[0] rescue ''}"
+          dt
+            | D.O.R.
+          dd
+            = l @voter.dor rescue nil
+          dt
+            | Address
+          dd
+            = @voter.address.full_street_address
+            br
+            = @voter.address.city_state_zip
+          dt
+            | Phone
+          dd
+            = f.input :phone, label: false, input_html: { maxlength: 10, size: 11, pattern: "[0-9]{10}" }
+          dt
+            | Home Phone
+          dd
+            = f.input :home_phone, label: false, input_html: { maxlength: 10, size: 11, pattern: "[0-9]{10}" }
+          dt
+            | Work Phone
+          dd
+            = f.input :work_phone, label: false, input_html: { maxlength: 10, size: 11, pattern: "[0-9]{10}" }
+            | Work Phone Ext 
+            = f.input :work_phone_ext, label: false, input_html: { maxlength: 10, size: 11, pattern: "[0-9]{0,10}" }
+          dt
+            | Cell Phone
+          dd
+            = f.input :cell_phone, label: false, input_html: { maxlength: 10, size: 11, pattern: "[0-9]{10}" }
+          dt
+            | Email
+          dd
+            = f.input :email, label: false, input_html: { maxlength: 100 }
+          dt
+            | Gender
+          dd
+            = @voter.sex
+          dt
+            | D.O.B.
+          dd
+            = l @voter.dob rescue nil
+          dt
+            | Age
+          dd
+            = @voter.age
+
+        = f.actions do
+          = f.action :submit, class: "btn btn-primary"    
+
+      .col-md-5
+        dl.dl-horizontal
+          dt
+            | County
+          dd
+            = @voter.address.county_name
+          dt
+            | Precinct
+          dd
+            = @voter.address.precinct_code
+          dt
+            | Congressional District
+          dd
+            = @voter.address.cd
+          dt
+            | Legislative District
+          dd
+            = @voter.address.hd
+          dt
+            | Community District
+          dd
+            = @voter.address.comm_dist_code
+          dt
+            | Ward District
+          dd
+            = @voter.address.ward_district          
+          dt
+            | Municipal District
+          dd
+            = @voter.address.municipal_district         
+          dt
+            | Commission District
+          dd
+            = @voter.address.commissioner_district
+          dt
+            | School District
+        .row
+          legend Election Voting Frequency
+          dl.dl-horizontal
+            dt
+              | Presidential Primary
+            dd
+              = @voter.presidential_primary_voting_frequency
+              |  of 4
+            dt
+              | Presidential General
+            dd
+              = @voter.presidential_general_voting_frequency
+              |  of 4
+            dt
+              | Gubernatorial Primary
+            dd
+              = @voter.gubernatorial_primary_voting_frequency
+              |  of 4
+            dt
+              | Gubernatorial General
+            dd
+              = @voter.gubernatorial_general_voting_frequency
+              |  of 4
+    .row
+      - if @voter.address.voters.where("voters.id != ?", @voter.id).count > 0
+        .col-md-5
+          legend Other Voters At This Address
+          .table-responsive
+            dl.dl-horizontal
+            - @voter.address.voters.where("voters.id != ?", @voter.id).each do |ot|
+              dt
+              dd
+                = link_to ot.full_name, voter_path(ot)
+      .col-md-5
+        legend Voting History
+        .table-responsive style="max-height: 200px;"
+          table.table.table-striped.table-bordered.table-condensed.table-hover
+            thead
+              tr
+                th Election Year
+                th Election Month
+                th Election Type
+                th Voter Type
+            tbdoy
+              - @voter.votes.order(election_year: :desc).order(election_month: :desc).order(:election_type).each do |vote|
+                tr
+                  td = vote.election_year
+                  td = vote.election_month
+                  td = vote.election_type
+                  td = vote.voter_type
+
