@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "forwarded_port", guest: 5000, host: 5000
-  config.vm.network "forwarded_port", guest: 5432, host: 5432
+  config.vm.network "forwarded_port", guest: 5432, host: 5433
   config.vm.network "forwarded_port", guest: 8000, host: 8080
 
   # Create a private network, which allows host-only access to the machine
@@ -75,7 +75,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get -y update
     apt-get -y install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev libxslt-dev libxml2-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
-  
+
     if [ -z `which convert` ]; then
       apt-get -y install imagemagick libmagickwand-dev
     fi
@@ -83,15 +83,15 @@ Vagrant.configure(2) do |config|
     if [ -z `which git` ]; then
       echo "===== Installing Git"
       apt-get -y install git-core
-    fi    
+    fi
 
     if [ -z `which nodejs` ]; then
       apt-get -y install nodejs
-    fi    
+    fi
 
-    if [ -z `which phantomjs` ]; then      
+    if [ -z `which phantomjs` ]; then
       apt-get -y install phantomjs
-    fi    
+    fi
 
     /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
     PG_VERSION=9.5

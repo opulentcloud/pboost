@@ -81,7 +81,7 @@ class Voter < ActiveRecord::Base
 
   DATE_SEARCH_FIELDS =  %w{dob dor}
 
-  #exclude some fields from ransack search  
+  #exclude some fields from ransack search
   UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id',
     'suffix','salutation', 'phone' 'home_phone', 'work_phone', 'work_phone_ext','dor',
     'municipal_primary_voting_frequency', 'municipal_general_voting_frequency',
@@ -101,7 +101,7 @@ class Voter < ActiveRecord::Base
   has_one :registered_voters_data, foreign_key: :vtrid, primary_key: :state_file_id
   # end associations
 
-  # begin public instance methods  
+  # begin public instance methods
 	def build_full_name
 		"#{first_name} #{middle_name} #{last_name} #{suffix}".upcase.squeeze(' ')
 	end
@@ -123,9 +123,9 @@ class Voter < ActiveRecord::Base
 		last_four = "#{self.dob.month.to_s.rjust(2,'0')}#{self.dob.day.to_s.rjust(2,'0')}" rescue "0000"
 		first_four+second_four+last_four
 	end
-  
+
   # end public instance methods
-  
+
   # begin public class methods
   def self.to_csv(options = {}, to_file = false, version = :admin)
     if to_file == true
@@ -178,13 +178,13 @@ class Voter < ActiveRecord::Base
 
   def self.build_search_indexes2_by_batch(voter_ids)
     Voter.where(id: voter_ids).each do |voter|
-      voter.update_attribute(:search_index2, voter.build_search2)    
+      voter.update_attribute(:search_index2, voter.build_search2)
     end
   end
 
   def self.build_search_indexes_by_batch(voter_ids)
     Voter.where(id: voter_ids).each do |voter|
-      voter.update_attribute(:search_index, voter.build_search)    
+      voter.update_attribute(:search_index, voter.build_search)
     end
   end
 
@@ -199,30 +199,40 @@ class Voter < ActiveRecord::Base
       Voter.delay.build_search_indexes2_by_batch(batch.map(&:id))
     end
   end
- 
-  def self.update_age
-    ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob))", :skip_logging)
+
+  def self.update_age(dob=nil)
+    if dob.nil?
+      ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob))", :skip_logging)
+    else
+      begin
+        ActiveRecord::Base.connection.execute("UPDATE voters SET age = date_part('year', age(voters.dob)) WHERE dob = '#{dob.to_s(:db)}'", :skip_logging)
+      rescue Exception => ex
+        raise ex
+      ensure
+        Voter.delay(run_at: 1.days.from_now.at_beginning_of_day).update_age(1.days.from_now.to_date)
+      end
+    end
   end
 
   def self.link_addresses_from_registered_voters_data
     query = %{
-      UPDATE voters 
+      UPDATE voters
         SET address_id = result.address_id
       FROM
-        (SELECT addresses.id as address_id, voters.id as voter_id FROM registered_voters_data 
-          INNER JOIN voters on voters.state_file_id = registered_voters_data.vtrid::int 
+        (SELECT addresses.id as address_id, voters.id as voter_id FROM registered_voters_data
+          INNER JOIN voters on voters.state_file_id = registered_voters_data.vtrid::int
           INNER JOIN addresses ON addresses.address_hash = registered_voters_data.address_hash
           WHERE registered_voters_data.address_hash IS NOT NULL) AS result
       WHERE voters.id = result.voter_id}
     ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
-  
+
   def self.correct_address_links
     query = %{
       UPDATE voters SET address_id = result.a1_id
       FROM
       (SELECT a1.id as a1_id, a1.zip4, a2.id as a2_id FROM addresses a1
-      INNER JOIN addresses a2 ON a2.id != a1.id 
+      INNER JOIN addresses a2 ON a2.id != a1.id
       AND COALESCE(a2.street_no,'') = COALESCE(a1.street_no,'')
       AND COALESCE(a2.street_no_half,'') = COALESCE(a1.street_no_half, '')
       AND COALESCE(a2.street_prefix,'') = COALESCE(a1.street_prefix,'')
@@ -235,7 +245,7 @@ class Voter < ActiveRecord::Base
       AND COALESCE(a2.state,'') = COALESCE(a1.state,'')
       AND COALESCE(a2.zip5,'') = COALESCE(a1.zip5,'')
       AND COALESCE(a2.zip4,'') != COALESCE(a1.zip4,'')
-      WHERE 
+      WHERE
       COALESCE(a1.zip4,'') != '') as result
       WHERE voters.address_id = result.a2_id
     }
@@ -253,11 +263,11 @@ class Voter < ActiveRecord::Base
 
   def self.link_addresses_from_van_data
     query = %{
-      UPDATE voters 
+      UPDATE voters
         SET address_id = result.address_id
       FROM
-        (SELECT addresses.id as address_id, voters.id as voter_id FROM van_data 
-          INNER JOIN voters on voters.state_file_id = van_data.state_file_id 
+        (SELECT addresses.id as address_id, voters.id as voter_id FROM van_data
+          INNER JOIN voters on voters.state_file_id = van_data.state_file_id
           INNER JOIN addresses ON addresses.address_hash = van_data.address_hash
           WHERE voters.address_id IS NULL AND van_data.address_hash IS NOT NULL) AS result
       WHERE voters.id = result.voter_id}

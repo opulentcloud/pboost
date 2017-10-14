@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303021640) do
+ActiveRecord::Schema.define(version: 20171014045154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2121,6 +2121,7 @@ ActiveRecord::Schema.define(version: 20160303021640) do
 
   add_index "voters", ["address_id"], :name => "index_voters_address_id"
   add_index "voters", ["age"], :name => "index_voters_on_age"
+  add_index "voters", ["dob"], :name => "index_voters_on_dob"
   add_index "voters", ["id"], :name => "index_voters_on_id"
   add_index "voters", ["party"], :name => "index_voters_on_party"
   add_index "voters", ["search_index"], :name => "index_voters_on_search_index"
