@@ -33,6 +33,7 @@
     h2
       | Voter Verify - Advanced Search Results - #{number_with_delimiter(@voters.total_entries)} Voters found &nbsp; 
       - search_args = {}
+      - search_args.merge!(hoa: true) if params[:hoa].present?
       - search_args.merge!(party_breakdown: '1') if params[:party_breakdown].present?
       - search_args.merge!(precinct_breakdown: '1') if params[:precinct_breakdown].present?      
       ul class="pull-right" style="list-style-type: none;"

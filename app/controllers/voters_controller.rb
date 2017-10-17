@@ -106,6 +106,7 @@ class VotersController < AuthenticatedUsersController
 
     #get list per page settings from form, session or cookie
 	  @per_pg = 100
+    @include_hoa = params[:hoa].to_s == 'true'
 
     params[:q] ||= session[:last_search]
     new_keys = []
@@ -158,11 +159,13 @@ class VotersController < AuthenticatedUsersController
     if params[:export].present?
       dj = nil;
       if admin_user?
-        dj = Delayed::Job.enqueue VotersExportJob.new(params[:q])
+        dj = Delayed::Job.enqueue VotersExportJob.new(params[:q], @include_hoa)
       else
         dj = Delayed::Job.enqueue ClientVotersExportJob.new(params[:q])
       end
-      redirect_to processing_path(return_url: search_voters_path, id: dj.id) and return
+      ret_to = search_voters_path
+      ret_to = search_voters_path(hoa: true) if @include_hoa
+      redirect_to processing_path(return_url: ret_to, id: dj.id) and return
     end
 
     if params[:petitions].present? && @petition_header
@@ -177,6 +180,10 @@ class VotersController < AuthenticatedUsersController
 
     #session[:last_search]['c']['0']['v']['0']['value'] = '' rescue nil
     @voters = @q.result(distinct: true).includes(:address, :votes)
+
+    if @include_hoa == true
+      @voters = @voters.joins("INNER JOIN emails ON emails.address = voters.email")
+    end
 
     @party_breakdown = @q2.result(distinct: true).includes(:address, :votes).reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
     @precinct_breakdown = @q2.result(distinct: true).includes(:address, :votes).joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?

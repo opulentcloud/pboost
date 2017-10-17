@@ -84,8 +84,7 @@ class Voter < ActiveRecord::Base
   #exclude some fields from ransack search
   UNRANSACKABLE_ATTRIBUTES = ['id','vote_builder_id','address_id',
     'suffix','salutation', 'phone' 'home_phone', 'work_phone', 'work_phone_ext','dor',
-    'municipal_primary_voting_frequency', 'municipal_general_voting_frequency',
-    'email', 'cell_phone', 'search_index','search_index2','created_at','updated_at','full_name']
+    'municipal_primary_voting_frequency', 'municipal_general_voting_frequency', 'cell_phone', 'search_index','search_index2','created_at','updated_at','full_name']
 
   def self.ransackable_attributes auth_object = nil
     (column_names - UNRANSACKABLE_ATTRIBUTES) + _ransackers.keys
@@ -100,6 +99,12 @@ class Voter < ActiveRecord::Base
   has_many :votes, class_name: 'VotingHistory', foreign_key: :state_file_id, primary_key: :state_file_id
   has_one :registered_voters_data, foreign_key: :vtrid, primary_key: :state_file_id
   # end associations
+
+  # begin callbacks
+  before_save do |record|
+    record.email = record.email.downcase unless record.email.blank?
+  end
+  # end callbacks
 
   # begin public instance methods
 	def build_full_name
