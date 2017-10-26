@@ -185,8 +185,8 @@ class VotersController < AuthenticatedUsersController
       @voters = @voters.joins("INNER JOIN emails ON emails.address = voters.email")
     end
 
-    @party_breakdown = @q2.result(distinct: true).includes(:address, :votes).reorder("").select("party, count(*) as voter_count").group(:party).order("voter_count desc") if params[:party_breakdown].present?
-    @precinct_breakdown = @q2.result(distinct: true).includes(:address, :votes).joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").reorder("").select("precinct_code, count(*) as voter_count").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
+    @party_breakdown = @q2.result(distinct: true).includes(:address, :votes).except(:order).select("party, count(*) as voter_count, NULL AS address_id, NULL as state_file_id").group(:party).order("voter_count desc") if params[:party_breakdown].present?
+    @precinct_breakdown = @q2.result(distinct: true).includes(:address, :votes).joins("LEFT OUTER JOIN addresses ON addresses.id = voters.address_id").except(:order).select("precinct_code, count(*) as voter_count, NULL AS address_id, NULL as state_file_id").group(:precinct_code).order("voter_count desc") if params[:precinct_breakdown].present?
 
     respond_to do |format|
       format.html {

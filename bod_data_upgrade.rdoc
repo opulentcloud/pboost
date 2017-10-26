@@ -37,4 +37,7 @@ $ psql -U vagrant -d poliboost_development
 
 ==== development database is now updated, export for production importing ======
 
-$ PGPASSWORD=vagrant pg_dump -Fc --no-acl --no-owner -h localhost -U vagrant poliboost_development > poliboost_development.dump
+$ PGPASSWORD=vagrant pg_dump -Fc --no-acl --no-owner -h localhost -U vagrant -d poliboost_development > db/development.dump
+
+==== reload production export into development database
+$ PGPASSWORD=vagrant pg_restore --verbose --clean --no-owner --no-acl --disable-triggers -h localhost -U vagrant -d poliboost_development db/production.dump
