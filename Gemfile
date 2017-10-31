@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.3.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.14'
+gem 'rails', '4.1.16'
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 group :development do
