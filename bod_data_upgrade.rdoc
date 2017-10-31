@@ -1,5 +1,40 @@
+==== New for 10-26-2017 updates ====
+1. manually rename registered_voters_data table to registered_voters_data_xxxx (where xxxx is the year that data was from.)
+  1a. Remove the duplicated voters that are listed twice in the file
+      so as to provide 10 last voting history columns. 
+    head -4186051 VREX005.txt > VoterList.txt
+2. bin/rake db:migrate:down VERSION=20140715052652
+3. bin/rake db:migrate:up VERSION=20140715052652
+4. import raw bod voter file via psql:
+$ psql -U vagrant -d poliboost_development
+# \copy registered_voters_data (vtrid,lastname,firstname,middlename,suffix,house_number,house_suffix,street_predirection,streetname,streettype,street_postdirection,unittype,unitnumber,non_std_address,residentialcity,residentialstate,residentialzip5,residentialzip4,mailingaddress,mailingcity,mailingstate,mailingzip5,mailingzip4,status_code,party,gender,congressional_districts,legislative_districts,councilmanic_districts,ward_districts,municipal_districts,school_districts,precinct,split,county_registration_date,state_registration_date,vote1,vote2,vote3,vote4,vote5,county,address_hash) from '/vagrant/db/fixtures/Stinnie/VoterList.txt' DELIMITERS E'\t' CSV HEADER ENCODING 'utf8';
+6. Remove voters no longer registered:
+  RegisteredVotersData.remove_old_voters
+7. Add new voters:
+  RegisteredVotersData.insert_new_voters
+8. Build addresses hashes
+  RegisteredVotersData.build_address_hashes
+9. Update addresses from new data
+  RegisteredVotersData.update_addresses
+10. Insert new addresses
+  RegisteredVotersData.insert_new_addresses  
+11. Link voters to addresses via registered_voters_data
+  Voter.link_addresses_from_registered_voters_data 
+12. Fix address links where they exist with and without a zip4
+  Voter.correct_address_links <<<<=====
+13. Delete unused addresses
+  Voter.delete_unused_addresses
+14. Update voters info from the new data
+  RegisteredVotersData.update_voter_info (* bin/delayed_job start -n10 for background)
+15. No longer need to do age as the dob is no longer in the files.
+16. truncate table registered_voters_history_updates
+17. RegisteredVotersData.prepare_history_update(true) # Send false if you don't want to truncate the registered_voters_history_updates table.
+18. RegisteredVotersData.history_update
+19. VotingHistory.update_voting_frequencies
+
+==== original before 10-26-2017 updates
 1. truncate table registered_voters_data
-2. truncate table registered_voters_history_update
+2. truncate table registered_voters_history_updates
 3. truncate table registered_voter_histories
 4. import raw bod voter file via psql:
 $ psql -U vagrant -d poliboost_development

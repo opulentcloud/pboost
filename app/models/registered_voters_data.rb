@@ -52,7 +52,7 @@ class RegisteredVotersData < ActiveRecord::Base
   def table_name
     'registered_voters_data'
   end
-  
+
   self.primary_key = 'vtrid'
 
   # begin public instance methods
@@ -71,23 +71,96 @@ class RegisteredVotersData < ActiveRecord::Base
 	def hash_full_address
 		Digest::MD5.hexdigest(full_address.downcase)
 	end
-  
+
   # end public instance methods
-  
+
   # begin public class methods
-  def self.prepare_history_update
-    query = %{      
-      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
-        SELECT registered_voter_histories.vtrid AS state_file_id, 
+  def self.prepare_history_update(truncate=true)
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE registered_voters_history_updates") if truncate == true
+
+    # this is the original query we were using when we were receiving
+    # a separate voter history file.
+    query = %{
+       INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+        SELECT registered_voter_histories.vtrid AS state_file_id,
         CASE voting_method WHEN 'ABSENTEE' THEN 'A' WHEN 'EARLY VOTING' THEN 'E' WHEN 'FWAB' THEN 'F' WHEN 'POLLING PLACE' THEN 'P' WHEN 'PROVISIONAL' THEN 'V' END AS voter_type,
-        split_part(election_date, '/', 3)::int AS election_year, 
-        split_part(election_date, '/', 1)::int AS election_month, 
+        split_part(election_date, '/', 3)::int AS election_year,
+        split_part(election_date, '/', 1)::int AS election_month,
         CASE election_type WHEN 'Gubernatorial General' THEN 'GG' WHEN 'Gubernatorial Primary' THEN 'GP' WHEN 'Presidential General' THEN 'G' WHEN 'Presidential Primary' THEN 'P' END AS election_type,
         current_date as created_at, current_date as updated_at
-        FROM registered_voter_histories 
+        FROM registered_voter_histories
         ORDER BY vtrid
     }
-    ActiveRecord::Base.connection.execute(query, :skip_logging)
+    # ActiveRecord::Base.connection.execute(query, :skip_logging)
+
+    query1 = %{
+      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+      SELECT registered_voters_data.vtrid AS state_file_id,
+      'P' AS voter_type,
+      CASE split_part(vote1, ' ', 1) WHEN '2006' THEN 2006 WHEN '2012' THEN 2012 ELSE 2006 END AS election_year,
+      CASE vote1 WHEN '2012 PRESIDENTIAL GENERAL ELECTION' THEN 11 when 'Primary Election - 2006' THEN NULL ELSE 6 END AS election_month,
+      CASE vote1 WHEN '2012 PRESIDENTIAL GENERAL ELECTION' THEN 'G' WHEN 'Primary Election - 2006' THEN 'P' ELSE 'GP' END AS election_type,
+      current_date as created_at, current_date as updated_at
+      FROM registered_voters_data
+      ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query1, :skip_logging)
+
+    query2 = %{
+      SELECT registered_voters_data.vtrid AS state_file_id,
+      'P' AS voter_type,
+      CASE split_part(vote2, ' ', 1) WHEN '2014' THEN 2014 ELSE 2006 END AS election_year,
+      CASE vote2 WHEN '2014 GUBERNATORIAL PRIMARY ELECTION' THEN 6 ELSE NULL END AS election_month,
+      CASE vote2 WHEN '2014 GUBERNATORIAL PRIMARY ELECTION' THEN 'GP' WHEN '2006 GUBERNATORIAL GENERAL ELECTION' THEN 'GG' WHEN 'GUBERNATORIAL GENERAL - 2006' THEN 'GG' WHEN 'GUBERNATORIAL GENERAL ELECTION - 2006' THEN 'GG' WHEN 'GUB. GENERAL ELECTION' THEN 'GG' ELSE 'G' END AS election_type,
+      current_date as created_at, current_date as updated_at
+      FROM registered_voters_data
+      ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query2, :skip_logging)
+
+    query3 = %{
+      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+      SELECT registered_voters_data.vtrid AS state_file_id,
+      'P' AS voter_type,
+      CASE split_part(vote3, ' ', 1) WHEN '2014' THEN 2014 WHEN '2012' THEN 2012 END AS election_year,
+      CASE vote3 WHEN '2012 PRESIDENTIAL PRIMARY ELECTION' THEN 4 WHEN '2014 GUBERNATORIAL GENERAL ELECTION' THEN 11 END AS election_month,
+      CASE vote3 WHEN '2012 PRESIDENTIAL PRIMARY ELECTION' THEN 'P' WHEN '2014 GUBERNATORIAL GENERAL ELECTION' THEN 'GG' END AS election_type,
+      current_date as created_at, current_date as updated_at
+      FROM registered_voters_data
+      WHERE (CASE split_part(vote3, ' ', 1) WHEN '2014' THEN 2014 WHEN '2012' THEN 2012 END) IS NOT NULL
+      ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query3, :skip_logging)
+
+    query4 = %{
+      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+      SELECT registered_voters_data.vtrid AS state_file_id,
+      'P' AS voter_type,
+      CASE split_part(vote4, ' ', 1) WHEN '2010' THEN 2010 WHEN '2016' THEN 2016 END AS election_year,
+      CASE vote4 WHEN '2010 GUBERNATORIAL PRIMARY ELECTION' THEN 6 WHEN '2016 PRESIDENTIAL GENERAL ELECTION' THEN 11 END AS election_month,
+      CASE vote4 WHEN '2010 GUBERNATORIAL PRIMARY ELECTION' THEN 'GP' WHEN '2016 PRESIDENTIAL GENERAL ELECTION' THEN 'P' END AS election_type,
+      current_date as created_at, current_date as updated_at
+      FROM registered_voters_data
+      WHERE (CASE split_part(vote4, ' ', 1) WHEN '2010' THEN 2010 WHEN '2016' THEN 2016 END) IS NOT NULL
+      ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query4, :skip_logging)
+
+    query5 = %{
+      INSERT INTO registered_voters_history_updates (state_file_id, voter_type, election_year, election_month, election_type, created_at, updated_at)
+      SELECT registered_voters_data.vtrid AS state_file_id,
+      'P' AS voter_type,
+      CASE split_part(vote5, ' ', 1) WHEN '2010' THEN 2010 WHEN '2016' THEN 2016 END AS election_year,
+      CASE vote5 WHEN '2010 GUBERNATORIAL GENERAL ELECTION' THEN 11 WHEN '2016 PRESIDENTIAL PRIMARY ELECTION' THEN 4 END AS election_month,
+      CASE vote5 WHEN '2010 GUBERNATORIAL GENERAL ELECTION' THEN 'GG' WHEN '2016 PRESIDENTIAL PRIMARY ELECTION' THEN 'P' END AS election_type,
+      current_date as created_at, current_date as updated_at
+      FROM registered_voters_data
+      WHERE (CASE split_part(vote5, ' ', 1) WHEN '2010' THEN 2010 WHEN '2016' THEN 2016 END) IS NOT NULL
+      ORDER BY vtrid
+    }
+    ActiveRecord::Base.connection.execute(query5, :skip_logging)
+
+
   end
 
   def self.history_update
@@ -134,7 +207,7 @@ class RegisteredVotersData < ActiveRecord::Base
 	    WHERE addresses.address_hash = result.address_hash}
     ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
-  
+
   def self.insert_new_addresses
     query = %{INSERT INTO addresses (street_no,street_no_half,street_prefix,street_name,street_type,street_suffix,apt_type,
 	  apt_no,city,state,zip5,zip4,county_name,precinct_name,precinct_code,cd,sd,hd,comm_dist_code,ward_district,municipal_district,school_district,address_hash)
@@ -143,7 +216,7 @@ class RegisteredVotersData < ActiveRecord::Base
       FROM registered_voters_data r
       LEFT OUTER JOIN addresses a ON a.address_hash = r.address_hash
       WHERE r.address_hash IS NOT NULL AND a.address_hash IS NULL}
-    ActiveRecord::Base.connection.execute(query, :skip_logging)    
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
 
   def self.update_voters_addresses
@@ -154,18 +227,23 @@ class RegisteredVotersData < ActiveRecord::Base
       INNER JOIN voters v ON v.state_file_id = rvd.vtrid::int
       INNER JOIN addresses a ON a.id = v.address_id AND a.id = (SELECT MIN(id) FROM addresses WHERE addresses.address_hash = a.address_hash)
       INNER JOIN addresses an ON an.address_hash = rvd.address_hash
-      WHERE 
+      WHERE
       rvd.address_hash != a.address_hash) AS result
       WHERE voters.id = result.id}
     ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
 
   def self.insert_new_voters
-    query = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
+    query_2016 = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
       SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, r.gender, r.dob::date, r.state_registration_date::date, r.vtrid::int FROM registered_voters_data r
       LEFT OUTER JOIN voters ON voters.state_file_id = r.vtrid::int
       WHERE voters.id IS NULL}
-    ActiveRecord::Base.connection.execute(query, :skip_logging)    
+
+    query = %{INSERT INTO voters (last_name, first_name, middle_name, suffix, party, sex, dob, dor, state_file_id)
+      SELECT r.lastname, r.firstname, r.middlename, r.suffix, r.party, SUBSTRING(r.gender,1,1) as sex, NULL::date as dob, r.state_registration_date::date, r.vtrid::int FROM registered_voters_data r
+      LEFT OUTER JOIN voters ON voters.state_file_id = r.vtrid::int
+      WHERE voters.id IS NULL}
+    ActiveRecord::Base.connection.execute(query, :skip_logging)
   end
 
   # Remove any voters no longer in the new raw data file.
@@ -187,7 +265,8 @@ class RegisteredVotersData < ActiveRecord::Base
       voter.suffix = voter.registered_voters_data.suffix
       voter.party = voter.registered_voters_data.party
       voter.sex = voter.registered_voters_data.gender
-      voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date rescue nil
+      #bod data no longer provides us with their dob...
+      #voter.dob = Chronic.parse(voter.registered_voters_data.dob).to_date rescue nil
       voter.dor = Chronic.parse(voter.registered_voters_data.state_registration_date).to_date rescue nil
       voter.yor = voter.dor.year rescue nil
       voter.search_index = Voter.build_search_index(voter.first_name, voter.last_name, voter.registered_voters_data.house_number)
@@ -197,14 +276,14 @@ class RegisteredVotersData < ActiveRecord::Base
       voter.save!
     end
   end
-  
+
   def self.update_voter_info(last_datetime = Time.now)
     #Voter.select(:id).where(search_index: nil).find_in_batches(:batch_size => 1000) do |batch|
     Voter.select(:id).find_in_batches(:batch_size => 1000) do |batch|
       RegisteredVotersData.delay.update_voter_info_by_batch(batch.map(&:id))
     end
   end
-  
+
   def self.build_address_hashes(break_after = false)
     cnt = 0
     while RegisteredVotersData.where(address_hash: nil).exists? do

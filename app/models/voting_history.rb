@@ -14,7 +14,7 @@
 
 class VotingHistory < ActiveRecord::Base
 
-  #exclude some fields from ransack search  
+  #exclude some fields from ransack search
   UNRANSACKABLE_ATTRIBUTES = ['id','state_file_id','election_year','voter_id',
   'election_month', 'created_at','updated_at']
 
@@ -30,7 +30,7 @@ class VotingHistory < ActiveRecord::Base
 		['Gubernatorial General', 'GG'],
 		['Gubernatorial Primary', 'GP']
 	]
-	
+
 	ELECTION_TYPE_CHOICES = [
 		['General',	'G'],
 		['Primary',	'P']
@@ -82,7 +82,7 @@ class VotingHistory < ActiveRecord::Base
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_general_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2000, 2004, 2008, 2012)
+      WHERE vh.election_year IN (2004, 2008, 2012, 2016)
       AND vh.election_type = 'G'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id
@@ -94,7 +94,7 @@ class VotingHistory < ActiveRecord::Base
       FROM
       (SELECT v.state_file_id, COUNT(vh.election_year) as presidential_primary_voting_frequency FROM voters v
       INNER JOIN voting_histories vh ON vh.state_file_id = v.state_file_id
-      WHERE vh.election_year IN (2000, 2004, 2008, 2012)
+      WHERE vh.election_year IN (2004, 2008, 2012, 2016)
       AND vh.election_type = 'P'
       GROUP BY v.state_file_id) as result
       WHERE voters.state_file_id = result.state_file_id

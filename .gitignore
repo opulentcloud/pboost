@@ -10,6 +10,7 @@
 .ruby-version
 .ruby-gemset
 .vagrant
+*.sublime-workspace
 
 # Ignore bundler config.
 /.bundle
